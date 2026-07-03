@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('settings', function (Blueprint $table) {
 
             // Primary Key
-            $table->id('setting_id');
+            $table->id();
 
             // Informasi Website
             $table->string('website_name', 100);

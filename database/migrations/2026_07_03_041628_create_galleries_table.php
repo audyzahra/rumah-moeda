@@ -17,6 +17,7 @@ return new class extends Migration
              $table->text('description')->nullable();
              $table->string('photo', 255);
              $table->date('activity_date');
+             $table->timestamps(); 
         });
     }
 
