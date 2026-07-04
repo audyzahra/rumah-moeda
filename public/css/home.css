@@ -1,0 +1,445 @@
+/* ================= GLOBAL ADJUSTMENT ================= */
+body {
+    background-color: var(--bg-color);
+    padding-bottom: 0;
+}
+
+/* Base Title Style */
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-align: center;
+    color: #1a1a1a;
+    margin-bottom: 5px;
+}
+.section-subtitle {
+    font-size: 1rem;
+    text-align: center;
+    color: #4a4a4a;
+    margin-bottom: 35px;
+}
+.text-left { text-align: left !important; }
+
+/* ================= HEADER STYLE ================= */
+.main-header {
+    background-color: var(--header-bg);
+    padding: 15px 4%;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+    background: #fff;
+    border-radius: 50%;
+    padding: 2px;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.nav-menu ul {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+}
+
+.nav-menu ul li a {
+    text-decoration: none;
+    color: #1a1a1a;
+    font-weight: 500;
+    font-size: 1rem;
+    padding-bottom: 4px;
+}
+
+.nav-menu ul li a.active {
+    border-bottom: 2px solid #1a1a1a;
+    font-weight: 700;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-login-reg {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    color: #1a1a1a;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-login-reg:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.dark-toggle {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: #1a1a1a;
+}
+
+/* ================= HERO SECTION ================= */
+.hero-section {
+    padding: 180px 4%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-container {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    background-color: rgba(237, 220, 201, 0.4);
+    padding: 20px;
+    border-radius: 16px;
+}
+
+.hero-image {
+    flex: 1;
+}
+
+.hero-image img {
+    width: 100%;
+    max-width: 480px;
+    border-radius: 8px;
+    display: block;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.hero-text {
+    flex: 1.2;
+}
+
+.hero-text p {
+    font-size: 1.35rem;
+    line-height: 1.5;
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+/* ================= VISI MISI SECTION ================= */
+.visi-misi-section {
+    padding: 40px 4%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.visi-misi-section .section-title {
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 30px;
+}
+
+.visi-misi-section .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -6px; left: 0; width: 60%; height: 2px;
+    background-color: #1a1a1a;
+}
+
+.visi-misi-container {
+    display: flex;
+    gap: 30px;
+}
+
+.visi-box, .misi-box {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    flex: 1;
+}
+
+.visi-box h3, .misi-box h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+}
+
+.visi-box p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+.misi-box ol {
+    list-style: none;
+    padding-left: 0;
+}
+
+.misi-box ol li {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    position: relative;
+    padding-left: 25px;
+}
+
+/* Membuat penomoran manual sesuai gambar */
+.misi-box ol li::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: 700;
+    color: #4a4a4a;
+}
+.misi-box ol li:nth-child(1)::before { content: "1"; }
+.misi-box ol li:nth-child(2)::before { content: "2"; }
+.misi-box ol li:nth-child(3)::before { content: "3"; }
+
+.misi-box ol li span {
+    font-weight: 700;
+}
+
+/* ================= STRUKTUR ORGANISASI ================= */
+.struktur-section {
+    padding: 40px 4%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tree-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.tree-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+}
+
+.member-card {
+    background-color: var(--card-bg);
+    padding: 15px 30px;
+    border-radius: 20px;
+    text-align: center;
+    min-width: 220px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+
+.member-card .avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.member-card h4 {
+    font-size: 1.05rem;
+    color: #1a1a1a;
+    margin-bottom: 3px;
+}
+
+.member-card p {
+    font-size: 0.8rem;
+    color: #666666;
+}
+
+/* ================= ARTIKEL SECTION ================= */
+.artikel-section {
+    padding: 40px 4%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.artikel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+.artikel-card {
+    background-color: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+}
+
+.card-img-wrapper img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.card-content .category {
+    font-size: 0.85rem;
+    color: #555555;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.card-content h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.card-content p {
+    font-size: 0.9rem;
+    color: #555555;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.card-date {
+    font-size: 0.8rem;
+    color: #777777;
+}
+
+/* ===========================
+   DOKUMENTASI AKTIVITAS
+=========================== */
+
+.dokumentasi-section{
+    background:#f7f1e4;
+    padding:70px 8%;
+}
+
+.gallery-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    grid-template-rows:repeat(2,220px);
+    gap:18px;
+    margin-top:40px;
+}
+
+.gallery-large{
+    grid-row:1 / span 2;
+}
+
+.gallery-item{
+    overflow:hidden;
+    border-radius:20px;
+    cursor:pointer;
+    position:relative;
+}
+
+.gallery-item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.4s;
+}
+
+.gallery-item:hover img{
+    transform:scale(1.08);
+}
+
+/* Lightbox */
+
+.lightbox{
+    display:none;
+    position:fixed;
+    z-index:99999;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.88);
+    justify-content:center;
+    align-items:center;
+}
+
+.lightbox.show{
+    display:flex;
+}
+
+.lightbox-img{
+    max-width:90%;
+    max-height:90%;
+    border-radius:12px;
+    animation:zoom .3s ease;
+}
+
+.close{
+    position:absolute;
+    top:25px;
+    right:40px;
+    color:#fff;
+    font-size:40px;
+    cursor:pointer;
+}
+
+@keyframes zoom{
+    from{
+        transform:scale(.8);
+        opacity:0;
+    }
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+@media(max-width:900px){
+
+    .gallery-grid{
+        grid-template-columns:1fr;
+        grid-template-rows:auto;
+    }
+
+    .gallery-large{
+        grid-row:auto;
+    }
+
+    .gallery-item{
+        height:250px;
+    }
+
+}
+
+/* ================= RESPONSIVE DESIGN ================= */
+@media (max-width: 850px) {
+    .hero-container, .visi-misi-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .hero-image img {
+        max-width: 100%;
+    }
+    .tree-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+}
