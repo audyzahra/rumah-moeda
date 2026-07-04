@@ -1,0 +1,89 @@
+/* ===========================
+   HEADER
+=========================== */
+
+.main-header{
+    background:var(--header-bg);
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+    position:fixed;
+    top:0;
+    z-index:1000;
+    width:100%;
+}
+
+.header-container{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 20px;
+}
+
+.logo-section{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo-img{
+    width:auto;
+    height:45px;
+}
+
+.logo-text{
+    font-size:1.2rem;
+    font-weight:700;
+    color:var(--text-color);
+}
+
+.nav-menu ul{
+    display:flex;
+    list-style:none;
+    gap:30px;
+}
+
+.nav-menu a{
+    text-decoration:none;
+    color:var(--text-color);
+    font-weight:600;
+    transition:.3s;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active{
+    color:#e5eed4;
+    border-bottom:2px solid #f0c86a;
+}
+
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.header-actions a,
+.header-actions button{
+    background:none;
+    border:none;
+    color:var(--text-color);
+    cursor:pointer;
+    text-decoration:none;
+    font-size:1rem;
+}
+
+.dark-toggle{
+    font-size:1.2rem;
+}
+
+.btn-login-reg{
+    padding:10px 18px;
+    border-radius:8px;
+    background:#f0c86a;
+    color:#333 !important;
+    font-weight:600;
+}
+
+.btn-login-reg:hover{
+    background:#ddb457;
+}

@@ -1,0 +1,190 @@
+@extends('Layouts.app')
+
+@section('title', 'Home')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+@endpush
+
+@section('content')
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-container">
+            <div class="hero-image">
+                <img src="{{ asset('assets/1.jpeg') }}" alt="Kegiatan Rumah Moeda">
+            </div>
+
+            <div class="hero-text">
+                <p>
+                    {{ $setting->website_description }}
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visi Misi -->
+    <section class="visi-misi-section">
+
+        <h2 class="section-title">Visi & Misi</h2>
+
+        <div class="visi-misi-container">
+
+            <div class="visi-box">
+
+                <h3>Visi</h3>
+
+                <p>
+                    "{{ $vision->vision }}"
+                </p>
+
+            </div>
+
+            <div class="misi-box">
+
+                <h3>Misi</h3>
+
+                <ol>
+
+                    @foreach ($vision->missions as $mission)
+                        <li>
+                            {{ $mission->mission }}
+                        </li>
+                    @endforeach
+
+                </ol>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Struktur Organisasi -->
+    <div class="tree-container">
+
+        {{-- Ketua (display_order = 1) --}}
+        <div class="tree-row row-top">
+
+            @foreach ($organizations->where('display_order', 1) as $member)
+                <div class="member-card">
+
+                    <img src="{{ asset($member->photo) }}" class="avatar" alt="{{ $member->full_name }}">
+
+                    <h4>{{ $member->full_name }}</h4>
+
+                    <p>{{ $member->position }}</p>
+
+                </div>
+            @endforeach
+
+        </div>
+
+        {{-- Anggota lainnya --}}
+        <div class="tree-row row-bottom">
+
+            @foreach ($organizations->where('display_order', '>', 1) as $member)
+                <div class="member-card">
+
+                    <img src="{{ asset($member->photo) }}" class="avatar" alt="{{ $member->full_name }}">
+
+                    <h4>{{ $member->full_name }}</h4>
+
+                    <p>{{ $member->position }}</p>
+
+                </div>
+            @endforeach
+
+        </div>
+
+    </div>
+
+    <!-- Artikel -->
+    <section class="artikel-section">
+
+        <h2 class="section-title text-left">
+            Berita
+        </h2>
+
+        <p class="section-subtitle text-left">
+            Inspirasi dan kabar terkini dari lapangan.
+        </p>
+
+        <div class="artikel-grid">
+
+            @foreach ($news as $article)
+                <div class="artikel-card">
+
+                    <div class="card-img-wrapper">
+                        <img src="{{ asset($article->thumbnail) }}" alt="{{ $article->title }}">
+                    </div>
+
+                    <div class="card-content">
+
+                        <span class="category">
+                            {{ $article->category->name }}
+                        </span>
+
+                        <h3>
+                            {{ $article->title }}
+                        </h3>
+
+                        <p>
+                            {{ \Illuminate\Support\Str::limit(strip_tags($article->content), 100) }}
+                        </p>
+
+                        <div class="card-date">
+                            <i class="far fa-calendar"></i>
+                            {{ \Carbon\Carbon::parse($article->publish_date)->translatedFormat('d F Y') }}
+                        </div>
+
+                    </div>
+
+                </div>
+            @endforeach
+
+        </div>
+
+    </section>
+
+    <!-- Dokumentasi -->
+    <section class="dokumentasi-section">
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Dokumentasi Aktivitas
+            </h2>
+
+            <p class="section-subtitle">
+                Momen kebersamaan dalam setiap langkah perubahan.
+            </p>
+
+            <div class="gallery-grid">
+
+                @foreach ($documentations as $documentation)
+                    <div class="gallery-item {{ $loop->first ? 'gallery-large' : '' }}">
+                        <img src="{{ asset($documentation->photo) }}" alt="{{ $documentation->title }}">
+                    </div>
+                @endforeach
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+
+        <span class="close">&times;</span>
+
+        <img class="lightbox-img" id="lightbox-img">
+
+    </div>
+
+@endsection
+
+@push('scripts')
+    <script src="{{ asset('js/main.js') }}"></script>
+@endpush
