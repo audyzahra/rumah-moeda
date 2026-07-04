@@ -4,34 +4,29 @@
         <!-- Logo -->
         <div class="logo-section">
             <a href="{{ route('home') }}">
-                <img src="{{ asset('assets/logorumahmoeda.png') }}"
-                     alt="Logo Rumah Moeda"
-                     class="logo-img">
+                <img src="{{ asset($setting->website_logo) }}" class="logo-img" alt="{{ $setting->website_name }}">
             </a>
 
-            <span class="logo-text">Rumah Moeda</span>
+            {{ $setting->website_name }}
         </div>
 
         <!-- Navigation -->
         <nav class="nav-menu">
             <ul>
                 <li>
-                    <a href="{{ route('home') }}"
-                       class="{{ request()->routeIs('home') ? 'active' : '' }}">
+                    <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">
                         Home
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('tentang') }}"
-                       class="{{ request()->routeIs('tentang') ? 'active' : '' }}">
+                    <a href="{{ route('tentang') }}" class="{{ request()->routeIs('tentang') ? 'active' : '' }}">
                         Tentang Kami
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('hubungi') }}"
-                       class="{{ request()->routeIs('hubungi') ? 'active' : '' }}">
+                    <a href="{{ route('hubungi') }}" class="{{ request()->routeIs('hubungi') ? 'active' : '' }}">
                         Hubungi Kami
                     </a>
                 </li>

@@ -3,16 +3,12 @@
 
         <!-- Logo & Deskripsi -->
         <div class="footer-item">
-            <img src="{{ asset('assets/logorumahmoeda.png') }}"
-                 alt="Rumah Moeda"
-                 class="footer-logo">
+            <img src="{{ asset($setting->website_logo) }}" alt="{{ $setting->website_name }}">
 
-            <h3>Rumah Moeda</h3>
+            <h3>{{ $setting->website_name }}</h3>
 
             <p>
-                Bersama membangun generasi muda yang observatif, enerjik,
-                dinamis, dan aktif melalui pendidikan, pemberdayaan,
-                serta inovasi sosial.
+                {{ $setting->website_description }}
             </p>
         </div>
 
@@ -22,20 +18,17 @@
 
             <div class="footer-info">
                 <i class="fas fa-phone"></i>
-                <span>+62 812-3456-7890</span>
+                {{ $setting->phone_number }}
             </div>
 
             <div class="footer-info">
                 <i class="fas fa-envelope"></i>
-                <span>info@rumahmoeda.id</span>
+                {{ $setting->email }}
             </div>
 
             <div class="footer-info">
                 <i class="fas fa-map-marker-alt"></i>
-                <span>
-                    Jl. Contoh No.123,<br>
-                    Purwakarta, Jawa Barat
-                </span>
+                {{ $setting->address }}
             </div>
         </div>
 
@@ -43,10 +36,7 @@
         <div class="footer-item">
             <h3>Lokasi Kami</h3>
 
-            <iframe
-                src="https://www.google.com/maps?q=Purwakarta&output=embed"
-                allowfullscreen
-                loading="lazy"
+            <iframe src="https://www.google.com/maps?q=Purwakarta&output=embed" allowfullscreen loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade">
             </iframe>
         </div>
@@ -54,6 +44,6 @@
     </div>
 
     <div class="footer-bottom">
-        &copy; {{ date('Y') }} Rumah Moeda. All Rights Reserved.
+        © {{ date('Y') }} {{ $setting->website_name }}. All Rights Reserved.
     </div>
 </footer>

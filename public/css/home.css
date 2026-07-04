@@ -190,30 +190,17 @@ body {
     font-style: italic;
 }
 
-.misi-box ol {
-    list-style: none;
-    padding-left: 0;
+.misi-box ol{
+    list-style: decimal;
+    padding-left: 28px;
 }
 
-.misi-box ol li {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 12px;
-    position: relative;
-    padding-left: 25px;
+.misi-box ol li{
+    font-size:0.95rem;
+    line-height:1.7;
+    margin-bottom:15px;
+    padding-left:8px;
 }
-
-/* Membuat penomoran manual sesuai gambar */
-.misi-box ol li::before {
-    position: absolute;
-    left: 0;
-    top: 0;
-    font-weight: 700;
-    color: #4a4a4a;
-}
-.misi-box ol li:nth-child(1)::before { content: "1"; }
-.misi-box ol li:nth-child(2)::before { content: "2"; }
-.misi-box ol li:nth-child(3)::before { content: "3"; }
 
 .misi-box ol li span {
     font-weight: 700;
