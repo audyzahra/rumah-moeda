@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/auth/register.css') }}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
@@ -28,7 +29,9 @@
                     <img src="{{ asset('assets/logorumahmoeda.png') }}" alt="Logo Rumah Moeda">
                 </div>
 
-                <h1 class="register-title">Rumah Moeda</h1>
+                <h1 class="register-title">
+                    Rumah Moeda
+                </h1>
 
                 <p>
                     Buat akun baru dan bergabung bersama Rumah Moeda.
@@ -40,14 +43,14 @@
 
                 <h2>Registrasi</h2>
 
-                {{-- Success Message --}}
+                {{-- Success --}}
                 @if (session('status'))
                     <div style="background:#d4edda;color:#155724;padding:12px;border-radius:10px;margin-bottom:20px;">
                         {{ session('status') }}
                     </div>
                 @endif
 
-                {{-- Validation Error --}}
+                {{-- Error --}}
                 @if ($errors->any())
                     <div style="background:#f8d7da;color:#721c24;padding:12px;border-radius:10px;margin-bottom:20px;">
                         <ul style="margin:0;padding-left:18px;">
@@ -67,8 +70,14 @@
 
                         <i class="fa-solid fa-user"></i>
 
-                        <input type="text" id="username" name="name" placeholder="Username"
-                            value="{{ old('name') }}" required autofocus>
+                        <input
+                            type="text"
+                            id="username"
+                            name="name"
+                            placeholder="Username"
+                            value="{{ old('name') }}"
+                            required
+                            autofocus>
 
                     </div>
 
@@ -77,8 +86,13 @@
 
                         <i class="fa-solid fa-envelope"></i>
 
-                        <input type="email" id="email" name="email" placeholder="Email"
-                            value="{{ old('email') }}" required>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Email"
+                            value="{{ old('email') }}"
+                            required>
 
                     </div>
 
@@ -87,19 +101,33 @@
 
                         <i class="fa-solid fa-lock"></i>
 
-                        <input type="password" id="password" name="password" placeholder="Password" required>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Password"
+                            required>
+
+                        <span onclick="togglePassword('password','eye1')">
+                            <i class="fa-solid fa-eye" id="eye1"></i>
+                        </span>
 
                     </div>
 
-                    {{-- Confirm Password --}}
+                    {{-- Konfirmasi Password --}}
                     <div class="input-group">
 
                         <i class="fa-solid fa-lock"></i>
 
-                        <input type="password" id="password" name="password" placeholder="Password" required>
+                        <input
+                            type="password"
+                            id="password_confirmation"
+                            name="password_confirmation"
+                            placeholder="Konfirmasi Password"
+                            required>
 
-                        <span onclick="togglePassword('password','eye')">
-                            <i class="fa-solid fa-eye" id="eye"></i>
+                        <span onclick="togglePassword('password_confirmation','eye2')">
+                            <i class="fa-solid fa-eye" id="eye2"></i>
                         </span>
 
                     </div>
@@ -115,9 +143,7 @@
                         Sudah punya akun?
 
                         <a href="{{ route('login') }}">
-
                             Login
-
                         </a>
 
                     </p>
