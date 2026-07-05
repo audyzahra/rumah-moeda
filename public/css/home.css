@@ -561,7 +561,94 @@ body {
 .gallery-item:hover img{
     transform:scale(1.08);
 }
+/* ===========================
+   MITRA
+=========================== */
 
+.mitra-section{
+    padding:70px 0;
+    background:var(--bg-color);
+    overflow:hidden;
+}
+
+.mitra-slider{
+    overflow:hidden;
+    width:100%;
+    margin-top:40px;
+}
+
+.mitra-track{
+    display:flex;
+    align-items:center;
+    width:max-content;
+    animation:scrollMitra 28s linear infinite;
+}
+
+.mitra-slider:hover .mitra-track{
+    animation-play-state:paused;
+}
+
+.mitra-item{
+    width:180px;
+    height:100px;
+    margin:0 20px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:transparent;
+    border-radius:18px;
+
+    text-decoration:none;
+
+    flex-shrink:0;
+
+    box-shadow:none;
+    transition:.3s;
+}
+
+.mitra-item:hover{
+    transform:translateY(-6px);
+    box-shadow:none;
+}
+
+.mitra-item img{
+    width:120px;
+    max-height:70px;
+    object-fit:contain;
+    transition:.3s;
+}
+
+.mitra-item:hover img{
+    transform:scale(1.08);
+}
+
+@keyframes scrollMitra{
+
+    from{
+        transform:translateX(0);
+    }
+
+    to{
+        transform:translateX(-50%);
+    }
+
+}
+
+@media(max-width:768px){
+
+    .mitra-item{
+        width:140px;
+        height:80px;
+        margin:0 12px;
+    }
+
+    .mitra-item img{
+        width:90px;
+    }
+
+}
 /* Lightbox */
 
 .lightbox{

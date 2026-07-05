@@ -16,20 +16,20 @@
             </div>
 
             <div class="hero-text">
-    <div class="hero-content">
+                <div class="hero-content">
 
-        <span class="hero-line"></span>
+                    <span class="hero-line"></span>
 
-        <h1>
-            Rumah <span>Moeda</span>
-        </h1>
+                    <h1>
+                        Rumah <span>Moeda</span>
+                    </h1>
 
-        <p>
-            {{ $setting->website_description }}
-        </p>
+                    <p>
+                        {{ $setting->website_description }}
+                    </p>
 
-    </div>
-</div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -71,49 +71,45 @@
     </section>
 
     <!-- Struktur Organisasi -->
-<section class="struktur-section">
+    <section class="struktur-section">
 
-    <h2 class="section-title">Struktur Organisasi</h2>
+        <h2 class="section-title">Struktur Organisasi</h2>
 
-    <p class="section-subtitle">
-        Tim yang berkomitmen membangun Rumah Moeda dengan semangat kolaborasi.
-    </p>
+        <p class="section-subtitle">
+            Tim yang berkomitmen membangun Rumah Moeda dengan semangat kolaborasi.
+        </p>
 
-    {{-- Ketua --}}
-    @foreach ($organizations->where('display_order',1) as $member)
+        {{-- Ketua --}}
+        @foreach ($organizations->where('display_order', 1) as $member)
+            <div class="leader-card">
 
-    <div class="leader-card">
+                <img src="{{ asset($member->photo) }}" alt="{{ $member->full_name }}">
 
-        <img src="{{ asset($member->photo) }}" alt="{{ $member->full_name }}">
+                <h3>{{ $member->full_name }}</h3>
 
-        <h3>{{ $member->full_name }}</h3>
+                <span>{{ $member->position }}</span>
 
-        <span>{{ $member->position }}</span>
+            </div>
+        @endforeach
 
-    </div>
+        {{-- Anggota --}}
+        <div class="team-grid">
 
-    @endforeach
+            @foreach ($organizations->where('display_order', '>', 1) as $member)
+                <div class="team-card">
 
-    {{-- Anggota --}}
-    <div class="team-grid">
+                    <img src="{{ asset($member->photo) }}" alt="{{ $member->full_name }}">
 
-        @foreach ($organizations->where('display_order','>',1) as $member)
+                    <h4>{{ $member->full_name }}</h4>
 
-        <div class="team-card">
+                    <p>{{ $member->position }}</p>
 
-            <img src="{{ asset($member->photo) }}" alt="{{ $member->full_name }}">
-
-            <h4>{{ $member->full_name }}</h4>
-
-            <p>{{ $member->position }}</p>
+                </div>
+            @endforeach
 
         </div>
 
-        @endforeach
-
-    </div>
-
-</section>
+    </section>
 
     <!-- Artikel -->
     <section class="artikel-section">
@@ -189,6 +185,72 @@
         </div>
 
     </section>
+    <!-- ================= MITRA ================= -->
+
+    <section class="mitra-section">
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Mitra Kami
+            </h2>
+
+            <p class="section-subtitle">
+                Bersama para mitra kami menghadirkan dampak yang lebih luas bagi masyarakat.
+            </p>
+
+            <div class="mitra-slider">
+
+                <div class="mitra-track">
+
+                    {{-- Loop Pertama --}}
+
+                    @foreach ($partners as $partner)
+                        @if ($partner->website)
+                            <a href="{{ $partner->website }}" target="_blank" class="mitra-item">
+
+                                <img src="{{ asset($partner->logo) }}" alt="{{ $partner->name }}"
+                                    title="{{ $partner->name }}">
+
+                            </a>
+                        @else
+                            <div class="mitra-item">
+
+                                <img src="{{ asset($partner->logo) }}" alt="{{ $partner->name }}"
+                                    title="{{ $partner->name }}">
+
+                            </div>
+                        @endif
+                    @endforeach
+
+
+                    {{-- Duplicate supaya animasi tidak putus --}}
+
+                    @foreach ($partners as $partner)
+                        @if ($partner->website)
+                            <a href="{{ $partner->website }}" target="_blank" class="mitra-item">
+
+                                <img src="{{ asset($partner->logo) }}" alt="{{ $partner->name }}"
+                                    title="{{ $partner->name }}">
+
+                            </a>
+                        @else
+                            <div class="mitra-item">
+
+                                <img src="{{ asset($partner->logo) }}" alt="{{ $partner->name }}"
+                                    title="{{ $partner->name }}">
+
+                            </div>
+                        @endif
+                    @endforeach
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
 
     <!-- Lightbox -->
     <div id="lightbox" class="lightbox">
@@ -200,5 +262,3 @@
     </div>
 
 @endsection
-
-

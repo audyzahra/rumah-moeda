@@ -13,7 +13,7 @@
     {{-- ================= PROFIL ================= --}}
     <section class="profil-pendiri">
 
-        <h2>Profil & Pendiri Yayasan</h2>
+        <h2>Profil Rumah Moeda</h2>
 
         <div class="pendiri-card">
 
@@ -21,10 +21,6 @@
                  alt="{{ $settings->website_name }}">
 
             <h3>{{ $settings->website_name }}</h3>
-
-            <p class="role">
-                Founder & Ketua Yayasan
-            </p>
 
             <p>
                 {{ $settings->website_description }}
