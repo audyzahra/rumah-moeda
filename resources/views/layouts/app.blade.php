@@ -13,8 +13,9 @@
     @stack('styles')
 
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
     @include('layouts.header')
@@ -25,6 +26,9 @@
 
     @include('layouts.footer')
 
+    {{-- JS --}}
+    <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('js/darkmode.js') }}"></script>
 
     @stack('scripts')

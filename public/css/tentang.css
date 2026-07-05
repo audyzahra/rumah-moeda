@@ -3,7 +3,91 @@
 .container-page {
     padding: 40px 5%;
 }
+/* ===========================
+   HEADER
+=========================== */
 
+.main-header{
+    background:var(--header-bg);
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+    position:fixed;
+    top:0;
+    z-index:1000;
+    width:100%;
+    border-bottom-left-radius:20px;
+    border-bottom-right-radius:20px;
+}
+
+.header-container{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 20px;
+}
+
+.logo-section{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo-img{
+    height:40px;
+    width:auto;
+    background:#fff;
+    border-radius:50%;
+    padding:2px;
+}
+
+.nav-menu ul{
+    display:flex;
+    list-style:none;
+    gap:25px;
+}
+
+.nav-menu ul li a{
+    text-decoration:none;
+    color:#1a1a1a;
+    font-weight:500;
+    font-size:1rem;
+    padding-bottom:4px;
+}
+
+.nav-menu ul li a.active{
+    border-bottom:2px solid #1a1a1a;
+    font-weight:700;
+}
+
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.btn-login-reg{
+    background:rgba(255,255,255,.2);
+    padding:8px 16px;
+    border-radius:20px;
+    color:#1a1a1a;
+    text-decoration:none;
+    font-size:.9rem;
+    font-weight:600;
+    transition:.2s;
+}
+
+.btn-login-reg:hover{
+    background:rgba(255,255,255,.4);
+}
+
+.dark-toggle{
+    background:none;
+    border:none;
+    font-size:1.3rem;
+    cursor:pointer;
+    color:#1a1a1a;
+}
 
 /* ==========================================
    SECTION
@@ -33,11 +117,16 @@
 
 .pendiri-card {
     background: var(--card-bg);
-    max-width: 400px;
+    max-width: 500px;
     margin: 20px auto;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    padding: 35px 30px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;   /* Semua isi berada di tengah */
+    text-align: center;
 }
 
 .pendiri-card img {
@@ -155,299 +244,122 @@
 }
 
 
-/* ==========================================
+/* ===============================
    STRUKTUR ORGANISASI
-========================================== */
-.struktur-tree-section{
+==================================*/
 
+.struktur-section{
     margin:90px auto;
-
     text-align:center;
-
-    max-width:1200px;
-
-    padding:0 20px;
-
 }
 
-.struktur-tree-section h2{
-
-    font-size:2rem;
-
-    margin-bottom:50px;
-
+.section-title{
+    font-size:2.2rem;
+    margin-bottom:10px;
 }
 
-/* Tree */
+.section-subtitle{
+    color:#777;
+    margin-bottom:60px;
+}
 
-.tree{
+/* Ketua */
 
+.leader-wrapper{
     display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-}
-
-/* Level Ketua */
-
-.level.ketua{
-
-    display:flex;
-
     justify-content:center;
+    margin-bottom:60px;
+}
 
+.leader-card{
+    width:320px;
+    background:var(--card-bg);
+    border-radius:20px;
+    padding:35px 30px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    transition:.35s;
+}
+
+.leader-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 18px 35px rgba(0,0,0,.15);
+}
+
+.leader-card img{
+    width:140px;
+    height:140px;
+    object-fit:cover;
+    border-radius:50%;
+    border:5px solid #cda036;
+
+    display:block;
+    margin:0 auto 20px;
+}
+
+.leader-card h3{
+    margin-bottom:8px;
+    color:var(--text-color);
+}
+
+.leader-card span{
+    display:inline-block;
+    margin-top:10px;
+    padding:8px 18px;
+    background:#cda036;
+    color:#fff;
+    border-radius:30px;
+    font-size:.9rem;
+}
+
+/* Grid Anggota */
+
+.member-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:30px;
 }
 
 /* Card */
 
-.card{
-
+.member-card{
     background:var(--card-bg);
-
-    width:220px;
-
-    min-height:120px;
-
-    padding:20px;
-
-    border-radius:16px;
-
-    box-shadow:0 8px 18px rgba(0,0,0,.08);
-
+    padding:30px 20px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
     transition:.35s;
-
 }
 
-.card strong{
+.member-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 18px 35px rgba(0,0,0,.15);
+}
+
+.member-card img{
+    width:100px;
+    height:100px;
+    object-fit:cover;
+    border-radius:50%;
+    border:4px solid #cda036;
 
     display:block;
-
-    color:#cda036;
-
-    font-size:1.1rem;
-
-    margin-bottom:20px;
-
+    margin:0 auto 18px;
 }
 
-.card span{
-
-    font-size:1.1rem;
-
+.member-card h4{
+    margin-bottom:8px;
+    color:var(--text-color);
 }
 
-.card:hover{
-
-    transform:translateY(-10px);
-
-    box-shadow:0 18px 35px rgba(0,0,0,.15);
-
-    background:#f7e8d4;
-
+.member-card p{
+    color:#666;
+    font-size:.95rem;
 }
 
-/* Garis */
-
-.line.vertical{
-
-    width:2px;
-
-    height:40px;
-
-    background:#cda036;
-
-}
-
-.line.horizontal{
-
-    width:55%;
-
-    height:2px;
-
-    background:#cda036;
-
-}
-
-/* Level Dua */
-
-.level.dua{
-
-    width:100%;
-
-    display:flex;
-
-    justify-content:space-around;
-
-    margin-top:-2px;
-
-}
-
-/* Jabatan */
-
-.jabatan{
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-}
-
-/* Anak */
-
-.anak{
-
-    display:flex;
-
-    gap:25px;
-
-    margin-top:20px;
-
-    position:relative;
-
-}
-
-/* Garis anak */
-
-.anak::before{
-
-    content:"";
-
-    position:absolute;
-
-    top:-20px;
-
-    left:25%;
-
-    right:25%;
-
-    height:2px;
-
-    background:#cda036;
-
-}
-
-/* Garis turun ke card */
-
-.anak .card{
-
-    position:relative;
-
-}
-
-.anak .card::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:2px;
-
-    height:20px;
-
-    background:#cda036;
-
-    top:-20px;
-
-    left:50%;
-
-    transform:translateX(-50%);
-
-}
-
-/* Animasi */
-
-.card{
-
-    opacity:0;
-
-    animation:fadeUp .8s forwards;
-
-}
-
-.card:nth-child(1){
-
-    animation-delay:.2s;
-
-}
-
-.card:nth-child(2){
-
-    animation-delay:.4s;
-
-}
-
-.card:nth-child(3){
-
-    animation-delay:.6s;
-
-}
-
-.card:nth-child(4){
-
-    animation-delay:.8s;
-
-}
-
-@keyframes fadeUp{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(40px);
-
+@media(max-width:768px){
+
+    .leader-card{
+        width:100%;
+        max-width:320px;
     }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-}
-
-/* Responsive */
-
-@media(max-width:900px){
-
-.level.dua{
-
-    flex-direction:column;
-
-    gap:50px;
-
-    align-items:center;
-
-}
-
-.anak{
-
-    flex-direction:column;
-
-}
-
-.anak::before{
-
-    display:none;
-
-}
-
-.anak .card::before{
-
-    display:none;
-
-}
-
-.line.horizontal{
-
-    display:none;
-
-}
 
 }

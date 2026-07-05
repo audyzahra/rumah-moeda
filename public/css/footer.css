@@ -24,13 +24,22 @@
 }
 
 .footer-item p{
-    line-height:1.8;
+    line-height:1.9;
     color:#f3f3f3;
+    text-align:justify;
+    text-justify:inter-word;
 }
 
 .footer-logo{
-    width:75px;
-    margin-bottom:15px;
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+    margin-bottom:20px;
+    background:#fff;
+    padding:4px;
+    border:2px solid rgba(255,255,255,.3);
 }
 
 .footer-info{
