@@ -3,6 +3,10 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TentangController;
+
+Route::get('/tentang', [TentangController::class, 'index'])
+    ->name('tentang');
 
 // ==========================
 // Public (Guest)
@@ -10,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::view('/tentang', 'tentang')->name('tentang');
+
 
 Route::view('/hubungi', 'hubungi')->name('hubungi');
 
