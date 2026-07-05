@@ -14,6 +14,32 @@ Route::post('/hubungi',[ContactController::class,'store'])
 Route::get('/tentang', [TentangController::class, 'index'])
     ->name('tentang');
 
+/*
+|--------------------------------------------------------------------------
+| Menu User
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth'])->group(function () {
+
+    // Berita
+    Route::get('/berita', [BeritaController::class, 'index'])
+        ->name('berita.index');
+
+    Route::get('/berita/{slug}', [BeritaController::class, 'show'])
+        ->name('berita.show');
+
+
+    // Galeri
+    Route::get('/galeri', [GaleriController::class, 'index'])
+        ->name('galeri.index');
+
+
+    // Pertanyaan (FAQ)
+    Route::get('/pertanyaan', [FaqController::class, 'index'])
+        ->name('faq.index');
+
+});
 // ==========================
 // Public (Guest)
 // ==========================
