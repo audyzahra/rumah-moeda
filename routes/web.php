@@ -4,6 +4,12 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TentangController;
+use App\Http\Controllers\ContactController;
+
+Route::get('/hubungi',[ContactController::class,'index'])->name('hubungi');
+
+Route::post('/hubungi',[ContactController::class,'store'])
+    ->name('hubungi.store');
 
 Route::get('/tentang', [TentangController::class, 'index'])
     ->name('tentang');
@@ -13,10 +19,6 @@ Route::get('/tentang', [TentangController::class, 'index'])
 // ==========================
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
-
-
-Route::view('/hubungi', 'hubungi')->name('hubungi');
 
 // ==========================
 // Dashboard
