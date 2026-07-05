@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TentangController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\BeritaController;
-use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\FaqController;
 
 Route::get('/hubungi',[ContactController::class,'index'])->name('hubungi');
@@ -34,7 +34,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     // Galeri
-    Route::get('/galeri', [GaleriController::class, 'index'])
+    Route::get('/galeri', [GalleryController::class, 'index'])
         ->name('galeri.index');
 
 
