@@ -288,3 +288,55 @@
     }
 
 }
+
+/* ==========================
+   DARK MODE - FAQ
+========================== */
+
+/* Header */
+[data-theme="dark"] .faq-header h1{
+    color: #ffffff;
+}
+
+[data-theme="dark"] .faq-header p{
+    color: #cfcfcf;
+}
+
+/* Card FAQ */
+[data-theme="dark"] .faq-item{
+    background: #242424;
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 12px 30px rgba(0,0,0,.45);
+    transition: .3s;
+}
+
+[data-theme="dark"] .faq-item:hover{
+    background: #2d2d2d;
+    border-color: rgba(212,166,43,.45);
+}
+
+/* Pertanyaan */
+[data-theme="dark"] .faq-question{
+    color: #ffffff;
+}
+
+/* Jawaban */
+[data-theme="dark"] .faq-answer{
+    color: #d6d6d6;
+}
+
+/* Icon */
+[data-theme="dark"] .faq-question i{
+    color: #d4a62b;
+}
+
+/* Saat FAQ dibuka */
+[data-theme="dark"] .faq-item.active{
+    border-color: rgba(212,166,43,.5);
+}
+
+/* Efek fokus jika menggunakan keyboard */
+[data-theme="dark"] .faq-question:focus{
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(212,166,43,.3);
+}

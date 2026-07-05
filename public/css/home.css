@@ -625,6 +625,135 @@ body {
 
 }
 
+/* ==========================
+   DARK MODE - DOKUMENTASI
+========================== */
+
+[data-theme="dark"] .dokumentasi-section{
+    background: #181818;
+}
+
+[data-theme="dark"] .dokumentasi-section .section-title{
+    color: #ffffff;
+}
+
+[data-theme="dark"] .dokumentasi-section .section-subtitle{
+    color: #cfcfcf;
+}
+
+[data-theme="dark"] .gallery-item{
+    box-shadow: 0 8px 20px rgba(0,0,0,.35);
+}
+
+[data-theme="dark"] .gallery-item img{
+    filter: brightness(.9);
+}
+
+[data-theme="dark"] .gallery-item:hover img{
+    filter: brightness(1);
+}
+
+/* ==========================
+   DARK MODE - HOME PAGE
+========================== */
+
+/* Judul & Subtitle */
+[data-theme="dark"] .section-title,
+[data-theme="dark"] .section-subtitle{
+    color: #f5f5f5;
+}
+
+/* Hero */
+[data-theme="dark"] .hero-content h1{
+    color: #ffffff;
+}
+
+[data-theme="dark"] .hero-content p{
+    color: #d6d6d6;
+}
+
+/* Visi Misi */
+[data-theme="dark"] .visi-box,
+[data-theme="dark"] .misi-box{
+    background: #242424;
+}
+
+[data-theme="dark"] .visi-box h3,
+[data-theme="dark"] .misi-box h3{
+    color: #ffffff;
+}
+
+[data-theme="dark"] .visi-box p,
+[data-theme="dark"] .misi-box li{
+    color: #d6d6d6;
+}
+
+/* Struktur Organisasi */
+[data-theme="dark"] .leader-card,
+[data-theme="dark"] .team-card{
+    background: #242424;
+}
+
+[data-theme="dark"] .leader-card h3,
+[data-theme="dark"] .team-card h4{
+    color: #ffffff;
+}
+
+[data-theme="dark"] .team-card p{
+    color: #cfcfcf;
+}
+
+/* Artikel */
+[data-theme="dark"] .artikel-card{
+    background: #242424;
+}
+
+[data-theme="dark"] .card-content h3{
+    color: #ffffff;
+}
+
+[data-theme="dark"] .card-content p,
+[data-theme="dark"] .card-content .category,
+[data-theme="dark"] .card-date{
+    color: #d0d0d0;
+}
+
+/* Dokumentasi */
+[data-theme="dark"] .dokumentasi-section{
+    background: #181818;
+}
+
+[data-theme="dark"] .dokumentasi-section .section-title,
+[data-theme="dark"] .dokumentasi-section .section-subtitle{
+    color: #ffffff;
+}
+
+/* ==========================
+   DARK MODE - CONTAINER
+========================== */
+
+[data-theme="dark"] .visi-box,
+[data-theme="dark"] .misi-box,
+[data-theme="dark"] .leader-card,
+[data-theme="dark"] .team-card,
+[data-theme="dark"] .artikel-card{
+    background: #242424;
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,.45);
+    transition: .3s;
+}
+
+/* Hover */
+[data-theme="dark"] .leader-card:hover,
+[data-theme="dark"] .team-card:hover,
+[data-theme="dark"] .artikel-card:hover,
+[data-theme="dark"] .visi-box:hover,
+[data-theme="dark"] .misi-box:hover{
+    background: #2d2d2d;
+    border-color: rgba(212,166,43,.45);
+    box-shadow: 0 18px 40px rgba(0,0,0,.55);
+}
+
 /* ================= RESPONSIVE DESIGN ================= */
 @media (max-width: 850px) {
     .hero-container, .visi-misi-container {

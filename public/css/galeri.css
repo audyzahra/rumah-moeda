@@ -467,3 +467,96 @@
     }
 
 }
+
+/* ==========================
+   DARK MODE - GALERI
+========================== */
+
+/* Header */
+[data-theme="dark"] .header-text h1{
+    color: #ffffff;
+}
+
+[data-theme="dark"] .header-text p{
+    color: #cfcfcf;
+}
+
+/* Card Galeri */
+[data-theme="dark"] .galeri-card{
+    background: #242424;
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 12px 30px rgba(0,0,0,.45);
+    transition: .3s;
+}
+
+[data-theme="dark"] .galeri-card:hover{
+    transform: translateY(-8px);
+    background: #2d2d2d;
+    border-color: rgba(212,166,43,.45);
+    box-shadow: 0 18px 40px rgba(0,0,0,.55);
+}
+
+[data-theme="dark"] .galeri-info h3{
+    color: #ffffff;
+}
+
+[data-theme="dark"] .galeri-info p{
+    color: #d6d6d6;
+}
+
+[data-theme="dark"] .galeri-info span{
+    color: #bfbfbf;
+}
+
+/* Gambar */
+[data-theme="dark"] .galeri-card img{
+    filter: brightness(.92);
+}
+
+/* Tombol */
+[data-theme="dark"] .btn-tambah,
+[data-theme="dark"] .btn-simpan{
+    background: #d4a62b;
+    color: #ffffff;
+}
+
+[data-theme="dark"] .btn-tambah:hover,
+[data-theme="dark"] .btn-simpan:hover{
+    background: #e0b84b;
+}
+
+/* Modal */
+[data-theme="dark"] .modal-content{
+    background: #242424;
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 15px 40px rgba(0,0,0,.55);
+}
+
+[data-theme="dark"] .modal-content h2{
+    color: #ffffff;
+}
+
+[data-theme="dark"] .close{
+    color: #ffffff;
+}
+
+/* Form */
+[data-theme="dark"] .form-group label{
+    color: #f2f2f2;
+}
+
+[data-theme="dark"] .form-group input{
+    background: #333333;
+    color: #ffffff;
+    border: 1px solid #4a4a4a;
+}
+
+[data-theme="dark"] .form-group input::placeholder{
+    color: #aaaaaa;
+}
+
+[data-theme="dark"] .form-group input:focus{
+    border-color: #d4a62b;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(212,166,43,.2);
+}

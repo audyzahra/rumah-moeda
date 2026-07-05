@@ -497,3 +497,98 @@ body{
     }
 
 }
+
+/* ==========================
+   DARK MODE - BERITA
+========================== */
+
+/* Header */
+[data-theme="dark"] .berita-header h1{
+    color: #ffffff;
+}
+
+[data-theme="dark"] .berita-header p{
+    color: #cfcfcf;
+}
+
+/* Card Berita */
+[data-theme="dark"] .berita-card{
+    background: #242424;
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 12px 30px rgba(0,0,0,.45);
+}
+
+[data-theme="dark"] .berita-content h2{
+    color: #ffffff;
+}
+
+[data-theme="dark"] .berita-content p{
+    color: #d6d6d6;
+}
+
+[data-theme="dark"] .meta{
+    color: #bfbfbf;
+}
+
+[data-theme="dark"] .action a{
+    color: #d4a62b;
+}
+
+[data-theme="dark"] .action a:hover{
+    color: #e6bf57;
+}
+
+/* Modal */
+[data-theme="dark"] .modal-content{
+    background: #242424;
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 12px 35px rgba(0,0,0,.55);
+}
+
+[data-theme="dark"] .modal-content h2{
+    color: #ffffff;
+}
+
+[data-theme="dark"] .close{
+    color: #ffffff;
+}
+
+/* Form */
+[data-theme="dark"] .form-group label{
+    color: #f2f2f2;
+}
+
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group textarea{
+    background: #333333;
+    color: #ffffff;
+    border: 1px solid #4a4a4a;
+}
+
+[data-theme="dark"] .form-group input::placeholder,
+[data-theme="dark"] .form-group textarea::placeholder{
+    color: #aaaaaa;
+}
+
+[data-theme="dark"] .form-group input:focus,
+[data-theme="dark"] .form-group textarea:focus{
+    border-color: #d4a62b;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(212,166,43,.2);
+}
+
+/* Tombol */
+[data-theme="dark"] .btn-tambah{
+    background: #d4a62b;
+    color: #ffffff;
+}
+
+[data-theme="dark"] .btn-simpan{
+    background: #d4a62b;
+    color: #ffffff;
+}
+
+[data-theme="dark"] .btn-tambah:hover,
+[data-theme="dark"] .btn-simpan:hover{
+    background: #e0b84b;
+}

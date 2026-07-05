@@ -452,3 +452,81 @@ blockquote{
     }
 
 }
+
+/* ==========================
+   DARK MODE - DETAIL BERITA
+========================== */
+
+/* Tombol kembali */
+[data-theme="dark"] .back-btn{
+    color: #d4a62b;
+}
+
+[data-theme="dark"] .back-btn:hover{
+    color: #e6bf57;
+}
+
+/* Judul artikel */
+[data-theme="dark"] .artikel-header h1{
+    color: #ffffff;
+}
+
+/* Meta artikel */
+[data-theme="dark"] .artikel-meta{
+    color: #bfbfbf;
+}
+
+/* Isi artikel */
+[data-theme="dark"] .artikel-content{
+    color: #d8d8d8;
+}
+
+[data-theme="dark"] .artikel-content p{
+    color: #d8d8d8;
+}
+
+/* Blockquote */
+[data-theme="dark"] blockquote{
+    background: #242424;
+    color: #f5f5f5;
+    border-left: 5px solid #d4a62b;
+    box-shadow: 0 8px 20px rgba(0,0,0,.35);
+}
+
+/* Artikel lainnya */
+[data-theme="dark"] .artikel-lainnya h2{
+    color: #ffffff;
+}
+
+/* Card artikel */
+[data-theme="dark"] .artikel-card{
+    background: #242424;
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 12px 30px rgba(0,0,0,.45);
+    transition: .3s;
+}
+
+[data-theme="dark"] .artikel-card:hover{
+    transform: translateY(-5px);
+    background: #2d2d2d;
+    border-color: rgba(212,166,43,.45);
+    box-shadow: 0 18px 40px rgba(0,0,0,.55);
+}
+
+[data-theme="dark"] .artikel-card h3{
+    color: #ffffff;
+}
+
+[data-theme="dark"] .artikel-card a{
+    color: #d4a62b;
+}
+
+[data-theme="dark"] .artikel-card a:hover{
+    color: #e6bf57;
+}
+
+/* Gambar */
+[data-theme="dark"] .hero-image img,
+[data-theme="dark"] .artikel-card img{
+    filter: brightness(.92);
+}
