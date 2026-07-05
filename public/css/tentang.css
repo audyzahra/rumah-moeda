@@ -3,7 +3,91 @@
 .container-page {
     padding: 40px 5%;
 }
+/* ===========================
+   HEADER
+=========================== */
 
+.main-header{
+    background:var(--header-bg);
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+    position:fixed;
+    top:0;
+    z-index:1000;
+    width:100%;
+    border-bottom-left-radius:20px;
+    border-bottom-right-radius:20px;
+}
+
+.header-container{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 20px;
+}
+
+.logo-section{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo-img{
+    height:40px;
+    width:auto;
+    background:#fff;
+    border-radius:50%;
+    padding:2px;
+}
+
+.nav-menu ul{
+    display:flex;
+    list-style:none;
+    gap:25px;
+}
+
+.nav-menu ul li a{
+    text-decoration:none;
+    color:#1a1a1a;
+    font-weight:500;
+    font-size:1rem;
+    padding-bottom:4px;
+}
+
+.nav-menu ul li a.active{
+    border-bottom:2px solid #1a1a1a;
+    font-weight:700;
+}
+
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.btn-login-reg{
+    background:rgba(255,255,255,.2);
+    padding:8px 16px;
+    border-radius:20px;
+    color:#1a1a1a;
+    text-decoration:none;
+    font-size:.9rem;
+    font-weight:600;
+    transition:.2s;
+}
+
+.btn-login-reg:hover{
+    background:rgba(255,255,255,.4);
+}
+
+.dark-toggle{
+    background:none;
+    border:none;
+    font-size:1.3rem;
+    cursor:pointer;
+    color:#1a1a1a;
+}
 
 /* ==========================================
    SECTION
