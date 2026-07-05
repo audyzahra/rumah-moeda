@@ -230,3 +230,157 @@ body::after {
     margin:0;
     padding-left:20px;
 }
+
+/* ==========================
+   RESPONSIVE CONTACT
+========================== */
+
+@media (max-width:992px){
+
+    .contact-container{
+        max-width:700px;
+        margin:110px 25px 50px;
+        padding:28px;
+    }
+
+}
+
+@media (max-width:768px){
+
+    .contact-container{
+
+        margin:100px 20px 40px;
+
+        padding:25px 20px;
+
+    }
+
+    .contact-container h1{
+
+        font-size:28px;
+
+    }
+
+    .contact-container p{
+
+        font-size:15px;
+
+    }
+
+    .contact-form{
+
+        margin-top:25px;
+
+    }
+
+    .form-group{
+
+        margin-bottom:18px;
+
+    }
+
+    .form-group label{
+
+        font-size:15px;
+
+    }
+
+    .form-group input,
+    .form-group textarea{
+
+        padding:12px;
+
+        font-size:15px;
+
+    }
+
+    .btn-submit{
+
+        padding:13px;
+
+        font-size:15px;
+
+    }
+
+    .alert-success,
+    .alert-error{
+
+        padding:14px;
+
+        font-size:14px;
+
+    }
+
+}
+
+@media (max-width:480px){
+
+    .contact-container{
+
+        margin:90px 15px 30px;
+
+        padding:20px 16px;
+
+        border-radius:15px;
+
+    }
+
+    .contact-container h1{
+
+        font-size:24px;
+
+    }
+
+    .contact-container p{
+
+        font-size:14px;
+
+        line-height:1.6;
+
+    }
+
+    .form-group{
+
+        margin-bottom:16px;
+
+    }
+
+    .form-group label{
+
+        font-size:14px;
+
+    }
+
+    .form-group input,
+    .form-group textarea{
+
+        padding:11px;
+
+        font-size:14px;
+
+    }
+
+    .btn-submit{
+
+        padding:12px;
+
+        font-size:14px;
+
+    }
+
+    .alert-success,
+    .alert-error{
+
+        padding:12px;
+
+        font-size:13px;
+
+    }
+
+    .alert-error ul{
+
+        padding-left:18px;
+
+    }
+
+}

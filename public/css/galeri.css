@@ -320,3 +320,150 @@
     font-size:15px;
 
 }
+
+/* ==========================
+   RESPONSIVE GALERI
+========================== */
+
+@media (max-width: 992px){
+
+    .galeri-header{
+        padding:120px 4% 30px;
+        gap:20px;
+    }
+
+    .header-text h1{
+        font-size:32px;
+    }
+
+    .galeri-container{
+        grid-template-columns:repeat(2,1fr);
+        gap:25px;
+    }
+
+    .galeri-card img{
+        height:200px;
+    }
+
+}
+
+@media (max-width: 768px){
+
+    .galeri-header{
+        flex-direction:column;
+        align-items:flex-start;
+        padding:110px 20px 25px;
+    }
+
+    .header-text h1{
+        font-size:28px;
+    }
+
+    .header-text p{
+        font-size:15px;
+    }
+
+    .btn-tambah{
+        width:100%;
+        margin-top:15px;
+        padding:12px;
+    }
+
+    .galeri-container{
+        padding:20px;
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    .galeri-card{
+        border-radius:16px;
+    }
+
+    .galeri-card img{
+        height:220px;
+    }
+
+    .galeri-info{
+        padding:18px;
+    }
+
+    .galeri-info h3{
+        font-size:18px;
+    }
+
+    .galeri-info p{
+        font-size:14px;
+    }
+
+    .galeri-info span{
+        font-size:13px;
+    }
+
+    .modal{
+        padding:20px;
+        align-items:center;
+    }
+
+    .modal-content{
+        width:100%;
+        max-width:450px;
+        padding:25px;
+    }
+
+}
+
+@media (max-width: 480px){
+
+    .galeri-header{
+        padding:100px 15px 20px;
+    }
+
+    .header-text h1{
+        font-size:24px;
+    }
+
+    .header-text p{
+        font-size:14px;
+    }
+
+    .galeri-container{
+        padding:15px;
+    }
+
+    .galeri-card{
+        border-radius:14px;
+    }
+
+    .galeri-card img{
+        height:180px;
+    }
+
+    .galeri-info{
+        padding:15px;
+    }
+
+    .galeri-info h3{
+        font-size:17px;
+    }
+
+    .galeri-info p{
+        font-size:13px;
+        line-height:1.6;
+    }
+
+    .galeri-info span{
+        font-size:12px;
+    }
+
+    .modal-content{
+        padding:20px;
+        border-radius:15px;
+    }
+
+    .close{
+        font-size:26px;
+        top:12px;
+        right:15px;
+    }
+
+}
