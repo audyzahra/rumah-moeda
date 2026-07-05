@@ -201,6 +201,4 @@
 
 @endsection
 
-@push('scripts')
-    <script src="{{ asset('js/main.js') }}"></script>
-@endpush
+
