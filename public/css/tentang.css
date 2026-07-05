@@ -150,6 +150,14 @@
     margin-bottom: 10px;
 }
 
+/* Deskripsi Pendiri */
+.pendiri-card p{
+    text-align: justify;
+    text-justify: inter-word;
+    line-height: 1.8;
+    margin-top: 12px;
+    width: 100%;
+}
 
 /* ==========================================
    VISI MISI
@@ -207,11 +215,13 @@
 
 /* Nomor */
 .misi-box li{
-    counter-increment:nomor;
-    margin:18px 0;
-    padding-left:55px;
-    position:relative;
-    line-height:1.8;
+    counter-increment: nomor;
+    margin: 18px 0;
+    padding-left: 55px;
+    position: relative;
+    line-height: 1.8;
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 
