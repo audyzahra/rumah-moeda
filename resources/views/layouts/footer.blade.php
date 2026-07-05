@@ -3,7 +3,7 @@
 
         <!-- Logo & Deskripsi -->
         <div class="footer-item">
-            <img src="{{ asset($setting->website_logo) }}" alt="{{ $setting->website_name }}">
+            <img src="{{ asset($setting->website_logo) }}" alt="{{ $setting->website_name }}"  class="footer-logo">
 
             <h3>{{ $setting->website_name }}</h3>
 

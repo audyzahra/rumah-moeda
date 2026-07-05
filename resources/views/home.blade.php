@@ -16,10 +16,20 @@
             </div>
 
             <div class="hero-text">
-                <p>
-                    {{ $setting->website_description }}
-                </p>
-            </div>
+    <div class="hero-content">
+
+        <span class="hero-line"></span>
+
+        <h1>
+            Rumah <span>Moeda</span>
+        </h1>
+
+        <p>
+            {{ $setting->website_description }}
+        </p>
+
+    </div>
+</div>
         </div>
     </section>
 
@@ -61,43 +71,49 @@
     </section>
 
     <!-- Struktur Organisasi -->
-    <div class="tree-container">
+<section class="struktur-section">
 
-        {{-- Ketua (display_order = 1) --}}
-        <div class="tree-row row-top">
+    <h2 class="section-title">Struktur Organisasi</h2>
 
-            @foreach ($organizations->where('display_order', 1) as $member)
-                <div class="member-card">
+    <p class="section-subtitle">
+        Tim yang berkomitmen membangun Rumah Moeda dengan semangat kolaborasi.
+    </p>
 
-                    <img src="{{ asset($member->photo) }}" class="avatar" alt="{{ $member->full_name }}">
+    {{-- Ketua --}}
+    @foreach ($organizations->where('display_order',1) as $member)
 
-                    <h4>{{ $member->full_name }}</h4>
+    <div class="leader-card">
 
-                    <p>{{ $member->position }}</p>
+        <img src="{{ asset($member->photo) }}" alt="{{ $member->full_name }}">
 
-                </div>
-            @endforeach
+        <h3>{{ $member->full_name }}</h3>
 
-        </div>
-
-        {{-- Anggota lainnya --}}
-        <div class="tree-row row-bottom">
-
-            @foreach ($organizations->where('display_order', '>', 1) as $member)
-                <div class="member-card">
-
-                    <img src="{{ asset($member->photo) }}" class="avatar" alt="{{ $member->full_name }}">
-
-                    <h4>{{ $member->full_name }}</h4>
-
-                    <p>{{ $member->position }}</p>
-
-                </div>
-            @endforeach
-
-        </div>
+        <span>{{ $member->position }}</span>
 
     </div>
+
+    @endforeach
+
+    {{-- Anggota --}}
+    <div class="team-grid">
+
+        @foreach ($organizations->where('display_order','>',1) as $member)
+
+        <div class="team-card">
+
+            <img src="{{ asset($member->photo) }}" alt="{{ $member->full_name }}">
+
+            <h4>{{ $member->full_name }}</h4>
+
+            <p>{{ $member->position }}</p>
+
+        </div>
+
+        @endforeach
+
+    </div>
+
+</section>
 
     <!-- Artikel -->
     <section class="artikel-section">
