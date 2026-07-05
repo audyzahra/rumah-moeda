@@ -12,6 +12,11 @@
             </span>
         </div>
 
+         <!-- Hamburger -->
+        <div class="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
         {{-- Navigation --}}
         <nav class="nav-menu">
             <ul>
@@ -61,7 +66,7 @@
 
             </ul>
         </nav>
-
+        <div class="menu-overlay"></div>
         {{-- Header Action --}}
         <div class="header-actions">
 

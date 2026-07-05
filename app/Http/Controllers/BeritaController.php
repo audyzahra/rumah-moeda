@@ -8,7 +8,7 @@ class BeritaController extends Controller
 {
     public function index()
     {
-        $news = News::with(['category','author'])
+        $news = News::with(['category', 'author'])
             ->latest('publish_date')
             ->get();
 
@@ -16,19 +16,19 @@ class BeritaController extends Controller
     }
 
     public function show($slug)
-{
-    $news = News::with(['category','author'])
-        ->where('slug', $slug)
-        ->firstOrFail();
+    {
+        $news = News::with(['category', 'author'])
+            ->where('slug', $slug)
+            ->firstOrFail();
 
-    $otherNews = News::where('news_id','!=',$news->news_id)
-        ->latest('publish_date')
-        ->take(2)
-        ->get();
+        $otherNews = News::where('id', '!=', $news->id)
+            ->latest('publish_date')
+            ->take(2)
+            ->get();
 
-    return view('detail-berita', compact(
-        'news',
-        'otherNews'
-    ));
-}
+        return view('detail-berita', compact(
+            'news',
+            'otherNews'
+        ));
+    }
 }

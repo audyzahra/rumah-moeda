@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initSmoothScroll();
     initActiveMenu();
     initUserDropdown();
+    initMobileMenu();
 
 });
 
@@ -221,5 +222,29 @@ function initUserDropdown() {
         dropdown.classList.remove("show");
 
     });
+
+}
+
+/* ==========================
+   MOBILE MENU
+========================== */
+
+function initMobileMenu() {
+
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navMenu = document.querySelector(".nav-menu");
+
+    console.log(menuToggle);
+    console.log(navMenu);
+
+    if (!menuToggle || !navMenu) return;
+
+    menuToggle.onclick = function () {
+
+        console.log("klik");
+
+        navMenu.classList.toggle("active");
+
+    };
 
 }
