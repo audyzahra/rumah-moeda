@@ -5,6 +5,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TentangController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\FaqController;
 
 Route::get('/hubungi',[ContactController::class,'index'])->name('hubungi');
 
