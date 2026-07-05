@@ -6,7 +6,7 @@ use App\Models\VisionMission;
 use App\Models\OrganizationStructure;
 use App\Models\News;
 use App\Models\Documentation;
-
+use App\Models\Partner;
 
 class HomeController extends Controller
 {
@@ -28,11 +28,15 @@ class HomeController extends Controller
                             ->take(5)
                             ->get();
 
+        // Partners
+        $partners = Partner::orderBy('display_order')->get();
+
         return view('home', compact(
             'vision',
             'organizations',
             'news',
-            'documentations'
+            'documentations',
+            'partners'
         ));
     }
 }
