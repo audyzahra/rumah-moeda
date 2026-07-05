@@ -640,3 +640,127 @@ body {
         gap: 20px;
     }
 }
+
+/* ==========================
+   RESPONSIVE HOME
+========================== */
+
+@media (max-width:992px){
+
+    .hero-container{
+        flex-direction:column;
+        gap:40px;
+        transform:none;
+        padding:0 25px;
+    }
+
+    .hero-image,
+    .hero-text{
+        width:100%;
+    }
+
+    .hero-image img{
+        height:360px;
+    }
+
+    .hero-text{
+        padding:0;
+        text-align:center;
+    }
+
+    .hero-line{
+        margin:0 auto 20px;
+    }
+
+    .hero-content h1{
+        font-size:2.5rem;
+    }
+
+    .hero-content p{
+        text-align:center;
+    }
+
+    .visi-misi-container{
+        flex-direction:column;
+    }
+
+    .leader-card{
+        width:100%;
+        max-width:320px;
+    }
+
+    .team-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .artikel-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media (max-width:768px){
+
+    .hero-section{
+        padding:140px 20px 50px;
+    }
+
+    .hero-image img{
+        height:280px;
+    }
+
+    .hero-content h1{
+        font-size:2rem;
+    }
+
+    .hero-content p{
+        font-size:1rem;
+    }
+
+    .section-title{
+        font-size:1.6rem;
+    }
+
+    .team-grid{
+        grid-template-columns:1fr;
+    }
+
+    .artikel-grid{
+        grid-template-columns:1fr;
+    }
+
+    .gallery-grid{
+        grid-template-columns:1fr;
+    }
+
+    .gallery-item{
+        height:220px;
+    }
+
+}
+
+@media (max-width:480px){
+
+    .hero-section{
+        padding-top:120px;
+    }
+
+    .hero-content h1{
+        font-size:1.7rem;
+    }
+
+    .hero-content p{
+        font-size:.95rem;
+    }
+
+    .visi-box,
+    .misi-box{
+        padding:22px;
+    }
+
+    .leader-card,
+    .team-card{
+        padding:22px;
+    }
+
+}
