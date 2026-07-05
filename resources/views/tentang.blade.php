@@ -71,68 +71,64 @@
     </section>
 
 
-    {{-- ================= STRUKTUR ================= --}}
-    <section class="struktur-section">
+   {{-- ================= STRUKTUR ================= --}}
+<section class="struktur-section">
 
-        <h2 class="section-title">
-            Struktur Organisasi
-        </h2>
+    <h2 class="section-title">
+        Struktur Organisasi
+    </h2>
 
-        <p class="section-subtitle">
-            Sinergi para profesional untuk impak sosial yang nyata.
-        </p>
+    <p class="section-subtitle">
+        Sinergi para profesional untuk menciptakan dampak sosial yang nyata.
+    </p>
 
-        @php
-            $ketua = $organizations->where('display_order',1)->first();
-            $anggota = $organizations->where('display_order','>',1);
-        @endphp
+    @php
+        $ketua = $organizations->where('display_order',1)->first();
+        $anggota = $organizations->where('display_order','>',1);
+    @endphp
 
-        <div class="tree-container">
+    {{-- Ketua --}}
+    @if($ketua)
+    <div class="leader-wrapper">
 
-            @if($ketua)
+        <div class="leader-card">
 
-                <div class="tree-row row-top">
+            <img src="{{ asset($ketua->photo) }}"
+                alt="{{ $ketua->full_name }}">
 
-                    <div class="member-card">
+            <h3>{{ $ketua->full_name }}</h3>
 
-                        <img src="{{ asset($ketua->photo) }}"
-                             class="avatar"
-                             alt="{{ $ketua->full_name }}">
-
-                        <h4>{{ $ketua->full_name }}</h4>
-
-                        <p>{{ $ketua->position }}</p>
-
-                    </div>
-
-                </div>
-
-            @endif
-
-
-            <div class="tree-row row-bottom">
-
-                @foreach($anggota as $item)
-
-                    <div class="member-card">
-
-                        <img src="{{ asset($item->photo) }}"
-                             class="avatar"
-                             alt="{{ $item->full_name }}">
-
-                        <h4>{{ $item->full_name }}</h4>
-
-                        <p>{{ $item->position }}</p>
-
-                    </div>
-
-                @endforeach
-
-            </div>
+            <span>{{ $ketua->position }}</span>
 
         </div>
 
-    </section>
+    </div>
+    @endif
+
+    {{-- Garis --}}
+    <div class="connector-line"></div>
+
+    {{-- Anggota --}}
+    <div class="member-grid">
+
+        @foreach($anggota as $item)
+
+        <div class="member-card">
+
+            <img src="{{ asset($item->photo) }}"
+                alt="{{ $item->full_name }}">
+
+            <h4>{{ $item->full_name }}</h4>
+
+            <p>{{ $item->position }}</p>
+
+        </div>
+
+        @endforeach
+
+    </div>
+
+</section>
 
 </main>
 
