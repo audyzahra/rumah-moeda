@@ -14,12 +14,15 @@
 
     <!-- Sidebar -->
     <link rel="stylesheet" href="{{ asset('css/admin/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/layout.css') }}">
 
     @stack('styles')
 
 </head>
 
 <body>
+
+<div class="admin-wrapper">
 
     @include('admin.partials.sidebar')
 
@@ -29,11 +32,43 @@
 
     </main>
 
-    <!-- Sidebar -->
-    <script src="{{ asset('js/admin/sidebar.js') }}"></script>
+</div>
 
-    @stack('scripts')
+<script src="{{ asset('js/admin/sidebar.js') }}"></script>
+
+@stack('scripts')
 
 </body>
 
 </html>
+<style>
+.admin-wrapper{
+    display:flex;
+}
+
+.main-content{
+    margin-left:270px;
+    width:calc(100% - 270px);
+    min-height:100vh;
+    padding:35px;
+    background:#f8f9fc;
+    box-sizing:border-box;
+}
+
+/* Tablet */
+@media(max-width:992px){
+    .main-content{
+        margin-left:220px;
+        width:calc(100% - 220px);
+    }
+}
+
+/* Mobile */
+@media(max-width:768px){
+    .main-content{
+        margin-left:0;
+        width:100%;
+        padding:20px;
+    }
+}
+</style>

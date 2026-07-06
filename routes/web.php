@@ -94,3 +94,23 @@ Route::middleware(['auth','admin'])
             ->name('admin.dashboard');
 
 });
+use App\Http\Controllers\Admin\PengaturanController;
+
+Route::middleware(['auth','admin'])
+    ->prefix('admin')
+    ->group(function () {
+
+        Route::get('/pengaturan', [PengaturanController::class, 'index'])
+            ->name('admin.pengaturan');
+
+        Route::post('/pengaturan/visi-misi', [PengaturanController::class, 'updateVisiMisi'])
+            ->name('admin.visimisi.update');
+
+});
+Route::prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::resource('struktur', OrganizationStructureController::class);
+
+    });

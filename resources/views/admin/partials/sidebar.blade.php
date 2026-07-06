@@ -58,7 +58,7 @@
         </li>
 
         <li class="{{ request()->routeIs('admin.struktur.*') ? 'active' : '' }}">
-            <a href="#">
+             <a href="{{ route('admin.struktur.index') }}">
                 <i class="fa-solid fa-sitemap"></i>
                 <span>Struktur Organisasi</span>
 
@@ -88,7 +88,7 @@
         </li>
 
         <li class="{{ request()->routeIs('admin.pengaturan.*') ? 'active' : '' }}">
-            <a href="#">
+            <a href="{{ route('admin.pengaturan') }}">
                 <i class="fa-solid fa-gear"></i>
                 <span>Pengaturan</span>
             </a>
