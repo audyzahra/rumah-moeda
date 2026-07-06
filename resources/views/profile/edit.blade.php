@@ -11,82 +11,78 @@
 
 <body>
 
-<div class="container-page">
+    <div class="container-page">
 
-    <div class="profile-card">
+        <div class="profile-card">
 
-        <!-- PANEL KIRI -->
-        <div class="profile-left">
+            <!-- PANEL KIRI -->
+            <div class="profile-left">
 
-            <a href="{{ url()->previous() }}" class="btn-back">
-    <span>&larr;</span> Kembali
-</a>
+                <a href="{{ url()->previous() }}" class="btn-back">
+                    <span>&larr;</span> Kembali
+                </a>
 
-            <div class="left-content">
+                <div class="left-content">
 
-                <img src="{{ asset('assets/logorumahmoeda.png') }}" alt="Logo">
+                    <img src="{{ asset('assets/logorumahmoeda.png') }}" alt="Logo">
 
-                <h1>Rumah Moeda</h1>
+                    <h1>Rumah Moeda</h1>
 
-                <p>
-                    Kelola informasi profil dan keamanan akun Anda.
-                </p>
+                    <p>
+                        Kelola informasi profil dan keamanan akun Anda.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- PANEL KANAN -->
+            <div class="profile-right">
+
+                @if (session('status') === 'profile-updated')
+                    <div class="alert-success">
+                        Profil berhasil diperbarui.
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('profile.update') }}">
+                    @csrf
+                    @method('PATCH')
+                    @csrf
+
+                    <h2>Profil Saya</h2>
+
+                    <div class="form-group">
+
+                        <label>Nama</label>
+
+                        <input type="text" name="name" value="{{ old('name', $user->name) }}" required>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Email</label>
+
+                        <input type="email" value="{{ $user->email }}" readonly disabled>
+
+                    </div>
+
+                    <a href="{{ route('password.request') }}">
+                        Ubah Password?
+                    </a>
+
+                    <button type="submit" class="btn-save">
+                        Simpan
+                    </button>
+
+                </form>
 
             </div>
 
         </div>
 
-        <!-- PANEL KANAN -->
-        <div class="profile-right">
-
-            @if(session('status') === 'profile-updated')
-                <div class="alert-success">
-                    Profil berhasil diperbarui.
-                </div>
-            @endif
-
-            <form method="POST" action="#">
-                @csrf
-
-                <h2>Profil Saya</h2>
-
-                <div class="form-group">
-                    <label>Nama</label>
-
-                    <input
-                        type="text"
-                        name="name"
-                        value="{{ old('name', $user->name) }}"
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label>Email</label>
-
-                    <input
-                        type="email"
-                        value="{{ old('email', $user->email) }}"
-                        readonly
-                    >
-                </div>
-
-                <div class="password-link">
-    <a href="forgot-password.html">
-        Ubah Password?
-    </a>
-</div>
-
-                <button type="submit" class="btn-save">
-                    Simpan
-                </button>
-
-            </form>
-
-        </div>
-
     </div>
-
-</div>
 
 </body>
 
