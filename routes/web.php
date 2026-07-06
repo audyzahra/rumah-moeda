@@ -32,6 +32,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/berita/{slug}', [BeritaController::class, 'show'])
         ->name('berita.show');
 
+    Route::post('/berita/store', [BeritaController::class,'store'])
+    ->middleware('auth')
+    ->name('berita.store');
+
 
     // Galeri
     Route::get('/galeri', [GalleryController::class, 'index'])
