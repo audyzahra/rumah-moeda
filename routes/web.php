@@ -73,6 +73,14 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/logout-login', function () {
+    auth()->logout();
+
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+
+    return redirect()->route('login');
+})->name('logout.login');
 });
 
 require __DIR__.'/auth.php';
@@ -85,4 +93,4 @@ Route::middleware(['auth','admin'])
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('admin.dashboard');
 
-}); 
+});
