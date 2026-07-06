@@ -25,7 +25,7 @@
 
             <div class="left">
 
-            <a href="{{ route('login') }}" class="btn-back">
+             <a href="{{ url('/') }}" class="btn-back">
     <i class="fa-solid fa-arrow-left"></i>
 </a>
 
