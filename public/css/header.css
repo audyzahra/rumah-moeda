@@ -72,6 +72,33 @@
     font-size:1rem;
 }
 
+.auth-buttons .btn-login{
+    background:#f8f1e2;
+    border:2px solid #E3C565;
+    color:#1a1a1a;
+    padding:8px 18px;
+    border-radius:50px;
+    margin-right:3px; 
+}
+
+.auth-buttons .btn-login:hover{
+    background:#F6E8C3;
+    color:#1a1a1a;
+}
+
+.auth-buttons .btn-register{
+    background:#f8f1e2;
+    border:2px solid #E3C565;
+    color:#1a1a1a;
+    padding:8px 18px;
+    border-radius:50px;
+}
+
+.auth-buttons .btn-register:hover{
+    background:#F6E8C3;
+    color:#1a1a1a;
+}
+
 .dark-toggle{
     font-size:1.2rem;
 }

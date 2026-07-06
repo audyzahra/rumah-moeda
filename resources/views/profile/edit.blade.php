@@ -7,6 +7,7 @@
     <title>Profil Saya</title>
 
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
 <body>
@@ -18,9 +19,9 @@
             <!-- PANEL KIRI -->
             <div class="profile-left">
 
-                <a href="{{ url()->previous() }}" class="btn-back">
-                    <span>&larr;</span> Kembali
-                </a>
+                <a href="{{ url('/') }}" class="btn-back">
+    <i class="fa-solid fa-arrow-left"></i>
+</a>
 
                 <div class="left-content">
 
@@ -68,9 +69,11 @@
 
                     </div>
 
-                    <a href="{{ route('password.request') }}">
-                        Ubah Password?
-                    </a>
+                    <div class="password-link">
+    <a href="{{ route('password.request') }}">
+        Ubah Password?
+    </a>
+</div>
 
                     <button type="submit" class="btn-save">
                         Simpan

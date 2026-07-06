@@ -72,11 +72,19 @@
 
             @guest
 
-                <a href="{{ route('login') }}" class="btn-login-reg">
-                    Login | Register
-                </a>
+    <div class="auth-buttons">
 
-            @endguest
+        <a href="{{ route('login') }}" class="btn-login">
+            Login
+        </a>
+
+        <a href="{{ route('register') }}" class="btn-register">
+            Register
+        </a>
+
+    </div>
+
+@endguest
 
 
             @auth
