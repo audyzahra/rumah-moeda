@@ -20,6 +20,11 @@
 
     </div>
 
+     <button class="btn-tambah" id="openModal">
+        <i class="fa-solid fa-plus"></i>
+        Tambah Berita
+    </button>
+
 </div>
 
 
@@ -91,5 +96,76 @@
     @endforelse
 
 </section>
+
+<!-- Modal Tambah Berita -->
+<div class="modal" id="beritaModal">
+
+    <div class="modal-content">
+
+        <span class="close" id="closeModal">&times;</span>
+
+        <h2>Tambah Berita</h2>
+
+        <form>
+
+            <div class="form-group">
+                <label>Judul Berita</label>
+                <input
+                    type="text"
+                    placeholder="Masukkan judul berita">
+            </div>
+
+            <div class="form-group">
+                <label>Foto Berita</label>
+                <input type="file">
+            </div>
+
+            <div class="form-group">
+                <label>Isi Berita</label>
+                <textarea
+                    rows="6"
+                    placeholder="Tulis isi berita..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Tanggal Publish</label>
+                <input type="date">
+            </div>
+
+            <button
+                type="button"
+                class="btn-simpan">
+
+                Simpan Berita
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+const modal = document.getElementById("beritaModal");
+const openModal = document.getElementById("openModal");
+const closeModal = document.getElementById("closeModal");
+
+openModal.onclick = function(){
+    modal.classList.add("show");
+}
+
+closeModal.onclick = function(){
+    modal.classList.remove("show");
+}
+
+window.onclick = function(e){
+    if(e.target == modal){
+        modal.classList.remove("show");
+    }
+}
+
+</script>
 
 @endsection
