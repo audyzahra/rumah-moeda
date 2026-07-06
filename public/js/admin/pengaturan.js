@@ -24,18 +24,20 @@ const tabContents = document.querySelectorAll('.tab-content');
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
+
     // Tab navigation
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const tabId = btn.dataset.tab;
-            
-            // Update active tab button
+
+            // Update active tab
             tabBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
-            // Update active tab content
+
+            // Show active content
             tabContents.forEach(content => {
                 content.classList.remove('active');
+
                 if (content.id === `tab-${tabId}`) {
                     content.classList.add('active');
                 }
@@ -43,58 +45,60 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Load data
-    loadVisiMisi();
+    // Visi & Misi sekarang dari Blade Laravel
+    // loadVisiMisi();
+
     loadLogo();
     loadProfile();
     loadHero();
     loadAdmin();
 });
 
-// ============================================
-// TAB: VISI & MISI
-// ============================================
+document.getElementById('visiText').value = visiData.visi;
 
-function loadVisiMisi() {
-    // DATA DUMMY
-    const visiData = {
-        visi: 'Menjadi perusahaan terkemuka di bidang teknologi yang memberikan solusi inovatif dan berkelanjutan untuk masyarakat Indonesia.',
-        misi: [
-            'Memberikan produk dan layanan berkualitas tinggi yang memenuhi kebutuhan pelanggan',
-            'Mengembangkan sumber daya manusia yang kompeten dan berintegritas',
-            'Menerapkan teknologi ramah lingkungan untuk keberlanjutan bisnis'
-        ]
-    };
-
-    document.getElementById('visiText').value = visiData.visi;
-    
-    // Render misi
-    const container = document.getElementById('misiContainer');
-    container.innerHTML = '';
-    visiData.misi.forEach((misi, index) => {
-        const misiItem = document.createElement('div');
-        misiItem.className = 'misi-item';
-        misiItem.innerHTML = `
+// Render misi
+const container = document.getElementById('misiContainer');
+container.innerHTML = '';
+visiData.misi.forEach((misi, index) => {
+    const misiItem = document.createElement('div');
+    misiItem.className = 'misi-item';
+    misiItem.innerHTML = `
             <textarea class="form-control misi-text" rows="2" placeholder="Masukkan misi ke-${index + 1}" required>${misi}</textarea>
             <button type="button" class="btn-remove-misi" onclick="removeMisi(this)">
                 <i class="fa-solid fa-times"></i>
             </button>
         `;
-        container.appendChild(misiItem);
-    });
-}
+    container.appendChild(misiItem);
+});
+
 
 function addMisi() {
+
     const container = document.getElementById('misiContainer');
     const count = container.querySelectorAll('.misi-item').length + 1;
+
     const misiItem = document.createElement('div');
+
     misiItem.className = 'misi-item';
+
     misiItem.innerHTML = `
-        <textarea class="form-control misi-text" rows="2" placeholder="Masukkan misi ke-${count}" required></textarea>
-        <button type="button" class="btn-remove-misi" onclick="removeMisi(this)">
+        <textarea
+            class="form-control misi-text"
+            name="missions[]"
+            rows="2"
+            placeholder="Masukkan misi ke-${count}"
+            required></textarea>
+
+        <button
+            type="button"
+            class="btn-remove-misi"
+            onclick="removeMisi(this)">
+
             <i class="fa-solid fa-times"></i>
+
         </button>
     `;
+
     container.appendChild(misiItem);
 }
 
@@ -108,13 +112,12 @@ function removeMisi(button) {
 }
 
 function saveVisiMisi(event) {
-    event.preventDefault();
-    
+
     const visi = document.getElementById('visiText').value.trim();
     const misiTexts = document.querySelectorAll('.misi-text');
     const misi = [];
     let valid = true;
-    
+
     misiTexts.forEach(textarea => {
         const value = textarea.value.trim();
         if (!value) {
@@ -170,9 +173,9 @@ function loadLogo() {
 function previewLogo(event) {
     const file = event.target.files[0];
     if (!file) return;
-    
+
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         const preview = document.getElementById('logoPreview');
         preview.innerHTML = `<img src="${e.target.result}" alt="Logo Preview">`;
     };
@@ -181,10 +184,10 @@ function previewLogo(event) {
 
 function saveLogo(event) {
     event.preventDefault();
-    
+
     const preview = document.getElementById('logoPreview');
     const hasImage = preview.querySelector('img') !== null;
-    
+
     if (!hasImage) {
         showNotification('Silahkan upload logo terlebih dahulu!', 'error');
         return;
@@ -195,7 +198,7 @@ function saveLogo(event) {
     const formData = new FormData();
     const file = document.getElementById('formLogo').files[0];
     formData.append('logo', file);
-    
+
     fetch(`${API_URL}/settings/logo`, {
         method: 'POST',
         headers: {
@@ -252,13 +255,13 @@ function loadProfile() {
 
 function saveProfile(event) {
     event.preventDefault();
-    
+
     const nama = document.getElementById('profileNama').value.trim();
     const deskripsi = document.getElementById('profileDeskripsi').value.trim();
     const alamat = document.getElementById('profileAlamat').value.trim();
     const telepon = document.getElementById('profileTelepon').value.trim();
     const email = document.getElementById('profileEmail').value.trim();
-    
+
     if (!nama || !deskripsi || !alamat) {
         showNotification('Field yang wajib diisi harus dilengkapi!', 'error');
         return;
@@ -325,9 +328,9 @@ function loadHero() {
 function previewHero(event) {
     const file = event.target.files[0];
     if (!file) return;
-    
+
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         const preview = document.getElementById('heroPreview');
         preview.innerHTML = `<img src="${e.target.result}" alt="Hero Preview">`;
     };
@@ -336,11 +339,11 @@ function previewHero(event) {
 
 function saveHero(event) {
     event.preventDefault();
-    
+
     const judul = document.getElementById('heroJudul').value.trim();
     const preview = document.getElementById('heroPreview');
     const hasImage = preview.querySelector('img') !== null;
-    
+
     if (!judul) {
         showNotification('Judul hero wajib diisi!', 'error');
         return;
@@ -366,7 +369,7 @@ function saveHero(event) {
     formData.append('btn_text', heroData.btn_text);
     formData.append('btn_link', heroData.btn_link);
     formData.append('hero_image', document.getElementById('formHero').files[0]);
-    
+
     fetch(`${API_URL}/settings/hero`, {
         method: 'POST',
         headers: {
@@ -439,7 +442,7 @@ function renderAdminTable() {
     const pageData = filteredAdminData.slice(start, end);
 
     const tbody = document.getElementById('adminTableBody');
-    
+
     if (pageData.length === 0) {
         tbody.innerHTML = `
             <tr>
@@ -483,5 +486,5 @@ function updateAdminPagination() {
     document.getElementById('adminStart').textContent = start;
     document.getElementById('adminEnd').textContent = end;
     document.getElementById('adminTotal').textContent = total;
-    document.getElementById('adminPage  Info').textContent = `Halaman ${adminCurrentPage} dari ${totalPages || 1}`;     
+    document.getElementById('adminPage  Info').textContent = `Halaman ${adminCurrentPage} dari ${totalPages || 1}`;
 }
