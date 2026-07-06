@@ -240,18 +240,18 @@ body{
 }
 
 .modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 9999;
+    overflow: hidden;
+}
 
-    overflow-y:auto;   /* scroll pindah ke modal */
-
-    justify-content:center;
-    align-items:flex-start;
-
-    padding:40px 20px;
-    z-index:9999;
+.modal.show{
+    display: flex;
 }
 
 .modal.show {
@@ -262,35 +262,75 @@ body{
 
 .modal-content{
     position:relative;
-
     width:100%;
-    max-width:520px;
+    max-width:500px;
 
     background:#fff;
-
     border-radius:20px;
 
-    padding:25px 30px;
+    padding:22px 25px;
 
     box-sizing:border-box;
 
-    overflow:hidden;
-
-    margin:40px auto;
+    z-index:10000;
 }
 
-.close {
+.modal-content h2{
+    margin-bottom:25px;
+    font-size:28px;
+    color:#222;
+}
 
-    position: absolute;
+.form-group input[type="file"]{
+    padding:12px;
+    background:#fafafa;
+    cursor:pointer;
+}
 
-    right: 25px;
+.form-group textarea{
+    resize:vertical;
+    min-height:150px;
+}
 
-    top: 15px;
+.form-group input:focus,
+.form-group textarea:focus{
+    border-color:#C9A227;
+    outline:none;
+    box-shadow:0 0 0 3px rgba(201,162,39,.15);
+}
 
-    font-size: 30px;
+.btn-simpan:hover{
+    background:#b68d2f;
+}
 
-    cursor: pointer;
+.close:hover{
+    color:#C9A227;
+}
 
+.close{
+    position:absolute;
+    top:15px;
+    right:18px;
+
+    width:38px;
+    height:38px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:30px;
+    cursor:pointer;
+    color:#222;
+
+    border-radius:50%;
+
+    z-index:10001;
+}
+
+.close:hover{
+    background:#f2f2f2;
+    color:#C9A227;
 }
 
 .form-group{
