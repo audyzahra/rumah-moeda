@@ -8,7 +8,7 @@
 
 @section('content')
 
-<!-- Isi Dashboard -->
+{{-- isi dashboard nanti --}}
 
 @endsection
 

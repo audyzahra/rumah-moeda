@@ -16,117 +16,28 @@ body {
 }
 
 /*========================
-SIDEBAR
+CONTENT
 =========================*/
-
-.sidebar {
-    width: 270px;
-    background: #EEDCC9;
-    padding: 30px 20px;
-    position: fixed;
-    height: 100%;
-    overflow: auto;
-    z-index: 999;
-}
-
-.logo-area {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 45px;
-}
-
-.logo-area img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: #fff;
-    padding: 5px;
-    object-fit: cover;
-}
-
-.logo-area h2 {
-    font-size: 23px;
-    color: #222;
-}
-
-.menu {
-    list-style: none;
-}
-
-.menu li {
-    margin-bottom: 8px;
-}
-
-.menu li a {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 14px 18px;
-    color: #444;
-    text-decoration: none;
-    border-radius: 14px;
-    transition: 0.3s;
-    position: relative;
-}
-
-.menu li a:hover {
-    background: #fff;
-}
-
-.menu li.active a {
-    background: #fff;
-    color: #000;
-    font-weight: 600;
-}
-
-/* ===== BADGE DI SIDEBAR ===== */
-.menu li a .badge {
-    margin-left: auto;
-    background: #ef4444;
-    color: white;
-    padding: 2px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    animation: pulse-badge 2s infinite;
-}
-
-@keyframes pulse-badge {
-    0%,
-    100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-}
-
-/* ===== LOGOUT DI SIDEBAR ===== */
-.menu li.logout {
-    margin-top: 20px;
-    border-top: 2px solid rgba(0, 0, 0, 0.08);
-    padding-top: 12px;
-}
-
-.menu li.logout a:hover {
-    background: #fee2e2;
-    color: #dc2626;
-}
-
-/*========================*/
 .content {
     margin-left: 270px;
     width: 100%;
     padding: 40px;
 }
 
-/*========================*/
+/*========================
+TOPBAR
+=========================*/
 .topbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 40px;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .topbar h1 {
@@ -157,7 +68,9 @@ SIDEBAR
     color: #222;
 }
 
-/*========================*/
+/*========================
+ANALYTICS
+=========================*/
 .analytics {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -225,7 +138,9 @@ SIDEBAR
     font-size: 13px;
 }
 
-/*========================*/
+/*========================
+TABLE
+=========================*/
 .table-section {
     background: #fff;
     border-radius: 20px;
@@ -348,45 +263,11 @@ tbody tr:hover {
     background: #3b82f6;
 }
 
-/*========================*/
 /*=========================================
-    HAMBURGER & OVERLAY
-=========================================*/
-
-.hamburger {
-    display: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #333;
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.45);
-    opacity: 0;
-    visibility: hidden;
-    transition: 0.3s;
-    z-index: 998;
-}
-
-.overlay.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-/*=========================================
-    DESKTOP
+    RESPONSIVE
 =========================================*/
 
 @media (max-width: 900px) {
-    .sidebar {
-        width: 220px;
-    }
-
     .content {
         margin-left: 220px;
         padding: 30px;
@@ -397,63 +278,41 @@ tbody tr:hover {
     }
 }
 
-/*=========================================
-    MOBILE
-=========================================*/
-
 @media (max-width: 768px) {
-    .wrapper {
-        display: block;
-    }
-
-    /* Sidebar menjadi slide */
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: -270px;
-        width: 260px;
-        height: 100vh;
-        overflow-y: auto;
-        transition: 0.35s ease;
-        z-index: 999;
-        box-shadow: 8px 0 25px rgba(0, 0, 0, 0.18);
-    }
-
-    /* Ketika sidebar dibuka */
-    .sidebar.show {
-        left: 0;
-    }
-
-    /* Content full */
     .content {
         margin-left: 0;
         width: 100%;
         padding: 20px;
     }
 
-    /* Tombol hamburger */
-    .hamburger {
-        display: block;
-    }
-
-    /* Topbar */
     .topbar {
         gap: 15px;
         flex-wrap: wrap;
     }
 
-    .topbar h1 {
-        font-size: 26px;
+    .topbar-left {
+        flex: 1;
     }
 
-    /* Card */
+    .topbar h1 {
+        font-size: 24px;
+    }
+
+    .topbar p {
+        font-size: 14px;
+    }
+
+    .profile span {
+        display: none;
+    }
+
     .analytics {
         grid-template-columns: 1fr 1fr;
         gap: 15px;
     }
 
     .card {
-        padding: 20px;
+        padding: 18px;
     }
 
     .icon {
@@ -463,14 +322,13 @@ tbody tr:hover {
     }
 
     .card h2 {
-        font-size: 24px;
+        font-size: 22px;
     }
 
     .card h4 {
         font-size: 12px;
     }
 
-    /* Table */
     .table-section {
         overflow-x: auto;
         padding: 20px;
@@ -499,8 +357,21 @@ tbody tr:hover {
 }
 
 @media (max-width: 480px) {
+    .content {
+        padding: 15px;
+    }
+
+    .topbar h1 {
+        font-size: 20px;
+    }
+
+    .topbar p {
+        font-size: 12px;
+    }
+
     .analytics {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .card {
@@ -511,19 +382,7 @@ tbody tr:hover {
         font-size: 20px;
     }
 
-    .topbar h1 {
-        font-size: 22px;
-    }
-
-    .topbar p {
-        font-size: 14px;
-    }
-
-    .profile span {
-        font-size: 14px;
-    }
-
-    .content {
+    .table-section {
         padding: 15px;
     }
 
@@ -532,12 +391,17 @@ tbody tr:hover {
     }
 
     table {
-        min-width: 500px;
+        min-width: 480px;
     }
 
     th,
     td {
         padding: 10px;
-        font-size: 13px;
+        font-size: 12px;
+    }
+
+    .status {
+        font-size: 11px;
+        padding: 4px 10px;
     }
 }
