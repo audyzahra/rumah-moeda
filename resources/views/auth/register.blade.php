@@ -25,6 +25,10 @@
 
             <div class="left">
 
+            <a href="{{ route('login') }}" class="btn-back">
+    <i class="fa-solid fa-arrow-left"></i>
+</a>
+
                 <div class="logo">
                     <img src="{{ asset('assets/logorumahmoeda.png') }}" alt="Logo Rumah Moeda">
                 </div>
