@@ -69,9 +69,11 @@
 
                     </div>
 
-                    <a href="{{ route('password.request') }}">
-                        Ubah Password?
-                    </a>
+                    <div class="password-link">
+    <a href="{{ route('password.request') }}">
+        Ubah Password?
+    </a>
+</div>
 
                     <button type="submit" class="btn-save">
                         Simpan
