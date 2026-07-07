@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
-    protected $primaryKey = 'setting_id';
+    // Primary key menggunakan "id" (default Laravel)
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'website_name',
