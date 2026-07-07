@@ -1,30 +1,43 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TentangController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\FaqController;
+
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\OrganizationStructureController;
 
-Route::get('/hubungi',[ContactController::class,'index'])->name('hubungi');
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
 
-Route::post('/hubungi',[ContactController::class,'store'])
-    ->name('hubungi.store');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/tentang', [TentangController::class, 'index'])
     ->name('tentang');
 
+Route::get('/hubungi', [ContactController::class, 'index'])
+    ->name('hubungi');
+
+Route::post('/hubungi', [ContactController::class, 'store'])
+    ->name('hubungi.store');
+
 /*
 |--------------------------------------------------------------------------
-| Menu User
+| User Routes
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware('auth')->group(function () {
 
     // Berita
     Route::get('/berita', [BeritaController::class, 'index'])
@@ -33,30 +46,24 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/berita/{slug}', [BeritaController::class, 'show'])
         ->name('berita.show');
 
-    Route::post('/berita/store', [BeritaController::class,'store'])
-    ->middleware('auth')
-    ->name('berita.store');
+    Route::post('/berita/store', [BeritaController::class, 'store'])
+        ->name('berita.store');
 
-
-    // Galeri
+    // Gallery
     Route::get('/galeri', [GalleryController::class, 'index'])
         ->name('galeri.index');
 
-
-    // Pertanyaan (FAQ)
+    // FAQ
     Route::get('/pertanyaan', [FaqController::class, 'index'])
         ->name('faq.index');
 
 });
-// ==========================
-// Public (Guest)
-// ==========================
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-
-// ==========================
-// Dashboard
-// ==========================
+/*
+|--------------------------------------------------------------------------
+| User Dashboard
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -66,76 +73,120 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 });
 
-// ==========================
-// Profile
-// ==========================
+/*
+|--------------------------------------------------------------------------
+| Profile
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
 
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
 
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
 
     Route::get('/logout-login', function () {
-    auth()->logout();
 
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
+        auth()->logout();
 
-    return redirect()->route('login');
-})->name('logout.login');
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        return redirect()->route('login');
+
+    })->name('logout.login');
+
 });
 
 require __DIR__.'/auth.php';
 
-use App\Http\Controllers\Admin\DashboardController;
-Route::middleware(['auth','admin'])
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'admin'])
     ->prefix('admin')
-    ->group(function () {
-
-        Route::get('/dashboard', [DashboardController::class, 'index'])
-            ->name('admin.dashboard');
-
-});
-use App\Http\Controllers\Admin\PengaturanController;
-
-Route::middleware(['auth','admin'])
-    ->prefix('admin')
-    ->group(function () {
-
-        Route::get('/pengaturan', [PengaturanController::class, 'index'])
-            ->name('admin.pengaturan');
-
-        Route::post('/pengaturan/visi-misi', [PengaturanController::class, 'updateVisiMisi'])
-            ->name('admin.visimisi.update');
-
-});
-Route::prefix('admin')
     ->name('admin.')
     ->group(function () {
 
+        /*
+        |--------------------------------------------------------------------------
+        | Dashboard
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/dashboard', [DashboardController::class, 'index'])
+            ->name('dashboard');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Pengaturan
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/pengaturan', [PengaturanController::class, 'index'])
+            ->name('pengaturan');
+
+        Route::post('/pengaturan/visi-misi', [PengaturanController::class, 'updateVisiMisi'])
+            ->name('visimisi.update');
+
+        Route::post('/pengaturan/logo', [PengaturanController::class, 'updateLogo'])
+            ->name('logo.update');
+
+        Route::post('/pengaturan/profile', [PengaturanController::class, 'updateProfile'])
+            ->name('profile.update');
+
+        Route::post('/pengaturan/hero', [PengaturanController::class, 'updateHero'])
+            ->name('hero.update');
+
+        Route::post('/pengaturan/user', [PengaturanController::class, 'storeUser'])
+            ->name('user.store');
+
+        Route::put('/pengaturan/user/{user}', [PengaturanController::class, 'updateUser'])
+            ->name('user.update');
+
+        Route::delete('/pengaturan/user/{user}', [PengaturanController::class, 'destroyUser'])
+            ->name('user.delete');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Struktur Organisasi
+        |--------------------------------------------------------------------------
+        */
+
         Route::resource('struktur', OrganizationStructureController::class);
 
+        /*
+        |--------------------------------------------------------------------------
+        | Menu Admin
+        |--------------------------------------------------------------------------
+        */
+
+        // Aspirasi
+        Route::view('/aspirasi', 'admin.aspirasi.aspirasi')
+            ->name('aspirasi.index');
+
+        // Berita
+        Route::view('/berita', 'admin.berita.berita')
+            ->name('berita.index');
+
+        // Gallery
+        Route::view('/gallery', 'admin.gallery.gallery')
+            ->name('gallery.index');
+
+        // Mitra
+        Route::view('/mitra', 'admin.mitra.mitra')
+            ->name('mitra.index');
+
+        // FAQ
+        Route::view('/faq', 'admin.faq.faq')
+            ->name('faq.index');
+
     });
-
-Route::post(
-    '/pengaturan/logo',
-    [PengaturanController::class, 'updateLogo']
-)->name('admin.logo.update');
-
-Route::post('/pengaturan/profile', [PengaturanController::class, 'updateProfile'])
-    ->name('admin.profile.update');
-
-Route::post('/pengaturan/hero', [PengaturanController::class,'updateHero'])
-    ->name('admin.hero.update');
-
-Route::post('/pengaturan/user', [PengaturanController::class, 'storeUser'])
-    ->name('admin.user.store');
-
-Route::put('/pengaturan/user/{user}', [PengaturanController::class, 'updateUser'])
-    ->name('admin.user.update');
-
-Route::delete('/pengaturan/user/{user}', [PengaturanController::class, 'destroyUser'])
-    ->name('admin.user.delete');
