@@ -7,11 +7,14 @@ use App\Models\OrganizationStructure;
 use App\Models\News;
 use App\Models\Documentation;
 use App\Models\Partner;
+use App\Models\Setting;
 
 class HomeController extends Controller
 {
     public function index()
     {
+        // Hero Section
+        $setting = Setting::first();
         // Visi & Misi
         $vision = VisionMission::with('missions')->first();
 
@@ -36,7 +39,8 @@ class HomeController extends Controller
             'organizations',
             'news',
             'documentations',
-            'partners'
+            'partners',
+            'setting'
         ));
     }
 }

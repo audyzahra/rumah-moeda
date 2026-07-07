@@ -12,6 +12,7 @@ class Setting extends Model
         'website_name',
         'website_logo',
         'website_description',
+        'hero_image',
         'phone_number',
         'email',
         'fax_number',

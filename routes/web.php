@@ -118,3 +118,23 @@ Route::prefix('admin')
         Route::resource('struktur', OrganizationStructureController::class);
 
     });
+
+Route::post(
+    '/pengaturan/logo',
+    [PengaturanController::class, 'updateLogo']
+)->name('admin.logo.update');
+
+Route::post('/pengaturan/profile', [PengaturanController::class, 'updateProfile'])
+    ->name('admin.profile.update');
+
+Route::post('/pengaturan/hero', [PengaturanController::class,'updateHero'])
+    ->name('admin.hero.update');
+
+Route::post('/pengaturan/user', [PengaturanController::class, 'storeUser'])
+    ->name('admin.user.store');
+
+Route::put('/pengaturan/user/{user}', [PengaturanController::class, 'updateUser'])
+    ->name('admin.user.update');
+
+Route::delete('/pengaturan/user/{user}', [PengaturanController::class, 'destroyUser'])
+    ->name('admin.user.delete');

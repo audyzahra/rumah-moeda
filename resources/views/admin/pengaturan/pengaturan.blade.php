@@ -63,7 +63,7 @@
 
             <i class="fa-solid fa-users-cog"></i>
 
-            Akun Admin
+            Kelola Akun
 
         </button>
 
@@ -191,29 +191,42 @@
             <div class="card-header">
 
                 <h3>
+
                     <i class="fa-solid fa-image"></i>
+
                     Logo Perusahaan
+
                 </h3>
 
                 <p>
+
                     Kelola logo perusahaan yang tampil di website
+
                 </p>
 
             </div>
 
             <div class="card-body">
 
-                <form id="logoForm">
+                <form id="logoForm" action="{{ route('admin.logo.update') }}" method="POST" enctype="multipart/form-data">
+
+                    @csrf
 
                     <div class="form-group">
 
                         <label>
+
                             Logo Saat Ini
+
                         </label>
 
-                        <div class="logo-current" id="currentLogo">
+                        <div class="logo-current">
 
-                            <img src="{{ asset('uploads/logo.png') }}" alt="Logo Rumah Moeda">
+                            @if ($setting && $setting->website_logo)
+                                <img src="{{ asset($setting->website_logo) }}" alt="Logo Rumah Moeda">
+                            @else
+                                <p>Logo belum tersedia.</p>
+                            @endif
 
                         </div>
 
@@ -222,20 +235,26 @@
                     <div class="form-group">
 
                         <label>
+
                             Upload Logo Baru
+
                             <span class="required">*</span>
+
                         </label>
 
                         <div class="logo-upload">
 
-                            <input type="file" id="formLogo" accept="image/*" onchange="previewLogo(event)">
+                            <input type="file" id="formLogo" name="website_logo" accept=".png,.jpg,.jpeg,.svg"
+                                onchange="previewLogo(event)">
 
                             <div class="logo-preview" id="logoPreview">
 
                                 <i class="fa-solid fa-cloud-upload-alt"></i>
 
                                 <p>
+
                                     Klik untuk upload logo
+
                                 </p>
 
                                 <small>
@@ -303,7 +322,9 @@
 
             <div class="card-body">
 
-                <form id="profileForm">
+                <form action="{{ route('admin.profile.update') }}" method="POST">
+
+                    @csrf
 
                     <div class="form-group">
 
@@ -312,8 +333,9 @@
                             <span class="required">*</span>
                         </label>
 
-                        <input type="text" id="websiteName" class="form-control" placeholder="Masukkan nama website"
-                            value="Rumah Moeda">
+                        <input type="text" id="websiteName" name="website_name" class="form-control"
+                            placeholder="Masukkan nama website"
+                            value="{{ old('website_name', $setting->website_name ?? '') }}">
 
                     </div>
 
@@ -324,33 +346,33 @@
                             <span class="required">*</span>
                         </label>
 
-                        <textarea id="websiteDescription" class="form-control" rows="5" placeholder="Masukkan deskripsi website"></textarea>
+                        <textarea id="websiteDescription" name="website_description" class="form-control" rows="5"
+                            placeholder="Masukkan deskripsi website">{{ old('website_description', $setting->website_description ?? '') }}</textarea>
 
                     </div>
 
                     <div class="form-row">
 
-                        <div class="form-group">
+                        <div class="form-group form-group-half">
 
                             <label>
-
                                 Nomor Telepon
-
                             </label>
 
-                            <input type="text" id="phoneNumber" class="form-control" placeholder="+62 812-xxxx-xxxx">
+                            <input type="text" id="phoneNumber" name="phone_number" class="form-control"
+                                placeholder="+62 812-xxxx-xxxx"
+                                value="{{ old('phone_number', $setting->phone_number ?? '') }}">
 
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group form-group-half">
 
                             <label>
-
                                 Email
-
                             </label>
 
-                            <input type="email" id="email" class="form-control" placeholder="info@rumahmoeda.id">
+                            <input type="email" id="email" name="email" class="form-control"
+                                placeholder="info@rumahmoeda.id" value="{{ old('email', $setting->email ?? '') }}">
 
                         </div>
 
@@ -358,15 +380,14 @@
 
                     <div class="form-row">
 
-                        <div class="form-group">
+                        <div class="form-group form-group-half">
 
                             <label>
-
                                 Nomor Fax
-
                             </label>
 
-                            <input type="text" id="faxNumber" class="form-control" placeholder="Nomor Fax">
+                            <input type="text" id="faxNumber" name="fax_number" class="form-control"
+                                placeholder="Nomor Fax" value="{{ old('fax_number', $setting->fax_number ?? '') }}">
 
                         </div>
 
@@ -375,12 +396,10 @@
                     <div class="form-group">
 
                         <label>
-
                             Alamat
-
                         </label>
 
-                        <textarea id="address" class="form-control" rows="3" placeholder="Masukkan alamat lengkap"></textarea>
+                        <textarea id="address" name="address" class="form-control" rows="3" placeholder="Masukkan alamat lengkap">{{ old('address', $setting->address ?? '') }}</textarea>
 
                     </div>
 
@@ -400,8 +419,9 @@
 
                         </label>
 
-                        <input type="text" id="instagram" class="form-control"
-                            placeholder="https://instagram.com/...">
+                        <input type="text" id="instagram" name="instagram_url" class="form-control"
+                            placeholder="https://instagram.com/..."
+                            value="{{ old('instagram_url', $setting->instagram_url ?? '') }}">
 
                     </div>
 
@@ -413,8 +433,9 @@
 
                         </label>
 
-                        <input type="text" id="facebook" class="form-control"
-                            placeholder="https://facebook.com/...">
+                        <input type="text" id="facebook" name="facebook_url" class="form-control"
+                            placeholder="https://facebook.com/..."
+                            value="{{ old('facebook_url', $setting->facebook_url ?? '') }}">
 
                     </div>
 
@@ -426,7 +447,9 @@
 
                         </label>
 
-                        <input type="text" id="tiktok" class="form-control" placeholder="https://tiktok.com/...">
+                        <input type="text" id="tiktok" name="tiktok_url" class="form-control"
+                            placeholder="https://tiktok.com/..."
+                            value="{{ old('tiktok_url', $setting->tiktok_url ?? '') }}">
 
                     </div>
 
@@ -449,6 +472,8 @@
         </div>
 
     </section>
+
+    </section>
     <!-- ======================================== -->
     <!-- TAB : HERO SECTION -->
     <!-- ======================================== -->
@@ -460,7 +485,7 @@
             <div class="card-header">
 
                 <h3>
-                    <i class="fa-solid fa-panorama"></i>
+                    <i class="fa-solid fa-image"></i>
                     Hero Section
                 </h3>
 
@@ -472,7 +497,9 @@
 
             <div class="card-body">
 
-                <form id="heroForm">
+                <form action="{{ route('admin.hero.update') }}" method="POST" enctype="multipart/form-data">
+
+                    @csrf
 
                     <div class="form-group">
 
@@ -482,7 +509,11 @@
 
                         <div class="hero-current">
 
-                            <img src="{{ asset('uploads/hero.jpg') }}" id="heroImagePreview" alt="Hero Image">
+                            @if (!empty($setting->hero_image))
+                                <img src="{{ asset($setting->hero_image) }}" alt="Hero Image">
+                            @else
+                                <p>Belum ada gambar hero.</p>
+                            @endif
 
                         </div>
 
@@ -492,19 +523,19 @@
 
                         <label>
                             Upload Hero Baru
+                            <span class="required">*</span>
                         </label>
 
                         <div class="hero-upload">
 
-                            <input type="file" id="heroImage" accept="image/*" onchange="previewHero(event)">
+                            <input type="file" id="heroImage" name="hero_image" accept="image/*"
+                                onchange="previewHero(event)">
 
-                            <div class="upload-box">
+                            <div class="hero-preview" id="heroPreview">
 
-                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <i class="fa-solid fa-cloud-upload-alt"></i>
 
-                                <p>
-                                    Klik untuk memilih gambar
-                                </p>
+                                <p>Klik untuk memilih gambar</p>
 
                                 <small>
 
@@ -548,7 +579,7 @@
 
     </section>
     <!-- ======================================== -->
-    <!-- TAB : AKUN ADMIN -->
+    <!-- TAB : KELOLA AKUN -->
     <!-- ======================================== -->
 
     <section class="tab-content" id="tab-admin">
@@ -560,12 +591,12 @@
                 <div>
 
                     <h3>
-                        <i class="fa-solid fa-users-cog"></i>
-                        Akun Admin
+                        <i class="fa-solid fa-users"></i>
+                        Kelola Akun
                     </h3>
 
                     <p>
-                        Kelola akun administrator website
+                        Kelola seluruh akun pengguna website
                     </p>
 
                 </div>
@@ -574,7 +605,7 @@
 
                     <i class="fa-solid fa-user-plus"></i>
 
-                    Tambah Admin
+                    Tambah Akun
 
                 </button>
 
@@ -598,6 +629,8 @@
 
                                 <th>Role</th>
 
+                                <th>Tanggal Dibuat</th>
+
                                 <th>Aksi</th>
 
                             </tr>
@@ -606,41 +639,67 @@
 
                         <tbody>
 
-                            <tr>
+                            @forelse($users as $user)
+                                <tr>
 
-                                <td>1</td>
+                                    <td>{{ $loop->iteration }}</td>
 
-                                <td>Administrator</td>
+                                    <td>{{ $user->name }}</td>
 
-                                <td>admin@rumahmoeda.id</td>
+                                    <td>{{ $user->email }}</td>
 
-                                <td>
+                                    <td>
 
-                                    <span class="badge-admin">
+                                        <span class="badge-admin">
 
-                                        Admin
+                                            {{ ucfirst($user->role) }}
 
-                                    </span>
+                                        </span>
 
-                                </td>
+                                    </td>
 
-                                <td>
+                                    <td>
 
-                                    <button class="btn-icon btn-edit" title="Edit">
+                                        {{ $user->created_at->format('d M Y') }}
 
-                                        <i class="fa-solid fa-pen"></i>
+                                    </td>
 
-                                    </button>
+                                    <td>
 
-                                    <button class="btn-icon btn-delete" title="Hapus">
+                                        <button type="button" class="btn-icon btn-edit" title="Edit"
+                                            data-id="{{ $user->id }}" data-name="{{ $user->name }}"
+                                            data-email="{{ $user->email }}" data-role="{{ $user->role }}"
+                                            onclick="openModalEditAdmin(this)">
 
-                                        <i class="fa-solid fa-trash"></i>
+                                            <i class="fa-solid fa-pen"></i>
 
-                                    </button>
+                                        </button>
 
-                                </td>
+                                        @if (auth()->id() != $user->id)
+                                            <button type="button" class="btn-icon btn-delete" title="Hapus"
+                                                data-id="{{ $user->id }}" onclick="openModalHapusAdmin(this)">
 
-                            </tr>
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </button>
+                                        @endif
+
+                                    </td>
+
+                                </tr>
+
+                            @empty
+
+                                <tr>
+
+                                    <td colspan="6" style="text-align:center;padding:30px;">
+
+                                        Belum ada akun.
+
+                                    </td>
+
+                                </tr>
+                            @endforelse
 
                         </tbody>
 
@@ -653,8 +712,9 @@
         </div>
 
     </section>
+
     <!-- ======================================== -->
-    <!-- MODAL TAMBAH ADMIN -->
+    <!-- MODAL TAMBAH AKUN -->
     <!-- ======================================== -->
 
     <div class="modal" id="modalTambahAdmin">
@@ -664,7 +724,9 @@
             <div class="modal-header">
 
                 <h3>
-                    Tambah Admin
+
+                    Tambah Akun
+
                 </h3>
 
                 <button type="button" class="close" onclick="closeModalTambahAdmin()">
@@ -675,13 +737,15 @@
 
             </div>
 
-            <form id="formTambahAdmin">
+            <form action="{{ route('admin.user.store') }}" method="POST">
+
+                @csrf
 
                 <div class="form-group">
 
                     <label>Nama</label>
 
-                    <input type="text" class="form-control" placeholder="Masukkan Nama">
+                    <input type="text" name="name" class="form-control" required>
 
                 </div>
 
@@ -689,7 +753,7 @@
 
                     <label>Email</label>
 
-                    <input type="email" class="form-control" placeholder="Masukkan Email">
+                    <input type="email" name="email" class="form-control" required>
 
                 </div>
 
@@ -697,7 +761,28 @@
 
                     <label>Password</label>
 
-                    <input type="password" class="form-control" placeholder="Masukkan Password">
+                    <input type="password" name="password" class="form-control" required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Konfirmasi Password</label>
+
+                    <input type="password" name="password_confirmation" class="form-control" required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Role</label>
+
+                    <select name="role" class="form-control">
+
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+
+                    </select>
 
                 </div>
 
@@ -724,46 +809,161 @@
     </div>
 
     <!-- ======================================== -->
-    <!-- MODAL HAPUS ADMIN -->
+    <!-- MODAL EDIT AKUN -->
+    <!-- ======================================== -->
+
+    <div class="modal" id="modalEditAdmin">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3>
+
+                    Edit Akun
+
+                </h3>
+
+                <button type="button" class="close" onclick="closeModalEditAdmin()">
+
+                    &times;
+
+                </button>
+
+            </div>
+
+            <form id="formEditAdmin" method="POST">
+
+                @csrf
+                @method('PUT')
+
+                <div class="form-group">
+
+                    <label>Nama</label>
+
+                    <input type="text" id="edit_name" name="name" class="form-control" required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Email</label>
+
+                    <input type="email" id="edit_email" name="email" class="form-control" required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Password Baru</label>
+
+                    <input type="password" name="password" class="form-control">
+
+                    <small>
+                        Kosongkan jika tidak ingin mengganti password.
+                    </small>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Role</label>
+
+                    <select id="edit_role" name="role" class="form-control">
+
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-actions">
+
+                    <button type="button" class="btn-secondary" onclick="closeModalEditAdmin()">
+
+                        Batal
+
+                    </button>
+
+                    <button type="submit" class="btn-primary">
+
+                        Update
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- MODAL HAPUS AKUN -->
     <!-- ======================================== -->
 
     <div class="modal" id="modalHapusAdmin">
 
         <div class="modal-content modal-delete">
 
-            <h3>
+            <div class="modal-header">
 
-                Hapus Admin
+                <h3>
 
-            </h3>
+                    Hapus Akun
 
-            <p>
+                </h3>
 
-                Apakah Anda yakin ingin menghapus admin ini?
+                <button type="button" class="close" onclick="closeModalHapusAdmin()">
 
-            </p>
-
-            <div class="form-actions">
-
-                <button type="button" class="btn-secondary" onclick="closeModalHapusAdmin()">
-
-                    Batal
-
-                </button>
-
-                <button type="button" class="btn-danger">
-
-                    Hapus
+                    &times;
 
                 </button>
 
             </div>
 
+            <div class="modal-body">
+
+                <p>
+
+                    Apakah Anda yakin ingin menghapus akun ini?
+
+                </p>
+
+                <form id="formDeleteAdmin" method="POST">
+
+                    @csrf
+                    @method('DELETE')
+
+                    <div class="form-actions">
+
+                        <button type="button" class="btn-secondary" onclick="closeModalHapusAdmin()">
+
+                            Batal
+
+                        </button>
+
+                        <button type="submit" class="btn-danger">
+
+                            Hapus
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
         </div>
 
+    </div>
 
-    @endsection
 
-    @push('scripts')
-        <script src="{{ asset('js/admin/pengaturan.js') }}"></script>
-    @endpush
+@endsection
+
+@push('scripts')
+    <script src="{{ asset('js/admin/pengaturan.js') }}"></script>
+@endpush

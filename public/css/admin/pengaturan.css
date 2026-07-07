@@ -593,14 +593,39 @@ textarea.form-control {
     backdrop-filter: blur(4px);
     animation: fadeIn 0.3s ease;
 }
+.modal.show{
 
-.modal-content {
-    background: white;
-    margin: 40px auto;
-    border-radius: 16px;
-    animation: slideDown 0.3s ease;
-    max-height: 90vh;
-    overflow-y: auto;
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.modal-content{
+
+    width:90%;
+
+    max-width:650px;
+
+    background:#fff;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+}
+.close{
+
+    border:none;
+
+    background:none;
+
+    font-size:30px;
+
+    cursor:pointer;
+
 }
 
 @keyframes slideDown {
@@ -646,15 +671,25 @@ textarea.form-control {
     color: #1e293b;
 }
 
-.modal-body {
-    padding: 24px;
-}
+.modal-body{
+
+    padding:30px;
+
+}   
 
 .modal-delete-body {
     text-align: center;
     padding: 30px;
 }
+.modal form{
 
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
 .delete-icon {
     font-size: 48px;
     color: #ef4444;
