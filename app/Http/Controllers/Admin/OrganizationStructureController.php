@@ -156,7 +156,7 @@ class OrganizationStructureController extends Controller
         $struktur->update($data);
 
         return redirect()
-            ->route('admin.struktur.struktur')
+            ->route('admin.struktur.index')
             ->with('success', 'Data berhasil diubah');
     }
 

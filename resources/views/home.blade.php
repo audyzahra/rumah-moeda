@@ -85,32 +85,42 @@
             Tim yang berkomitmen membangun Rumah Moeda dengan semangat kolaborasi.
         </p>
 
+
         {{-- Ketua --}}
         @foreach ($organizations->where('display_order', 1) as $member)
+
             <div class="leader-card">
 
-                <img src="{{ asset($member->photo) }}" alt="{{ $member->full_name }}">
+                <img 
+                    src="{{ asset('storage/' . $member->photo) }}" 
+                    alt="{{ $member->full_name }}">
 
                 <h3>{{ $member->full_name }}</h3>
 
                 <span>{{ $member->position }}</span>
 
             </div>
+
         @endforeach
+
 
         {{-- Anggota --}}
         <div class="team-grid">
 
             @foreach ($organizations->where('display_order', '>', 1) as $member)
+
                 <div class="team-card">
 
-                    <img src="{{ asset($member->photo) }}" alt="{{ $member->full_name }}">
+                    <img 
+                        src="{{ asset('storage/' . $member->photo) }}" 
+                        alt="{{ $member->full_name }}">
 
                     <h4>{{ $member->full_name }}</h4>
 
                     <p>{{ $member->position }}</p>
 
                 </div>
+
             @endforeach
 
         </div>
