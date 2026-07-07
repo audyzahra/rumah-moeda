@@ -89,7 +89,7 @@
 
         <div class="leader-card">
 
-            <img src="{{ asset($ketua->photo) }}"
+            <img src="{{ asset('storage/' . $ketua->photo) }}"
                 alt="{{ $ketua->full_name }}">
 
             <h3>{{ $ketua->full_name }}</h3>
@@ -111,7 +111,7 @@
 
         <div class="member-card">
 
-            <img src="{{ asset($item->photo) }}"
+           <img src="{{ asset('storage/' . $item->photo) }}"
                 alt="{{ $item->full_name }}">
 
             <h4>{{ $item->full_name }}</h4>
