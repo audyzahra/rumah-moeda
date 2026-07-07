@@ -19,4 +19,61 @@ let editId = null;
 const grid = document.getElementById('strukturGrid');
 const searchInput = document.getElementById('searchInput');
 const filterJabatan = document.getElementById('filterJabatan');
-const filter
+// const filter
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const modal = document.getElementById('formModal');
+    const btnTambah = document.querySelector('.btn-tambah');
+    const btnClose = document.querySelector('.modal-close');
+
+    btnTambah.addEventListener('click', function () {
+        modal.classList.add('show');
+    });
+
+    btnClose.addEventListener('click', function () {
+        modal.classList.remove('show');
+    });
+
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) {
+            modal.classList.remove('show');
+        }
+    });
+
+});
+
+
+
+document.querySelectorAll('.btn-edit').forEach(button => {
+
+    button.addEventListener('click', function(){
+
+        let id = this.dataset.id;
+
+
+        document.getElementById('editName').value =
+            this.dataset.name;
+
+
+        document.getElementById('editPosition').value =
+            this.dataset.position;
+
+
+        document.getElementById('editOrder').value =
+            this.dataset.order;
+
+
+        document.getElementById('editDescription').value =
+            this.dataset.description ?? '';
+
+
+        document.getElementById('editForm').action =
+            "/admin/struktur/" + id;
+
+    });
+
+});
+
