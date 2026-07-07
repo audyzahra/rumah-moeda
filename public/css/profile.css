@@ -142,10 +142,16 @@ hr {
     margin-top: 5px;
 }
 
-@media(max-width:900px){
+/* ================= TABLET ================= */
+
+@media (max-width:992px){
+
+    body{
+        padding:25px;
+    }
 
     .profile-card{
-        flex-direction: column;
+        flex-direction:column;
     }
 
     .profile-left,
@@ -153,25 +159,29 @@ hr {
         width:100%;
     }
 
-    .profile-left {
-    width: 42%;
-    background: #D8B33F;
-    color: #fff;
-    position: relative;
+    .profile-left{
+        padding:45px 30px;
+    }
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 50px 35px;
-}
+    .profile-left img{
+        width:150px;
+        height:150px;
+    }
 
     .profile-left h1{
-        font-size:40px;
+        font-size:38px;
+    }
+
+    .profile-left p{
+        font-size:16px;
     }
 
     .profile-right{
-        padding:35px 25px;
+        padding:40px 35px;
+    }
+
+    .profile-right h2{
+        font-size:32px;
     }
 }
 
@@ -399,4 +409,80 @@ hr{
 .password-link a:hover{
     color: #b89224;
     text-decoration: underline;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width:768px){
+
+    body{
+        padding:15px;
+    }
+
+    .profile-card{
+        border-radius:20px;
+    }
+
+    .profile-left{
+        padding:35px 20px;
+    }
+
+    .profile-left img{
+        width:120px;
+        height:120px;
+        padding:14px;
+        margin-bottom:20px;
+    }
+
+    .profile-left h1{
+        font-size:30px;
+    }
+
+    .profile-left p{
+        font-size:15px;
+        line-height:1.6;
+    }
+
+    .profile-right{
+        padding:30px 20px;
+    }
+
+    .profile-right h2{
+        font-size:28px;
+        margin-bottom:20px;
+    }
+
+    .form-group label{
+        font-size:14px;
+    }
+
+    .form-group input{
+        height:50px;
+        font-size:15px;
+        padding:0 16px;
+    }
+
+    .btn-save{
+        height:50px;
+        font-size:16px;
+    }
+
+    .password-link{
+        justify-content:center;
+    }
+
+    .password-link a{
+        font-size:14px;
+    }
+
+    .btn-back{
+        width:40px;
+        height:40px;
+        top:15px;
+        left:15px;
+    }
+
+    .btn-back i{
+        font-size:18px;
+    }
 }
