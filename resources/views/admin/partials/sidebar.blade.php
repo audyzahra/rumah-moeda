@@ -31,7 +31,7 @@
                 <span>Aspirasi</span>
 
                 
-                <span class="badge">12</span>
+                <!-- <span class="badge">12</span> -->
             </a>
         </li>
 
@@ -42,7 +42,7 @@
                 <span>Berita</span>
 
 
-                <span class="badge">8</span>
+                <!-- <span class="badge">8</span> -->
             </a>
         </li>
 
@@ -52,8 +52,8 @@
                 <i class="fa-solid fa-images"></i>
                 <span>Gallery</span>
 
-
-                <span class="badge">15</span>
+<!-- 
+                <span class="badge">15</span> -->
             </a>
         </li>
 
@@ -64,7 +64,7 @@
                 <span>Struktur Organisasi</span>
 
 
-                <span class="badge">6</span>
+                <!-- <span class="badge">6</span> -->
             </a>
         </li>
 
@@ -75,7 +75,7 @@
                 <span>Mitra</span>
 
 
-                <span class="badge">4</span>
+                <!-- <span class="badge">4</span> -->
             </a>
         </li>
 
@@ -86,7 +86,7 @@
                 <span>FAQ</span>
 
 
-                <span class="badge">5</span>
+                <!-- <span class="badge">5</span> -->
             </a>
         </li>
 

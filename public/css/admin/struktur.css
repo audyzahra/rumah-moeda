@@ -83,8 +83,8 @@
 .filter-section {
     background: white;
     border-radius: 16px;
-    padding: 18px 24px;
-    margin-bottom: 25px;
+    padding: 10px 24px;
+    margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -108,6 +108,8 @@
     min-width: 200px;
     transition: 0.3s;
     flex: 1;
+    height: 44px; /* Tambahkan height tetap */
+    box-sizing: border-box;
 }
 
 .search-input:focus {
@@ -124,6 +126,8 @@
     background: white;
     cursor: pointer;
     transition: 0.3s;
+    height: 44px; /* Tambahkan height tetap */
+    box-sizing: border-box;
 }
 
 .filter-select:focus {
@@ -134,6 +138,7 @@
 .filter-right {
     display: flex;
     gap: 10px;
+    align-items: center; /* Tambahkan align items */
 }
 
 .btn-tambah {
@@ -148,6 +153,9 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    height: 44px; /* Tambahkan height tetap agar sama dengan filter */
+    box-sizing: border-box;
+    white-space: nowrap; /* Mencegah teks turun ke baris berikutnya */
 }
 
 .btn-tambah:hover {
@@ -165,6 +173,11 @@
     font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
+    height: 44px; /* Tambahkan height tetap */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-refresh:hover {
@@ -315,6 +328,10 @@
     display: flex;
     align-items: center;
     gap: 5px;
+    height: 32px; /* Tambahkan height tetap */
+    box-sizing: border-box;
+    min-width: 70px; /* Tambahkan min-width agar seragam */
+    justify-content: center;
 }
 
 .btn-detail {
@@ -329,6 +346,20 @@
 .btn-edit {
     background: #fef3c7;
     color: #d97706;
+    height: 32px; /* Samakan height dengan button lain */
+    min-width: 70px; /* Samakan min-width dengan button lain */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .btn-edit:hover {
@@ -338,6 +369,20 @@
 .btn-delete {
     background: #fee2e2;
     color: #dc2626;
+    height: 32px; /* Samakan height dengan button lain */
+    min-width: 70px; /* Samakan min-width dengan button lain */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .btn-delete:hover {
@@ -419,7 +464,7 @@
 .modal {
     display: none;
     position: fixed;
-    z-index: 999;
+    z-index: 1060 !important;
     left: 0;
     top: 0;
     width: 100%;
@@ -427,6 +472,15 @@
     background: rgba(0,0,0,0.5);
     backdrop-filter: blur(4px);
     animation: fadeIn 0.3s ease;
+}
+
+.modal-backdrop {
+    z-index: 1055 !important;
+}
+
+.modal-dialog,
+.modal-content {
+    pointer-events: auto !important;
 }
 
 @keyframes fadeIn {
@@ -834,6 +888,11 @@ textarea.form-control {
 
     .search-input {
         min-width: unset;
+        height: 44px;
+    }
+
+    .filter-select {
+        height: 44px;
     }
 
     .filter-right {
@@ -843,6 +902,15 @@ textarea.form-control {
     .filter-right button {
         flex: 1;
         justify-content: center;
+    }
+
+    .btn-tambah {
+        height: 44px;
+        justify-content: center;
+    }
+
+    .btn-refresh {
+        height: 44px;
     }
 
     .struktur-grid {
@@ -911,6 +979,13 @@ textarea.form-control {
     .struktur-card .card-actions button {
         width: 100%;
         justify-content: center;
+        height: 36px;
+    }
+
+    .btn-edit,
+    .btn-delete {
+        height: 36px !important;
+        width: 100%;
     }
 
     .detail-item {
@@ -926,17 +1001,4 @@ textarea.form-control {
         width: 120px;
         height: 120px;
     }
-}
-
-.modal {
-    z-index: 1060 !important;
-}
-
-.modal-backdrop {
-    z-index: 1055 !important;
-}
-
-.modal-dialog,
-.modal-content {
-    pointer-events: auto !important;
 }
