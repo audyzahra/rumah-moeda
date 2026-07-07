@@ -382,143 +382,213 @@ textarea.form-control {
 .social-input .fa-instagram { color: #e4405f; }
 .social-input .fa-youtube { color: #ff0000; }
 
-/* ===== ADMIN TABLE ===== */
-.admin-actions {
-    margin-bottom: 20px;
+/* ===================================
+   KELOLA AKUN
+=================================== */
+
+#tab-admin .settings-card{
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(0,0,0,.06);
 }
 
-.btn-tambah-admin {
-    padding: 10px 20px;
-    background: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+#tab-admin .card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
+    padding:25px 30px;
 }
 
-.btn-tambah-admin:hover {
-    background: #2563eb;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+#tab-admin .card-header h3{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:0;
+    font-size:26px;
+    font-weight:700;
+    color:#0f172a;
 }
 
-.table-wrapper {
-    overflow-x: auto;
+#tab-admin .card-header h3 i{
+    color:#2563eb;
 }
 
-.admin-table {
-    width: 100%;
-    border-collapse: collapse;
+#tab-admin .card-header p{
+    margin-top:6px;
+    color:#64748b;
+    font-size:14px;
 }
 
-.admin-table thead {
-    background: #f8fafc;
+/* =====================
+   BUTTON
+===================== */
+
+.btn-primary{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 22px;
+    border:none;
+    border-radius:12px;
+    background:#2563eb;
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+    box-shadow:0 8px 20px rgba(37,99,235,.25);
 }
 
-.admin-table th {
-    text-align: left;
-    padding: 12px 16px;
-    font-size: 13px;
-    font-weight: 700;
-    color: #475569;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #e2e8f0;
+.btn-primary:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
 }
 
-.admin-table td {
-    padding: 12px 16px;
-    border-bottom: 1px solid #f1f5f9;
-    font-size: 14px;
-    color: #1e293b;
-    vertical-align: middle;
+/* =====================
+   TABLE
+===================== */
+
+.table-responsive{
+    overflow-x:auto;
 }
 
-.admin-table tbody tr {
-    transition: 0.3s;
+.table-admin{
+    width:100%;
+    border-collapse:collapse;
+    min-width:900px;
 }
 
-.admin-table tbody tr:hover {
-    background: #f8fafc;
+.table-admin thead{
+    background:#f8fafc;
 }
 
-.admin-status {
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    display: inline-block;
+.table-admin th{
+    padding:18px;
+    text-align:left;
+    font-size:14px;
+    font-weight:700;
+    color:#475569;
+    border-bottom:2px solid #e5e7eb;
 }
 
-.admin-status.aktif {
-    background: #d1fae5;
-    color: #059669;
+.table-admin td{
+    padding:18px;
+    font-size:15px;
+    color:#334155;
+    border-bottom:1px solid #eef2f7;
+    vertical-align:middle;
 }
 
-.admin-status.nonaktif {
-    background: #fef3c7;
-    color: #d97706;
+.table-admin tbody tr{
+    transition:.25s;
 }
 
-.admin-role {
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    display: inline-block;
+.table-admin tbody tr:nth-child(even){
+    background:#fcfcfd;
 }
 
-.admin-role.superadmin {
-    background: #fef3c7;
-    color: #d97706;
+.table-admin tbody tr:hover{
+    background:#eff6ff;
 }
 
-.admin-role.admin {
-    background: #dbeafe;
-    color: #2563eb;
+/* ukuran kolom */
+
+.table-admin th:nth-child(1),
+.table-admin td:nth-child(1){
+    width:60px;
 }
 
-.admin-role.editor {
-    background: #e0e7ff;
-    color: #4338ca;
+.table-admin th:nth-child(2),
+.table-admin td:nth-child(2){
+    width:200px;
 }
 
-.admin-actions-btn {
-    display: flex;
-    gap: 6px;
+.table-admin th:nth-child(3),
+.table-admin td:nth-child(3){
+    width:320px;
 }
 
-.admin-actions-btn button {
-    padding: 4px 10px;
-    border: none;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
+.table-admin th:nth-child(4),
+.table-admin td:nth-child(4){
+    width:120px;
 }
 
-.btn-edit-admin {
-    background: #fef3c7;
-    color: #d97706;
+.table-admin th:nth-child(5),
+.table-admin td:nth-child(5){
+    width:160px;
+    white-space:nowrap;
 }
 
-.btn-edit-admin:hover {
-    background: #fde68a;
+.table-admin th:nth-child(6),
+.table-admin td:nth-child(6){
+    width:120px;
+    text-align:center;
 }
 
-.btn-delete-admin {
-    background: #fee2e2;
-    color: #dc2626;
+/* =====================
+   ROLE
+===================== */
+
+.badge-admin{
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:30px;
+    background:#dbeafe;
+    color:#2563eb;
+    font-size:13px;
+    font-weight:700;
 }
 
-.btn-delete-admin:hover {
-    background: #fecaca;
+.badge-user{
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:30px;
+    background:#ecfdf5;
+    color:#16a34a;
+    font-size:13px;
+    font-weight:700;
+}
+
+/* =====================
+   BUTTON AKSI
+===================== */
+
+.btn-icon{
+    width:38px;
+    height:38px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.25s;
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+    margin:0 3px;
+}
+
+.btn-edit{
+    background:#fef3c7;
+    color:#d97706;
+}
+
+.btn-edit:hover{
+    background:#f59e0b;
+    color:#fff;
+}
+
+.btn-delete{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.btn-delete:hover{
+    background:#dc2626;
+    color:#fff;
+}
+
+.btn-icon i{
+    font-size:15px;
 }
 
 /* ===== FORM ACTIONS ===== */
@@ -580,139 +650,168 @@ textarea.form-control {
     background: #dc2626;
 }
 
-/* ===== MODAL ===== */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(4px);
-    animation: fadeIn 0.3s ease;
-}
-.modal.show{
+/* ==========================
+   MODAL
+========================== */
 
-    display:flex;
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.45);
+    backdrop-filter:blur(4px);
+    z-index:9999;
 
     justify-content:center;
-
     align-items:center;
 
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
 }
 
 .modal-content{
-
-    width:90%;
-
+    width:100%;
     max-width:650px;
-
     background:#fff;
-
-    border-radius:16px;
-
+    border-radius:18px;
+    box-shadow:0 20px 60px rgba(0,0,0,.2);
+    animation:modalShow .25s ease;
     overflow:hidden;
-
-}
-.close{
-
-    border:none;
-
-    background:none;
-
-    font-size:30px;
-
-    cursor:pointer;
-
 }
 
-@keyframes slideDown {
-    from { transform: translateY(-30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+@keyframes modalShow{
+    from{
+        opacity:0;
+        transform:translateY(-25px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
-.modal-medium {
-    max-width: 500px;
-}
-
-.modal-delete {
-    max-width: 450px;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    border-bottom: 1px solid #e2e8f0;
-    position: sticky;
-    top: 0;
-    background: white;
-    border-radius: 16px 16px 0 0;
-    z-index: 10;
-}
-
-.modal-header h2 {
-    font-size: 20px;
-    color: #1a1a2e;
-}
-
-.modal-close {
-    font-size: 28px;
-    cursor: pointer;
-    color: #94a3b8;
-    transition: 0.3s;
-    line-height: 1;
-}
-
-.modal-close:hover {
-    color: #1e293b;
-}
-
-.modal-body{
-
-    padding:30px;
-
-}   
-
-.modal-delete-body {
-    text-align: center;
-    padding: 30px;
-}
-.modal form{
-
+.modal-header{
     display:flex;
-
-    flex-direction:column;
-
-    gap:18px;
-
-}
-.delete-icon {
-    font-size: 48px;
-    color: #ef4444;
-    margin-bottom: 15px;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 28px;
+    border-bottom:1px solid #e5e7eb;
 }
 
-.delete-text {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #1e293b;
+.modal-header h3{
+    margin:0;
+    font-size:22px;
+    color:#1e293b;
 }
 
-.delete-subtext {
-    color: #64748b;
-    font-size: 14px;
-    margin-bottom: 20px;
+.close{
+    width:38px;
+    height:38px;
+    border:none;
+    border-radius:50%;
+    background:#f1f5f9;
+    cursor:pointer;
+    font-size:22px;
+    transition:.25s;
 }
 
-.delete-actions {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 20px;
+.close:hover{
+    background:#ef4444;
+    color:#fff;
+}
+
+.modal form{
+    padding:16px 28px 18px;
+}
+
+.modal .form-group{
+    margin-bottom:16px;
+}
+
+.modal label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:#334155;
+}
+
+.modal .form-control{
+    width:100%;
+    height:46px;
+    padding:0 14px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:15px;
+    box-sizing:border-box;
+}
+
+.modal textarea.form-control{
+    height:120px;
+    padding:14px 16px;
+}
+
+.modal .form-control:focus{
+    outline:none;
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,.12);
+}
+
+.modal select.form-control{
+    cursor:pointer;
+}
+
+.modal .form-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+    margin-top:12px;
+    padding-top:14px;
+    border-top:1px solid #e5e7eb;
+}
+
+.btn-secondary{
+    background:#e5e7eb;
+    color:#374151;
+    border:none;
+    padding:11px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.btn-secondary:hover{
+    background:#d1d5db;
+}
+
+.btn-primary{
+    background:#2563eb;
+    color:#fff;
+    border:none;
+    padding:11px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.btn-primary:hover{
+    background:#1d4ed8;
+}
+
+.btn-danger{
+    background:#dc2626;
+    color:#fff;
+    border:none;
+    padding:11px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.btn-danger:hover{
+    background:#b91c1c;
 }
 
 /* ===== NOTIFICATION ===== */
