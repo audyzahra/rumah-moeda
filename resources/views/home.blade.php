@@ -12,7 +12,13 @@
     <section class="hero-section">
         <div class="hero-container">
             <div class="hero-image">
-                <img src="{{ asset('assets/1.jpeg') }}" alt="Kegiatan Rumah Moeda">
+
+                @if ($setting && $setting->hero_image)
+                    <img src="{{ asset($setting->hero_image) }}" alt="{{ $setting->website_name }}">
+                @else
+                    <img src="{{ asset('assets/hero/default.jpg') }}" alt="Hero">
+                @endif
+
             </div>
 
             <div class="hero-text">
