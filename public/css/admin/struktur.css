@@ -419,7 +419,7 @@
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 999;
     left: 0;
     top: 0;
     width: 100%;
@@ -926,4 +926,17 @@ textarea.form-control {
         width: 120px;
         height: 120px;
     }
+}
+
+.modal {
+    z-index: 1060 !important;
+}
+
+.modal-backdrop {
+    z-index: 1055 !important;
+}
+
+.modal-dialog,
+.modal-content {
+    pointer-events: auto !important;
 }

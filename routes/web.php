@@ -8,6 +8,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\Admin\OrganizationStructureController;
 
 Route::get('/hubungi',[ContactController::class,'index'])->name('hubungi');
 

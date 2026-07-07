@@ -1,0 +1,294 @@
+/* ==============================
+   STRUKTUR.CSS (CLEAN VERSION)
+   Hanya class yang dipakai Blade
+   ============================== */
+
+/* ===== FILTER ===== */
+.filter-section {
+    background: white;
+    border-radius: 16px;
+    padding: 18px 24px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.filter-left {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.search-input {
+    padding: 10px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 14px;
+    min-width: 200px;
+    flex: 1;
+    transition: 0.3s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+
+.filter-select {
+    padding: 10px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+}
+
+.filter-right {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-tambah {
+    padding: 10px 20px;
+    background: #3b82f6;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-header h2 {
+    font-size: 18px;
+    font-weight: 500; /* ini kuncinya biar tidak tebal */
+    color: #1e293b;
+    margin: 0;
+}
+
+.btn-tambah:hover {
+    background: #2563eb;
+}
+
+.btn-refresh {
+    padding: 10px 16px;
+    background: #e5e7eb;
+    color: #374151;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+/* ===== GRID ===== */
+.struktur-grid-section {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.struktur-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+/* ===== CARD ===== */
+.struktur-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    text-align: center;
+    position: relative;
+    transition: 0.3s;
+}
+
+.struktur-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    border-color: #3b82f6;
+}
+
+.badge-order {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #3b82f6;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+}
+
+/* ===== FOTO ===== */
+.foto-wrapper {
+    padding-top: 20px;
+    background: linear-gradient(135deg,#f8fafc,#e2e8f0);
+}
+
+.foto {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+}
+
+.foto-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    color: white;
+    font-size: 40px;
+}
+
+/* ===== CARD BODY ===== */
+.card-body {
+    padding: 18px;
+}
+
+.card-name {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.card-position {
+    color: #3b82f6;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.card-periode {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.card-deskripsi {
+    font-size: 13px;
+    color: #64748b;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ===== STATUS ===== */
+.card-status {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+.card-status.tampil {
+    background: #d1fae5;
+    color: #059669;
+}
+
+/* ===== ACTION BUTTON ===== */
+.card-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 12px;
+}
+
+.card-actions a,
+.card-actions button {
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-edit {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.btn-delete {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* ===== PAGINATION ===== */
+.pagination-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 0;
+    border-top: 1px solid #f1f5f9;
+}
+
+.info-data {
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* ===== FORM ===== */
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-group {
+    flex: 1;
+    margin-bottom: 18px;
+}
+
+.form-group-half {
+    flex: 0 0 calc(50% - 10px);
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.form-control:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 20px;
+}
+
+.btn-batal {
+    background: #e5e7eb;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+}
+
+.btn-simpan {
+    background: #3b82f6;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+}
+
+
