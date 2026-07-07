@@ -240,43 +240,41 @@ body{
 }
 
 .modal{
-    display: none;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.5);
-    z-index: 9999;
-    overflow: hidden;
+    display:none;
+    position:fixed;
+    inset:0;
+
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,.5);
+
+    padding:25px 0;
+
+    z-index:9999;
 }
 
 .modal.show{
-    display: flex;
-}
-
-.modal.show {
-
-    display: flex;
-
+    display:flex;
 }
 
 .modal-content{
     position:relative;
-    width:100%;
-    max-width:500px;
+
+    width:90%;
+    max-width:520px;
 
     background:#fff;
     border-radius:20px;
 
-    padding:22px 25px;
+    padding:26px 28px;
 
     box-sizing:border-box;
-
-    z-index:10000;
 }
 
+
 .modal-content h2{
-    margin-bottom:25px;
+    margin-bottom:6px;
     font-size:28px;
     color:#222;
 }
@@ -288,8 +286,8 @@ body{
 }
 
 .form-group textarea{
-    resize:vertical;
-    min-height:150px;
+    resize:none;
+    height:120px;
 }
 
 .form-group input:focus,
@@ -334,7 +332,7 @@ body{
 }
 
 .form-group{
-    margin-bottom:16px;
+    margin-bottom:10px;
 }
 
 .form-group label{
@@ -346,7 +344,8 @@ body{
 }
 
 .form-group input,
-.form-group textarea{
+.form-group textarea,
+.form-group select{
     width:100%;
     padding:10px 12px;
 
@@ -354,8 +353,20 @@ body{
     border-radius:10px;
 
     font-size:14px;
+    font-family:inherit;
+
+    background:#fff;
+    color:#333;
 
     transition:.2s;
+    box-sizing:border-box;
+}
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group textarea,
+[data-theme="dark"] .form-group select{
+    background:#333;
+    color:#fff;
+    border:1px solid #4a4a4a;
 }
 
 .btn-simpan {
