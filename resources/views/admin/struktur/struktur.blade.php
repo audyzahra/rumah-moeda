@@ -148,9 +148,9 @@
 
                         </div>
 
-                        <span class="card-status tampil">
+                        <!-- <span class="card-status tampil">
                             Ditampilkan
-                        </span>
+                        </span> -->
 
                         <div class="card-actions">
 
