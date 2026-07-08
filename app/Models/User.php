@@ -32,4 +32,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relasi
+    |--------------------------------------------------------------------------
+    */
+
+    public function news()
+    {
+        return $this->hasMany(News::class, 'author_id');
+    }
 }
