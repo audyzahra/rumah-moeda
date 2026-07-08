@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="{{ asset('css/admin/galeri.css') }}">
 @endpush
 
+@if(session('success'))
+    <div class="alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
 <div class="content">
 
     <header class="topbar">
