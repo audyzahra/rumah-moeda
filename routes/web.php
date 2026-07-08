@@ -13,6 +13,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\OrganizationStructureController;
+use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -178,9 +179,18 @@ Route::middleware(['auth', 'admin'])
             ->name('berita.index');
 
         // Gallery
-        Route::view('/gallery', 'admin.gallery.gallery')
-            ->name('gallery.index');
+        Route::get('/gallery', [AdminGalleryController::class, 'index'])
+        ->name('gallery.index');
 
+        Route::post('/gallery', [AdminGalleryController::class, 'store'])
+            ->name('gallery.store');
+
+        Route::put('/gallery/{gallery}', [AdminGalleryController::class, 'update'])
+            ->name('gallery.update');
+
+        Route::delete('/gallery/{gallery}', [AdminGalleryController::class, 'destroy'])
+            ->name('gallery.destroy');
+            
         // Mitra
         Route::view('/mitra', 'admin.mitra.mitra')
             ->name('mitra.index');

@@ -109,14 +109,9 @@ const searchInput = document.getElementById('searchInput');
 const filterStatus = document.getElementById('filterStatus');
 const filterSort = document.getElementById('filterSort');
 const checkAll = document.getElementById('checkAll');
-const totalAspirasi = document.getElementById('totalAspirasi');
-const totalBaru = document.getElementById('totalBaru');
-const totalDibaca = document.getElementById('totalDibaca');
-const totalApproved = document.getElementById('totalApproved');
 
 // ===== INISIALISASI =====
 document.addEventListener('DOMContentLoaded', () => {
-    updateStats();
     renderTable();
     updatePaginationInfo();
 

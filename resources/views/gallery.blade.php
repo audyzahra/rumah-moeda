@@ -29,7 +29,8 @@
 
     <div class="galeri-card">
 
-        <img src="{{ asset($item->photo) }}"
+        <img loading="lazy" 
+             src="{{ asset('storage/'.$item->photo) }}"
              alt="{{ $item->title }}">
 
         <div class="galeri-info">
