@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\OrganizationStructureController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
+use App\Http\Controllers\Admin\PartnerController;   
 
 /*
 |--------------------------------------------------------------------------
@@ -165,6 +166,12 @@ Route::middleware(['auth', 'admin'])
         */
 
         Route::resource('struktur', OrganizationStructureController::class);
+         /*
+        |--------------------------------------------------------------------------
+        | Mitra
+        |--------------------------------------------------------------------------
+        */
+        Route::resource('mitra', PartnerController::class);
 
         /*
         |--------------------------------------------------------------------------
