@@ -60,7 +60,10 @@ function populateCategoryDropdowns() {
         });
     });
     
-    document.getElementById('totalKategori').textContent = categories.length;
+    const totalKategori = document.getElementById('totalKategori');
+if (totalKategori) {
+    totalKategori.textContent = categories.length;
+}
 }
 
 function loadFaq() {
@@ -107,4 +110,27 @@ function loadFaq() {
             updated_at: '2026-07-02T11:45:00'
         }
     ];
+}
+
+// ==============================
+// MODAL TAMBAH / EDIT
+// ==============================
+
+function openTambahModal() {
+
+    editId = null;
+
+    document.getElementById("formModalTitle").textContent = "Tambah FAQ";
+
+    document.getElementById("faqForm").reset();
+
+    document.getElementById("editId").value = "";
+
+    document.getElementById("formModal").style.display = "flex";
+}
+
+function closeFormModal() {
+
+    document.getElementById("formModal").style.display = "none";
+
 }
