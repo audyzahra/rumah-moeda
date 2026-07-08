@@ -176,7 +176,7 @@
 
                         </div>
 
-                        <div class="berita-action">
+                        <div class="card-actions">
 
                             <button class="btn-detail"
                                 onclick='showDetail({
@@ -198,7 +198,7 @@
 
                             </button>
 
-                            <button class="btn-hapus" onclick="deleteBerita({{ $item->id }})">
+                            <button class="btn-delete" onclick="deleteBerita({{ $item->id }})">
 
                                 <i class="fa-solid fa-trash"></i>
 
@@ -513,7 +513,7 @@
 
                         @method('DELETE')
 
-                        <button type="submit" class="btn-hapus">
+                        <button type="submit" class="btn-delete">
 
                             <i class="fa-solid fa-trash"></i>
 
