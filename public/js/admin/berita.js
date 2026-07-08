@@ -31,17 +31,17 @@ let currentNews = null;
    OPEN MODAL
 ========================================== */
 
-function openModal(modal){
+function openModal(modal) {
 
-    if(!modal) return;
+    if (!modal) return;
 
     modal.classList.add("show");
 
 }
 
-function closeModal(modal){
+function closeModal(modal) {
 
-    if(!modal) return;
+    if (!modal) return;
 
     modal.classList.remove("show");
 
@@ -52,19 +52,19 @@ function closeModal(modal){
    CLOSE MODAL
 ========================================== */
 
-function closeFormModal(){
+function closeFormModal() {
 
     closeModal(formModal);
 
 }
 
-function closeDetailModal(){
+function closeDetailModal() {
 
     closeModal(detailModal);
 
 }
 
-function closeDeleteModal(){
+function closeDeleteModal() {
 
     closeModal(deleteModal);
 
@@ -75,21 +75,21 @@ function closeDeleteModal(){
    CLICK OUTSIDE MODAL
 ========================================== */
 
-window.addEventListener("click",function(e){
+window.addEventListener("click", function (e) {
 
-    if(e.target===formModal){
+    if (e.target === formModal) {
 
         closeFormModal();
 
     }
 
-    if(e.target===detailModal){
+    if (e.target === detailModal) {
 
         closeDetailModal();
 
     }
 
-    if(e.target===deleteModal){
+    if (e.target === deleteModal) {
 
         closeDeleteModal();
 
@@ -102,9 +102,9 @@ window.addEventListener("click",function(e){
    ESC CLOSE
 ========================================== */
 
-document.addEventListener("keydown",function(e){
+document.addEventListener("keydown", function (e) {
 
-    if(e.key==="Escape"){
+    if (e.key === "Escape") {
 
         closeFormModal();
 
@@ -121,27 +121,27 @@ document.addEventListener("keydown",function(e){
    PREVIEW IMAGE
 ========================================== */
 
-function previewImage(event){
+function previewImage(event) {
 
     const file = event.target.files[0];
 
-    if(!file){
+    if (!file) {
 
-        preview.src="";
+        preview.src = "";
 
-        preview.style.display="none";
+        preview.style.display = "none";
 
         return;
 
     }
 
-    const reader=new FileReader();
+    const reader = new FileReader();
 
-    reader.onload=function(e){
+    reader.onload = function (e) {
 
-        preview.src=e.target.result;
+        preview.src = e.target.result;
 
-        preview.style.display="block";
+        preview.style.display = "block";
 
     }
 
@@ -154,42 +154,42 @@ function previewImage(event){
    RESET FORM
 ========================================== */
 
-function resetBeritaForm(){
+function resetBeritaForm() {
 
     beritaForm.reset();
 
-    currentNews=null;
+    currentNews = null;
 
-    preview.src="";
+    preview.src = "";
 
-    preview.style.display="none";
+    preview.style.display = "none";
 
-    document.getElementById("berita_id").value="";
+    document.getElementById("berita_id").value = "";
 
-    const method=document.getElementById("formMethod");
+    const method = document.getElementById("formMethod");
 
-    if(method){
+    if (method) {
 
         method.remove();
 
     }
 
-    beritaForm.action="/admin/berita";
+    beritaForm.action = "/admin/berita";
 
-    document.getElementById("formModalTitle").innerHTML="Tambah Berita";
+    document.getElementById("formModalTitle").innerHTML = "Tambah Berita";
 
 }
 /* ==========================================
    TAMBAH BERITA
 ========================================== */
 
-function openTambahModal(){
+function openTambahModal() {
 
     resetBeritaForm();
 
-    beritaForm.action="/admin/berita";
+    beritaForm.action = "/admin/berita";
 
-    document.getElementById("formModalTitle").innerHTML="Tambah Berita";
+    document.getElementById("formModalTitle").innerHTML = "Tambah Berita";
 
     openModal(formModal);
 
@@ -200,52 +200,52 @@ function openTambahModal(){
    EDIT BERITA
 ========================================== */
 
-function openEditModal(news){
+function openEditModal(news) {
 
     resetBeritaForm();
 
-    currentNews=news;
+    currentNews = news;
 
-    beritaForm.action="/admin/berita/"+news.id;
+    beritaForm.action = "/admin/berita/" + news.id;
 
-    document.getElementById("formModalTitle").innerHTML="Edit Berita";
+    document.getElementById("formModalTitle").innerHTML = "Edit Berita";
 
     // Tambahkan method PUT
-    const method=document.createElement("input");
+    const method = document.createElement("input");
 
-    method.type="hidden";
+    method.type = "hidden";
 
-    method.name="_method";
+    method.name = "_method";
 
-    method.value="PUT";
+    method.value = "PUT";
 
-    method.id="formMethod";
+    method.id = "formMethod";
 
     beritaForm.appendChild(method);
 
     // Isi Form
-    document.getElementById("title").value=
+    document.getElementById("title").value =
         news.title ?? "";
 
-    document.getElementById("content").value=
+    document.getElementById("content").value =
         news.content ?? "";
 
-    document.getElementById("category_id").value=
+    document.getElementById("category_id").value =
         news.category_id ?? "";
 
-    if(news.publish_date){
+    if (news.publish_date) {
 
-        document.getElementById("publish_date").value=
-            news.publish_date.substring(0,16);
+        document.getElementById("publish_date").value =
+            news.publish_date.substring(0, 16);
 
     }
 
     // Thumbnail Lama
-    if(news.thumbnail){
+    if (news.thumbnail) {
 
-        preview.src="/"+news.thumbnail;
+        preview.src = "/" + news.thumbnail;
 
-        preview.style.display="block";
+        preview.style.display = "block";
 
     }
 
@@ -266,7 +266,7 @@ onclick="editBerita(...)"
 jadi kita arahkan ke openEditModal()
 */
 
-function editBerita(news){
+function editBerita(news) {
 
     openEditModal(news);
 
@@ -277,19 +277,19 @@ function editBerita(news){
    SUBMIT FORM
 ========================================== */
 
-if(beritaForm){
+if (beritaForm) {
 
-    beritaForm.addEventListener("submit",function(){
+    beritaForm.addEventListener("submit", function () {
 
-        const button=
+        const button =
             beritaForm.querySelector("button[type='submit']");
 
-        if(button){
+        if (button) {
 
-            button.disabled=true;
+            button.disabled = true;
 
-            button.innerHTML=
-            '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+            button.innerHTML =
+                '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
 
         }
 
@@ -300,7 +300,7 @@ if(beritaForm){
    DETAIL BERITA
 ========================================== */
 
-function showDetail(news){
+function showDetail(news) {
 
     currentNews = news;
 
@@ -339,7 +339,7 @@ function showDetail(news){
    HAPUS BERITA
 ========================================== */
 
-function deleteBerita(id){
+function deleteBerita(id) {
 
     deleteForm.action = "/admin/berita/" + id;
 
@@ -352,19 +352,19 @@ function deleteBerita(id){
    SUBMIT DELETE
 ========================================== */
 
-if(deleteForm){
+if (deleteForm) {
 
-    deleteForm.addEventListener("submit",function(){
+    deleteForm.addEventListener("submit", function () {
 
         const btn =
             deleteForm.querySelector("button[type='submit']");
 
-        if(btn){
+        if (btn) {
 
             btn.disabled = true;
 
             btn.innerHTML =
-            '<i class="fa-solid fa-spinner fa-spin"></i> Menghapus...';
+                '<i class="fa-solid fa-spinner fa-spin"></i> Menghapus...';
 
         }
 
@@ -379,31 +379,17 @@ function filterBerita() {
 
     const keyword = searchInput.value.toLowerCase().trim();
 
-    const kategori = categoryFilter.value;
-
     const cards = document.querySelectorAll(".berita-card");
 
-    cards.forEach(function(card){
+    cards.forEach(function (card) {
 
         const title = card.dataset.title || "";
 
-        const content = card.dataset.content || "";
-
-        const category = card.dataset.category || "";
-
-        const cocokKeyword =
-            title.includes(keyword) ||
-            content.includes(keyword);
-
-        const cocokKategori =
-            kategori === "" ||
-            category === kategori;
-
-        if(cocokKeyword && cocokKategori){
+        if (title.includes(keyword)) {
 
             card.style.display = "";
 
-        }else{
+        } else {
 
             card.style.display = "none";
 
@@ -413,13 +399,13 @@ function filterBerita() {
 
 }
 
-if(searchInput){
+if (searchInput) {
 
     searchInput.addEventListener("keyup", filterBerita);
 
 }
 
-if(categoryFilter){
+if (categoryFilter) {
 
     categoryFilter.addEventListener("change", filterBerita);
 

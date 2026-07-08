@@ -41,7 +41,7 @@
 
             <div>
 
-                <h1>Berita Rumah Moeda</h1>
+                <h1>Berita</h1>
 
                 <p>
                     Kelola seluruh berita dan artikel Rumah Moeda.
@@ -125,9 +125,7 @@
         <div class="berita-grid">
 
             @forelse($news as $item)
-                <div class="berita-card" data-title="{{ strtolower($item->title) }}"
-                    data-content="{{ strtolower(strip_tags($item->content)) }}" data-category="{{ $item->category_id }}">
-
+                <div class="berita-card" data-title="{{ strtolower($item->title) }}">
                     <div class="berita-image">
 
                         @if ($item->thumbnail)
