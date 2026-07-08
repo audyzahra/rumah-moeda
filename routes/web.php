@@ -14,7 +14,6 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\OrganizationStructureController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
-// use App\Http\Controllers\Admin\NewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -175,18 +174,9 @@ Route::middleware(['auth', 'admin'])
         Route::view('/aspirasi', 'admin.aspirasi.aspirasi')
             ->name('aspirasi.index');
 
-        // // Berita
-        // Route::get('/berita', [NewsController::class, 'index'])
-        //         ->name('berita.index');
-
-        // Route::post('/berita', [NewsController::class, 'store'])
-        //     ->name('berita.store');
-
-        // Route::put('/berita/{id}', [NewsController::class, 'update'])
-        //     ->name('berita.update');
-
-        // Route::delete('/berita/{id}', [NewsController::class, 'destroy'])
-        //     ->name('berita.destroy');
+        // Berita
+        Route::view('/berita', 'admin.berita.berita')
+            ->name('berita.index');
 
         // Gallery
         Route::get('/gallery', [AdminGalleryController::class, 'index'])
