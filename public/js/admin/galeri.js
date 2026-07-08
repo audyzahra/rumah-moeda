@@ -116,3 +116,17 @@ function openCreateModal(){
 function closeCreateModal(){
     document.getElementById('createModal').style.display='none';
 }
+
+setTimeout(() => {
+    const alert = document.querySelector('.alert-success');
+
+    if (alert) {
+        alert.style.transition = "all .5s ease";
+        alert.style.opacity = "0";
+        alert.style.transform = "translateY(-10px)";
+
+        setTimeout(() => {
+            alert.remove();
+        }, 500);
+    }
+}, 3000);
