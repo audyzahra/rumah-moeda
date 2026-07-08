@@ -13,6 +13,8 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\OrganizationStructureController;
+use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
+// use App\Http\Controllers\Admin\NewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -173,14 +175,32 @@ Route::middleware(['auth', 'admin'])
         Route::view('/aspirasi', 'admin.aspirasi.aspirasi')
             ->name('aspirasi.index');
 
-        // Berita
-        Route::view('/berita', 'admin.berita.berita')
-            ->name('berita.index');
+        // // Berita
+        // Route::get('/berita', [NewsController::class, 'index'])
+        //         ->name('berita.index');
+
+        // Route::post('/berita', [NewsController::class, 'store'])
+        //     ->name('berita.store');
+
+        // Route::put('/berita/{id}', [NewsController::class, 'update'])
+        //     ->name('berita.update');
+
+        // Route::delete('/berita/{id}', [NewsController::class, 'destroy'])
+        //     ->name('berita.destroy');
 
         // Gallery
-        Route::view('/gallery', 'admin.gallery.gallery')
-            ->name('gallery.index');
+        Route::get('/gallery', [AdminGalleryController::class, 'index'])
+        ->name('gallery.index');
 
+        Route::post('/gallery', [AdminGalleryController::class, 'store'])
+            ->name('gallery.store');
+
+        Route::put('/gallery/{gallery}', [AdminGalleryController::class, 'update'])
+            ->name('gallery.update');
+
+        Route::delete('/gallery/{gallery}', [AdminGalleryController::class, 'destroy'])
+            ->name('gallery.destroy');
+            
         // Mitra
         Route::view('/mitra', 'admin.mitra.mitra')
             ->name('mitra.index');
