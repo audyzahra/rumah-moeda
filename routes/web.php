@@ -12,8 +12,10 @@ use App\Http\Controllers\FaqController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PengaturanController;
+use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\OrganizationStructureController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 
 /*
 |--------------------------------------------------------------------------
@@ -175,8 +177,17 @@ Route::middleware(['auth', 'admin'])
             ->name('aspirasi.index');
 
         // Berita
-        Route::view('/berita', 'admin.berita.berita')
-            ->name('berita.index');
+        Route::get('/berita', [NewsController::class, 'index'])
+                ->name('berita.index');
+
+        Route::post('/berita', [NewsController::class, 'store'])
+            ->name('berita.store');
+
+        Route::put('/berita/{id}', [NewsController::class, 'update'])
+            ->name('berita.update');
+
+        Route::delete('/berita/{id}', [NewsController::class, 'destroy'])
+            ->name('berita.destroy');
 
         // Gallery
         Route::get('/gallery', [AdminGalleryController::class, 'index'])
@@ -190,13 +201,22 @@ Route::middleware(['auth', 'admin'])
 
         Route::delete('/gallery/{gallery}', [AdminGalleryController::class, 'destroy'])
             ->name('gallery.destroy');
-            
+
         // Mitra
         Route::view('/mitra', 'admin.mitra.mitra')
             ->name('mitra.index');
 
         // FAQ
-        Route::view('/faq', 'admin.faq.faq')
+        Route::get('/faq', [AdminFaqController::class, 'index'])
             ->name('faq.index');
+
+        Route::post('/faq', [AdminFaqController::class, 'store'])
+            ->name('faq.store');
+
+        Route::put('/faq/{faq}', [AdminFaqController::class, 'update'])
+            ->name('faq.update');
+
+        Route::delete('/faq/{faq}', [AdminFaqController::class, 'destroy'])
+            ->name('faq.destroy');
 
     });
