@@ -152,7 +152,7 @@
 
 .btn-tambah {
     padding: 10px 20px;
-    background: #8b5cf6;
+    background: #2563eb;
     color: white;
     border: none;
     border-radius: 10px;
@@ -165,7 +165,7 @@
 }
 
 .btn-tambah:hover {
-    background: #7c3aed;
+    background: #2563eb;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(139,92,246,0.3);
 }
@@ -201,8 +201,40 @@
 }
 
 .dokumentasi-card{
-    overflow:hidden;
-    transition:.25s;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: .25s;
+}
+
+.dokumentasi-card .card-body{
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.dokumentasi-card p{
+    color: #64748b;
+    line-height: 1.6;
+    margin: 10px 0;
+    flex: 1; /* membuat area deskripsi mengisi ruang */
+}
+
+.dokumentasi-card .card-actions{
+    margin-top: auto; /* tombol selalu di bawah */
+    display: flex;
+    gap: 8px;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 12px;
+    align-items: center;
+}
+
+.dokumentasi-card .card-actions form{
+    margin: 0;
 }
 
 .dokumentasi-card:hover{
@@ -290,18 +322,24 @@
 }
 
 .dokumentasi-card .card-actions button {
-    padding: 6px 14px;
+    width: 100%;
+    height: 40px;
+    padding: 0;
     border: none;
     border-radius: 8px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+}
+.dokumentasi-card .card-actions form {
+    flex: 1;
+    margin: 0;
 }
 
+.btn-edit {
+    flex: 1;
+}
 .btn-detail {
     background: #e0e7ff;
     color: #4338ca;
@@ -634,7 +672,7 @@ textarea.form-control {
 
 .btn-simpan {
     padding: 10px 24px;
-    background: #8b5cf6;
+    background: #2563eb;
     color: white;
     border: none;
     border-radius: 10px;
@@ -647,7 +685,7 @@ textarea.form-control {
 }
 
 .btn-simpan:hover {
-    background: #7c3aed;
+    background: #2563eb;
     transform: translateY(-2px);
 }
 
