@@ -50,7 +50,7 @@
         <li class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
             <a href="{{ route('admin.gallery.index') }}">
                 <i class="fa-solid fa-images"></i>
-                <span>Gallery</span>
+                <span>Galeri</span>
 
 <!-- 
                 <span class="badge">15</span> -->
