@@ -28,13 +28,14 @@
 
         <!-- ===== FILTER & SEARCH ===== -->
         <section class="filter-section">
-
             <form method="GET"
-                  action="{{ route('admin.struktur.index') }}"
-                  class="filter-left">
+                action="{{ route('admin.struktur.index') }}"
+                class="filter-left"
+                id="filterForm">
 
                 <input
                     type="text"
+                    id="searchInput"
                     name="search"
                     value="{{ request('search') }}"
                     placeholder="Cari nama atau jabatan..."
@@ -42,50 +43,48 @@
 
                 <select
                     name="jabatan"
-                    class="filter-select">
+                    class="filter-select"
+                    onchange="document.getElementById('filterForm').submit()">
 
-                    <option value="">
-                        Semua Jabatan
-                    </option>
+                    <option value="">Semua Jabatan</option>
 
-                    @foreach(($jabatanList ?? []) as $jabatan)
-
-                        <option
-                            value="{{ $jabatan }}"
+                    @foreach($jabatanList as $jabatan)
+                        <option value="{{ $jabatan }}"
                             {{ request('jabatan') == $jabatan ? 'selected' : '' }}>
-
                             {{ $jabatan }}
-
                         </option>
-
                     @endforeach
 
                 </select>
 
                 <select
                     name="sort"
-                    class="filter-select">
+                    class="filter-select"
+                    onchange="document.getElementById('filterForm').submit()">
 
-                    <option value="display_order"
-                        {{ request('sort') == 'display_order' ? 'selected' : '' }}>
-                        Urutan Tampil
-                    </option>
-
-                    <option value="nama"
-                        {{ request('sort') == 'nama' ? 'selected' : '' }}>
-                        Nama A-Z
-                    </option>
+                    <option value="">Urutkan</option>
 
                     <option value="terbaru"
-                        {{ request('sort') == 'terbaru' ? 'selected' : '' }}>
+                        {{ request('sort')=='terbaru'?'selected':'' }}>
                         Terbaru
                     </option>
 
-                </select>
+                    <option value="terlama"
+                        {{ request('sort')=='terlama'?'selected':'' }}>
+                        Terlama
+                    </option>
 
-                <button type="submit" class="btn-refresh">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
+                    <option value="nama_asc"
+                        {{ request('sort')=='nama_asc'?'selected':'' }}>
+                        Nama A-Z
+                    </option>
+
+                    <option value="nama_desc"
+                        {{ request('sort')=='nama_desc'?'selected':'' }}>
+                        Nama Z-A
+                    </option>
+
+                </select>
 
             </form>
 
@@ -95,6 +94,14 @@
                 data-bs-target="#formModal">
                 <i class="fa-solid fa-plus"></i>
                 Tambah Anggota
+            </button>
+
+            <button 
+                type="button"
+                class="btn-refresh"
+                onclick="location.reload()">
+
+                <i class="fa-solid fa-rotate-right"></i>
             </button>
 
         </section>
@@ -509,11 +516,3 @@
 @push('scripts')
 <script src="{{ asset('js/admin/struktur.js') }}"></script>
 @endpush
-
-
-
-<style>
-.overlay{
-    display:none !important;
-}
-</style>

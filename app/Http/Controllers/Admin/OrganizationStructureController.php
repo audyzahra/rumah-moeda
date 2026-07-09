@@ -8,64 +8,74 @@ use Illuminate\Support\Facades\Storage;
 
 class OrganizationStructureController extends Controller
 {
+
     public function index(Request $request)
-{
-    $query = OrganizationStructure::query();
+    {
+        $query = OrganizationStructure::query();
 
 
-    // ===== SEARCH =====
-    if ($request->filled('search')) {
+        // ===== SEARCH =====
+        if ($request->filled('search')) {
 
-        $query->where(function ($q) use ($request) {
+            $query->where(function ($q) use ($request) {
 
-            $q->where('full_name', 'like', '%' . $request->search . '%')
-              ->orWhere('position', 'like', '%' . $request->search . '%');
+                $q->where('full_name', 'like', '%' . $request->search . '%')
+                ->orWhere('position', 'like', '%' . $request->search . '%');
 
-        });
+            });
 
+        }
+
+
+        // ===== FILTER JABATAN =====
+        if ($request->filled('jabatan')) {
+
+            $query->where('position', $request->jabatan);
+
+        }
+
+
+        // ===== SORTING =====
+        switch ($request->sort) {
+
+            case 'nama_asc':
+                $query->orderBy('full_name', 'asc');
+                break;
+
+            case 'nama_desc':
+                $query->orderBy('full_name', 'desc');
+                break;
+
+            case 'terbaru':
+                $query->orderBy('created_at', 'desc');
+                break;
+
+            case 'terlama':
+                $query->orderBy('created_at', 'asc');
+                break;
+
+            default:
+                // default: urutan tampil
+                $query->orderBy('display_order', 'asc');
+                break;
+        }
+
+
+        // ===== DATA STRUKTUR =====
+        $struktur = $query->paginate(12);
+
+
+        // ===== LIST JABATAN UNTUK FILTER =====
+        $jabatanList = OrganizationStructure::select('position')
+            ->distinct()
+            ->pluck('position');
+
+
+        return view('admin.struktur.struktur', compact(
+            'struktur',
+            'jabatanList'
+        ));
     }
-
-
-    // ===== FILTER JABATAN =====
-    if ($request->filled('jabatan')) {
-
-        $query->where('position', $request->jabatan);
-
-    }
-
-
-    // ===== SORTING =====
-    if ($request->sort == 'nama') {
-
-        $query->orderBy('full_name', 'asc');
-
-    } elseif ($request->sort == 'terbaru') {
-
-        $query->orderBy('created_at', 'desc');
-
-    } else {
-
-        // default: urutan tampil
-        $query->orderBy('display_order', 'asc');
-
-    }
-
-
-    // ===== DATA STRUKTUR =====
-    $struktur = $query->paginate(12);
-
-
-    // ===== LIST JABATAN UNTUK FILTER =====
-    $jabatanList = OrganizationStructure::select('position')
-        ->distinct()
-        ->pluck('position');
-
-
-    return view('admin.struktur.struktur', compact(
-        'struktur',
-        'jabatanList'
-    ));
-}
 
     public function create()
     {
