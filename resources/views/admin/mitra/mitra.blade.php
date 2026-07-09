@@ -49,8 +49,10 @@
                     </option>
                 </select>
 
-                <button type="submit" class="btn-refresh">
-                    <i class="fa-solid fa-magnifying-glass"></i>
+                <button type="submit" 
+                        class="btn-refresh" 
+                        onclick="location.reload()">
+                    <i class="fa-solid fa-rotate-right"></i>
                 </button>
                 
             </form>
