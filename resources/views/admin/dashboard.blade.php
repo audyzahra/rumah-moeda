@@ -1,143 +1,165 @@
 @extends('admin.layouts.app')
 
-@section('title','Dashboard')
+@section('title', 'Dashboard')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
 @endpush
 
 @section('content')
 
-<header class="topbar">
-    <div class="topbar-left">
-        <div>
-            <h1>Beranda</h1>
-            <p>Selamat datang di Beranda Admin Rumah Moeda</p>
+    <header class="topbar">
+        <div class="topbar-left">
+            <div>
+                <h1>Beranda</h1>
+                <p>Selamat datang di Beranda Admin Rumah Moeda</p>
+            </div>
         </div>
-    </div>
 
-    <div class="profile">
-       
-    </div>
-</header>
+        <div class="profile">
 
-<!-- Statistik -->
-<section class="analytics">
-
-    <div class="card">
-        <div class="icon blue">
-            <i class="fa-solid fa-newspaper"></i>
         </div>
-        <div>
-            <h4>Total Pengunjung</h4>
-            <h2>25</h2>
-            <small>+12% bulan ini</small>
+    </header>
+
+    <!-- Statistik -->
+    <section class="analytics">
+
+        <div class="card">
+            <div class="icon blue">
+                <i class="fa-solid fa-newspaper"></i>
+            </div>
+            <div>
+                <h4>Total Mitra</h4>
+
+                <h2>{{ $totalPartner }}</h2>
+
+                <small>Mitra Terdaftar</small>
+            </div>
         </div>
-    </div>
 
-    <div class="card">
-        <div class="icon green">
-            <i class="fa-solid fa-users"></i>
+        <div class="card">
+            <div class="icon green">
+                <i class="fa-solid fa-users"></i>
+            </div>
+            <div>
+                <h4>Total Aspirasi</h4>
+
+                <h2>{{ $totalAspirasi }}</h2>
+
+                <small>{{ $aspirasiBaru }} Belum Dibaca</small>
+            </div>
         </div>
-        <div>
-            <h4>Total Aspirasi</h4>
-            <h2>482</h2>
-            <small>18 Aspirasi Baru</small>
+
+        <div class="card">
+            <div class="icon purple">
+                <i class="fa-solid fa-handshake"></i>
+            </div>
+            <div>
+                <h4>Total Berita</h4>
+
+                <h2>{{ $totalNews }}</h2>
+
+                <small>{{ $beritaBaru }} Berita Baru</small>
+            </div>
         </div>
-    </div>
 
-    <div class="card">
-        <div class="icon purple">
-            <i class="fa-solid fa-handshake"></i>
+        <div class="card">
+            <div class="icon orange">
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div>
+                <h4>Total Dokumentasi</h4>
+
+                <h2>{{ $totalGallery }}</h2>
+
+                <small>{{ $galleryBaru }} Dokumentasi Baru</small>
+            </div>
         </div>
-        <div>
-            <h4>Total Berita</h4>
-            <h2>15</h2>
-            <small>+5 berita baru</small>
+
+    </section>
+
+    <!-- Tabel Aktivitas -->
+    <section class="table-section">
+
+        <div class="section-header">
+            <h2>Aspirasi Terbaru</h2>
+
+            <a href="{{ route('admin.aspirasi.index') }}" class="btn-kelola">
+
+                Kelola Aspirasi
+
+            </a>
         </div>
-    </div>
 
-    <div class="card">
-        <div class="icon orange">
-            <i class="fa-solid fa-envelope"></i>
-        </div>
-        <div>
-            <h4>Total Dokumentasi</h4>
-            <h2>15</h2>
-            <small>5 Foto Baru</small>
-        </div>
-    </div>
+        <table>
 
-</section>
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Subjek</th>
+                    <th>Tanggal</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
 
-<!-- Tabel Aktivitas -->
-<section class="table-section">
+            <tbody>
 
-    <div class="section-header">
-        <h2>Aspirasi Terbaru</h2>
+                @forelse($latestMessages as $item)
+                    <tr>
 
-        <button>
-            Kelola Aspirasi
-        </button>
-    </div>
+                        <td>{{ $item->full_name }}</td>
 
-    <table>
+                        <td>{{ $item->email }}</td>
 
-        <thead>
-            <tr>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Subjek</th>
-                <th>Tanggal</th>
-                <th>Status</th>
-            </tr>
-        </thead>
+                        <td>{{ \Illuminate\Support\Str::limit($item->message, 40) }}</td>
 
-        <tbody>
+                        <td>{{ $item->created_at->format('d M Y') }}</td>
 
-            <tr>
-                <td>Ahmad Fauzan</td>
-                <td>ahmad@gmail.com</td>
-                <td>Perbaikan Jalan</td>
-                <td>12 Juni 2025</td>
-                <td><span class="status baru">Baru</span></td>
-            </tr>
+                        <td>
 
-            <tr>
-                <td>Siti Nurhaliza</td>
-                <td>siti@gmail.com</td>
-                <td>Kegiatan Sosial</td>
-                <td>11 Juni 2025</td>
-                <td><span class="status proses">Diproses</span></td>
-            </tr>
+                            @if ($item->is_read)
+                                <span class="status selesai">
 
-            <tr>
-                <td>Budi Santoso</td>
-                <td>budi@gmail.com</td>
-                <td>Program UMKM</td>
-                <td>10 Juni 2025</td>
-                <td><span class="status selesai">Selesai</span></td>
-            </tr>
+                                    Dibaca
 
-            <tr>
-                <td>Dewi Anggraini</td>
-                <td>dewi@gmail.com</td>
-                <td>Sampah Berserakan</td>
-                <td>09 Juni 2025</td>
-                <td><span class="status baru">Baru</span></td>
-            </tr>
+                                </span>
+                            @else
+                                <span class="status baru">
 
-        </tbody>
+                                    Belum Dibaca
 
-    </table>
+                                </span>
+                            @endif
 
-</section>
+                        </td>
 
-<!-- Notifikasi -->
-<div id="notification" class="notification"></div>
+                    </tr>
+
+                @empty
+
+                    <tr>
+
+                        <td colspan="5" style="text-align:center">
+
+                            Belum ada aspirasi.
+
+                        </td>
+
+                    </tr>
+                @endforelse
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+    <!-- Notifikasi -->
+    <div id="notification" class="notification"></div>
 
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/admin/dashboard.js') }}"></script>
+    <script src="{{ asset('js/admin/dashboard.js') }}"></script>
 @endpush

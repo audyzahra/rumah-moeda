@@ -12,6 +12,7 @@ use App\Http\Controllers\FaqController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PengaturanController;
+use App\Http\Controllers\Admin\AspirasiController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\OrganizationStructureController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
@@ -180,8 +181,20 @@ Route::middleware(['auth', 'admin'])
         */
 
         // Aspirasi
-        Route::view('/aspirasi', 'admin.aspirasi.aspirasi')
-            ->name('aspirasi.index');
+        Route::get('/aspirasi', [AspirasiController::class,'index'])
+    ->name('aspirasi.index');
+
+        Route::put('/aspirasi/{aspirasi}/read',
+            [AspirasiController::class,'markAsRead'])
+            ->name('aspirasi.read');
+
+        Route::delete('/aspirasi/{aspirasi}',
+            [AspirasiController::class,'destroy'])
+            ->name('aspirasi.destroy');
+
+        Route::delete('/aspirasi',
+            [AspirasiController::class,'bulkDelete'])
+            ->name('aspirasi.bulkDelete');
 
         // Berita
         Route::get('/berita', [NewsController::class, 'index'])
