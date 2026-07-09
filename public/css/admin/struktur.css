@@ -854,6 +854,9 @@ textarea.form-control {
     transition: all 0.4s ease;
     box-shadow: 0 8px 30px rgba(0,0,0,0.15);
     max-width: 400px;
+    gap: 10px;
+    display: flex;
+    align-items: center;
 }
 
 .notification.show {

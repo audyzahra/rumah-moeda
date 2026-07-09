@@ -39,6 +39,8 @@ setTimeout(() => {
 
 function showDetail(button) {
 
+    console.log(button.dataset);
+
     document.getElementById('detail_photo').src = button.dataset.photo;
     document.getElementById('detail_title').textContent = button.dataset.title;
     document.getElementById('detail_date').textContent = button.dataset.date;
@@ -46,7 +48,44 @@ function showDetail(button) {
 
     document.getElementById('detailModal').style.display = 'flex';
 }
-
 function closeDetailModal() {
     document.getElementById('detailModal').style.display = 'none';
+}
+
+/* ==========================================
+   LIVE SEARCH
+========================================== */
+
+const searchInput = document.getElementById("searchInput");
+
+if (searchInput) {
+
+    searchInput.addEventListener("input", function () {
+
+        const keyword = this.value.toLowerCase().trim();
+
+        const cards = document.querySelectorAll(".dokumentasi-card");
+
+        cards.forEach(card => {
+
+            const title = card.dataset.title;
+            const description = card.dataset.description;
+
+            if (
+                title.includes(keyword) ||
+                description.includes(keyword)
+            ) {
+
+                card.style.display = "";
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+    });
+
 }
