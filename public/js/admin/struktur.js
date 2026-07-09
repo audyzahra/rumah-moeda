@@ -1,25 +1,23 @@
+// =========================
+// Modal Edit
+// =========================
 document.querySelectorAll('.btn-edit').forEach(button => {
 
     button.addEventListener('click', function(){
 
         let id = this.dataset.id;
 
-
         document.getElementById('editName').value =
             this.dataset.name;
-
 
         document.getElementById('editPosition').value =
             this.dataset.position;
 
-
         document.getElementById('editOrder').value =
             this.dataset.order;
 
-
         document.getElementById('editDescription').value =
             this.dataset.description ?? '';
-
 
         document.getElementById('editForm').action =
             "/admin/struktur/" + id;
@@ -28,28 +26,21 @@ document.querySelectorAll('.btn-edit').forEach(button => {
 
 });
 
-setTimeout(() => {
-    const alert = document.querySelector('.alert-success');
-
-    if (alert) {
-        alert.style.transition = "all .5s ease";
-        alert.style.opacity = "0";
-        alert.style.transform = "translateY(-10px)";
-
-        setTimeout(() => {
-            alert.remove();
-        }, 500);
-    }
-}, 3000);
-
-// Untuk bagian Search
+// =========================
+// Search
+// =========================
 const searchInput = document.getElementById('searchInput');
 const filterForm = document.getElementById('filterForm');
 
-searchInput.addEventListener('input', function () {
-    filterForm.submit();
-});
+if (searchInput && filterForm) {
+    searchInput.addEventListener('input', function () {
+        filterForm.submit();
+    });
+}
 
+// =========================
+// Notification
+// =========================
 function showNotification(message, type = "success") {
 
     const notification = document.getElementById("notification");
@@ -72,3 +63,24 @@ function showNotification(message, type = "success") {
     }, 3000);
 }
 
+// =========================
+// Flash Message Laravel
+// =========================
+document.addEventListener("DOMContentLoaded", () => {
+
+    const notif = document.getElementById("notification");
+
+    if (!notif) return;
+
+    const success = notif.dataset.success;
+    const error = notif.dataset.error;
+
+    if (success) {
+        showNotification(success, "success");
+    }
+
+    if (error) {
+        showNotification(error, "error");
+    }
+
+});
