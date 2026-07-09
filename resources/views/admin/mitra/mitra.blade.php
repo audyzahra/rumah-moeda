@@ -69,9 +69,7 @@
                 @if(isset($mitra) && $mitra->count() > 0)
                     @foreach($mitra as $item)
                         <div class="mitra-card">
-                            <span class="badge-order">
-                                #{{ $item->display_order ?? 0 }}
-                            </span>
+                    
 
                             <div class="foto-mitra">
                                 @if($item->logo)
@@ -336,13 +334,19 @@
 
 <!-- ===== NOTIFIKASI ===== -->
 <div id="notification" class="notification"></div>
-@if(session('success'))
-        showNotification('{{ session('success') }}', 'success');
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    @if(session('success'))
+        showNotification("{{ session('success') }}", "success");
     @endif
 
     @if(session('error'))
-        showNotification('{{ session('error') }}', 'error');
+        showNotification("{{ session('error') }}", "error");
     @endif
+
+});
+</script>
 @endsection
 
 @push('scripts')
