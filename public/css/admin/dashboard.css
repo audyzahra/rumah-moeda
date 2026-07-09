@@ -71,23 +71,30 @@ TOPBAR
 /*========================
 ANALYTICS
 =========================*/
-.analytics {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 225px));
-    justify-content: start;
-    gap: 10px;
-    margin-bottom: 20px;
+.analytics{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:20px;
 }
 
-.card {
-    background: #fff;
-    border-radius: 20px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.card{
+    background:#fff;
+    border-radius:18px;
+    padding:18px 15px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    min-height:145px;
+
+    text-align:center;
+
+    border:1px solid #ececec;
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+    transition:.3s;
 }
 
 .card:hover {
@@ -95,16 +102,19 @@ ANALYTICS
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
-.icon {
-    width: 70px;
-    height: 70px;
-    border-radius: 18px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    font-size: 26px;
-    flex-shrink: 0;
+.icon{
+    width:56px;
+    height:56px;
+    border-radius:16px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:24px;
+    color:#fff;
+
+    margin-bottom:12px;
 }
 
 .blue {
@@ -123,20 +133,24 @@ ANALYTICS
     background: #f59e0b;
 }
 
-.card h4 {
-    color: #777;
-    margin-bottom: 6px;
-    font-size: 14px;
+.card h4{
+    font-size:13px;
+    font-weight:600;
+    color:#666;
+    margin-bottom:8px;
 }
 
-.card h2 {
-    font-size: 34px;
-    color: #222;
+.card h2{
+    font-size:30px;
+    font-weight:700;
+    color:#1f2937;
+    margin:0 0 8px;
+    line-height:1;
 }
 
-.card small {
-    color: #888;
-    font-size: 13px;
+.card small{
+    font-size:13px;
+    color:#888;
 }
 
 /*========================
@@ -405,4 +419,19 @@ tbody tr:hover {
         font-size: 11px;
         padding: 4px 10px;
     }
+}
+.btn-kelola{
+    display:inline-block;
+    background:#EEDCC9;
+    color:#000;
+    text-decoration:none;
+    padding:12px 18px;
+    border-radius:10px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn-kelola:hover{
+    background:#dccbb8;
+    transform:translateY(-2px);
 }
