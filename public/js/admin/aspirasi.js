@@ -149,36 +149,38 @@ function showDetail(button) {
     };
 
     detailBody.innerHTML = `
-        <div class="detail-item">
-            <strong>Nama</strong><br>
-            ${data.name}
-        </div>
+    <div class="detail-item">
+        <div class="detail-label">Nama</div>
+        <div class="detail-value">${data.name}</div>
+    </div>
 
-        <div class="detail-item">
-            <strong>Email</strong><br>
-            ${data.email}
-        </div>
+    <div class="detail-item">
+        <div class="detail-label">Email</div>
+        <div class="detail-value">${data.email}</div>
+    </div>
 
-        <div class="detail-item">
-            <strong>No HP</strong><br>
-            ${data.phone || "-"}
-        </div>
+    <div class="detail-item">
+        <div class="detail-label">No HP</div>
+        <div class="detail-value">${data.phone || "-"}</div>
+    </div>
 
-        <div class="detail-item">
-            <strong>Status</strong><br>
+    <div class="detail-item">
+        <div class="detail-label">Status</div>
+        <div class="detail-value">
             ${data.status == "1" ? "Dibaca" : "Belum Dibaca"}
         </div>
+    </div>
 
-        <div class="detail-item">
-            <strong>Tanggal</strong><br>
-            ${data.created_at}
-        </div>
+    <div class="detail-item">
+        <div class="detail-label">Tanggal</div>
+        <div class="detail-value">${data.created_at}</div>
+    </div>
 
-        <div class="detail-item">
-            <strong>Pesan</strong><br><br>
-            ${data.message}
-        </div>
-    `;
+    <div class="detail-item">
+        <div class="detail-label">Pesan</div>
+        <div class="detail-value">${data.message}</div>
+    </div>
+`;
 
     openModal(detailModal);
 }
