@@ -12,12 +12,12 @@
 
         {{-- ===================== ALERT ===================== --}}
 
-        @if(session('success'))
-    <div id="notification" class="notification success show">
-        <i class="fa-solid fa-circle-check"></i>
-        <span>{{ session('success') }}</span>
-    </div>
-@endif
+        @if (session('success'))
+            <div id="notification" class="notification success show">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>{{ session('success') }}</span>
+            </div>
+        @endif
 
         @if ($errors->any())
 
@@ -125,11 +125,12 @@
         <div class="berita-grid">
 
             @forelse($news as $item)
-                <div class="berita-card" data-title="{{ strtolower($item->title) }}">
+                <div class="berita-card" data-title="{{ strtolower($item->title) }}"
+                    data-category="{{ $item->category_id }}">
                     <div class="berita-image">
 
                         @if ($item->thumbnail)
-                            <img src="{{ asset($item->thumbnail) }}" alt="{{ $item->title }}">
+                            <img src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}">
                         @else
                             <img src="{{ asset('assets/no-image.png') }}" alt="No Image">
                         @endif

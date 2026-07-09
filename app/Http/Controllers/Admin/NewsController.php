@@ -7,7 +7,7 @@ use App\Models\News;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class NewsController extends Controller
@@ -24,11 +24,8 @@ class NewsController extends Controller
         $categories = Category::orderBy('name')->get();
 
         $totalNews = $news->count();
-
         $totalPublished = $news->count();
-
         $totalDraft = 0;
-
         $totalCategory = $categories->count();
 
         return view('admin.berita.berita', compact(
@@ -58,17 +55,11 @@ class NewsController extends Controller
 
         if ($request->hasFile('thumbnail')) {
 
-            $file = $request->file('thumbnail');
-
-            $filename = time() . '_' . Str::slug($request->title) . '.' . $file->getClientOriginalExtension();
-
-            $file->move(public_path('uploads/news'), $filename);
-
-            $thumbnail = 'uploads/news/' . $filename;
+            $thumbnail = $request->file('thumbnail')
+                ->store('news', 'public');
         }
 
         News::create([
-
             'title'         => $request->title,
             'thumbnail'     => $thumbnail,
             'content'       => $request->content,
@@ -76,7 +67,6 @@ class NewsController extends Controller
             'slug'          => Str::slug($request->title),
             'publish_date'  => $request->publish_date,
             'author_id'     => Auth::id(),
-
         ]);
 
         return redirect()
@@ -92,7 +82,7 @@ class NewsController extends Controller
         $beritum = News::findOrFail($id);
 
         $request->validate([
-            'title'         => 'required|max:255',
+            'title'         => 'required|string|max:255',
             'content'       => 'required',
             'category_id'   => 'required|exists:categories,id',
             'publish_date'  => 'required|date',
@@ -103,19 +93,17 @@ class NewsController extends Controller
 
         if ($request->hasFile('thumbnail')) {
 
-            // Hapus gambar lama
-            if ($thumbnail && File::exists(public_path($thumbnail))) {
-                File::delete(public_path($thumbnail));
+            // Hapus thumbnail lama
+            if (
+                $thumbnail &&
+                Storage::disk('public')->exists($thumbnail)
+            ) {
+                Storage::disk('public')->delete($thumbnail);
             }
 
-            // Upload gambar baru
-            $file = $request->file('thumbnail');
-
-            $filename = time() . '_' . Str::slug($request->title) . '.' . $file->getClientOriginalExtension();
-
-            $file->move(public_path('uploads/news'), $filename);
-
-            $thumbnail = 'uploads/news/' . $filename;
+            // Upload thumbnail baru
+            $thumbnail = $request->file('thumbnail')
+                ->store('news', 'public');
         }
 
         $beritum->update([
@@ -139,8 +127,12 @@ class NewsController extends Controller
     {
         $news = News::findOrFail($id);
 
-        if ($news->thumbnail && File::exists(public_path($news->thumbnail))) {
-            File::delete(public_path($news->thumbnail));
+        // Hapus thumbnail dari storage
+        if (
+            $news->thumbnail &&
+            Storage::disk('public')->exists($news->thumbnail)
+        ) {
+            Storage::disk('public')->delete($news->thumbnail);
         }
 
         $news->delete();

@@ -379,13 +379,24 @@ function filterBerita() {
 
     const keyword = searchInput.value.toLowerCase().trim();
 
+    const selectedCategory = categoryFilter.value;
+
     const cards = document.querySelectorAll(".berita-card");
 
     cards.forEach(function (card) {
 
         const title = card.dataset.title || "";
 
-        if (title.includes(keyword)) {
+        const category = card.dataset.category || "";
+
+        const matchTitle =
+            title.includes(keyword);
+
+        const matchCategory =
+            selectedCategory === "" ||
+            category === selectedCategory;
+
+        if (matchTitle && matchCategory) {
 
             card.style.display = "";
 
