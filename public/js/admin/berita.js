@@ -410,3 +410,25 @@ if (categoryFilter) {
     categoryFilter.addEventListener("change", filterBerita);
 
 }
+
+/* ==========================================
+   AUTO HIDE NOTIFICATION
+========================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const notification = document.getElementById("notification");
+
+    if (!notification) return;
+
+    setTimeout(() => {
+
+        notification.classList.remove("show");
+
+        setTimeout(() => {
+            notification.remove();
+        }, 350);
+
+    }, 3000);
+
+});

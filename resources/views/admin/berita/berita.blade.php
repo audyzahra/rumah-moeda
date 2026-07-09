@@ -12,12 +12,12 @@
 
         {{-- ===================== ALERT ===================== --}}
 
-        @if (session('success'))
-            <div class="alert-success">
-                <i class="fa-solid fa-circle-check"></i>
-                {{ session('success') }}
-            </div>
-        @endif
+        @if(session('success'))
+    <div id="notification" class="notification success show">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>{{ session('success') }}</span>
+    </div>
+@endif
 
         @if ($errors->any())
 

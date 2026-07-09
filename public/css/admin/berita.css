@@ -1202,7 +1202,7 @@ input[type="file"]:hover{
 /* ===== NOTIFICATION ===== */
 
 .notification{
-
+    display:flex;
     position:fixed;
 
     top:25px;
