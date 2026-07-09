@@ -3,21 +3,21 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TentangController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\AspirasiController;
 use App\Http\Controllers\Admin\NewsController;
-use App\Http\Controllers\Admin\OrganizationStructureController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
-use App\Http\Controllers\Admin\PartnerController;   
+use App\Http\Controllers\Admin\OrganizationStructureController;
+use App\Http\Controllers\Admin\PartnerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,15 +36,37 @@ Route::get('/hubungi', [ContactController::class, 'index'])
 Route::post('/hubungi', [ContactController::class, 'store'])
     ->name('hubungi.store');
 
+
 /*
 |--------------------------------------------------------------------------
-| User Routes
+| Authenticated User
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
-    // Berita
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard User
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/dashboard', function () {
+
+        if (auth()->user()->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return app(HomeController::class)->index();
+
+    })->name('dashboard');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Berita
+    |--------------------------------------------------------------------------
+    */
+
     Route::get('/berita', [BeritaController::class, 'index'])
         ->name('berita.index');
 
@@ -54,37 +76,29 @@ Route::middleware('auth')->group(function () {
     Route::post('/berita/store', [BeritaController::class, 'store'])
         ->name('berita.store');
 
-    // Gallery
+    /*
+    |--------------------------------------------------------------------------
+    | Galeri
+    |--------------------------------------------------------------------------
+    */
+
     Route::get('/galeri', [GalleryController::class, 'index'])
         ->name('galeri.index');
 
-    // FAQ
+    /*
+    |--------------------------------------------------------------------------
+    | FAQ
+    |--------------------------------------------------------------------------
+    */
+
     Route::get('/pertanyaan', [FaqController::class, 'index'])
         ->name('faq.index');
 
-});
-
-/*
-|--------------------------------------------------------------------------
-| User Dashboard
-|--------------------------------------------------------------------------
-*/
-
-Route::middleware(['auth', 'verified'])->group(function () {
-
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
-});
-
-/*
-|--------------------------------------------------------------------------
-| Profile
-|--------------------------------------------------------------------------
-*/
-
-Route::middleware('auth')->group(function () {
+    /*
+    |--------------------------------------------------------------------------
+    | Profile
+    |--------------------------------------------------------------------------
+    */
 
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
@@ -94,6 +108,12 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Logout Manual
+    |--------------------------------------------------------------------------
+    */
 
     Route::get('/logout-login', function () {
 
@@ -105,10 +125,10 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('login');
 
     })->name('logout.login');
-
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
+
 
 /*
 |--------------------------------------------------------------------------
@@ -116,8 +136,8 @@ require __DIR__.'/auth.php';
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'admin'])
-    ->prefix('admin')
+Route::prefix('admin')
+    ->middleware(['auth', 'admin'])
     ->name('admin.')
     ->group(function () {
 
@@ -167,38 +187,41 @@ Route::middleware(['auth', 'admin'])
         */
 
         Route::resource('struktur', OrganizationStructureController::class);
-         /*
+
+        /*
         |--------------------------------------------------------------------------
         | Mitra
         |--------------------------------------------------------------------------
         */
+
         Route::resource('mitra', PartnerController::class);
 
         /*
         |--------------------------------------------------------------------------
-        | Menu Admin
+        | Aspirasi
         |--------------------------------------------------------------------------
         */
 
-        // Aspirasi
-        Route::get('/aspirasi', [AspirasiController::class,'index'])
-    ->name('aspirasi.index');
+        Route::get('/aspirasi', [AspirasiController::class, 'index'])
+            ->name('aspirasi.index');
 
-        Route::put('/aspirasi/{aspirasi}/read',
-            [AspirasiController::class,'markAsRead'])
+        Route::put('/aspirasi/{aspirasi}/read', [AspirasiController::class, 'markAsRead'])
             ->name('aspirasi.read');
 
-        Route::delete('/aspirasi/{aspirasi}',
-            [AspirasiController::class,'destroy'])
+        Route::delete('/aspirasi/{aspirasi}', [AspirasiController::class, 'destroy'])
             ->name('aspirasi.destroy');
 
-        Route::delete('/aspirasi',
-            [AspirasiController::class,'bulkDelete'])
+        Route::delete('/aspirasi', [AspirasiController::class, 'bulkDelete'])
             ->name('aspirasi.bulkDelete');
 
-        // Berita
+        /*
+        |--------------------------------------------------------------------------
+        | Berita
+        |--------------------------------------------------------------------------
+        */
+
         Route::get('/berita', [NewsController::class, 'index'])
-                ->name('berita.index');
+            ->name('berita.index');
 
         Route::post('/berita', [NewsController::class, 'store'])
             ->name('berita.store');
@@ -209,9 +232,14 @@ Route::middleware(['auth', 'admin'])
         Route::delete('/berita/{id}', [NewsController::class, 'destroy'])
             ->name('berita.destroy');
 
-        // Gallery
+        /*
+        |--------------------------------------------------------------------------
+        | Galeri
+        |--------------------------------------------------------------------------
+        */
+
         Route::get('/gallery', [AdminGalleryController::class, 'index'])
-        ->name('gallery.index');
+            ->name('gallery.index');
 
         Route::post('/gallery', [AdminGalleryController::class, 'store'])
             ->name('gallery.store');
@@ -222,7 +250,12 @@ Route::middleware(['auth', 'admin'])
         Route::delete('/gallery/{gallery}', [AdminGalleryController::class, 'destroy'])
             ->name('gallery.destroy');
 
-        // FAQ
+        /*
+        |--------------------------------------------------------------------------
+        | FAQ
+        |--------------------------------------------------------------------------
+        */
+
         Route::get('/faq', [AdminFaqController::class, 'index'])
             ->name('faq.index');
 
@@ -234,5 +267,4 @@ Route::middleware(['auth', 'admin'])
 
         Route::delete('/faq/{faq}', [AdminFaqController::class, 'destroy'])
             ->name('faq.destroy');
-
     });
