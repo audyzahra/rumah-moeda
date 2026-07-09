@@ -136,15 +136,13 @@ function closeFormModal() {
 }
 
 setTimeout(() => {
-    const alert = document.querySelector('.alert-success');
+    const notification = document.getElementById('notification');
 
-    if (alert) {
-        alert.style.transition = "all .5s ease";
-        alert.style.opacity = "0";
-        alert.style.transform = "translateY(-10px)";
+    if (notification) {
+        notification.classList.remove('show');
 
         setTimeout(() => {
-            alert.remove();
-        }, 500);
+            notification.remove();
+        }, 350);
     }
 }, 3000);

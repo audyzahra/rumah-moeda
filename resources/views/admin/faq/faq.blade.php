@@ -9,8 +9,9 @@
 @section('content')
 
 @if(session('success'))
-    <div class="alert-success">
-        {{ session('success') }}
+    <div id="notification" class="notification success show">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>{{ session('success') }}</span>
     </div>
 @endif
 
@@ -37,7 +38,6 @@
     <thead>
 
         <tr>
-            <th>No</th>
             <th>Urutan</th>
             <th>Pertanyaan</th>
             <th>Jawaban</th>
@@ -51,8 +51,6 @@
     @forelse($faqs as $faq)
 
         <tr>
-
-            <td>{{ $loop->iteration }}</td>
 
             <td>{{ $faq->display_order }}</td>
 
