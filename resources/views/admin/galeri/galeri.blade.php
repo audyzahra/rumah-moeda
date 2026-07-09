@@ -131,6 +131,18 @@
 
                                 <button
                                     type="button"
+                                    class="btn-detail"
+                                    data-photo="{{ asset('storage/'.$gallery->photo) }}"
+                                    data-title="{{ $gallery->title }}"
+                                    data-date="{{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}"
+                                    data-description="{{ $gallery->description }}"
+                                    onclick="showDetail(this)">
+
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+
+                                <button
+                                    type="button"
                                     class="btn-edit"
                                     onclick="editGallery(
                                         '{{ $gallery->id }}',
@@ -305,6 +317,65 @@
             </form>
 
         </div>
+    </div>
+
+
+    <!-- Modal Detail -->
+    <div id="detailModal" class="modal" style="display:none;">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3>Detail Dokumentasi</h3>
+
+                <button
+                    type="button"
+                    class="close-modal"
+                    onclick="closeDetailModal()">
+
+                    &times;
+
+                </button>
+
+            </div>
+
+            <div class="detail-content">
+
+                <img
+                    id="detail_photo"
+                    class="detail-image"
+                    src=""
+                    alt="">
+
+                <div class="detail-item">
+
+                    <label>Judul</label>
+
+                    <p id="detail_title"></p>
+
+                </div>
+
+                <div class="detail-item">
+
+                    <label>Tanggal</label>
+
+                    <p id="detail_date"></p>
+
+                </div>
+
+                <div class="detail-item">
+
+                    <label>Deskripsi</label>
+
+                    <p id="detail_description"></p>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
 
