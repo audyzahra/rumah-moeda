@@ -8,11 +8,11 @@
 
 @section('content')
 
-@if(session('success'))
+<!-- @if(session('success'))
     <div class="alert-success">
         {{ session('success') }}
     </div>
-@endif
+@endif -->
 
 <div class="wrapper">
 
@@ -511,6 +511,21 @@
 
         </div>
 
+        <!-- ===== NOTIFIKASI ===== -->
+<div id="notification" class="notification"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    @if(session('success'))
+        showNotification("{{ session('success') }}", "success");
+    @endif
+
+    @if(session('error'))
+        showNotification("{{ session('error') }}", "error");
+    @endif
+
+});
+</script>
 @endsection
 
 @push('scripts')

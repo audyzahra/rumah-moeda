@@ -136,7 +136,17 @@ function updateCheckAll() {
    DETAIL ASPIRASI
 ========================================== */
 
-function showDetail(data) {
+function showDetail(button) {
+
+    const data = {
+        id: button.dataset.id,
+        name: button.dataset.name,
+        email: button.dataset.email,
+        phone: button.dataset.phone,
+        message: button.dataset.message,
+        status: button.dataset.status,
+        created_at: button.dataset.created
+    };
 
     detailBody.innerHTML = `
         <div class="detail-item">
@@ -151,12 +161,12 @@ function showDetail(data) {
 
         <div class="detail-item">
             <strong>No HP</strong><br>
-            ${data.phone ?? "-"}
+            ${data.phone || "-"}
         </div>
 
         <div class="detail-item">
             <strong>Status</strong><br>
-            ${data.status ? "Dibaca" : "Belum Dibaca"}
+            ${data.status == "1" ? "Dibaca" : "Belum Dibaca"}
         </div>
 
         <div class="detail-item">
@@ -171,8 +181,8 @@ function showDetail(data) {
     `;
 
     openModal(detailModal);
-
 }
+
 /* ==========================================
    GET SELECTED IDS
 ========================================== */

@@ -46,16 +46,28 @@ setTimeout(() => {
 const searchInput = document.getElementById('searchInput');
 const filterForm = document.getElementById('filterForm');
 
-let timer;
-
 searchInput.addEventListener('input', function () {
-
-    clearTimeout(timer);
-
-    timer = setTimeout(() => {
-        filterForm.submit();
-    }, 400); // tunggu 400ms setelah berhenti mengetik
-
+    filterForm.submit();
 });
 
+function showNotification(message, type = "success") {
 
+    const notification = document.getElementById("notification");
+
+    let icon = "";
+
+    if(type === "success"){
+        icon = '<i class="fa-solid fa-circle-check"></i>';
+    }else if(type === "error"){
+        icon = '<i class="fa-solid fa-circle-xmark"></i>';
+    }else{
+        icon = '<i class="fa-solid fa-circle-info"></i>';
+    }
+
+    notification.innerHTML = `${icon}<span>${message}</span>`;
+    notification.className = `notification ${type} show`;
+
+    setTimeout(() => {
+        notification.classList.remove("show");
+    }, 3000);
+}
