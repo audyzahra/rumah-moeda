@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class PengaturanController extends Controller
 {
@@ -63,85 +64,81 @@ class PengaturanController extends Controller
     return redirect()
         ->route('admin.pengaturan')
         ->with('success', 'Visi dan Misi berhasil diperbarui.');
-}
-    public function updateLogo(Request $request)
-{
-    $request->validate([
-        'website_logo' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048',
-    ]);
-
-    $setting = Setting::first();
-
-    if (!$setting) {
-        return back()->with('error', 'Data pengaturan tidak ditemukan.');
     }
+        public function updateLogo(Request $request)
+        {
+            $request->validate([
+                'website_logo' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048',
+            ]);
 
-    if ($request->hasFile('website_logo')) {
+            $setting = Setting::first();
 
-        // Hapus logo lama jika ada
-        if (
-            $setting->website_logo &&
-            File::exists(public_path($setting->website_logo))
-        ) {
-            File::delete(public_path($setting->website_logo));
+            if (!$setting) {
+                return back()->with('error', 'Data pengaturan tidak ditemukan.');
+            }
+
+            if ($request->hasFile('website_logo')) {
+
+                // Hapus logo lama
+                if (
+                    $setting->website_logo &&
+                    Storage::disk('public')->exists($setting->website_logo)
+                ) {
+                    Storage::disk('public')->delete($setting->website_logo);
+                }
+
+                // Upload logo baru ke storage/app/public/logo
+                $path = $request->file('website_logo')
+                                ->store('logo', 'public');
+
+                // Simpan path ke database
+                $setting->update([
+                    'website_logo' => $path,
+                ]);
+            }
+
+            return redirect()
+                ->route('admin.pengaturan')
+                ->with('success', 'Logo berhasil diperbarui.');
         }
 
-        // Upload logo baru
-        $file = $request->file('website_logo');
+        public function updateProfile(Request $request)
+        {
+            $request->validate([
+                'website_name' => 'required|max:255',
+                'website_description' => 'nullable',
+                'phone_number' => 'nullable|max:50',
+                'email' => 'nullable|email|max:255',
+                'fax_number' => 'nullable|max:50',
+                'address' => 'nullable',
+                'instagram_url' => 'nullable|max:255',
+                'facebook_url' => 'nullable|max:255',
+                'tiktok_url' => 'nullable|max:255',
+            ]);
 
-        $filename = 'logo_' . time() . '.' . $file->getClientOriginalExtension();
+            $setting = Setting::first();
 
-        $file->move(
-            public_path('uploads'),
-            $filename
-        );
+            if (!$setting) {
+                $setting = new Setting();
+            }
 
-        // Simpan path ke database
-        $setting->update([
-            'website_logo' => 'uploads/' . $filename,
-        ]);
-    }
+            $setting->website_name = $request->website_name;
+            $setting->website_description = $request->website_description;
+            $setting->phone_number = $request->phone_number;
+            $setting->email = $request->email;
+            $setting->fax_number = $request->fax_number;
+            $setting->address = $request->address;
+            $setting->instagram_url = $request->instagram_url;
+            $setting->facebook_url = $request->facebook_url;
+            $setting->tiktok_url = $request->tiktok_url;
 
-    return redirect()
-        ->route('admin.pengaturan')
-        ->with('success', 'Logo berhasil diperbarui.');
-}
-    public function updateProfile(Request $request)
-    {
-        $request->validate([
-            'website_name' => 'required|max:255',
-            'website_description' => 'nullable',
-            'phone_number' => 'nullable|max:50',
-            'email' => 'nullable|email|max:255',
-            'fax_number' => 'nullable|max:50',
-            'address' => 'nullable',
-            'instagram_url' => 'nullable|max:255',
-            'facebook_url' => 'nullable|max:255',
-            'tiktok_url' => 'nullable|max:255',
-        ]);
+            $setting->save();
 
-        $setting = Setting::first();
-
-        if (!$setting) {
-            $setting = new Setting();
+            return redirect()
+                ->route('admin.pengaturan')
+                ->with('success', 'Profile perusahaan berhasil diperbarui.');
         }
 
-        $setting->website_name = $request->website_name;
-        $setting->website_description = $request->website_description;
-        $setting->phone_number = $request->phone_number;
-        $setting->email = $request->email;
-        $setting->fax_number = $request->fax_number;
-        $setting->address = $request->address;
-        $setting->instagram_url = $request->instagram_url;
-        $setting->facebook_url = $request->facebook_url;
-        $setting->tiktok_url = $request->tiktok_url;
-
-        $setting->save();
-
-        return redirect()
-            ->route('admin.pengaturan')
-            ->with('success', 'Profile perusahaan berhasil diperbarui.');
-    }
     public function updateHero(Request $request)
     {
         $request->validate([
@@ -156,23 +153,19 @@ class PengaturanController extends Controller
 
         if ($request->hasFile('hero_image')) {
 
-            // hapus gambar lama
+            // Hapus hero lama jika ada
             if (
-                $setting->hero_image &&
-                file_exists(public_path($setting->hero_image))
+                !empty($setting->hero_image) &&
+                Storage::disk('public')->exists($setting->hero_image)
             ) {
-                unlink(public_path($setting->hero_image));
+                Storage::disk('public')->delete($setting->hero_image);
             }
 
-            $file = $request->file('hero_image');
+            // Simpan hero baru ke storage/app/public/hero
+            $path = $request->file('hero_image')->store('hero', 'public');
 
-            $filename = time().'_'.$file->getClientOriginalName();
-
-            // simpan ke public/assets/hero
-            $file->move(public_path('assets/hero'), $filename);
-
-            // simpan path ke database
-            $setting->hero_image = 'assets/hero/'.$filename;
+            // Simpan path ke database
+            $setting->hero_image = $path;
         }
 
         $setting->save();

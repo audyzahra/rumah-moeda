@@ -157,22 +157,59 @@
             </div>
 
             <!-- ===== PAGINATION ===== -->
-            @if(isset($mitra) && $mitra->count() > 0)
-                <div class="pagination-section">
-                    <div class="info-data">
-                        Menampilkan
-                        {{ $mitra->firstItem() ?? 0 }}
-                        -
-                        {{ $mitra->lastItem() ?? 0 }}
-                        dari
-                        {{ $mitra->total() }}
-                        mitra
-                    </div>
-                    <div class="pagination-controls">
-                        {{ $mitra->withQueryString()->links() }}
-                    </div>
-                </div>
-            @endif
+                <div class="pagination-controls">
+    @if ($mitra->hasPages())
+        <nav aria-label="Pagination">
+            <ul class="pagination">
+
+                {{-- Previous --}}
+                @if ($mitra->onFirstPage())
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo; Previous</span>
+                    </li>
+                @else
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ $mitra->previousPageUrl() }}">
+                            &laquo; Previous
+                        </a>
+                    </li>
+                @endif
+
+                {{-- Nomor Halaman --}}
+                @foreach ($mitra->getUrlRange(1, $mitra->lastPage()) as $page => $url)
+                    @if ($page == $mitra->currentPage())
+                        <li class="page-item active">
+                            <span class="page-link">{{ $page }}</span>
+                        </li>
+                    @else
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="{{ $url }}">
+                                {{ $page }}
+                            </a>
+                        </li>
+                    @endif
+                @endforeach
+
+                {{-- Next --}}
+                @if ($mitra->hasMorePages())
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ $mitra->nextPageUrl() }}">
+                            Next &raquo;
+                        </a>
+                    </li>
+                @else
+                    <li class="page-item disabled">
+                        <span class="page-link">Next &raquo;</span>
+                    </li>
+                @endif
+
+            </ul>
+        </nav>
+    @endif
+</div>
         </section>
 
     </main>

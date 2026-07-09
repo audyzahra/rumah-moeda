@@ -222,11 +222,7 @@
 
                         <div class="logo-current">
 
-                            @if ($setting && $setting->website_logo)
-                                <img src="{{ asset($setting->website_logo) }}" alt="Logo Rumah Moeda">
-                            @else
-                                <p>Logo belum tersedia.</p>
-                            @endif
+                            <img src="{{ Storage::url($setting->website_logo) }}" alt="Logo Rumah Moeda">
 
                         </div>
 
@@ -510,11 +506,10 @@
                         <div class="hero-current">
 
                             @if (!empty($setting->hero_image))
-                                <img src="{{ asset($setting->hero_image) }}" alt="Hero Image">
+                                <img src="{{ Storage::url($setting->hero_image) }}" alt="Hero Image">
                             @else
                                 <p>Belum ada gambar hero.</p>
                             @endif
-
                         </div>
 
                     </div>
