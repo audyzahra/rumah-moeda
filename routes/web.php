@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\OrganizationStructureController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
+use App\Http\Controllers\Admin\PartnerController;   
 
 /*
 |--------------------------------------------------------------------------
@@ -166,6 +167,12 @@ Route::middleware(['auth', 'admin'])
         */
 
         Route::resource('struktur', OrganizationStructureController::class);
+         /*
+        |--------------------------------------------------------------------------
+        | Mitra
+        |--------------------------------------------------------------------------
+        */
+        Route::resource('mitra', PartnerController::class);
 
         /*
         |--------------------------------------------------------------------------
@@ -214,10 +221,6 @@ Route::middleware(['auth', 'admin'])
 
         Route::delete('/gallery/{gallery}', [AdminGalleryController::class, 'destroy'])
             ->name('gallery.destroy');
-
-        // Mitra
-        Route::view('/mitra', 'admin.mitra.mitra')
-            ->name('mitra.index');
 
         // FAQ
         Route::get('/faq', [AdminFaqController::class, 'index'])

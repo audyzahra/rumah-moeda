@@ -192,7 +192,7 @@
 
                 @foreach ($documentations as $documentation)
                     <div class="gallery-item {{ $loop->first ? 'gallery-large' : '' }}">
-                        <img src="{{ asset($documentation->photo) }}" alt="{{ $documentation->title }}">
+                        <img src="{{ asset('storage/'.$documentation->photo) }}" alt="{{ $documentation->title }}">
                     </div>
                 @endforeach
 

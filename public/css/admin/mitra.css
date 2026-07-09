@@ -3,83 +3,9 @@
    Manajemen Mitra
    ============================== */
 
-/* ===== BADGE DI SIDEBAR ===== */
-.menu li a .badge {
-    margin-left: auto;
-    background: #ef4444;
-    color: white;
-    padding: 2px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-}
-
-.menu li.logout {
-    margin-top: 20px;
-    border-top: 2px solid rgba(0,0,0,0.08);
-    padding-top: 12px;
-}
-
-.menu li.logout a:hover {
-    background: #fee2e2;
-    color: #dc2626;
-}
-
-/* ===== STATISTIK ===== */
-.mitra-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.stat-card {
-    background: white;
-    border-radius: 16px;
-    padding: 20px 25px;
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-    transition: all 0.3s ease;
-}
-
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-}
-
-.stat-icon {
-    width: 55px;
-    height: 55px;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    color: white;
-    flex-shrink: 0;
-}
-
-.stat-icon.total { background: #3b82f6; }
-.stat-icon.aktif { background: #10b981; }
-.stat-icon.nonaktif { background: #f59e0b; }
-.stat-icon.order { background: #8b5cf6; }
-
-.stat-card h4 {
-    color: #888;
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
-.stat-card h2 {
-    font-size: 28px;
-    font-weight: 700;
-    color: #1a1a2e;
-}
-
-/* ===== FILTER ===== */
+/* ========================================
+   FILTER SECTION
+   ======================================== */
 .filter-section {
     background: white;
     border-radius: 16px;
@@ -93,7 +19,7 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.06);
 }
 
-.filter-left {
+.filter-form {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
@@ -106,7 +32,7 @@
     border-radius: 10px;
     font-size: 14px;
     min-width: 200px;
-    transition: 0.3s;
+    transition: all 0.3s ease;
     flex: 1;
 }
 
@@ -123,17 +49,19 @@
     font-size: 14px;
     background: white;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
 }
 
 .filter-select:focus {
     outline: none;
     border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
 }
 
 .filter-right {
     display: flex;
     gap: 10px;
+    align-items: center;
 }
 
 .btn-tambah {
@@ -144,16 +72,21 @@
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 8px;
+    white-space: nowrap;
 }
 
 .btn-tambah:hover {
     background: #2563eb;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+}
+
+.btn-tambah:active {
+    transform: translateY(0);
 }
 
 .btn-refresh {
@@ -164,14 +97,17 @@
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
 }
 
 .btn-refresh:hover {
     background: #d1d5db;
+    transform: rotate(180deg);
 }
 
-/* ===== GRID MITRA ===== */
+/* ========================================
+   GRID MITRA
+   ======================================== */
 .mitra-grid-section {
     background: white;
     border-radius: 16px;
@@ -181,47 +117,58 @@
 
 .mitra-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
     margin-bottom: 20px;
 }
 
+/* ========================================
+   MITRA CARD - SEPERTI STRUKTUR
+   ======================================== */
 .mitra-card {
     background: white;
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
     border: 1px solid #e5e7eb;
     transition: all 0.3s ease;
-    text-align: center;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .mitra-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
     box-shadow: 0 8px 30px rgba(0,0,0,0.1);
     border-color: #3b82f6;
 }
 
-.mitra-card .logo-wrapper {
-    padding: 25px 20px 15px;
+/* Foto/Logo - Seperti di struktur */
+.foto-mitra {
+    padding: 20px;
     background: #f8fafc;
-    min-height: 140px;
+    min-height: 120px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-bottom: 1px solid #f1f5f9;
 }
 
-.mitra-card .logo {
-    max-width: 150px;
-    max-height: 100px;
+.foto-mitra .foto {
+    max-width: 120px;
+    max-height: 80px;
     object-fit: contain;
+    transition: transform 0.3s ease;
 }
 
-.mitra-card .logo-placeholder {
-    width: 120px;
+.mitra-card:hover .foto-mitra .foto {
+    transform: scale(1.05);
+}
+
+.foto-placeholder {
+    width: 80px;
     height: 80px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 12px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -229,79 +176,99 @@
     font-size: 32px;
 }
 
+/* Card Body - Seperti di struktur */
 .mitra-card .card-body {
-    padding: 15px 18px 18px;
+    padding: 16px 18px 18px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-.mitra-card .card-name {
-    font-size: 17px;
+.card-name {
+    font-size: 16px;
     font-weight: 700;
     color: #1a1a2e;
     margin-bottom: 4px;
-}
-
-.mitra-card .card-deskripsi {
-    color: #64748b;
-    font-size: 13px;
-    line-height: 1.5;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    min-height: 36px;
-    margin-bottom: 10px;
 }
 
-.mitra-card .card-website {
-    display: inline-block;
-    padding: 3px 12px;
-    border-radius: 20px;
+/* Website - Seperti posisi di struktur */
+.card-website {
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.card-website a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 16px;
     font-size: 12px;
     background: #dbeafe;
     color: #2563eb;
     text-decoration: none;
-    margin-bottom: 12px;
-    transition: 0.3s;
+    transition: all 0.3s ease;
 }
 
-.mitra-card .card-website:hover {
+.card-website a:hover {
     background: #bfdbfe;
+    transform: scale(1.02);
 }
 
-.mitra-card .card-website i {
-    margin-right: 4px;
+.card-website a i {
+    font-size: 11px;
 }
 
-.mitra-card .card-order {
+.no-website {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 16px;
     font-size: 12px;
+    background: #f1f5f9;
     color: #94a3b8;
+}
+
+/* Deskripsi - Seperti di struktur */
+.card-description {
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 40px;
     margin-bottom: 12px;
+    flex: 1;
 }
 
-.mitra-card .card-order i {
-    margin-right: 4px;
-}
-
+/* Card Actions - Seperti di struktur */
 .mitra-card .card-actions {
     display: flex;
     gap: 8px;
-    flex-wrap: wrap;
     border-top: 1px solid #f1f5f9;
     padding-top: 12px;
-    justify-content: center;
+    margin-top: auto;
 }
 
 .mitra-card .card-actions button {
-    padding: 6px 14px;
+    padding: 6px 12px;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 5px;
+    flex: 1;
+    justify-content: center;
 }
 
 .btn-detail {
@@ -311,6 +278,7 @@
 
 .btn-detail:hover {
     background: #c7d2fe;
+    transform: scale(1.03);
 }
 
 .btn-edit {
@@ -320,6 +288,7 @@
 
 .btn-edit:hover {
     background: #fde68a;
+    transform: scale(1.03);
 }
 
 .btn-delete {
@@ -329,9 +298,12 @@
 
 .btn-delete:hover {
     background: #fecaca;
+    transform: scale(1.03);
 }
 
-/* ===== PAGINATION ===== */
+/* ========================================
+   PAGINATION
+   ======================================== */
 .pagination-section {
     display: flex;
     justify-content: space-between;
@@ -347,319 +319,154 @@
     color: #64748b;
 }
 
-.pagination-controls {
+.pagination-controls nav {
     display: flex;
     align-items: center;
-    gap: 12px;
 }
 
-.page-btn {
-    width: 36px;
-    height: 36px;
+.pagination-controls .pagination {
+    margin: 0;
+    gap: 4px;
+}
+
+.pagination-controls .page-link {
     border: 2px solid #e2e8f0;
     border-radius: 8px;
-    background: white;
-    cursor: pointer;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     color: #475569;
+    padding: 6px 14px;
+    transition: all 0.3s ease;
+    background: white;
 }
 
-.page-btn:hover:not(:disabled) {
+.pagination-controls .page-link:hover {
     background: #3b82f6;
     border-color: #3b82f6;
     color: white;
 }
 
-.page-btn:disabled {
+.pagination-controls .page-item.active .page-link {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+}
+
+.pagination-controls .page-item.disabled .page-link {
     opacity: 0.4;
     cursor: not-allowed;
 }
 
-#pageInfo {
-    font-weight: 600;
-    color: #1e293b;
-    font-size: 14px;
-}
-
-/* ===== MODAL ===== */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(4px);
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.modal-content {
-    background: white;
-    margin: 40px auto;
-    border-radius: 16px;
-    animation: slideDown 0.3s ease;
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-@keyframes slideDown {
-    from { transform: translateY(-30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-.modal-large {
-    max-width: 600px;
-}
-
-/* ===== MODAL HAPUS ===== */
-.modal-delete {
-    max-width: 450px;
-}
-
-.modal-delete-body {
+/* ========================================
+   EMPTY STATE
+   ======================================== */
+.empty-state {
+    grid-column: 1 / -1;
     text-align: center;
-    padding: 30px;
+    padding: 60px 20px;
+    color: #94a3b8;
 }
 
-.delete-icon {
+.empty-state i {
     font-size: 48px;
-    color: #ef4444;
+    display: block;
     margin-bottom: 15px;
+    color: #3b82f6;
 }
 
-.delete-text {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #1e293b;
+.empty-state h3 {
+    font-size: 18px;
+    color: #475569;
+    margin-bottom: 8px;
 }
 
-.delete-subtext {
-    color: #64748b;
+.empty-state p {
     font-size: 14px;
-    margin-bottom: 20px;
 }
 
-.delete-actions {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 20px;
-}
+.notification{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    min-width: 320px;
+    max-width: 420px;
+    padding: 15px 20px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 8px 25px rgba(0,0,0,.15);
 
-/* ===== MODAL HEADER ===== */
-.modal-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 20px 24px;
-    border-bottom: 1px solid #e2e8f0;
-    position: sticky;
-    top: 0;
-    background: white;
-    border-radius: 16px 16px 0 0;
-    z-index: 10;
+    gap: 10px;
+
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: .35s ease;
+    z-index: 99999;
+    pointer-events: none;
 }
 
-.modal-header h2 {
-    font-size: 20px;
+.notification.show{
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification.success{
+    background: #16a34a;
+}
+
+.notification.error{
+    background: #dc2626;
+}
+
+.notification.info{
+    background: #2563eb;
+}
+
+/* ========================================
+   MODAL (Bootstrap Override)
+   ======================================== */
+.modal-content {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+.modal-header {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 20px 24px;
+}
+
+.modal-header .modal-title {
+    font-weight: 700;
     color: #1a1a2e;
 }
 
-.modal-close {
-    font-size: 28px;
-    cursor: pointer;
-    color: #94a3b8;
-    transition: 0.3s;
-    line-height: 1;
-}
-
-.modal-close:hover {
-    color: #1e293b;
+.modal-footer {
+    border-top: 1px solid #e5e7eb;
+    padding: 16px 24px;
 }
 
 .modal-body {
     padding: 24px;
 }
 
-/* ===== FORM ===== */
-.form-group {
-    margin-bottom: 18px;
+.btn-close {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 1;
 }
 
-.form-group label {
-    display: block;
-    font-weight: 600;
+.btn-close:hover {
     color: #1e293b;
-    margin-bottom: 6px;
-    font-size: 14px;
+    transform: rotate(90deg);
 }
 
-.form-group .required {
-    color: #ef4444;
-}
-
-.form-control {
-    width: 100%;
-    padding: 10px 14px;
-    border: 2px solid #e5e7eb;
-    border-radius: 10px;
-    font-size: 14px;
-    transition: 0.3s;
-    font-family: inherit;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
-}
-
-textarea.form-control {
-    resize: vertical;
-    min-height: 80px;
-}
-
-.form-help {
-    display: block;
-    margin-top: 4px;
-    font-size: 12px;
-    color: #94a3b8;
-}
-
-/* ===== LOGO UPLOAD ===== */
-.logo-upload {
-    position: relative;
-}
-
-.logo-upload input[type="file"] {
-    position: absolute;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-    z-index: 2;
-}
-
-.logo-preview {
-    width: 100%;
-    height: 180px;
-    border: 2px dashed #e5e7eb;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #94a3b8;
-    transition: 0.3s;
-    background: #f8fafc;
-    position: relative;
-    overflow: hidden;
-}
-
-.logo-preview:hover {
-    border-color: #3b82f6;
-    background: #f1f5f9;
-}
-
-.logo-preview img {
-    max-width: 200px;
-    max-height: 160px;
-    object-fit: contain;
-}
-
-.logo-preview i {
-    font-size: 48px;
-    margin-bottom: 8px;
-    color: #94a3b8;
-}
-
-.logo-preview p {
-    font-size: 14px;
-    margin-bottom: 4px;
-}
-
-.logo-preview small {
-    font-size: 12px;
-    color: #94a3b8;
-}
-
-.logo-upload small {
-    display: block;
-    margin-top: 6px;
-    color: #94a3b8;
-    font-size: 12px;
-}
-
-/* ===== FORM ACTIONS ===== */
-.form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #e5e7eb;
-}
-
-.btn-batal {
-    padding: 10px 24px;
-    background: #e5e7eb;
-    color: #374151;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-batal:hover {
-    background: #d1d5db;
-}
-
-.btn-simpan {
-    padding: 10px 24px;
-    background: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn-simpan:hover {
-    background: #2563eb;
-    transform: translateY(-2px);
-}
-
-.btn-hapus {
-    padding: 10px 24px;
-    background: #ef4444;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-hapus:hover {
-    background: #dc2626;
-}
-
-/* ===== DETAIL MODAL ===== */
+/* Detail Modal */
 .detail-logo {
     max-width: 200px;
     max-height: 120px;
@@ -692,97 +499,63 @@ textarea.form-control {
     word-break: break-word;
 }
 
-.detail-value .website-link {
+.detail-value a {
     color: #3b82f6;
     text-decoration: none;
 }
 
-.detail-value .website-link:hover {
+.detail-value a:hover {
     text-decoration: underline;
 }
 
-/* ===== NOTIFICATION ===== */
-.notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 16px 24px;
-    border-radius: 12px;
-    color: white;
-    font-weight: 600;
-    z-index: 2000;
-    opacity: 0;
-    transform: translateX(50px);
-    transition: all 0.4s ease;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-    max-width: 400px;
-}
-
-.notification.show {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.notification.success {
-    background: #10b981;
-}
-
-.notification.error {
-    background: #ef4444;
-}
-
-.notification.info {
-    background: #3b82f6;
-}
-
-/* ===== EMPTY STATE ===== */
-.empty-state {
+/* ========================================
+   LOADING STATE
+   ======================================== */
+.loading-state {
     grid-column: 1 / -1;
     text-align: center;
     padding: 60px 20px;
     color: #94a3b8;
 }
 
-.empty-state i {
+.loading-state i {
     font-size: 48px;
     display: block;
     margin-bottom: 15px;
     color: #3b82f6;
 }
 
-.empty-state h3 {
-    font-size: 18px;
-    color: #475569;
-    margin-bottom: 8px;
-}
-
-.empty-state p {
+.loading-state p {
     font-size: 14px;
 }
 
-/* ===== RESPONSIVE ===== */
+/* ========================================
+   RESPONSIVE
+   ======================================== */
 @media (max-width: 992px) {
     .mitra-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 15px;
     }
 }
 
 @media (max-width: 768px) {
-    .mitra-stats {
-        grid-template-columns: 1fr 1fr;
-    }
-
     .filter-section {
         flex-direction: column;
         align-items: stretch;
     }
 
-    .filter-left {
+    .filter-form {
         flex-direction: column;
     }
 
     .search-input {
         min-width: unset;
+        width: 100%;
+    }
+
+    .filter-select {
+        width: 100%;
     }
 
     .filter-right {
@@ -796,61 +569,13 @@ textarea.form-control {
 
     .mitra-grid {
         grid-template-columns: 1fr 1fr;
+        gap: 12px;
     }
 
     .pagination-section {
         flex-direction: column;
         align-items: center;
         text-align: center;
-    }
-
-    .modal-large {
-        margin: 20px;
-        max-width: unset;
-    }
-
-    .form-actions {
-        flex-direction: column;
-    }
-
-    .form-actions button {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .delete-actions {
-        flex-direction: column;
-    }
-
-    .delete-actions button {
-        width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    .mitra-stats {
-        grid-template-columns: 1fr;
-    }
-
-    .stat-card {
-        padding: 15px 18px;
-    }
-
-    .stat-card h2 {
-        font-size: 22px;
-    }
-
-    .mitra-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .mitra-card .card-actions {
-        flex-direction: column;
-    }
-
-    .mitra-card .card-actions button {
-        width: 100%;
-        justify-content: center;
     }
 
     .detail-item {
@@ -862,7 +587,47 @@ textarea.form-control {
         margin-bottom: 4px;
     }
 
-    .logo-preview {
-        height: 150px;
+    .mitra-card .card-actions {
+        flex-wrap: wrap;
+    }
+
+    .mitra-card .card-actions button {
+        flex: 1;
+        min-width: 60px;
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mitra-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mitra-card .card-actions {
+        flex-direction: row;
+    }
+
+    .mitra-card .card-actions button {
+        flex: 1;
+        justify-content: center;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .btn-tambah {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .foto-mitra .foto {
+        max-width: 100px;
+        max-height: 70px;
+    }
+
+    .foto-placeholder {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
     }
 }

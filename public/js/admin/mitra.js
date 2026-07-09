@@ -19,63 +19,83 @@ let editId = null;
 const grid = document.getElementById('mitraGrid');
 const searchInput = document.getElementById('searchInput');
 const filterWebsite = document.getElementById('filterWebsite');
-const filterSort = document.getElementById('filterSort');
 
 // ===== INISIALISASI =====
-document.addEventListener('DOMContentLoaded', () => {
-    loadMitra();
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('formModal');
+    const btnTambah = document.querySelector('.btn-tambah');
+    const btnClose = document.querySelector('.modal-close');
 
-    searchInput.addEventListener('input', filterData);
-    filterWebsite.addEventListener('change', filterData);
-    filterSort.addEventListener('change', filterData);
+    btnTambah.addEventListener('click', function () {
+        modal.classList.add('show');
+    });
+
+    btnClose.addEventListener('click', function () {
+        modal.classList.remove('show');
+    });
+
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) {
+            modal.classList.remove('show');
+        }
+    });
 });
 
-// ============================================
-// LOAD DATA
-// ============================================
+document.querySelectorAll('.btn-edit').forEach(button => {
+    
+    button.addEventListener('click', function(){
 
-function loadMitra() {
-    // DATA DUMMY
-    mitraData = [
-        {
-            id: 1,
-            name: 'PT. Teknologi Nusantara',
-            logo: 'https://via.placeholder.com/200x100/3b82f6/ffffff?text=PT+Teknologi',
-            description: 'Perusahaan teknologi terkemuka di Indonesia yang bergerak di bidang pengembangan software dan solusi digital.',
-            website: 'https://teknologi-nusantara.com',
-            display_order: 1,
-            created_at: '2026-07-05T10:00:00',
-            updated_at: '2026-07-05T10:00:00'
-        },
-        {
-            id: 2,
-            name: 'CV. Kreatif Mandiri',
-            logo: 'https://via.placeholder.com/200x100/10b981/ffffff?text=Kreatif+Mandiri',
-            description: 'Perusahaan kreatif yang fokus pada desain grafis, branding, dan pemasaran digital.',
-            website: 'https://kreatif-mandiri.com',
-            display_order: 2,
-            created_at: '2026-07-04T14:30:00',
-            updated_at: '2026-07-04T14:30:00'
-        },
-        {
-            id: 3,
-            name: 'Yayasan Peduli Anak',
-            logo: 'https://via.placeholder.com/200x100/f59e0b/ffffff?text=Yayasan+Peduli',
-            description: 'Yayasan yang bergerak di bidang pendidikan dan kesejahteraan anak-anak kurang mampu.',
-            website: null,
-            display_order: 3,
-            created_at: '2026-07-03T09:15:00',
-            updated_at: '2026-07-03T09:15:00'
-        },
-        {
-            id: 4,
-            name: 'PT. Agro Mandiri Sejahtera',
-            logo: 'https://via.placeholder.com/200x100/8b5cf6/ffffff?text=Agro+Mandiri',
-            description: 'Perusahaan agribisnis yang mengelola perkebunan dan produksi hasil pertanian organik.',
-            website: 'https://agro-mandiri.com',
-            display_order: 4,
-            created_at: '2026-07-02T11:45:00',
-            updated_at: '2026-07-02T11:45:00'   
-        }
-    ];
+        let id = this.dataset.id;
+
+        document.getElementById('editName').value =
+            this.dataset.name;
+
+        document.getElementById('editLogo').value =
+            this.dataset.logo;
+
+        document.getElementById('editDescription').value =
+            this.dataset.description ?? '';
+
+        document.getElementById('editWebsite').value =
+            this.dataset.website;
+
+        document.getElementById('editForm').action = 
+            `/admin/mitra/${id}`;
+
+    });
+});
+
+function confirmDelete(element) {
+    const id = element.getAttribute('data-id');
+    const name = element.getAttribute('data-name');
+    
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    document.getElementById('deleteName').textContent = name;
+    
+    const form = document.getElementById('deleteForm');
+    form.action = '{{ route("admin.mitra.destroy", ":id") }}'.replace(':id', id);
+    
+    deleteModal.show();
+}
+
+function showNotification(message, type = "success") {
+
+    const notification = document.getElementById("notification");
+
+    let icon = "";
+
+    if(type === "success"){
+        icon = '<i class="fa-solid fa-circle-check"></i>';
+    }else if(type === "error"){
+        icon = '<i class="fa-solid fa-circle-xmark"></i>';
+    }else{
+        icon = '<i class="fa-solid fa-circle-info"></i>';
+    }
+
+    notification.innerHTML = `${icon}<span>${message}</span>`;
+    notification.className = `notification ${type} show`;
+
+    setTimeout(() => {
+        notification.classList.remove("show");
+    }, 3000);
 }

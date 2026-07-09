@@ -31,7 +31,7 @@ TOPBAR
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
 }
 
 .topbar-left {
@@ -41,13 +41,13 @@ TOPBAR
 }
 
 .topbar h1 {
-    font-size: 32px;
+    font-size: calc(1.375rem + 1.5vw);
     color: #222;
 }
 
 .topbar p {
-    color: #666;
-    margin-top: 6px;
+        color: var(--bs-body-color);
+    margin-top: 3px;
 }
 
 .profile {
@@ -73,18 +73,19 @@ ANALYTICS
 =========================*/
 .analytics {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-    margin-bottom: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 225px));
+    justify-content: start;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .card {
     background: #fff;
     border-radius: 20px;
-    padding: 28px;
+    padding: 20px;
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -280,10 +281,10 @@ tbody tr:hover {
 
 @media (max-width: 768px) {
     .content {
-        margin-left: 0;
-        width: 100%;
-        padding: 20px;
-    }
+    flex: 1;
+    margin-left: 270px;
+    padding: 40px;
+}
 
     .topbar {
         gap: 15px;

@@ -8,6 +8,12 @@
 
 @section('content')
 
+@if(session('success'))
+    <div class="alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
 <header class="topbar">
     <div>
         <h1>Manajemen FAQ</h1>
@@ -284,3 +290,7 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/admin/faq.js') }}"></script>
+@endpush

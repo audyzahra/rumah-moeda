@@ -139,10 +139,13 @@ document.addEventListener('DOMContentLoaded', () => {
     clock.id = 'clock';
     clock.style.cssText = 'font-size:14px;color:#666;margin-left:15px;';
     
-    const profile = document.querySelector('.profile');
-    if (profile) {
-        profile.appendChild(clock);
-    }
+    const topbar = document.querySelector('.topbar');
+
+if (topbar) {
+    clock.style.marginLeft = "0";
+    clock.style.marginRight = "10px";
+    topbar.appendChild(clock);
+}
 
     function updateClock() {
         if (!clock) return;
