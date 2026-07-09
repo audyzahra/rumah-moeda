@@ -113,7 +113,9 @@
 
                 @forelse($struktur as $anggota)
 
-                <div class="struktur-card">
+                <div class="struktur-card"
+                data-name="{{ strtolower($anggota->full_name) }}"
+                data-position="{{ strtolower($anggota->position) }}">
 
                     <span class="badge-order">
                         #{{ $anggota->display_order }}
@@ -160,10 +162,6 @@
                                 : 'Belum ada deskripsi.' }}
 
                         </div>
-
-                        <!-- <span class="card-status tampil">
-                            Ditampilkan
-                        </span> -->
 
                         <div class="card-actions">
 
@@ -512,10 +510,10 @@
         </div>
 
         <!-- ===== NOTIFIKASI ===== -->
-        <div id="notification" class="notification"
-            data-success="{{ session('success') }}"
-            data-error="{{ session('error') }}">
-        </div>
+    <div id="notification" class="notification"
+        data-success="{{ session('success') }}"
+        data-error="{{ session('error') }}">
+    </div>
 
 @endsection
 

@@ -39,11 +39,10 @@
     <div class="filter-left">
 
         <input
-            type="text"
-            name="search"
-            class="search-input"
-            placeholder="Cari dokumentasi..."
-            value="{{ request('search') }}">
+        type="text"
+        id="searchInput"
+        class="search-input"
+        placeholder="Cari dokumentasi...">
 
         <select
             name="sort"
@@ -105,7 +104,11 @@
             <div class="dokumentasi-grid">
 
                 @forelse($galleries as $gallery)
-                    <div class="dokumentasi-card">
+                    <div
+                    class="dokumentasi-card"
+                    data-title="{{ strtolower($gallery->title) }}"
+                    data-description="{{ strtolower($gallery->description) }}"
+                    data-date="{{ strtolower(\Carbon\Carbon::parse($gallery->activity_date)->format('d M Y')) }}">
 
                         <img
                             src="{{ asset('storage/'.$gallery->photo) }}"
@@ -365,6 +368,11 @@
 
 </div>
 
+    <!-- ===== NOTIFIKASI ===== -->
+    <div id="notification" class="notification"
+        data-success="{{ session('success') }}"
+        data-error="{{ session('error') }}">
+    </div>
 
 
 @endsection

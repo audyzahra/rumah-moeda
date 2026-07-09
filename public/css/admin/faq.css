@@ -2,37 +2,44 @@
    FAQ ADMIN
 =========================== */
 
-/* ===== ALERT SUCCESS ===== */
+/* ===========================
+   NOTIFICATION
+=========================== */
 
-.alert-success{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:#dcfce7;
-    color:#166534;
-    border:1px solid #86efac;
-    padding:14px 18px;
-    border-radius:10px;
-    margin:20px 0;
-    font-size:14px;
-    font-weight:500;
-    animation:fadeIn .3s ease;
+.notification{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    min-width: 320px;
+    max-width: 420px;
+    background: #22c55e;
+    color: #fff;
+    padding: 16px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.15);
+    z-index: 9999;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(120%);
+    transition: .35s ease;
 }
 
-.alert-success i{
-    font-size:18px;
-    color:#16a34a;
+.notification.show{
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
 }
 
-@keyframes fadeIn{
-    from{
-        opacity:0;
-        transform:translateY(-8px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
+.notification i{
+    font-size:20px;
+}
+
+.notification.success{
+    background:#22c55e;
 }
 
 /* ===== FILTER ===== */
