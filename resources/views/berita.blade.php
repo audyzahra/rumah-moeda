@@ -33,7 +33,11 @@
         @forelse($news as $item)
             <div class="berita-card">
 
-                <img src="{{ asset($item->thumbnail) }}" alt="{{ $item->title }}">
+                @if ($item->thumbnail)
+                    <img src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}">
+                @else
+                    <img src="{{ asset('assets/no-image.png') }}" alt="No Image">
+                @endif
 
                 <div class="berita-content">
 

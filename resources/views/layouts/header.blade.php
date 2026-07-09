@@ -4,7 +4,12 @@
         {{-- Logo --}}
         <div class="logo-section">
             <a href="{{ route('home') }}">
-                <img src="{{ asset($setting->website_logo) }}" class="logo-img" alt="{{ $setting->website_name }}">
+                @if (!empty($setting->website_logo))
+                    <img src="{{ Storage::url($setting->website_logo) }}" class="logo-img"
+                        alt="{{ $setting->website_name }}">
+                @else
+                    <img src="{{ asset('assets/logo-default.png') }}" class="logo-img" alt="Logo">
+                @endif
             </a>
 
             <span class="logo-text">
@@ -12,7 +17,7 @@
             </span>
         </div>
 
-         <!-- Hamburger -->
+        <!-- Hamburger -->
         <div class="menu-toggle">
             <i class="fa-solid fa-bars"></i>
         </div>
@@ -72,19 +77,19 @@
 
             @guest
 
-    <div class="auth-buttons">
+                <div class="auth-buttons">
 
-        <a href="{{ route('login') }}" class="btn-login">
-            Login
-        </a>
+                    <a href="{{ route('login') }}" class="btn-login">
+                        Login
+                    </a>
 
-        <a href="{{ route('register') }}" class="btn-register">
-            Register
-        </a>
+                    <a href="{{ route('register') }}" class="btn-register">
+                        Register
+                    </a>
 
-    </div>
+                </div>
 
-@endguest
+            @endguest
 
 
             @auth

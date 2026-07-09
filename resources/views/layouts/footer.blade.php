@@ -3,7 +3,12 @@
 
         <!-- Logo & Deskripsi -->
         <div class="footer-item">
-            <img src="{{ asset($setting->website_logo) }}" alt="{{ $setting->website_name }}"  class="footer-logo">
+            @if (!empty($setting->website_logo))
+                <img src="{{ Storage::url($setting->website_logo) }}" alt="{{ $setting->website_name }}"
+                    class="footer-logo">
+            @else
+                <img src="{{ asset('assets/logo-default.png') }}" alt="Logo" class="footer-logo">
+            @endif
 
             <h3>{{ $setting->website_name }}</h3>
 

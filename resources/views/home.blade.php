@@ -14,7 +14,7 @@
             <div class="hero-image">
 
                 @if ($setting && $setting->hero_image)
-                    <img src="{{ asset($setting->hero_image) }}" alt="{{ $setting->website_name }}">
+                    <img src="{{ Storage::url($setting->hero_image) }}" alt="{{ $setting->website_name }}">
                 @else
                     <img src="{{ asset('assets/hero/default.jpg') }}" alt="Hero">
                 @endif
@@ -88,19 +88,15 @@
 
         {{-- Ketua --}}
         @foreach ($organizations->where('display_order', 1) as $member)
-
             <div class="leader-card">
 
-                <img 
-                    src="{{ asset('storage/' . $member->photo) }}" 
-                    alt="{{ $member->full_name }}">
+                <img src="{{ asset('storage/' . $member->photo) }}" alt="{{ $member->full_name }}">
 
                 <h3>{{ $member->full_name }}</h3>
 
                 <span>{{ $member->position }}</span>
 
             </div>
-
         @endforeach
 
 
@@ -108,19 +104,15 @@
         <div class="team-grid">
 
             @foreach ($organizations->where('display_order', '>', 1) as $member)
-
                 <div class="team-card">
 
-                    <img 
-                        src="{{ asset('storage/' . $member->photo) }}" 
-                        alt="{{ $member->full_name }}">
+                    <img src="{{ asset('storage/' . $member->photo) }}" alt="{{ $member->full_name }}">
 
                     <h4>{{ $member->full_name }}</h4>
 
                     <p>{{ $member->position }}</p>
 
                 </div>
-
             @endforeach
 
         </div>
@@ -144,7 +136,11 @@
                 <div class="artikel-card">
 
                     <div class="card-img-wrapper">
-                        <img src="{{ asset($article->thumbnail) }}" alt="{{ $article->title }}">
+                        @if ($article->thumbnail)
+                            <img src="{{ Storage::url($article->thumbnail) }}" alt="{{ $article->title }}">
+                        @else
+                            <img src="{{ asset('assets/no-image.png') }}" alt="No Image">
+                        @endif
                     </div>
 
                     <div class="card-content">
@@ -192,7 +188,7 @@
 
                 @foreach ($documentations as $documentation)
                     <div class="gallery-item {{ $loop->first ? 'gallery-large' : '' }}">
-                        <img src="{{ asset('storage/'.$documentation->photo) }}" alt="{{ $documentation->title }}">
+                        <img src="{{ asset('storage/' . $documentation->photo) }}" alt="{{ $documentation->title }}">
                     </div>
                 @endforeach
 
@@ -225,15 +221,23 @@
                         @if ($partner->website)
                             <a href="{{ $partner->website }}" target="_blank" class="mitra-item">
 
-                                <img src="{{ asset($partner->logo) }}" alt="{{ $partner->name }}"
-                                    title="{{ $partner->name }}">
+                                @if ($partner->logo)
+                                    <img src="{{ Storage::url($partner->logo) }}" alt="{{ $partner->name }}"
+                                        title="{{ $partner->name }}">
+                                @else
+                                    <img src="{{ asset('assets/no-image.png') }}" alt="{{ $partner->name }}">
+                                @endif
 
                             </a>
                         @else
                             <div class="mitra-item">
 
-                                <img src="{{ asset($partner->logo) }}" alt="{{ $partner->name }}"
-                                    title="{{ $partner->name }}">
+                                @if ($partner->logo)
+                                    <img src="{{ Storage::url($partner->logo) }}" alt="{{ $partner->name }}"
+                                        title="{{ $partner->name }}">
+                                @else
+                                    <img src="{{ asset('assets/no-image.png') }}" alt="{{ $partner->name }}">
+                                @endif
 
                             </div>
                         @endif
