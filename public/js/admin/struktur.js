@@ -46,16 +46,8 @@ setTimeout(() => {
 const searchInput = document.getElementById('searchInput');
 const filterForm = document.getElementById('filterForm');
 
-let timer;
-
 searchInput.addEventListener('input', function () {
-
-    clearTimeout(timer);
-
-    timer = setTimeout(() => {
-        filterForm.submit();
-    }, 400); // tunggu 400ms setelah berhenti mengetik
-
+    filterForm.submit();
 });
 
 
