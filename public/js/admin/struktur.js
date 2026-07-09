@@ -29,13 +29,37 @@ document.querySelectorAll('.btn-edit').forEach(button => {
 // =========================
 // Search
 // =========================
-const searchInput = document.getElementById('searchInput');
-const filterForm = document.getElementById('filterForm');
+// =========================
+// Live Search
+// =========================
+const searchInput = document.getElementById("searchInput");
 
-if (searchInput && filterForm) {
-    searchInput.addEventListener('input', function () {
-        filterForm.submit();
+if (searchInput) {
+
+    searchInput.addEventListener("input", function () {
+
+        const keyword = this.value.toLowerCase().trim();
+
+        const cards = document.querySelectorAll(".struktur-card");
+
+        cards.forEach(card => {
+
+            const name = card.dataset.name;
+            const position = card.dataset.position;
+
+            if (
+                name.includes(keyword) ||
+                position.includes(keyword)
+            ) {
+                card.style.display = "";
+            } else {
+                card.style.display = "none";
+            }
+
+        });
+
     });
+
 }
 
 // =========================

@@ -60,37 +60,41 @@
     font-size:24px;
 }
 
-/* ===== ALERT SUCCESS ===== */
-
-.alert-success{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:#dcfce7;
-    color:#166534;
-    border:1px solid #86efac;
-    padding:14px 18px;
-    border-radius:10px;
-    margin:20px 0;
-    font-size:14px;
-    font-weight:500;
-    animation:fadeIn .3s ease;
+/* ===== NOTIFICATION ===== */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    z-index: 2000;
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.4s ease;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    max-width: 400px;
+    gap: 10px;
+    display: flex;
+    align-items: center;
 }
 
-.alert-success i{
-    font-size:18px;
-    color:#16a34a;
+.notification.show {
+    opacity: 1;
+    transform: translateX(0);
 }
 
-@keyframes fadeIn{
-    from{
-        opacity:0;
-        transform:translateY(-8px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
+.notification.success {
+    background: #10b981;
+}
+
+.notification.error {
+    background: #ef4444;
+}
+
+.notification.info {
+    background: #3b82f6;
 }
 
 /* ===== FILTER ===== */

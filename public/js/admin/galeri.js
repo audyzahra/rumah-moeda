@@ -23,19 +23,52 @@ function closeCreateModal(){
     document.getElementById('createModal').style.display='none';
 }
 
-setTimeout(() => {
-    const alert = document.querySelector('.alert-success');
+// =========================
+// Notification
+// =========================
+function showNotification(message, type = "success") {
 
-    if (alert) {
-        alert.style.transition = "all .5s ease";
-        alert.style.opacity = "0";
-        alert.style.transform = "translateY(-10px)";
+    const notification = document.getElementById("notification");
 
-        setTimeout(() => {
-            alert.remove();
-        }, 500);
+    let icon = "";
+
+    if(type === "success"){
+        icon = '<i class="fa-solid fa-circle-check"></i>';
+    }else if(type === "error"){
+        icon = '<i class="fa-solid fa-circle-xmark"></i>';
+    }else{
+        icon = '<i class="fa-solid fa-circle-info"></i>';
     }
-}, 3000);
+
+    notification.innerHTML = `${icon}<span>${message}</span>`;
+    notification.className = `notification ${type} show`;
+
+    setTimeout(() => {
+        notification.classList.remove("show");
+    }, 3000);
+}
+
+// =========================
+// Flash Message Laravel
+// =========================
+document.addEventListener("DOMContentLoaded", () => {
+
+    const notif = document.getElementById("notification");
+
+    if (!notif) return;
+
+    const success = notif.dataset.success;
+    const error = notif.dataset.error;
+
+    if (success) {
+        showNotification(success, "success");
+    }
+
+    if (error) {
+        showNotification(error, "error");
+    }
+
+});
 
 function showDetail(button) {
 
