@@ -73,9 +73,10 @@ ANALYTICS
 =========================*/
 .analytics {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-    margin-bottom: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 245px));
+justify-content: start;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .card {
@@ -280,10 +281,10 @@ tbody tr:hover {
 
 @media (max-width: 768px) {
     .content {
-        margin-left: 0;
-        width: 100%;
-        padding: 20px;
-    }
+    flex: 1;
+    margin-left: 270px;
+    padding: 40px;
+}
 
     .topbar {
         gap: 15px;
