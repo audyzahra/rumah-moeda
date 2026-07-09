@@ -46,3 +46,7 @@ function showDetail(button) {
 
     document.getElementById('detailModal').style.display = 'flex';
 }
+
+function closeDetailModal() {
+    document.getElementById('detailModal').style.display = 'none';
+}
