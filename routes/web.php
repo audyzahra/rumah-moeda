@@ -209,10 +209,6 @@ Route::middleware(['auth', 'admin'])
         Route::delete('/gallery/{gallery}', [AdminGalleryController::class, 'destroy'])
             ->name('gallery.destroy');
 
-        // Mitra
-        Route::view('/mitra', 'admin.mitra.mitra')
-            ->name('mitra.index');
-
         // FAQ
         Route::get('/faq', [AdminFaqController::class, 'index'])
             ->name('faq.index');
