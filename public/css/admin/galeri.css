@@ -728,8 +728,9 @@ textarea.form-control {
 #detailModal .modal-content{
     max-width: 700px;
     padding: 0;
-    overflow: hidden;
     border-radius: 16px;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .detail-content{
