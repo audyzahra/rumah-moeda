@@ -368,6 +368,11 @@
 
 </div>
 
+    <!-- ===== NOTIFIKASI ===== -->
+    <div id="notification" class="notification"
+        data-success="{{ session('success') }}"
+        data-error="{{ session('error') }}">
+    </div>
 
 
 @endsection
