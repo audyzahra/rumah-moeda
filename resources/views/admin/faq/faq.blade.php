@@ -109,9 +109,10 @@
                             <h5>Edit FAQ</h5>
 
                             <button
+                                type="button"
                                 class="btn-close"
-                                data-bs-dismiss="modal"></button>
-
+                                data-bs-dismiss="modal">
+                            </button>
                         </div>
 
                         <div class="modal-body">
@@ -216,8 +217,10 @@
                     <h5>Tambah FAQ</h5>
 
                     <button
-                        class="btn-close"
-                        data-bs-dismiss="modal"></button>
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="modal">
+</button>
 
                 </div>
 
@@ -264,12 +267,11 @@
                 <div class="modal-footer">
 
                     <button
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal">
-
-                        Batal
-
-                    </button>
+    type="button"
+    class="btn btn-secondary"
+    data-bs-dismiss="modal">
+    Batal
+</button>
 
                     <button class="btn btn-success">
 
