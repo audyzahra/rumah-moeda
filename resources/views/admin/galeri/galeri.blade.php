@@ -323,50 +323,63 @@
     </div>
 
 
-   <!-- Modal Detail -->
-<div id="detailModal" class="modal" style="display:none;">
+    <!-- Modal Detail -->
+    <div id="detailModal" class="modal" style="display:none;">
 
-    <div class="modal-content modal-large">
+        <div class="modal-content">
 
-        <div class="modal-header">
-            <h2>Detail Dokumentasi</h2>
+            <div class="modal-header">
 
-            <button
-                type="button"
-                class="close-modal"
-                onclick="closeDetailModal()">
-                &times;
-            </button>
-        </div>
+                <h3>Detail Dokumentasi</h3>
 
-        <div class="modal-body">
+                <button
+                    type="button"
+                    class="close-modal"
+                    onclick="closeDetailModal()">
 
-            <img
-                id="detail_photo"
-                class="detail-image"
-                src=""
-                alt="Foto Dokumentasi">
+                    &times;
 
-            <div class="detail-item">
-                <label>Judul</label>
-                <p id="detail_title">-</p>
+                </button>
+
             </div>
 
-            <div class="detail-item">
-                <label>Tanggal Kegiatan</label>
-                <p id="detail_date">-</p>
-            </div>
+            <div class="detail-content">
 
-            <div class="detail-item">
-                <label>Deskripsi</label>
-                <p id="detail_description">-</p>
+                <img
+                    id="detail_photo"
+                    class="detail-image"
+                    src=""
+                    alt="">
+
+                <div class="detail-item">
+
+                    <label>Judul</label>
+
+                    <p id="detail_title"></p>
+
+                </div>
+
+                <div class="detail-item">
+
+                    <label>Tanggal</label>
+
+                    <p id="detail_date"></p>
+
+                </div>
+
+                <div class="detail-item">
+
+                    <label>Deskripsi</label>
+
+                    <p id="detail_description"></p>
+
+                </div>
+
             </div>
 
         </div>
 
     </div>
-
-</div>
 
 
 

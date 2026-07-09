@@ -512,11 +512,20 @@
         </div>
 
         <!-- ===== NOTIFIKASI ===== -->
-        <div id="notification" class="notification"
-            data-success="{{ session('success') }}"
-            data-error="{{ session('error') }}">
-        </div>
+<div id="notification" class="notification"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
 
+    @if(session('success'))
+        showNotification("{{ session('success') }}", "success");
+    @endif
+
+    @if(session('error'))
+        showNotification("{{ session('error') }}", "error");
+    @endif
+
+});
+</script>
 @endsection
 
 @push('scripts')
