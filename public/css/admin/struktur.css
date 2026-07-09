@@ -1035,3 +1035,7 @@ textarea.form-control {
         height: 120px;
     }
 }
+
+.overlay{
+    display:none !important;
+}
