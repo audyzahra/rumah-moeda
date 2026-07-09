@@ -197,6 +197,32 @@ function previewLogo(event) {
 }
 
 // =====================================
+// PREVIEW HERO
+// =====================================
+
+function previewHero(event) {
+
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+
+        document.getElementById('heroPreview').innerHTML = `
+            <img
+                src="${e.target.result}"
+                alt="Preview Hero">
+        `;
+
+    };
+
+    reader.readAsDataURL(file);
+
+}
+
+// =====================================
 // RESET PREVIEW LOGO
 // =====================================
 
@@ -231,6 +257,43 @@ function resetLogoPreview() {
     `;
 
 }
+
+// =====================================
+// RESET PREVIEW HERO
+// =====================================
+
+function resetHeroPreview() {
+
+    document.getElementById('heroPreview').innerHTML = `
+
+        <i class="fa-solid fa-cloud-upload-alt"></i>
+
+        <p>
+
+            Klik untuk memilih gambar
+
+        </p>
+
+        <small>
+
+            Format :
+            JPG, JPEG, PNG
+
+            <br>
+
+            Maksimal 5 MB
+
+            <br>
+
+            Disarankan ukuran
+            1920 × 1080 px
+
+        </small>
+
+    `;
+
+}
+
 // =====================================
 // CLOSE MODAL SAAT KLIK DI LUAR
 // =====================================
