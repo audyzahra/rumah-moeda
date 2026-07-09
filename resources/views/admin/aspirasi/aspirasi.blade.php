@@ -193,27 +193,17 @@
                                 <div class="action-buttons">
 
                                     {{-- Detail --}}
-                                    <button class="btn-detail"
-                                        onclick='showDetail({
-
-                    id: {{ $message->id }},
-
-                    name: @json($message->full_name),
-
-                    email: @json($message->email),
-
-                    phone: @json($message->phone),
-
-                    message: @json($message->message),
-
-                    status: {{ $message->is_read ? 1 : 0 }},
-
-                    created_at: @json($message->created_at->format('d M Y H:i'))
-
-                })'>
-
+                                    <button
+                                        class="btn-detail"
+                                        data-id="{{ $message->id }}"
+                                        data-name="{{ $message->full_name }}"
+                                        data-email="{{ $message->email }}"
+                                        data-phone="{{ $message->phone }}"
+                                        data-message="{{ $message->message }}"
+                                        data-status="{{ $message->is_read }}"
+                                        data-created="{{ $message->created_at->format('d M Y H:i') }}"
+                                        onclick="showDetail(this)">
                                         <i class="fa-solid fa-eye"></i>
-
                                     </button>
 
                                     {{-- Tandai Dibaca --}}
