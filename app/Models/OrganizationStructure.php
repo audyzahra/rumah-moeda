@@ -12,10 +12,32 @@ class OrganizationStructure extends Model
     protected $table = 'organization_structures';
 
     protected $fillable = [
+        'parent_id',
         'full_name',
         'position',
         'photo',
-        'display_order',
         'description',
     ];
+
+     /**
+     * Relasi ke atasan (parent)
+     */
+    public function parent()
+    {
+        return $this->belongsTo(
+            OrganizationStructure::class,
+            'parent_id'
+        );
+    }
+
+    /**
+     * Relasi ke bawahan (children)
+     */
+    public function children()
+    {
+        return $this->hasMany(
+            OrganizationStructure::class,
+            'parent_id'
+        );
+    }
 }

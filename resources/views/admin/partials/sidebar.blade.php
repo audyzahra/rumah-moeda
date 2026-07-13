@@ -58,8 +58,8 @@
         </li>
 
         <!-- Struktur Organisasi -->
-        <li class="{{ request()->routeIs('admin.struktur.*') ? 'active' : '' }}">
-            <a href="{{ route('admin.struktur.index') }}">
+        <li class="{{ request()->routeIs('admin.organization-structures.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.organization-structures.index') }}">
                 <i class="fa-solid fa-sitemap"></i>
                 <span>Struktur Organisasi</span>
 
