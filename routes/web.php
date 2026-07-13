@@ -174,7 +174,7 @@ Route::middleware(['auth', 'admin'])
         |--------------------------------------------------------------------------
         */
 
-        Route::resource('struktur', OrganizationStructureController::class);
+        Route::resource('organization-structures', OrganizationStructureController::class);
 
         /*
         |--------------------------------------------------------------------------
