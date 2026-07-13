@@ -20,11 +20,6 @@
 
         </div>
 
-        <button class="btn-tambah" id="openModal">
-            <i class="fa-solid fa-plus"></i>
-            Tambah Berita
-        </button>
-
     </div>
 
 
@@ -98,80 +93,6 @@
 
     </section>
 
-    <!-- Modal Tambah Berita -->
-    <div class="modal" id="beritaModal">
-
-        <div class="modal-content">
-
-            <span class="close" id="closeModal">&times;</span>
-
-            <h2>Tambah Berita</h2>
-
-            <form action="{{ route('berita.store') }}" method="POST" enctype="multipart/form-data">
-
-                @csrf
-
-                <div class="form-group">
-
-                    <label>Judul Berita</label>
-
-                    <input type="text" name="title" class="form-control" required>
-
-                </div>
-
-                <div class="form-group">
-
-                    <div class="form-group">
-
-                        <label>Kategori Berita</label>
-
-                        <select name="category_id" class="form-control" required>
-
-                            <option value="">-- Pilih Kategori --</option>
-
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">
-                                    {{ $category->name }}
-                                </option>
-                            @endforeach
-
-                        </select>
-
-                    </div>
-
-                    <label>Foto Berita</label>
-
-                    <input type="file" name="thumbnail" accept="image/*" required>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Isi Berita</label>
-
-                    <textarea rows="6" name="content" required></textarea>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Tanggal Publish</label>
-
-                    <input type="date" name="publish_date" required>
-
-                </div>
-
-                <button type="submit" class="btn-simpan">
-
-                    Simpan Berita
-
-                </button>
-
-            </form>
-
-        </div>
-
-    </div>
 
     <script>
         const modal = document.getElementById("beritaModal");
