@@ -29,7 +29,7 @@
         <!-- ===== FILTER & SEARCH ===== -->
         <section class="filter-section">
             <form method="GET"
-                action="{{ route('admin.struktur.index') }}"
+                action="{{ route('admin.organization-structures.index') }}"
                 class="filter-left"
                 id="filterForm">
 
@@ -180,7 +180,7 @@
                             </button>
 
                             <form
-                                action="{{ route('admin.struktur.destroy', $anggota->id) }}"
+                                action="{{ route('admin.organization-structures.destroy', $anggota->id) }}"
                                 method="POST"
                                 onsubmit="return confirm('Hapus data ini?')">
 
@@ -251,7 +251,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
 
-                    <form action="{{ route('admin.struktur.store') }}"
+                    <form action="{{ route('admin.organization-structures.store') }}"
                         method="POST"
                         enctype="multipart/form-data">
 

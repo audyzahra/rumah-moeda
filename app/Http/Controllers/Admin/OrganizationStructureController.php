@@ -55,9 +55,9 @@ class OrganizationStructureController extends Controller
                 break;
 
             default:
-                // default: urutan tampil
-                $query->orderBy('display_order', 'asc');
-                break;
+            $query->orderBy('parent_id')
+                ->orderBy('full_name');
+            break;
         }
 
 
@@ -79,16 +79,16 @@ class OrganizationStructureController extends Controller
 
     public function create()
     {
-        return redirect()->route('admin.struktur.struktur');
+        return redirect()->route('admin.organization-structures.struktur');
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'parent_id' => 'nullable|exists:organization_structures,id',
             'full_name' => 'required|max:100',
             'position' => 'required|max:100',
             'photo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'display_order' => 'nullable|integer',
             'description' => 'nullable|string'
         ]);
 
@@ -96,15 +96,15 @@ class OrganizationStructureController extends Controller
             ->store('struktur', 'public');
 
         OrganizationStructure::create([
+            'parent_id'   => $request->parent_id,
             'full_name' => $request->full_name,
             'position' => $request->position,
             'photo' => $photo,
-            'display_order' => $request->display_order ?? 0,
             'description' => $request->description
         ]);
 
         return redirect()
-            ->route('admin.struktur.index')
+            ->route('admin.organization-structures.struktur')
             ->with('success', 'Data berhasil ditambahkan');
     }
 
@@ -112,21 +112,22 @@ class OrganizationStructureController extends Controller
     {
         $struktur = OrganizationStructure::findOrFail($id);
 
-        return view('admin.struktur.struktur', compact('struktur'));
+        return view('admin.organization-structures.struktur', compact('struktur'));
     }
 
     public function edit($id)
     {
         $editData = OrganizationStructure::findOrFail($id);
 
-        $struktur = OrganizationStructure::orderBy('display_order')
+        $struktur = OrganizationStructure::with('parent')
             ->paginate(12);
 
         $jabatanList = OrganizationStructure::select('position')
             ->distinct()
             ->pluck('position');
 
-        return view('admin.struktur.struktur', compact(
+
+        return view('admin.organization-structures.struktur', compact(
             'struktur',
             'jabatanList',
             'editData'
@@ -138,17 +139,17 @@ class OrganizationStructureController extends Controller
         $struktur = OrganizationStructure::findOrFail($id);
 
         $request->validate([
+            'parent_id' => 'nullable|exists:organization_structures,id',
             'full_name' => 'required|max:100',
             'position' => 'required|max:100',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'display_order' => 'nullable|integer',
             'description' => 'nullable|string'
         ]);
 
         $data = [
+            'parent_id'   => $request->parent_id,
             'full_name' => $request->full_name,
             'position' => $request->position,
-            'display_order' => $request->display_order ?? 0,
             'description' => $request->description,
         ];
 
@@ -166,7 +167,7 @@ class OrganizationStructureController extends Controller
         $struktur->update($data);
 
         return redirect()
-            ->route('admin.struktur.index')
+            ->route('admin.organization-structures.struktur')
             ->with('success', 'Data berhasil diubah');
     }
 
@@ -181,7 +182,7 @@ class OrganizationStructureController extends Controller
         $struktur->delete();
 
         return redirect()
-            ->route('admin.struktur.index')
+            ->route('admin.organization-structures.struktur')
             ->with('success', 'Data berhasil dihapus');
     }
 }

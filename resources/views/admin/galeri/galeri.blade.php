@@ -230,6 +230,10 @@
                 <div class="form-group">
                     <label>Foto</label>
                     <input type="file" name="photo" class="form-control" required>
+
+                    <small class="text-muted">
+                        Format: JPG, JPEG, PNG Maksimal ukuran 2 MB.
+                    </small>
                 </div>
 
                 <div class="modal-footer">
@@ -302,6 +306,10 @@
                     <input type="file"
                         name="photo"
                         class="form-control">
+
+                        <small class="text-muted">
+                            Format: JPG, JPEG, PNG Maksimal ukuran 2 MB.
+                        </small>
                 </div>
 
                 <div class="modal-footer">
