@@ -95,7 +95,7 @@
             @auth
 
                 @if (auth()->user()->role == 'admin')
-                    <a href="{{ route('dashboard') }}" class="btn-login-reg">
+                    <a href="{{ url('/admin/dashboard') }}" class="btn-login-reg">
                         Dashboard
                     </a>
                 @else
