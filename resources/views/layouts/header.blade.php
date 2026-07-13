@@ -89,42 +89,47 @@
 
             @auth
 
+                {{-- Dashboard --}}
                 @if (auth()->user()->role == 'admin')
-                    <a href="{{ url('/admin/dashboard') }}" class="btn-login-reg">
+                    <a href="{{ route('admin.dashboard') }}" class="btn-login-reg">
                         Dashboard
                     </a>
-                @else
-                    {{-- Dark Mode --}}
-                    <button id="darkmode-toggle" class="dark-toggle">
-                        <i class="fas fa-moon"></i>
+                @elseif (auth()->user()->role == 'user')
+                    <a href="{{ route('dashboard') }}" class="btn-login-reg">
+                        Dashboard
+                    </a>
+                @endif
+
+                {{-- Dark Mode --}}
+                <button id="darkmode-toggle" class="dark-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+
+                {{-- User Dropdown --}}
+                <div class="user-dropdown">
+
+                    <button class="user-btn" id="userMenuBtn">
+                        <i class="fas fa-user-circle"></i>
                     </button>
 
-                    {{-- User Dropdown --}}
-                    <div class="user-dropdown">
+                    <div class="dropdown-menu" id="userDropdown">
 
-                        <button class="user-btn" id="userMenuBtn">
-                            <i class="fas fa-user-circle"></i>
-                        </button>
+                        <a href="{{ route('profile.edit') }}">
+                            <i class="fas fa-user"></i>
+                            Profil
+                        </a>
 
-                        <div class="dropdown-menu" id="userDropdown">
-
-                            <a href="{{ route('profile.edit') }}">
-                                <i class="fas fa-user"></i>
-                                Profil
-                            </a>
-
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    Logout
-                                </button>
-                            </form>
-
-                        </div>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </button>
+                        </form>
 
                     </div>
-                @endif
+
+                </div>
 
             @endauth
 
