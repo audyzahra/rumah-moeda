@@ -88,10 +88,10 @@
 
             </form>
 
-           <a href="{{ url('admin/struktur/tambah') }}" class="btn-tambah">
-    <i class="fa-solid fa-plus"></i>
-    Tambah Anggota
-</a>
+           <a href="{{ route('admin.organization-structures.create') }}" class="btn-tambah">
+                <i class="fa-solid fa-plus"></i>
+                Tambah Anggota
+            </a>
 
             <button 
                 type="button"
@@ -162,10 +162,10 @@
 
                         <div class="card-actions">
 
-                            <a href="{{ url('admin/struktur/edit') }}" class="btn-edit">
-    <i class="fa-solid fa-pen"></i>
-    Edit
-</a>
+                            <a href="{{ route('admin.organization-structures.edit', $anggota->id) }}" class="btn-edit">
+                                <i class="fa-solid fa-pen"></i>
+                                Edit
+                            </a>
 
                             <form
                                 action="{{ route('admin.organization-structures.destroy', $anggota->id) }}"

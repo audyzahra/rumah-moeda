@@ -21,7 +21,10 @@
 
         <div class="card">
 
-            <form method="POST" enctype="multipart/form-data">
+            <form
+            action="{{ route('admin.organization-structures.store') }}"
+            method="POST"
+            enctype="multipart/form-data">
 
                 @csrf
 

@@ -21,8 +21,10 @@
 
         <div class="card">
 
-            <form method="POST" enctype="multipart/form-data">
-
+            <form
+            action="{{ route('admin.organization-structures.update', $organization->id) }}"
+            method="POST"
+            enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
