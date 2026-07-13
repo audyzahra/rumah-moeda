@@ -79,7 +79,9 @@ class OrganizationStructureController extends Controller
 
     public function create()
     {
-        return redirect()->route('admin.organization-structures.struktur');
+        $parents = OrganizationStructure::whereNull('parent_id')->get();
+
+        return view('admin.struktur.tambah', compact('parents'));
     }
 
     public function store(Request $request)
@@ -117,20 +119,15 @@ class OrganizationStructureController extends Controller
 
     public function edit($id)
     {
-        $editData = OrganizationStructure::findOrFail($id);
+        $organization = OrganizationStructure::findOrFail($id);
 
-        $struktur = OrganizationStructure::with('parent')
-            ->paginate(12);
+        $parents = OrganizationStructure::whereNull('parent_id')
+            ->where('id', '!=', $id)
+            ->get();
 
-        $jabatanList = OrganizationStructure::select('position')
-            ->distinct()
-            ->pluck('position');
-
-
-        return view('admin.organization-structures.struktur', compact(
-            'struktur',
-            'jabatanList',
-            'editData'
+        return view('admin.struktur.edit', compact(
+            'organization',
+            'parents'
         ));
     }
 
@@ -167,7 +164,7 @@ class OrganizationStructureController extends Controller
         $struktur->update($data);
 
         return redirect()
-            ->route('admin.organization-structures.struktur')
+            ->route('admin.struktur.edit', $struktur->id)
             ->with('success', 'Data berhasil diubah');
     }
 
