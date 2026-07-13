@@ -111,7 +111,7 @@ class NewsController extends Controller
             'thumbnail'     => $thumbnail,
             'content'       => $request->content,
             'category_id'   => $request->category_id,
-            'slug'          => Str::slug($request->title) . '-' . time(),
+            'slug'          => Str::slug($request->title),
             'publish_date'  => $request->publish_date,
         ]);
 
