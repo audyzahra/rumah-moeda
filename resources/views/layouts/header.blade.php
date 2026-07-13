@@ -44,30 +44,25 @@
                     </a>
                 </li>
 
-                {{-- Menu khusus User --}}
-                @auth
-                    @if (auth()->user()->role == 'user')
-                        <li>
-                            <a href="{{ route('berita.index') }}"
-                                class="{{ request()->routeIs('berita.*') ? 'active' : '' }}">
-                                Berita
-                            </a>
-                        </li>
+                <li>
+                    <a href="{{ route('berita.index') }}"
+                        class="{{ request()->routeIs('berita.*') ? 'active' : '' }}">
+                        Berita
+                    </a>
+                </li>
 
-                        <li>
-                            <a href="{{ route('galeri.index') }}"
-                                class="{{ request()->routeIs('galeri.*') ? 'active' : '' }}">
-                                Galeri
-                            </a>
-                        </li>
+                <li>
+                    <a href="{{ route('galeri.index') }}"
+                        class="{{ request()->routeIs('galeri.*') ? 'active' : '' }}">
+                        Galeri
+                    </a>
+                </li>
 
-                        <li>
-                            <a href="{{ route('faq.index') }}" class="{{ request()->routeIs('faq.*') ? 'active' : '' }}">
-                                Pertanyaan
-                            </a>
-                        </li>
-                    @endif
-                @endauth
+                <li>
+                    <a href="{{ route('faq.index') }}" class="{{ request()->routeIs('faq.*') ? 'active' : '' }}">
+                        Pertanyaan
+                    </a>
+                </li>
 
             </ul>
         </nav>

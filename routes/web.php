@@ -17,7 +17,7 @@ use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\OrganizationStructureController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
-use App\Http\Controllers\Admin\PartnerController;   
+use App\Http\Controllers\Admin\PartnerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,29 +38,37 @@ Route::post('/hubungi', [ContactController::class, 'store'])
 
 /*
 |--------------------------------------------------------------------------
+| Public Content
+|--------------------------------------------------------------------------
+*/
+
+// Berita
+Route::get('/berita', [BeritaController::class, 'index'])
+    ->name('berita.index');
+
+Route::get('/berita/{slug}', [BeritaController::class, 'show'])
+    ->name('berita.show');
+
+// Galeri
+Route::get('/galeri', [GalleryController::class, 'index'])
+    ->name('galeri.index');
+
+// FAQ
+Route::get('/pertanyaan', [FaqController::class, 'index'])
+    ->name('faq.index');
+
+
+/*
+|--------------------------------------------------------------------------
 | User Routes
 |--------------------------------------------------------------------------
 */
 
 Route::middleware('auth')->group(function () {
 
-    // Berita
-    Route::get('/berita', [BeritaController::class, 'index'])
-        ->name('berita.index');
-
-    Route::get('/berita/{slug}', [BeritaController::class, 'show'])
-        ->name('berita.show');
-
+    // Simpan Berita (sementara)
     Route::post('/berita/store', [BeritaController::class, 'store'])
         ->name('berita.store');
-
-    // Gallery
-    Route::get('/galeri', [GalleryController::class, 'index'])
-        ->name('galeri.index');
-
-    // FAQ
-    Route::get('/pertanyaan', [FaqController::class, 'index'])
-        ->name('faq.index');
 
 });
 
@@ -108,7 +116,7 @@ Route::middleware('auth')->group(function () {
 
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -167,38 +175,41 @@ Route::middleware(['auth', 'admin'])
         */
 
         Route::resource('struktur', OrganizationStructureController::class);
-         /*
+
+        /*
         |--------------------------------------------------------------------------
         | Mitra
         |--------------------------------------------------------------------------
         */
+
         Route::resource('mitra', PartnerController::class);
 
         /*
         |--------------------------------------------------------------------------
-        | Menu Admin
+        | Aspirasi
         |--------------------------------------------------------------------------
         */
 
-        // Aspirasi
-        Route::get('/aspirasi', [AspirasiController::class,'index'])
-    ->name('aspirasi.index');
+        Route::get('/aspirasi', [AspirasiController::class, 'index'])
+            ->name('aspirasi.index');
 
-        Route::put('/aspirasi/{aspirasi}/read',
-            [AspirasiController::class,'markAsRead'])
+        Route::put('/aspirasi/{aspirasi}/read', [AspirasiController::class, 'markAsRead'])
             ->name('aspirasi.read');
 
-        Route::delete('/aspirasi/{aspirasi}',
-            [AspirasiController::class,'destroy'])
+        Route::delete('/aspirasi/{aspirasi}', [AspirasiController::class, 'destroy'])
             ->name('aspirasi.destroy');
 
-        Route::delete('/aspirasi',
-            [AspirasiController::class,'bulkDelete'])
+        Route::delete('/aspirasi', [AspirasiController::class, 'bulkDelete'])
             ->name('aspirasi.bulkDelete');
 
-        // Berita
+        /*
+        |--------------------------------------------------------------------------
+        | Berita
+        |--------------------------------------------------------------------------
+        */
+
         Route::get('/berita', [NewsController::class, 'index'])
-                ->name('berita.index');
+            ->name('berita.index');
 
         Route::post('/berita', [NewsController::class, 'store'])
             ->name('berita.store');
@@ -209,9 +220,14 @@ Route::middleware(['auth', 'admin'])
         Route::delete('/berita/{id}', [NewsController::class, 'destroy'])
             ->name('berita.destroy');
 
-        // Gallery
+        /*
+        |--------------------------------------------------------------------------
+        | Gallery
+        |--------------------------------------------------------------------------
+        */
+
         Route::get('/gallery', [AdminGalleryController::class, 'index'])
-        ->name('gallery.index');
+            ->name('gallery.index');
 
         Route::post('/gallery', [AdminGalleryController::class, 'store'])
             ->name('gallery.store');
@@ -222,7 +238,12 @@ Route::middleware(['auth', 'admin'])
         Route::delete('/gallery/{gallery}', [AdminGalleryController::class, 'destroy'])
             ->name('gallery.destroy');
 
-        // FAQ
+        /*
+        |--------------------------------------------------------------------------
+        | FAQ
+        |--------------------------------------------------------------------------
+        */
+
         Route::get('/faq', [AdminFaqController::class, 'index'])
             ->name('faq.index');
 
