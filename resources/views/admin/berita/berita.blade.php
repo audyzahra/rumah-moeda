@@ -184,7 +184,8 @@
                                     id: {{ $item->id }},
                                     title: @json($item->title),
                                     content: @json($item->content),
-                                    thumbnail: @json($item->thumbnail),
+                                    thumbnail: @json($item->thumbnail ? Storage::url($item->thumbnail) : asset('assets/no-image.png')),
+                                    category: @json($item->category->name ?? "-"),
                                     author: @json($item->author->name),
                                     publish_date: @json(\Carbon\Carbon::parse($item->publish_date)->format('d M Y H:i'))
                                 })'>

@@ -307,7 +307,7 @@ function showDetail(news) {
     // Thumbnail
     document.getElementById("detailThumbnail").src =
         news.thumbnail
-            ? "/" + news.thumbnail
+            ? news.thumbnail
             : "/assets/no-image.png";
 
     // Judul
