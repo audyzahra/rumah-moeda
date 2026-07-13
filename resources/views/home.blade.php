@@ -250,14 +250,14 @@
                         @if ($partner->website)
                             <a href="{{ $partner->website }}" target="_blank" class="mitra-item">
 
-                                <img src="{{ asset($partner->logo) }}" alt="{{ $partner->name }}"
+                                <img src="{{ Storage::url($partner->logo) }}" alt="{{ $partner->name }}"
                                     title="{{ $partner->name }}">
 
                             </a>
                         @else
                             <div class="mitra-item">
 
-                                <img src="{{ asset($partner->logo) }}" alt="{{ $partner->name }}"
+                                <img src="{{ Storage::url($partner->logo) }}" alt="{{ $partner->name }}"
                                     title="{{ $partner->name }}">
 
                             </div>
