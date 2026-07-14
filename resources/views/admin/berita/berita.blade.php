@@ -56,41 +56,7 @@
     Tambah Berita
 
 </a>
-
         </div>
-
-
-        {{-- ===================== STATISTIK ===================== --}}
-
-        <div class="berita-stats">
-
-            {{-- Total Berita --}}
-            <div class="stat-card">
-
-                <div class="stat-icon total">
-                    <i class="fa-solid fa-newspaper"></i>
-                </div>
-
-                <div class="stat-info">
-                    <h4>Total Berita</h4>
-                    <h2>{{ $news->count() }}</h2>
-                </div>
-
-            </div>
-
-            {{-- Total Kategori --}}
-            <div class="stat-card">
-
-                <div class="stat-icon categories">
-                    <i class="fa-solid fa-folder-open"></i>
-                </div>
-
-                <div class="stat-info">
-                    <h4>Total Kategori</h4>
-                    <h2>{{ $categories->count() }}</h2>
-                </div>
-
-            </div>
 
         </div>
 
