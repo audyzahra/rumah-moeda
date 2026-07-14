@@ -23,19 +23,6 @@
         </div>
     </header>
 
-    <!-- Statistik -->
-    <section class="dokumentasi-stats">
-        <div class="stat-card">
-            <div class="stat-icon total">
-                <i class="fa-solid fa-images"></i>
-            </div>
-            <div>
-                <h4>Total Foto</h4>
-                <h2>{{ $galleries->total() }}</h2>
-            </div>
-        </div>
-    </section>
-
     <form method="GET" class="filter-section">
 
     <div class="filter-left">

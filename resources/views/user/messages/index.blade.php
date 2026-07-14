@@ -20,30 +20,6 @@
 
     </div>
 
-    <!-- ================= STATISTIK ================= -->
-
-    <div class="aspirasi-stats">
-
-        <div class="stat-card">
-
-            <div class="stat-icon total">
-
-                <i class="fa-solid fa-envelope"></i>
-
-            </div>
-
-            <div>
-
-                <h4>Total Aspirasi</h4>
-
-                <h2>{{ $totalMessages }}</h2>
-
-            </div>
-
-        </div>
-
-    </div>
-
     <!-- ================= FILTER ================= -->
 
     <div class="filter-section">

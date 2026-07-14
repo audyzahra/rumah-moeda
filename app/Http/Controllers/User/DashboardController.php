@@ -3,46 +3,78 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\News;
-use App\Models\Documentation;
+use App\Models\Gallery;
 use App\Models\ContactMessage;
-use App\Models\Setting;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
+        $userId = Auth::id();
 
-        // Pengaturan Website
-        $setting = Setting::first();
+        /*
+        |--------------------------------------------------------------------------
+        | Statistik
+        |--------------------------------------------------------------------------
+        */
 
-        // Total berita milik user
-        $totalNews = News::where(
-            'author_id',
-            $user->id
-        )->count();
+        $totalNews = News::where('author_id', $userId)->count();
 
-        // Total dokumentasi milik user
-        $totalDocumentation = Documentation::where(
-            'author_id',
-            $user->id
-        )->count();
+        $totalGallery = Gallery::where('author_id', $userId)->count();
 
-        // Total aspirasi milik user
-        $totalAspirasi = ContactMessage::where(
-            'email',
-            $user->email
-        )->count();
+        $totalMessage = ContactMessage::where('user_id', $userId)->count();
 
-        return view(
-            'user.dashboard.index',
-            compact(
-                'setting',
-                'totalNews',
-                'totalDocumentation',
-                'totalAspirasi'
-            )
-        );
+        $totalContent =
+            $totalNews +
+            $totalGallery +
+            $totalMessage;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Aktivitas Terbaru
+        |--------------------------------------------------------------------------
+        */
+
+        $latestNews = News::where('author_id', $userId)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $latestGallery = Gallery::where('author_id', $userId)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $latestMessages = ContactMessage::where('user_id', $userId)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Berita Terpopuler
+        |--------------------------------------------------------------------------
+        | Sementara masih mengambil berita terbaru.
+        | Nanti tinggal diganti ->orderByDesc('views')
+        |--------------------------------------------------------------------------
+        */
+
+        $popularNews = News::where('author_id', $userId)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('user.dashboard.index', compact(
+            'totalNews',
+            'totalGallery',
+            'totalMessage',
+            'totalContent',
+            'latestNews',
+            'latestGallery',
+            'latestMessages',
+            'popularNews'
+        ));
     }
 }
