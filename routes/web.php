@@ -19,6 +19,11 @@ use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\PartnerController;
 
+use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\User\NewsController as UserNewsController;
+use App\Http\Controllers\User\GalleryController as UserGalleryController;
+use App\Http\Controllers\User\MessageController as UserMessageController;
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -78,13 +83,46 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified'])
+    ->prefix('dashboard')
+    ->name('user.')
+    ->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+        /*
+        |--------------------------------------------------------------------------
+        | Dashboard
+        |--------------------------------------------------------------------------
+        */
 
-});
+        Route::get('/', [UserDashboardController::class, 'index'])
+            ->name('dashboard');
+
+        /*
+        |--------------------------------------------------------------------------
+        | News
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource('news', UserNewsController::class);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Gallery
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource('gallery', UserGalleryController::class);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Messages
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource('messages', UserMessageController::class)
+            ->only(['index', 'show']);
+
+    });
 
 /*
 |--------------------------------------------------------------------------

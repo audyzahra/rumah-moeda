@@ -94,11 +94,11 @@
                     <a href="{{ route('admin.dashboard') }}" class="btn-login-reg">
                         Dashboard
                     </a>
-                @elseif (auth()->user()->role == 'user')
-                    <a href="{{ route('dashboard') }}" class="btn-login-reg">
+                @else
+                    <a href="{{ route('user.dashboard') }}" class="btn-login-reg">
                         Dashboard
                     </a>
-                @endif
+                @endif  
 
                 {{-- Dark Mode --}}
                 <button id="darkmode-toggle" class="dark-toggle">
