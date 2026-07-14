@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\ContactMessage;
 
 #[Fillable([
     'name',
@@ -42,5 +43,9 @@ class User extends Authenticatable
     public function news()
     {
         return $this->hasMany(News::class, 'author_id');
+    }
+    public function contactMessages()
+    {
+        return $this->hasMany(ContactMessage::class);
     }
 }

@@ -119,8 +119,8 @@ Route::middleware(['auth', 'verified'])
         |--------------------------------------------------------------------------
         */
 
-        Route::resource('messages', UserMessageController::class)
-            ->only(['index', 'show']);
+        Route::get('/messages', [UserMessageController::class, 'index'])
+            ->name('messages.index');
 
     });
 

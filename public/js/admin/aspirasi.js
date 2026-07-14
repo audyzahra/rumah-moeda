@@ -1,8 +1,17 @@
 // =============================================
 // ASPIRASI.JS
 // Admin Rumah Moeda
-// Rewrite Version
 // =============================================
+
+/* ==========================================
+   BASE URL
+========================================== */
+
+const isAdmin = window.location.pathname.startsWith("/admin");
+
+const aspirasiBaseUrl = isAdmin
+    ? "/admin/aspirasi"
+    : "/dashboard/messages";
 
 "use strict";
 
@@ -232,7 +241,10 @@ function deleteAspirasi(id) {
 
     currentId = id;
 
-    deleteForm.action = "/admin/aspirasi/" + id;
+    if (!deleteForm) return;
+
+    deleteForm.action =
+        aspirasiBaseUrl + "/" + id;
 
     openModal(deleteModal);
 
@@ -289,7 +301,7 @@ function bulkDelete() {
 
     form.method = "POST";
 
-    form.action = "/admin/aspirasi";
+    form.action = aspirasiBaseUrl;
 
     form.innerHTML = `
 
@@ -354,56 +366,63 @@ if (searchInput) {
    FILTER DATA
 ========================================== */
 
-function filterData() {
+
 
     // Ambil keyword pencarian
-    const keyword = searchInput.value
-        .trim()
-        .toLowerCase();
+    function filterData() {
 
-    // Ambil status
-    const status = filterStatus.value;
+        const keyword = searchInput
+            ? searchInput.value.trim().toLowerCase()
+            : "";
 
-    // Semua baris tabel
-    const rows = document.querySelectorAll("#aspirasiBody tr");
+        const status = filterStatus
+            ? filterStatus.value
+            : "";
 
-    rows.forEach(function (row) {
+        const rows =
+            document.querySelectorAll("#aspirasiBody tr");
 
-        // Skip baris "Belum ada aspirasi"
-        if (!row.dataset.name) return;
+        rows.forEach(function (row) {
 
-        const nama = (row.dataset.name || "").toLowerCase();
-        const email = (row.dataset.email || "").toLowerCase();
-        const isRead = row.dataset.status || "";
+            // Skip baris "Belum ada aspirasi"
+            if (!row.dataset.name) return;
 
-        let tampil = true;
+            const nama = (row.dataset.name || "").toLowerCase();
+            const email = (row.dataset.email || "").toLowerCase();
+            const isRead = row.dataset.status || "";
 
-        // ===============================
-        // FILTER NAMA / EMAIL
-        // ===============================
-        if (keyword !== "") {
+            let tampil = true;
 
-            const cocokNama = nama.includes(keyword);
-            const cocokEmail = email.includes(keyword);
+            // ===============================
+            // FILTER NAMA / EMAIL
+            // ===============================
+            if (keyword !== "") {
 
-            if (!cocokNama && !cocokEmail) {
-                tampil = false;
+                const cocokNama = nama.includes(keyword);
+                const cocokEmail = email.includes(keyword);
+
+                if (!cocokNama && !cocokEmail) {
+                    tampil = false;
+                }
+
             }
 
-        }
+            // ===============================
+            // FILTER STATUS
+            // ===============================
+            if (
+                filterStatus &&
+                status !== "" &&
+                isRead !== status
+            ) {
 
-        // ===============================
-        // FILTER STATUS
-        // ===============================
-        if (status !== "" && isRead !== status) {
+                tampil = false;
 
-            tampil = false;
+            }
 
-        }
+            // Tampilkan / Sembunyikan
+            row.style.display = tampil ? "" : "none";
 
-        // Tampilkan / Sembunyikan
-        row.style.display = tampil ? "" : "none";
+        });
 
-    });
-
-}
+    }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ContactMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
@@ -22,12 +23,20 @@ class ContactController extends Controller
         ]);
 
         ContactMessage::create([
-            'full_name' => $request->full_name,
-            'phone'     => $request->phone,
-            'email'     => $request->email,
-            'message'   => $request->message,
-            'is_read'   => false,
-        ]);
+
+        'user_id' => Auth::check()
+            ? Auth::id()
+            : null,
+
+        'full_name' => $request->full_name,
+
+        'email' => $request->email,
+
+        'phone' => $request->phone,
+
+        'message' => $request->message,
+
+    ]);
 
         return back()->with('success','Pesan berhasil dikirim.');
     }
