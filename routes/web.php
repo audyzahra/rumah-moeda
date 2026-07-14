@@ -249,12 +249,23 @@ Route::middleware(['auth', 'admin'])
         Route::get('/berita', [NewsController::class, 'index'])
             ->name('berita.index');
 
+        // Tambah Berita
+        Route::get('/berita/tambah', [NewsController::class, 'create'])
+            ->name('berita.create');
+
+        // Simpan Berita
         Route::post('/berita', [NewsController::class, 'store'])
             ->name('berita.store');
 
+        // Halaman Edit
+        Route::get('/berita/{id}/edit', [NewsController::class, 'edit'])
+            ->name('berita.edit');
+
+        // Update
         Route::put('/berita/{id}', [NewsController::class, 'update'])
             ->name('berita.update');
 
+        // Hapus
         Route::delete('/berita/{id}', [NewsController::class, 'destroy'])
             ->name('berita.destroy');
 

@@ -8,171 +8,146 @@
 
 @section('content')
 
-<div class="berita-container">
+    <div class="berita-container">
 
-    {{-- HEADER --}}
-    <div class="berita-header">
+        {{-- HEADER --}}
+        <div class="berita-header">
 
-        <div>
-            <h1>Tambah Berita</h1>
-            <p>Tambahkan berita baru Rumah Moeda.</p>
+            <div>
+                <h1>Tambah Berita</h1>
+                <p>Tambahkan berita baru Rumah Moeda.</p>
+            </div>
+
+            <a href="{{ route('admin.berita.index') }}" class="btn-batal">
+                <i class="fa-solid fa-arrow-left"></i>
+                Kembali
+            </a>
+
         </div>
 
-        <a href="{{ route('admin.berita.index') }}" class="btn-batal">
-            <i class="fa-solid fa-arrow-left"></i>
-            Kembali
-        </a>
+        {{-- FORM --}}
+        <div class="modal-content">
 
-    </div>
+            <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data">
 
-    {{-- FORM --}}
-    <div class="modal-content">
+                @csrf
 
-        <form id="beritaForm"
-              action="#"
-              method="POST"
-              enctype="multipart/form-data">
+                <div class="modal-body">
 
-            @csrf
+                    {{-- Judul --}}
+                    <div class="form-group">
 
-            <div class="modal-body">
+                        <label>
+                            Judul Berita
+                            <span class="required">*</span>
+                        </label>
 
-                {{-- Judul --}}
-                <div class="form-group">
+                        <input type="text" id="title" name="title" class="form-control"
+                            placeholder="Masukkan judul berita">
 
-                    <label>
-                        Judul Berita
-                        <span class="required">*</span>
-                    </label>
+                    </div>
 
-                    <input
-                        type="text"
-                        id="title"
-                        name="title"
-                        class="form-control"
-                        placeholder="Masukkan judul berita">
+                    {{-- Kategori --}}
+                    <div class="form-group">
 
-                </div>
+                        <label>
+                            Kategori
+                            <span class="required">*</span>
+                        </label>
 
-                {{-- Kategori --}}
-                <div class="form-group">
+                        <select id="category_id" name="category_id" class="form-control">
 
-                    <label>
-                        Kategori
-                        <span class="required">*</span>
-                    </label>
+                            <option value="">Pilih Kategori</option>
 
-                    <select
-                        id="category_id"
-                        name="category_id"
-                        class="form-control">
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">
 
-                        <option>Pilih Kategori</option>
+                                    {{ $category->name }}
 
-                        <option>Informasi</option>
-                        <option>Kegiatan</option>
-                        <option>Pengumuman</option>
+                                </option>
+                            @endforeach
 
-                    </select>
+                        </select>
 
-                </div>
+                    </div>
 
-                {{-- Thumbnail --}}
-                <div class="form-group">
+                    {{-- Thumbnail --}}
+                    <div class="form-group">
 
-                    <label>
-                        Thumbnail
-                        <span class="required">*</span>
-                    </label>
+                        <label>
+                            Thumbnail
+                            <span class="required">*</span>
+                        </label>
 
-                    <input
-                        type="file"
-                        id="thumbnail"
-                        name="thumbnail"
-                        class="form-control"
-                        onchange="previewImage(event)">
+                        <input type="file" id="thumbnail" name="thumbnail" class="form-control"
+                            onchange="previewImage(event)">
 
-                    <small>
-                        Format JPG, JPEG, PNG maksimal 2 MB
-                    </small>
+                        <small>
+                            Format JPG, JPEG, PNG maksimal 2 MB
+                        </small>
 
-                    <div class="image-preview">
+                        <div class="image-preview">
 
-                        <img
-                            id="preview"
-                            src=""
-                            style="display:none;">
+                            <img id="preview" src="" style="display:none;">
+
+                        </div>
+
+                    </div>
+
+                    {{-- Isi --}}
+                    <div class="form-group">
+
+                        <label>
+                            Isi Berita
+                            <span class="required">*</span>
+                        </label>
+
+                        <textarea id="content" name="content" class="form-control" rows="10" placeholder="Masukkan isi berita..."></textarea>
+
+                    </div>
+
+                    {{-- Publish --}}
+                    <div class="form-group">
+
+                        <label>
+                            Tanggal Publish
+                            <span class="required">*</span>
+                        </label>
+
+                        <input type="datetime-local" id="publish_date" name="publish_date" class="form-control">
 
                     </div>
 
                 </div>
 
-                {{-- Isi --}}
-                <div class="form-group">
+                <div class="modal-footer">
 
-                    <label>
-                        Isi Berita
-                        <span class="required">*</span>
-                    </label>
+                    <a href="{{ route('admin.berita.index') }}" class="btn-batal">
 
-                    <textarea
-                        id="content"
-                        name="content"
-                        class="form-control"
-                        rows="10"
-                        placeholder="Masukkan isi berita..."></textarea>
+                        <i class="fa-solid fa-xmark"></i>
 
-                </div>
+                        Batal
 
-                {{-- Publish --}}
-                <div class="form-group">
+                    </a>
 
-                    <label>
-                        Tanggal Publish
-                        <span class="required">*</span>
-                    </label>
+                    <button type="submit" class="btn-simpan">
 
-                    <input
-                        type="datetime-local"
-                        id="publish_date"
-                        name="publish_date"
-                        class="form-control">
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Simpan Berita
+
+                    </button>
 
                 </div>
 
-            </div>
+            </form>
 
-            <div class="modal-footer">
-
-                <a href="{{ route('admin.berita.index') }}"
-                   class="btn-batal">
-
-                    <i class="fa-solid fa-xmark"></i>
-
-                    Batal
-
-                </a>
-
-                <button
-                    type="submit"
-                    class="btn-simpan">
-
-                    <i class="fa-solid fa-floppy-disk"></i>
-
-                    Simpan Berita
-
-                </button>
-
-            </div>
-
-        </form>
+        </div>
 
     </div>
-
-</div>
 
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/admin/berita.js') }}"></script>
+    <script src="{{ asset('js/admin/berita.js') }}"></script>
 @endpush

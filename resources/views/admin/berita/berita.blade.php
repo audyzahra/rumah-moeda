@@ -49,7 +49,7 @@
 
             </div>
 
-            <a href="{{ url('/admin/berita/tambah') }}" class="btn-tambah">
+            <a href="{{ route('admin.berita.create') }}" class="btn-tambah">
 
     <i class="fa-solid fa-plus"></i>
 
@@ -194,7 +194,7 @@
 
                             </button>
 
-                            <a href="{{ url('admin/berita/' . $item->id . '/edit') }}" class="btn-edit">
+                            <a href="{{ route('admin.berita.edit', $item->id) }}" class="btn-edit">
     <i class="fa-solid fa-pen"></i>
 </a>
 

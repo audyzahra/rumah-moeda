@@ -39,6 +39,31 @@ class NewsController extends Controller
     }
 
     /**
+     * Halaman tambah berita
+     */
+    public function create()
+    {
+        $categories = Category::orderBy('name')->get();
+
+        return view('admin.berita.tambah', compact('categories'));
+    }
+
+    /**
+     * Halaman edit berita
+     */
+    public function edit($id)
+    {
+        $news = News::findOrFail($id);
+
+        $categories = Category::orderBy('name')->get();
+
+        return view('admin.berita.edit', compact(
+            'news',
+            'categories'
+        ));
+    }
+
+    /**
      * Simpan berita
      */
     public function store(Request $request)
