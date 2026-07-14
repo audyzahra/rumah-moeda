@@ -21,19 +21,6 @@
         </div>
     </header>
 
-    <!-- Statistik -->
-    <section class="dokumentasi-stats">
-        <div class="stat-card">
-            <div class="stat-icon total">
-                <i class="fa-solid fa-images"></i>
-            </div>
-            <div>
-                <h4>Total Foto</h4>
-                <h2>{{ $galleries->total() }}</h2>
-            </div>
-        </div>
-    </section>
-
     <form method="GET" class="filter-section">
 
     <div class="filter-left">
@@ -81,7 +68,7 @@
                 onclick="openCreateModal()">
 
                 <i class="fa-solid fa-plus"></i>
-                Tambah Foto
+                Tambah Galeri
 
             </button>
 
@@ -110,11 +97,27 @@
                     data-description="{{ strtolower($gallery->description) }}"
                     data-date="{{ strtolower(\Carbon\Carbon::parse($gallery->activity_date)->format('d M Y')) }}">
 
-                        <img
-                            src="{{ asset('storage/'.$gallery->photo) }}"
-                            alt="{{ $gallery->title }}"
-                            class="foto"
-                        >
+                        @php
+                            $thumbnail = $gallery->media->first();
+                        @endphp
+
+                        @if($thumbnail)
+
+                            @if($thumbnail->type == 'image')
+
+                                <img
+                                    src="{{ asset('storage/'.$thumbnail->file_path) }}"
+                                    class="foto">
+
+                            @else
+
+                                <img
+                                    src="https://img.youtube.com/vi/{{ getYoutubeId($thumbnail->video_url) }}/hqdefault.jpg"
+                                    class="foto">
+
+                            @endif
+
+                        @endif
 
                         <div class="card-body">
 
@@ -135,19 +138,21 @@
                                 <button
                                     type="button"
                                     class="btn-detail"
-                                    data-photo="{{ asset('storage/'.$gallery->photo) }}"
                                     data-title="{{ $gallery->title }}"
                                     data-date="{{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}"
                                     data-description="{{ $gallery->description }}"
+                                    data-media='@json($gallery->media)'
                                     onclick="showDetail(this)">
 
                                     <i class="fa-solid fa-eye"></i>
+
                                 </button>
 
                                 <button
                                     type="button"
                                     class="btn-edit"
-                                    onclick="editGallery(
+                                    data-media='@json($gallery->media)'
+                                    onclick="editGallery(this,
                                         '{{ $gallery->id }}',
                                         '{{ $gallery->title }}',
                                         '{{ $gallery->activity_date }}',
@@ -197,7 +202,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h3>Tambah Dokumentasi</h3>
+                <h3>Tambah Galeri</h3>
 
                 <button type="button"
                         class="close-modal"
@@ -227,14 +232,59 @@
                     <textarea name="description" class="form-control"></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label>Foto</label>
-                    <input type="file" name="photo" class="form-control" required>
+                <div id="photo-container">
 
-                    <small class="text-muted">
-                        Format: JPG, JPEG, PNG Maksimal ukuran 2 MB.
-                    </small>
+                <div class="form-group">
+
+                    <label>Foto</label>
+
+                    <input
+                        type="file"
+                        name="images[]"
+                        class="form-control"
+                        accept=".jpg,.jpeg,.png,.webp">
+
                 </div>
+
+            </div>
+
+            <button
+                type="button"
+                id="btn-add-photo"
+                class="btn btn-secondary">
+
+                + Tambah Foto
+
+            </button>
+
+                <div id="video-container">
+
+                    <div class="form-group">
+
+                        <label>Video YouTube</label>
+
+                        <input
+                            type="url"
+                            name="videos[]"
+                            class="form-control"
+                            placeholder="https://www.youtube.com/watch?v=xxxx">
+
+                        <small class="text-muted">
+                            Tambahkan satu atau lebih link video YouTube (opsional).
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="btn-add-video"
+                    class="btn btn-secondary">
+
+                    + Tambah Link Video
+
+                </button>
 
                 <div class="modal-footer">
                     <button type="button"
@@ -259,7 +309,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h3>Edit Dokumentasi</h3>
+                <h3>Edit Galeri</h3>
 
                 <button type="button"
                         class="close-modal"
@@ -268,49 +318,109 @@
                 </button>
             </div>
 
-            <form id="editForm"
+            <form
+                id="editForm"
                 method="POST"
                 enctype="multipart/form-data">
 
                 @csrf
                 @method('PUT')
 
+            <div class="form-group">
+                <label>Judul</label>
+                <input
+                    type="text"
+                    name="title"
+                    id="edit_title"
+                    class="form-control"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>Tanggal Kegiatan</label>
+                <input
+                    type="date"
+                    name="activity_date"
+                    id="edit_activity_date"
+                    class="form-control"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>Deskripsi</label>
+                <textarea
+                    name="description"
+                    id="edit_description"
+                    class="form-control"
+                    rows="4"></textarea>
+            </div>
+
+            {{-- Media yang sudah ada --}}
+            <div class="form-group">
+                <label>Media Saat Ini</label>
+
+                <div id="existingMedia">
+
+                    <p class="text-muted">
+                        Belum ada media.
+                    </p>
+
+                </div>
+            </div>
+
+            <div id="edit-photo-container">
+
                 <div class="form-group">
-                    <label>Judul</label>
-                    <input type="text"
-                        name="title"
-                        id="edit_title"
+
+                    <label>Tambah Foto</label>
+
+                    <input
+                        type="file"
+                        name="images[]"
                         class="form-control"
-                        required>
+                        accept=".jpg,.jpeg,.png,.webp">
+
+                    <small class="text-muted">
+                        Format: JPG, JPEG, PNG, WEBP. Maksimal 2 MB per file.
+                    </small>
+
                 </div>
 
+            </div>
+
+            <button
+                type="button"
+                id="btn-edit-add-photo"
+                class="btn btn-secondary">
+
+                + Tambah Foto
+
+            </button>
+
+            <div id="edit-video-container">
+
                 <div class="form-group">
-                    <label>Tanggal Kegiatan</label>
-                    <input type="date"
-                        name="activity_date"
-                        id="edit_activity_date"
+
+                    <label>Tambah Video YouTube</label>
+
+                    <input
+                        type="url"
+                        name="videos[]"
                         class="form-control"
-                        required>
+                        placeholder="https://www.youtube.com/watch?v=xxxx">
+
                 </div>
 
-                <div class="form-group">
-                    <label>Deskripsi</label>
-                    <textarea name="description"
-                            id="edit_description"
-                            class="form-control"
-                            rows="4"></textarea>
-                </div>
+            </div>
 
-                <div class="form-group">
-                    <label>Ganti Foto (opsional)</label>
-                    <input type="file"
-                        name="photo"
-                        class="form-control">
+                <button
+                    type="button"
+                    id="btn-edit-add-video"
+                    class="btn btn-secondary">
 
-                        <small class="text-muted">
-                            Format: JPG, JPEG, PNG Maksimal ukuran 2 MB.
-                        </small>
-                </div>
+                    + Tambah Link Video
+
+                </button>
 
                 <div class="modal-footer">
                     <button type="button"
@@ -332,49 +442,56 @@
 
 
    <!-- Modal Detail -->
-<div id="detailModal" class="modal" style="display:none;">
+    <div id="detailModal" class="modal" style="display:none;">
 
-    <div class="modal-content modal-large">
+        <div class="modal-content modal-large">
 
-        <div class="modal-header">
-            <h2>Detail Dokumentasi</h2>
+            <div class="modal-header">
+                <h2>Detail Galeri</h2>
 
-            <button
-                type="button"
-                class="close-modal"
-                onclick="closeDetailModal()">
-                &times;
-            </button>
-        </div>
-
-        <div class="modal-body">
-
-            <img
-                id="detail_photo"
-                class="detail-image"
-                src=""
-                alt="Foto Dokumentasi">
-
-            <div class="detail-item">
-                <label>Judul</label>
-                <p id="detail_title">-</p>
+                <button
+                    type="button"
+                    class="close-modal"
+                    onclick="closeDetailModal()">
+                    &times;
+                </button>
             </div>
 
-            <div class="detail-item">
-                <label>Tanggal Kegiatan</label>
-                <p id="detail_date">-</p>
-            </div>
+            <div class="modal-body">
 
-            <div class="detail-item">
-                <label>Deskripsi</label>
-                <p id="detail_description">-</p>
+                <div class="detail-item">
+                    <label>Judul</label>
+                    <p id="detail_title">-</p>
+                </div>
+
+                <div class="detail-item">
+                    <label>Tanggal Kegiatan</label>
+                    <p id="detail_date">-</p>
+                </div>
+
+                <div class="detail-item">
+                    <label>Deskripsi</label>
+                    <p id="detail_description">-</p>
+                </div>
+
+                <div class="detail-item">
+                    <label>Media</label>
+
+                    <div id="detail_media" class="detail-media">
+
+                        <p class="text-muted">
+                            Tidak ada media.
+                        </p>
+
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
 
     </div>
-
-</div>
 
     <!-- ===== NOTIFIKASI ===== -->
     <div id="notification" class="notification"

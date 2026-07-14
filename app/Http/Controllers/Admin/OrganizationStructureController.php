@@ -182,4 +182,11 @@ class OrganizationStructureController extends Controller
             ->route('admin.organization-structures.struktur')
             ->with('success', 'Data berhasil dihapus');
     }
+
+    // untuk export data struktur ke format CSV
+    public function export()
+    {
+        dd('Export berhasil dipanggil');
+    }
+
 }
