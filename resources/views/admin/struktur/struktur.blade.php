@@ -148,9 +148,12 @@
                         </div>
 
                         <div class="card-periode">
-                            <i class="fa-solid fa-arrow-down-1-9"></i>
-                            Urutan {{ $anggota->display_order }}
-                        </div>
+    <i class="fa-solid fa-sitemap"></i>
+
+    <strong>
+        {{ $anggota->parent_id ? 'Child' : 'Parent' }}
+    </strong>
+</div>
 
                         <div class="card-deskripsi">
 
@@ -162,6 +165,19 @@
 
                         <div class="card-actions">
 
+                         <button
+        type="button"
+        class="btn-detail"
+        onclick="openDetailModal(this)"
+        data-photo="{{ $anggota->photo ? asset('storage/'.$anggota->photo) : '' }}"
+        data-name="{{ $anggota->full_name }}"
+        data-position="{{ $anggota->position }}"
+        data-parent="{{ $anggota->parent_id ? 'Child' : 'Parent' }}"
+        data-description="{{ $anggota->description }}">
+
+        <i class="fa-solid fa-eye"></i>
+        Detail
+    </button>
                             <a href="{{ route('admin.organization-structures.edit', $anggota->id) }}" class="btn-edit">
                                 <i class="fa-solid fa-pen"></i>
                                 Edit
@@ -234,7 +250,19 @@
 
         </section>
 
-       
+       <!-- ===== Modal Detail ===== -->
+
+<div id="detailModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" onclick="closeDetailModal()">&times;</span>
+
+        <div id="detailBody"></div>
+
+    </div>
+
+</div>
 
         <!-- ===== NOTIFIKASI ===== -->
     <div id="notification" class="notification"
