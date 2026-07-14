@@ -35,13 +35,13 @@
 
         </button>
 
-        <button class="tab-btn" data-tab="logo">
+        {{-- <button class="tab-btn" data-tab="logo">
 
             <i class="fa-solid fa-image"></i>
 
             Logo
 
-        </button>
+        </button> --}}
 
         <button class="tab-btn" data-tab="profile">
 
@@ -181,34 +181,46 @@
     </section>
 
     <!-- ======================================== -->
-    <!-- TAB : LOGO -->
+    <!-- TAB : PROFILE PERUSAHAAN ada logo-->
     <!-- ======================================== -->
 
-    <section class="tab-content" id="tab-logo">
+    <section class="tab-content" id="tab-profile">
 
         <div class="settings-card">
 
             <div class="card-header">
 
                 <h3>
-
-                    <i class="fa-solid fa-image"></i>
-
-                    Logo Perusahaan
-
+                    <i class="fa-solid fa-building"></i>
+                    Profile Perusahaan
                 </h3>
 
                 <p>
-
-                    Kelola logo perusahaan yang tampil di website
-
+                    Kelola informasi utama perusahaan
                 </p>
 
             </div>
 
             <div class="card-body">
 
-                <form id="logoForm" action="{{ route('admin.logo.update') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.profile.update') }}" method="POST">
+
+                    @csrf
+
+                    <div class="form-group">
+
+                        <label>
+                            Nama Website
+                            <span class="required">*</span>
+                        </label>
+
+                        <input type="text" id="websiteName" name="website_name" class="form-control"
+                            placeholder="Masukkan nama website"
+                            value="{{ old('website_name', $setting->website_name ?? '') }}">
+
+                    </div>
+
+                    <form id="logoForm" action="{{ route('admin.logo.update') }}" method="POST" enctype="multipart/form-data">
 
                     @csrf
 
@@ -275,65 +287,7 @@
 
                     </div>
 
-                    <div class="form-actions">
-
-                        <button type="submit" class="btn-simpan">
-
-                            <i class="fa-solid fa-save"></i>
-
-                            Simpan Logo
-
-                        </button>
-
-                    </div>
-
                 </form>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- ======================================== -->
-    <!-- TAB : PROFILE PERUSAHAAN -->
-    <!-- ======================================== -->
-
-    <section class="tab-content" id="tab-profile">
-
-        <div class="settings-card">
-
-            <div class="card-header">
-
-                <h3>
-                    <i class="fa-solid fa-building"></i>
-                    Profile Perusahaan
-                </h3>
-
-                <p>
-                    Kelola informasi utama perusahaan
-                </p>
-
-            </div>
-
-            <div class="card-body">
-
-                <form action="{{ route('admin.profile.update') }}" method="POST">
-
-                    @csrf
-
-                    <div class="form-group">
-
-                        <label>
-                            Nama Website
-                            <span class="required">*</span>
-                        </label>
-
-                        <input type="text" id="websiteName" name="website_name" class="form-control"
-                            placeholder="Masukkan nama website"
-                            value="{{ old('website_name', $setting->website_name ?? '') }}">
-
-                    </div>
 
                     <div class="form-group">
 
