@@ -73,8 +73,6 @@
             <a href="{{ route('admin.mitra.index') }}">
                 <i class="fa-solid fa-handshake"></i>
                 <span>Mitra</span>
-
-
                 <!-- <span class="badge">4</span> -->
             </a>
         </li>
@@ -84,19 +82,51 @@
             <a href="{{ route('admin.faq.index') }}">
                 <i class="fa-solid fa-circle-question"></i>
                 <span>FAQ</span>
-
-
                 <!-- <span class="badge">5</span> -->
             </a>
         </li>
 
+        <!-- Kelola Akun -->
+                {{-- <li class="{{ request()->routeIs('admin.kelola') ? 'active' : '' }}">
+                    <a href="{{ route('admin.kelola') }}">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span>Kelola Akun</span>
+                    </a>
+                </li> --}}
+
         <!-- Pengaturan -->
-        <li class="{{ request()->routeIs('admin.pengaturan.*') ? 'active' : '' }}">
-            <a href="{{ route('admin.pengaturan') }}">
+                
+            <li class="{{ request()->routeIs('admin.pengaturan') ? 'active' : '' }}">
+                    <a href="{{ route('admin.pengaturan') }}">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Pengaturan</span>
+                    </a>
+                </li>        
+
+        {{-- <li class="dropdown-menu {{ request()->routeIs('admin.hero.*') ||
+            request()->routeIs('admin.profil.*') ||
+            request()->routeIs('admin.visi-misi.*') ? 'active open' : '' }}">
+
+            <a href="#" class="dropdown-toggle">
                 <i class="fa-solid fa-gear"></i>
                 <span>Pengaturan</span>
-            </a>
-        </li>
+                <i class="fa-solid fa-chevron-down arrow"></i>
+            </a> --}}
+
+            {{-- <ul class="submenu">
+                <li>
+                    <a href="{{ route('admin.hero.index') }}">Hero Section</a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.profil.index') }}">Profil Perusahaan</a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.visi-misi.index') }}">Visi Misi</a>
+                </li>
+            </ul> --}}
+        {{-- </li> --}}
 
         <!-- Logout -->
         <li class="logout">
