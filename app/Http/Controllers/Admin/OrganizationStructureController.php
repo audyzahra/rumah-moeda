@@ -106,7 +106,7 @@ class OrganizationStructureController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.organization-structures.struktur')
+            ->route('admin.organization-structures.index')
             ->with('success', 'Data berhasil ditambahkan');
     }
 
@@ -164,8 +164,8 @@ class OrganizationStructureController extends Controller
         $struktur->update($data);
 
         return redirect()
-            ->route('admin.struktur.edit', $struktur->id)
-            ->with('success', 'Data berhasil diubah');
+        ->route('admin.organization-structures.index', $struktur->id)
+        ->with('success', 'Data berhasil diubah');
     }
 
     public function destroy($id)
@@ -179,8 +179,8 @@ class OrganizationStructureController extends Controller
         $struktur->delete();
 
         return redirect()
-            ->route('admin.organization-structures.struktur')
-            ->with('success', 'Data berhasil dihapus');
+        ->route('admin.organization-structures.index')
+        ->with('success', 'Data berhasil dihapus');
     }
 
     // untuk export data struktur ke format CSV
