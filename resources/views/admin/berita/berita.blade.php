@@ -49,13 +49,13 @@
 
             </div>
 
-            <button class="btn-tambah" onclick="openTambahModal()">
+            <a href="{{ url('/admin/berita/tambah') }}" class="btn-tambah">
 
-                <i class="fa-solid fa-plus"></i>
+    <i class="fa-solid fa-plus"></i>
 
-                Tambah Berita
+    Tambah Berita
 
-            </button>
+</a>
 
         </div>
 
@@ -194,11 +194,9 @@
 
                             </button>
 
-                            <button class="btn-edit" onclick='editBerita(@json($item))'>
-
-                                <i class="fa-solid fa-pen"></i>
-
-                            </button>
+                            <a href="{{ url('admin/berita/' . $item->id . '/edit') }}" class="btn-edit">
+    <i class="fa-solid fa-pen"></i>
+</a>
 
                             <button class="btn-delete" onclick="deleteBerita({{ $item->id }})">
 
