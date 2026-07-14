@@ -1,16 +1,8 @@
 // =============================================
 // BERITA.JS
 // Admin Rumah Moeda
+// Rewrite Version
 // =============================================
-/* ==========================================
-   BASE URL (ADMIN / USER)
-========================================== */
-
-const isAdmin = window.location.pathname.startsWith("/admin");
-
-const beritaBaseUrl = isAdmin
-    ? "/admin/berita"
-    : "/dashboard/news";
 
 "use strict";
 
@@ -182,7 +174,7 @@ function resetBeritaForm() {
 
     }
 
-    beritaForm.action = beritaBaseUrl;
+    beritaForm.action = "/admin/berita";
 
     document.getElementById("formModalTitle").innerHTML = "Tambah Berita";
 
@@ -195,7 +187,7 @@ function openTambahModal() {
 
     resetBeritaForm();
 
-    beritaForm.action = beritaBaseUrl;
+    beritaForm.action = "/dashboard/news";
 
     document.getElementById("formModalTitle").innerHTML = "Tambah Berita";
 
@@ -214,7 +206,7 @@ function openEditModal(news) {
 
     currentNews = news;
 
-    beritaForm.action = beritaBaseUrl + "/" + news.id;
+    beritaForm.action = "/dashboard/news/" + news.id;
 
     document.getElementById("formModalTitle").innerHTML = "Edit Berita";
 
@@ -251,9 +243,7 @@ function openEditModal(news) {
     // Thumbnail Lama
     if (news.thumbnail) {
 
-        preview.src = news.thumbnail.startsWith("http")
-            ? news.thumbnail
-            : "/" + news.thumbnail;
+        preview.src = "/" + news.thumbnail;
 
         preview.style.display = "block";
 
@@ -316,9 +306,9 @@ function showDetail(news) {
 
     // Thumbnail
     document.getElementById("detailThumbnail").src =
-        news.thumbnail
-            ? news.thumbnail
-            : "/assets/no-image.png";
+    news.thumbnail
+        ? news.thumbnail
+        : "/assets/no-image.png";
 
     // Judul
     document.getElementById("detailTitle").textContent =
@@ -351,7 +341,7 @@ function showDetail(news) {
 
 function deleteBerita(id) {
 
-    deleteForm.action = beritaBaseUrl + "/" + id;
+    deleteForm.action = "/dashboard/news/" + id;
 
     openModal(deleteModal);
 
