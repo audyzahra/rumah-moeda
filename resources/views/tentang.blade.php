@@ -76,46 +76,46 @@
             </p>
 
             @php
-                $ketua = $organizations->where('display_order', 1)->first();
-                $anggota = $organizations->where('display_order', '>', 1);
+                $parents = $organizations->whereNull('parent_id');
             @endphp
 
-            {{-- Ketua --}}
-            @if ($ketua)
+            @foreach ($parents as $parent)
                 <div class="leader-wrapper">
-
                     <div class="leader-card">
 
-                        <img src="{{ asset('storage/' . $ketua->photo) }}" alt="{{ $ketua->full_name }}">
+                        <img src="{{ asset('storage/' . $parent->photo) }}" alt="{{ $parent->full_name }}">
 
-                        <h3>{{ $ketua->full_name }}</h3>
+                        <h3>{{ $parent->full_name }}</h3>
 
-                        <span>{{ $ketua->position }}</span>
+                        <span>{{ $parent->position }}</span>
 
                     </div>
-
                 </div>
-            @endif
 
-            {{-- Garis --}}
-            <div class="connector-line"></div>
+                @php
+                    $children = $organizations->where('parent_id', $parent->id);
+                @endphp
 
-            {{-- Anggota --}}
-            <div class="member-grid">
+                @if ($children->count())
+                    <div class="connector-line"></div>
 
-                @foreach ($anggota as $item)
-                    <div class="member-card">
+                    <div class="member-grid">
 
-                        <img src="{{ asset('storage/' . $item->photo) }}" alt="{{ $item->full_name }}">
+                        @foreach ($children as $item)
+                            <div class="member-card">
 
-                        <h4>{{ $item->full_name }}</h4>
+                                <img src="{{ asset('storage/' . $item->photo) }}" alt="{{ $item->full_name }}">
 
-                        <p>{{ $item->position }}</p>
+                                <h4>{{ $item->full_name }}</h4>
+
+                                <p>{{ $item->position }}</p>
+
+                            </div>
+                        @endforeach
 
                     </div>
-                @endforeach
-
-            </div>
+                @endif
+            @endforeach
 
         </section>
 
