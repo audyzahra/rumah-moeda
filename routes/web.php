@@ -276,6 +276,8 @@ Route::middleware(['auth', 'admin'])
         Route::delete('/gallery/{gallery}', [AdminGalleryController::class, 'destroy'])
             ->name('gallery.destroy');
 
+        Route::delete('gallery/media/{media}', [AdminGalleryController::class, 'destroyMedia'])->name('gallery.media.destroy');
+
         /*
         |--------------------------------------------------------------------------
         | FAQ

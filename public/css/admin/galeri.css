@@ -985,3 +985,59 @@ textarea.form-control {
         height: 180px;
     }
 }
+
+
+/* untuk edit */
+.existing-media{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:15px;
+
+}
+
+.media-item{
+
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:10px;
+    text-align:center;
+
+}
+
+.media-preview{
+
+    width:100%;
+    height:120px;
+    object-fit:cover;
+    border-radius:8px;
+
+}
+
+.delete-media{
+
+    display:block;
+    margin-top:10px;
+    color:#dc3545;
+    cursor:pointer;
+    font-size:14px;
+
+}
+
+
+.detail-media{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:15px;
+}
+
+.detail-media img{
+    width:100%;
+    border-radius:10px;
+    object-fit:cover;
+}
+
+.detail-media iframe{
+    width:100%;
+    border-radius:10px;
+}

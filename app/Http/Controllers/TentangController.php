@@ -14,7 +14,9 @@ class TentangController extends Controller
 
         $vision = VisionMission::with('missions')->first();
 
-        $organizations = OrganizationStructure::orderBy('display_order')->get();
+        $organizations = OrganizationStructure::orderBy('parent_id')
+            ->orderBy('full_name')
+            ->get();
 
         return view('tentang', compact(
             'settings',
