@@ -235,4 +235,3 @@ class PengaturanController extends Controller
     return back()->with('success', 'Akun berhasil dihapus.');
 }
 }
-

@@ -40,4 +40,9 @@ class OrganizationStructure extends Model
             'parent_id'
         );
     }
+
+    public function childrenRecursive()
+    {
+        return $this->children()->with('childrenRecursive');
+    }
 }

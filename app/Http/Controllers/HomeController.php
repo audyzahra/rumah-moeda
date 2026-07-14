@@ -19,9 +19,10 @@ class HomeController extends Controller
         $vision = VisionMission::with('missions')->first();
 
         // Struktur organisasi
-        $organizations = OrganizationStructure::orderBy('parent_id')
-        ->orderBy('full_name')
-        ->get();
+        $organizations = OrganizationStructure::with('childrenRecursive')
+                    ->whereNull('parent_id')
+                    ->orderBy('full_name')
+                    ->get();
 
         // Artikel terbaru
         $news = News::latest('publish_date')

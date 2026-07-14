@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\AspirasiController;
 use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OrganizationStructureController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
@@ -211,6 +212,8 @@ Route::middleware(['auth', 'admin'])
         | Struktur Organisasi
         |--------------------------------------------------------------------------
         */
+        Route::get('organization-structures/export', [OrganizationStructureController::class, 'export'])
+                ->name('organization-structures.export');
 
         Route::resource('organization-structures', OrganizationStructureController::class);
 
@@ -269,6 +272,29 @@ Route::middleware(['auth', 'admin'])
         Route::delete('/berita/{id}', [NewsController::class, 'destroy'])
             ->name('berita.destroy');
 
+        /*
+        |--------------------------------------------------------------------------
+        | Kategori
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/kategori', [CategoryController::class, 'index'])
+            ->name('kategori.index');
+
+        Route::get('/kategori/tambah', [CategoryController::class, 'create'])
+            ->name('kategori.create');
+
+        Route::post('/kategori', [CategoryController::class, 'store'])
+            ->name('kategori.store');
+
+        Route::get('/kategori/{id}/edit', [CategoryController::class, 'edit'])
+            ->name('kategori.edit');
+
+        Route::put('/kategori/{id}', [CategoryController::class, 'update'])
+            ->name('kategori.update');
+
+        Route::delete('/kategori/{id}', [CategoryController::class, 'destroy'])
+            ->name('kategori.destroy');
         /*
         |--------------------------------------------------------------------------
         | Gallery

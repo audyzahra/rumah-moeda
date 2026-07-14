@@ -86,34 +86,21 @@
         </p>
 
 
-        {{-- Ketua --}}
-        @foreach ($organizations->where('display_order', 1) as $member)
+        @foreach($organizations as $leader)
+
             <div class="leader-card">
+                <img src="{{ asset('storage/'.$leader->photo) }}">
 
-                <img src="{{ asset('storage/' . $member->photo) }}" alt="{{ $member->full_name }}">
+                <h3>{{ $leader->full_name }}</h3>
 
-                <h3>{{ $member->full_name }}</h3>
-
-                <span>{{ $member->position }}</span>
-
+                <span>{{ $leader->position }}</span>
             </div>
-        @endforeach
 
-
-        {{-- Anggota --}}
-        <div class="team-grid">
-
-            @foreach ($organizations->where('display_order', '>', 1) as $member)
-                <div class="team-card">
-
-                    <img src="{{ asset('storage/' . $member->photo) }}" alt="{{ $member->full_name }}">
-
-                    <h4>{{ $member->full_name }}</h4>
-
-                    <p>{{ $member->position }}</p>
-
-                </div>
+            @foreach($leader->childrenRecursive as $member)
+                @include('components.organization-tree', ['member' => $member])
             @endforeach
+
+        @endforeach
 
         </div>
 
