@@ -9,7 +9,12 @@
 @section('content')
 
     <div class="berita-container">
-
+<div class="back-wrapper">
+        <a href="{{ route('admin.berita.index') }}" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i>
+            Kembali
+        </a>
+    </div>
         {{-- HEADER --}}
         <div class="berita-header">
 
@@ -18,10 +23,7 @@
                 <p>Tambahkan berita baru Rumah Moeda.</p>
             </div>
 
-            <a href="{{ route('admin.berita.index') }}" class="btn-batal">
-                <i class="fa-solid fa-arrow-left"></i>
-                Kembali
-            </a>
+           
 
         </div>
 

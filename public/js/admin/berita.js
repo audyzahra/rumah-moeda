@@ -187,13 +187,6 @@ function resetBeritaForm() {
     document.getElementById("formModalTitle").innerHTML = "Tambah Berita";
 
 }
-const formModal = document.getElementById("formModal");
-const detailModal = document.getElementById("detailModal");
-const deleteModal = document.getElementById("deleteModal");
-
-const beritaForm = document.getElementById("beritaForm");
-const preview = document.getElementById("preview");
-const deleteForm = document.getElementById("deleteForm");
 
 
 /* ==========================================
