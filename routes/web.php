@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\HeroSectionController;
 use App\Http\Controllers\Admin\ProfilPerusahaanController;
 use App\Http\Controllers\Admin\VisiMisiController;
+use App\Http\Controllers\Admin\KelolaAkunController;
 
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\NewsController as UserNewsController;
@@ -357,5 +358,22 @@ Route::middleware(['auth', 'admin'])
 
         Route::delete('/faq/{faq}', [AdminFaqController::class, 'destroy'])
             ->name('faq.destroy');
+
+    /*
+        |--------------------------------------------------------------------------
+        | Kelola Akun
+        |--------------------------------------------------------------------------
+        */
+        Route::get('/kelola-akun', [KelolaAkunController::class, 'index'])
+            ->name('kelola-akun.index');
+
+        Route::post('/kelola-akun', [KelolaAkunController::class, 'store'])
+        ->name('kelola-akun.store');
+
+        Route::put('/kelola-akun/{user}', [KelolaAkunController::class, 'update'])
+            ->name('kelola-akun.update');
+
+        Route::delete('/kelola-akun/{user}', [KelolaAkunController::class, 'destroy'])
+            ->name('kelola-akun.destroy');
 
     });
