@@ -17,4 +17,15 @@ class GalleryMedia extends Model
     {
         return $this->belongsTo(Gallery::class);
     }
+
+    public function getYoutubeIdAttribute()
+    {
+        preg_match(
+            '/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&\n?#]+)/',
+            $this->video_url,
+            $matches
+        );
+
+        return $matches[1] ?? '';
+    }
 }

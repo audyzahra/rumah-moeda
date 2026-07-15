@@ -159,7 +159,7 @@
 
     </section>
 
-    <!-- Dokumentasi -->
+    <!-- Gallery -->
     <section class="dokumentasi-section">
 
         <div class="container">
@@ -172,19 +172,73 @@
                 Momen kebersamaan dalam setiap langkah perubahan.
             </p>
 
-            <div class="gallery-grid">
+            <div class="gallery-wrapper">
 
-                @foreach ($documentations as $documentation)
-                    <div class="gallery-item {{ $loop->first ? 'gallery-large' : '' }}">
-                        <img src="{{ asset('storage/' . $documentation->photo) }}" alt="{{ $documentation->title }}">
-                    </div>
-                @endforeach
+                {{-- Video --}}
+                <div class="gallery-video">
+
+                    @if($videos->isNotEmpty())
+
+                        @php
+                            preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&\n?#]+)/', $videos->first()->video_url, $matches);
+                            $youtubeId = $matches[1] ?? '';
+                        @endphp
+
+                        <a
+                            href="javascript:void(0)"
+                            onclick="openVideo('{{ $videos->first()->youtube_id }}')">
+
+                            <img
+                                src="https://img.youtube.com/vi/{{ $videos->first()->youtube_id }}/maxresdefault.jpg">
+
+                            <div class="overlay">
+                                <i class="fa-solid fa-circle-play"></i>
+                            </div>
+
+                        </a>
+
+                    @endif
+
+                </div>
+
+                {{-- Foto --}}
+                <div class="gallery-photo-grid">
+
+                    @foreach($photos as $photo)
+
+                        <div
+                            class="photo-item"
+                            data-image="{{ asset('storage/'.$photo->file_path) }}"
+                            onclick="openImage(this)">
+
+                            <img
+                                src="{{ asset('storage/'.$photo->file_path) }}"
+                                alt="Foto">
+
+                            <div class="overlay">
+                                <i class="fa-solid fa-expand"></i>
+                            </div>
+
+                        </div>
+                    @endforeach
+
+                </div>
 
             </div>
-
         </div>
 
     </section>
+
+    <!-- galery modal -->
+    <div id="galleryModal" class="gallery-modal">
+
+        <span class="close-modal">&times;</span>
+
+        <div id="modalContent"></div>
+
+    </div>
+
+
     <!-- ================= MITRA ================= -->
 
     <section class="mitra-section">
@@ -270,3 +324,7 @@
     </div>
 
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/home.js') }}"></script>
+@endpush
