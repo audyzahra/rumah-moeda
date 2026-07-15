@@ -259,3 +259,77 @@
     }
 
 }
+
+/* ==========================
+   DROPDOWN GALERI
+========================== */
+
+/* Parent */
+.nav-menu ul li.dropdown {
+    position: relative;
+}
+
+/* Dropdown Box */
+.nav-menu ul li.dropdown .dropdown-menu-nav {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 120px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: all .25s ease;
+
+    overflow: hidden;
+    z-index: 999;
+}
+
+/* Muncul saat hover */
+.nav-menu ul li.dropdown:hover .dropdown-menu-nav {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%);
+}
+
+/* Item */
+.dropdown-menu-nav li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Link */
+.dropdown-menu-nav li a {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.2;
+    transition: background .2s ease, color .2s ease;
+}
+
+/* Garis pemisah */
+.dropdown-menu-nav li:not(:last-child) {
+    border-bottom: 1px solid #eee;
+}
+
+/* Hover */
+.dropdown-menu-nav li a:hover {
+    background: #f8f8f8;
+    color: #2E8B57;
+}
