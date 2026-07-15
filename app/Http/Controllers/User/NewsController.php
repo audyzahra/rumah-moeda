@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 class NewsController extends Controller
 {
     /**
-     * Menampilkan berita milik user
+     * Menampilkan daftar berita milik user
      */
     public function index()
     {
@@ -29,15 +29,24 @@ class NewsController extends Controller
         $totalDraft = 0;
         $totalCategory = $categories->count();
 
-        // Menggunakan blade yang sama dengan admin
         return view('user.news.index', compact(
-        'news',
-        'categories',
-        'totalNews',
-        'totalPublished',
-        'totalDraft',
-        'totalCategory'
-    ));
+            'news',
+            'categories',
+            'totalNews',
+            'totalPublished',
+            'totalDraft',
+            'totalCategory'
+        ));
+    }
+
+    /**
+     * Halaman tambah berita
+     */
+    public function create()
+    {
+        $categories = Category::orderBy('name')->get();
+
+        return view('user.news.create', compact('categories'));
     }
 
     /**
@@ -76,7 +85,35 @@ class NewsController extends Controller
     }
 
     /**
-     * Update berita milik user
+     * Detail berita
+     */
+    public function show($id)
+    {
+        $news = News::with(['category', 'author'])
+            ->where('author_id', Auth::id())
+            ->findOrFail($id);
+
+        return view('user.news.show', compact('news'));
+    }
+
+    /**
+     * Halaman edit berita
+     */
+    public function edit($id)
+    {
+        $news = News::where('author_id', Auth::id())
+            ->findOrFail($id);
+
+        $categories = Category::orderBy('name')->get();
+
+        return view('user.news.edit', compact(
+            'news',
+            'categories'
+        ));
+    }
+
+    /**
+     * Update berita
      */
     public function update(Request $request, $id)
     {
@@ -121,7 +158,7 @@ class NewsController extends Controller
     }
 
     /**
-     * Hapus berita milik user
+     * Hapus berita
      */
     public function destroy($id)
     {
