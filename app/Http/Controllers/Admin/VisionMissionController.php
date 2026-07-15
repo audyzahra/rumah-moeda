@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\VisionMission;
 use App\Models\Mission;
 
-class VisiMisiController extends Controller
+class VisionMissionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class VisiMisiController extends Controller
 
         $missions = Mission::orderBy('display_order')->get();
 
-        return view('admin.pengaturan.visi-misi', compact(
+        return view('admin.settings.visi-misi', compact(
             'vision',
             'missions'
         ));
@@ -88,7 +88,7 @@ class VisiMisiController extends Controller
 
     }
     return redirect()
-        ->route('admin.pengaturan.visi.index')
+        ->route('admin.settings.visi.index')
         ->with('success', 'Visi dan Misi berhasil diperbarui.');
     }
 

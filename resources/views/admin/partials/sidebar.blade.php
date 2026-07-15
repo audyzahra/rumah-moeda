@@ -119,15 +119,15 @@
         </li>
 
         <!-- Kelola Akun -->
-        <li class="{{ request()->routeIs('admin.kelola-akun.*') ? 'active' : '' }}">
-            <a href="{{ route('admin.kelola-akun.index') }}">
+        <li class="{{ request()->routeIs('admin.manage-account.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.manage-account.index') }}">
                 <i class="fa-solid fa-user-gear"></i>
                 <span>Kelola Akun</span>
             </a>
         </li>
 
         <!-- Pengaturan -->
-        <li class="has-submenu-setting {{ request()->routeIs('admin.pengaturan.*') ? 'open active' : '' }}">
+        <li class="has-submenu-setting {{ request()->routeIs('admin.settings.*') ? 'open active' : '' }}">
 
             <a href="#" class="submenu-toggle-setting">
                 <i class="fa-solid fa-gear"></i>
@@ -137,22 +137,22 @@
 
             <ul id="submenuPengaturan" class="submenu">
                 <li>
-                    <a href="{{ route('admin.pengaturan.hero.index') }}"
-                        class="{{ request()->routeIs('admin.pengaturan.hero.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.settings.hero.index') }}"
+                        class="{{ request()->routeIs('admin.settings.hero.*') ? 'active' : '' }}">
                         Hero Section
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('admin.pengaturan.profil.index') }}"
-                        class="{{ request()->routeIs('admin.pengaturan.profil.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.settings.profile.index') }}"
+                        class="{{ request()->routeIs('admin.settings.profile.*') ? 'active' : '' }}">
                         Profil Perusahaan
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('admin.pengaturan.visi.index') }}"
-                        class="{{ request()->routeIs('admin.pengaturan.visi.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.settings.visi.index') }}"
+                        class="{{ request()->routeIs('admin.settings.visi.*') ? 'active' : '' }}">
                         Visi Misi
                     </a>
                 </li>
