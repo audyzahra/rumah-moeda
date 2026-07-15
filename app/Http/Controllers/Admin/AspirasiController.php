@@ -16,13 +16,19 @@ class AspirasiController extends Controller
 
     public function index()
     {
+        // Reset badge sidebar karena halaman Aspirasi sudah dibuka
+        ContactMessage::where('notif_sidebar', 0)
+            ->update([
+                'notif_sidebar' => 1
+            ]);
+
         $messages = ContactMessage::latest()->get();
 
         $totalMessages = ContactMessage::count();
 
-        $unreadMessages = ContactMessage::where('is_read',0)->count();
+        $unreadMessages = ContactMessage::where('is_read', 0)->count();
 
-        $readMessages = ContactMessage::where('is_read',1)->count();
+        $readMessages = ContactMessage::where('is_read', 1)->count();
 
         return view(
             'admin.aspirasi.aspirasi',
@@ -44,17 +50,12 @@ class AspirasiController extends Controller
     public function markAsRead(ContactMessage $aspirasi)
     {
         $aspirasi->update([
-
-            'is_read'=>1
-
+            'is_read' => 1
         ]);
 
         return back()->with(
-
             'success',
-
             'Aspirasi berhasil ditandai sudah dibaca.'
-
         );
     }
 
@@ -69,11 +70,8 @@ class AspirasiController extends Controller
         $aspirasi->delete();
 
         return back()->with(
-
             'success',
-
             'Aspirasi berhasil dihapus.'
-
         );
     }
 
@@ -86,19 +84,13 @@ class AspirasiController extends Controller
     public function bulkDelete(Request $request)
     {
         ContactMessage::whereIn(
-
             'id',
-
             $request->ids
-
         )->delete();
 
         return back()->with(
-
             'success',
-
             'Data berhasil dihapus.'
-
         );
     }
 }
