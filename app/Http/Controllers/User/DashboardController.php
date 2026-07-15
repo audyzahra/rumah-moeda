@@ -51,6 +51,35 @@ class DashboardController extends Controller
             ->latest()
             ->take(5)
             ->get();
+        $activities = collect();
+
+            foreach ($latestNews as $news) {
+                $activities->push([
+                    'type'  => 'news',
+                    'title' => $news->title,
+                    'date'  => $news->created_at,
+                ]);
+            }
+
+            foreach ($latestGallery as $gallery) {
+                $activities->push([
+                    'type'  => 'gallery',
+                    'title' => $gallery->title,
+                    'date'  => $gallery->created_at,
+                ]);
+            }
+
+            foreach ($latestMessages as $message) {
+                $activities->push([
+                    'type'  => 'message',
+                    'title' => \Illuminate\Support\Str::limit($message->message, 60),
+                    'date'  => $message->created_at,
+                ]);
+            }
+
+            $activities = $activities
+                ->sortByDesc('date')
+                ->take(3);
 
         /*
         |--------------------------------------------------------------------------
@@ -62,9 +91,10 @@ class DashboardController extends Controller
         */
 
         $popularNews = News::where('author_id', $userId)
-            ->latest()
-            ->take(5)
-            ->get();
+        ->with('category')
+        ->orderByDesc('views')
+        ->take(5)
+        ->get();
 
         return view('user.dashboard.index', compact(
             'totalNews',
@@ -74,7 +104,8 @@ class DashboardController extends Controller
             'latestNews',
             'latestGallery',
             'latestMessages',
-            'popularNews'
+            'popularNews',
+            'activities'
         ));
     }
 }

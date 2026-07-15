@@ -5,6 +5,9 @@ use App\Http\Controllers\Controller;
 use App\Models\OrganizationStructure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Exports\OrganizationStructureExport;
+use App\Imports\OrganizationStructureImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrganizationStructureController extends Controller
 {
@@ -186,7 +189,26 @@ class OrganizationStructureController extends Controller
     // untuk export data struktur ke format CSV
     public function export()
     {
-        dd('Export berhasil dipanggil');
+        return Excel::download(
+            new OrganizationStructureExport,
+            'struktur-organisasi.xlsx'
+        );
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        Excel::import(
+            new OrganizationStructureImport,
+            $request->file('file')
+        );
+
+        return redirect()
+            ->route('admin.organization-structures.index')
+            ->with('success', 'Data berhasil diimport.');
     }
 
 }

@@ -93,6 +93,23 @@
                 Tambah Anggota
             </a>
 
+            <a href="{{ route('admin.organization-structures.export') }}"
+                class="btn-export">
+
+                <i class="fa-solid fa-file-export"></i>
+                Export
+            </a>
+
+            <button
+                class="btn-import"
+                data-bs-toggle="modal"
+                data-bs-target="#importModal">
+
+                <i class="fa-solid fa-file-import"></i>
+                Import
+
+            </button>
+
             <button 
                 type="button"
                 class="btn-refresh"
@@ -268,6 +285,78 @@
     <div id="notification" class="notification"
         data-success="{{ session('success') }}"
         data-error="{{ session('error') }}">
+    </div>
+
+    <!-- Modal Import -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-hidden="true">
+
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+
+                <form action="{{ route('admin.organization-structures.import') }}"
+                    method="POST"
+                    enctype="multipart/form-data">
+
+                    @csrf
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Import Data Struktur Organisasi
+                        </h5>
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal">
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <label class="form-label">
+                            Pilih File Excel
+                        </label>
+
+                        <input
+                            type="file"
+                            name="file"
+                            class="form-control"
+                            accept=".xlsx,.xls"
+                            required>
+
+                        <small class="text-muted">
+                            Format yang didukung:
+                            .xlsx dan .xls
+                        </small>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                            Batal
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
+
+                            <i class="fa-solid fa-file-import"></i>
+                            Import
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
     </div>
 
 @endsection
