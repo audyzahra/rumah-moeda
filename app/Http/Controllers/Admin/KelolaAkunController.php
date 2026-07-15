@@ -32,7 +32,21 @@ class KelolaAkunController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:8|confirmed',
+        'role' => 'required|in:admin,user',
+    ]);
+
+    User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => $request->role,
+    ]);
+
+    return back()->with('success', 'Akun berhasil ditambahkan.');
     }
 
     /**
@@ -56,7 +70,33 @@ class KelolaAkunController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+        'name' => 'required|string|max:255',
+
+        'email' => [
+            'required',
+            'email',
+            Rule::unique('users')->ignore($user->id),
+        ],
+
+        'role' => 'required|in:admin,user',
+
+        'password' => 'nullable|min:8',
+    ]);
+
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->role = $request->role;
+
+    if ($request->filled('password')) {
+
+        $user->password = Hash::make($request->password);
+
+    }
+
+    $user->save();
+
+    return back()->with('success', 'Akun berhasil diperbarui.');
     }
 
     /**
@@ -64,6 +104,14 @@ class KelolaAkunController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        if ($user->id == auth()->id()) {
+
+        return back()->with('error', 'Tidak dapat menghapus akun sendiri.');
+
+    }
+
+    $user->delete();
+
+    return back()->with('success', 'Akun berhasil dihapus.');
     }
 }

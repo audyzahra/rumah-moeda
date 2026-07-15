@@ -107,12 +107,12 @@
         </li>
 
         <!-- Kelola Akun -->
-        {{-- <li class="{{ request()->routeIs('admin.kelola') ? 'active' : '' }}">
-                    <a href="{{ route('admin.kelola') }}">
+        <li class="{{ request()->routeIs('admin.kelola-akun.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.kelola-akun.index') }}">
                         <i class="fa-solid fa-user-gear"></i>
                         <span>Kelola Akun</span>
                     </a>
-                </li> --}}
+                </li>
 
         <!-- Pengaturan -->
 
