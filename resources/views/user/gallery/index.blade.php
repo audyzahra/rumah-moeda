@@ -1,12 +1,10 @@
 @extends('user.layouts.app')
 
-@section('title', 'Galeri')
+@section('content')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/galeri.css') }}">
 @endpush
-
-@section('content')
 
 @if(session('success'))
     <div class="alert-success">
@@ -16,63 +14,70 @@
 
 <div class="content">
 
+    {{-- ================= HEADER ================= --}}
     <header class="topbar">
+
         <div>
+
             <h1>Manajemen Dokumentasi</h1>
+
             <p>Kelola foto-foto dokumentasi kegiatan</p>
+
         </div>
+
     </header>
 
+    {{-- ================= FILTER ================= --}}
     <form method="GET" class="filter-section">
 
-    <div class="filter-left">
+        <div class="filter-left">
 
-        <input
-        type="text"
-        id="searchInput"
-        class="search-input"
-        placeholder="Cari dokumentasi...">
+            <input
+                type="text"
+                id="searchInput"
+                class="search-input"
+                placeholder="Cari dokumentasi...">
 
-        <select
-            name="sort"
-            class="filter-select"
-            onchange="this.form.submit()">
+            <select
+                name="sort"
+                class="filter-select"
+                onchange="this.form.submit()">
 
-            <option value="latest"
-                {{ request('sort')=='latest' ? 'selected' : '' }}>
-                Terbaru
-            </option>
+                <option value="latest"
+                    {{ request('sort') == 'latest' ? 'selected' : '' }}>
+                    Terbaru
+                </option>
 
-            <option value="oldest"
-                {{ request('sort')=='oldest' ? 'selected' : '' }}>
-                Terlama
-            </option>
+                <option value="oldest"
+                    {{ request('sort') == 'oldest' ? 'selected' : '' }}>
+                    Terlama
+                </option>
 
-            <option value="title_asc"
-                {{ request('sort')=='title_asc' ? 'selected' : '' }}>
-                Judul A-Z
-            </option>
+                <option value="title_asc"
+                    {{ request('sort') == 'title_asc' ? 'selected' : '' }}>
+                    Judul A-Z
+                </option>
 
-            <option value="title_desc"
-                {{ request('sort')=='title_desc' ? 'selected' : '' }}>
-                Judul Z-A
-            </option>
+                <option value="title_desc"
+                    {{ request('sort') == 'title_desc' ? 'selected' : '' }}>
+                    Judul Z-A
+                </option>
 
-        </select>
+            </select>
 
-    </div>
+        </div>
 
-      <div class="filter-right">
+        <div class="filter-right">
 
-           <button
-                type="button"
-                class="btn-tambah"
-                onclick="openCreateModal()">
+            <a
+                href="{{ route('user.gallery.create') }}"
+                class="btn-tambah">
 
                 <i class="fa-solid fa-plus"></i>
-                Tambah Foto
 
-            </button>
+                Tambah Galeri
+
+            </a>
 
             <button
                 type="button"
@@ -85,279 +90,210 @@
 
         </div>
 
-</form>
+    </form>
 
-        <!-- Grid Gallery -->
-        <section class="dokumentasi-grid-section">
+    {{-- ================= GRID ================= --}}
+    <section class="dokumentasi-grid-section">
 
-            <div class="dokumentasi-grid">
+        <div class="dokumentasi-grid">
 
-                @forelse($galleries as $gallery)
-                    <div
+            @forelse($galleries as $gallery)
+
+                @php
+                    $thumbnail = $gallery->media->first();
+                @endphp
+
+                <div
                     class="dokumentasi-card"
                     data-title="{{ strtolower($gallery->title) }}"
                     data-description="{{ strtolower($gallery->description) }}"
                     data-date="{{ strtolower(\Carbon\Carbon::parse($gallery->activity_date)->format('d M Y')) }}">
 
-                        <img
-                            src="{{ asset('storage/'.$gallery->photo) }}"
-                            alt="{{ $gallery->title }}"
-                            class="foto"
-                        >
+                    @if($thumbnail)
 
-                        <div class="card-body">
+                        @if($thumbnail->type == 'image')
 
-                            <h3 class="card-title">
-                                {{ $gallery->title }}
-                            </h3>
+                            <img
+                                src="{{ asset('storage/'.$thumbnail->file_path) }}"
+                                class="foto"
+                                alt="{{ $gallery->title }}">
 
-                            <small>
-                                {{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}
-                            </small>
+                        @else
 
-                            <p>
-                                {{ Str::limit($gallery->description, 100) }}
-                            </p>
+                            <img
+                                src="https://img.youtube.com/vi/{{ getYoutubeId($thumbnail->video_url) }}/hqdefault.jpg"
+                                class="foto"
+                                alt="{{ $gallery->title }}">
 
-                            <div class="card-actions">
+                        @endif
+
+                    @endif
+
+                    <div class="card-body">
+
+                        <h3 class="card-title">
+
+                            {{ $gallery->title }}
+
+                        </h3>
+
+                        <small>
+
+                            {{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}
+
+                        </small>
+
+                        <p>
+
+                            {{ Str::limit($gallery->description, 100) }}
+
+                        </p>
+
+                        <div class="card-actions">
+
+                            {{-- DETAIL --}}
+                            <button
+                                type="button"
+                                class="btn-detail"
+                                data-title="{{ $gallery->title }}"
+                                data-date="{{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}"
+                                data-description="{{ $gallery->description }}"
+                                data-media='@json($gallery->media)'
+                                onclick="showDetail(this)">
+
+                                <i class="fa-solid fa-eye"></i>
+
+                            </button>
+
+                            {{-- EDIT --}}
+                            <a
+                                href="{{ route('user.gallery.edit', $gallery->id) }}"
+                                class="btn-edit">
+
+                                <i class="fa-solid fa-pen"></i>
+
+                            </a>
+
+                            {{-- DELETE --}}
+                            <form
+                                action="{{ route('user.gallery.destroy', $gallery->id) }}"
+                                method="POST"
+                                onsubmit="return confirm('Yakin ingin menghapus galeri ini?')">
+
+                                @csrf
+                                @method('DELETE')
 
                                 <button
-                                    type="button"
-                                    class="btn-detail"
-                                    data-photo="{{ asset('storage/'.$gallery->photo) }}"
-                                    data-title="{{ $gallery->title }}"
-                                    data-date="{{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}"
-                                    data-description="{{ $gallery->description }}"
-                                    onclick="showDetail(this)">
+                                    type="submit"
+                                    class="btn-hapus">
 
-                                    <i class="fa-solid fa-eye"></i>
+                                    <i class="fa-solid fa-trash"></i>
+
                                 </button>
 
-                                <button
-                                    type="button"
-                                    class="btn-edit"
-                                    onclick="editGallery(
-                                        '{{ $gallery->id }}',
-                                        '{{ $gallery->title }}',
-                                        '{{ $gallery->activity_date }}',
-                                        '{{ $gallery->description }}'
-                                    )">
-                                    Edit
-                                </button>
-
-                                <form action="{{ route('user.gallery.destroy', $gallery->id) }}"
-                                    method="POST"
-                                    onsubmit="return confirm('Yakin hapus data ini?')">
-
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button type="submit" class="btn-hapus">
-                                        Hapus
-                                    </button>
-
-                                </form>
-
-                            </div>
+                            </form>
 
                         </div>
 
                     </div>
-                @empty
 
-                    <div class="empty-state">
-                        Belum ada dokumentasi.
-                    </div>
-
-                @endforelse
-
-            </div>
-
-            <div class="mt-4">
-                {{ $galleries->links() }}
-            </div>
-
-        </section>
-    </div>
-
-    <!-- create -->
-        <div id="createModal" class="modal">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h3>Tambah Dokumentasi</h3>
-
-                <button type="button"
-                        class="close-modal"
-                        onclick="closeCreateModal()">
-                    &times;
-                </button>
-            </div>
-
-            <form action="{{ route('user.gallery.store') }}"
-                method="POST"
-                enctype="multipart/form-data">
-
-                @csrf
-
-                <div class="form-group">
-                    <label>Judul</label>
-                    <input type="text" name="title" class="form-control" required>
                 </div>
 
-                <div class="form-group">
-                    <label>Tanggal</label>
-                    <input type="date" name="activity_date" class="form-control" required>
+            @empty
+
+                <div class="empty-state">
+
+                    Belum ada dokumentasi.
+
                 </div>
 
-                <div class="form-group">
-                    <label>Deskripsi</label>
-                    <textarea name="description" class="form-control"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Foto</label>
-                    <input type="file" name="photo" class="form-control" required>
-
-                    <small class="text-muted">
-                        Format: JPG, JPEG, PNG Maksimal ukuran 2 MB.
-                    </small>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button"
-                            class="btn-batal"
-                            onclick="closeCreateModal()">
-                        Batal
-                    </button>
-
-                    <button class="btn-simpan">
-                        Simpan
-                    </button>
-                </div>
-
-            </form>
+            @endforelse
 
         </div>
 
-    </div>
+        <div class="mt-4">
 
-    <!-- Modal Edit -->
-    <div id="editModal" class="modal" style="display:none;">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h3>Edit Dokumentasi</h3>
-
-                <button type="button"
-                        class="close-modal"
-                        onclick="closeEditModal()">
-                    &times;
-                </button>
-            </div>
-
-            <form id="editForm"
-                method="POST"
-                enctype="multipart/form-data">
-
-                @csrf
-                @method('PUT')
-
-                <div class="form-group">
-                    <label>Judul</label>
-                    <input type="text"
-                        name="title"
-                        id="edit_title"
-                        class="form-control"
-                        required>
-                </div>
-
-                <div class="form-group">
-                    <label>Tanggal Kegiatan</label>
-                    <input type="date"
-                        name="activity_date"
-                        id="edit_activity_date"
-                        class="form-control"
-                        required>
-                </div>
-
-                <div class="form-group">
-                    <label>Deskripsi</label>
-                    <textarea name="description"
-                            id="edit_description"
-                            class="form-control"
-                            rows="4"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Ganti Foto (opsional)</label>
-                    <input type="file"
-                        name="photo"
-                        class="form-control">
-
-                        <small class="text-muted">
-                            Format: JPG, JPEG, PNG Maksimal ukuran 2 MB.
-                        </small>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button"
-                            class="btn-batal"
-                            onclick="closeEditModal()">
-                        Batal
-                    </button>
-
-                    <button type="submit"
-                            class="btn-simpan">
-                        Update
-                    </button>
-                </div>
-
-            </form>
+            {{ $galleries->links() }}
 
         </div>
-    </div>
 
+    </section>
 
-   <!-- Modal Detail -->
+</div>
+{{-- ================= DETAIL MODAL ================= --}}
 <div id="detailModal" class="modal" style="display:none;">
 
     <div class="modal-content modal-large">
 
         <div class="modal-header">
-            <h2>Detail Dokumentasi</h2>
+
+            <h2>Detail Galeri</h2>
 
             <button
                 type="button"
                 class="close-modal"
                 onclick="closeDetailModal()">
+
                 &times;
+
             </button>
+
         </div>
 
         <div class="modal-body">
 
-            <img
-                id="detail_photo"
-                class="detail-image"
-                src=""
-                alt="Foto Dokumentasi">
-
             <div class="detail-item">
+
                 <label>Judul</label>
+
                 <p id="detail_title">-</p>
+
             </div>
 
             <div class="detail-item">
+
                 <label>Tanggal Kegiatan</label>
+
                 <p id="detail_date">-</p>
+
             </div>
 
             <div class="detail-item">
+
                 <label>Deskripsi</label>
+
                 <p id="detail_description">-</p>
+
             </div>
+
+            <div class="detail-item">
+
+                <label>Media</label>
+
+                <div id="detail_media" class="detail-media">
+
+                    <p class="text-muted">
+
+                        Tidak ada media.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+                type="button"
+                class="btn-batal"
+                onclick="closeDetailModal()">
+
+                Tutup
+
+            </button>
 
         </div>
 
@@ -365,15 +301,20 @@
 
 </div>
 
-    <!-- ===== NOTIFIKASI ===== -->
-    <div id="notification" class="notification"
-        data-success="{{ session('success') }}"
-        data-error="{{ session('error') }}">
-    </div>
+{{-- ================= NOTIFICATION ================= --}}
+<div
+    id="notification"
+    class="notification"
+    data-success="{{ session('success') }}"
+    data-error="{{ session('error') }}">
 
+</div>
 
 @endsection
 
 @push('scripts')
+
 <script src="{{ asset('js/admin/galeri.js') }}"></script>
+
 @endpush
+
