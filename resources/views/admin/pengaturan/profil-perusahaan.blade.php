@@ -1,51 +1,67 @@
-<section class="tab-content" id="tab-profile">
+@extends('admin.layouts.app')
 
-        <div class="settings-card">
+@section('title', 'Profil Perusahaan')
 
-            <div class="card-header">
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/admin/profil-perusahaan.css') }}">
+@endpush
 
-                <h3>
-                    <i class="fa-solid fa-building"></i>
-                    Profile Perusahaan
-                </h3>
+@section('content')
 
-                <p>
-                    Kelola informasi utama perusahaan
-                </p>
+<section class="profile-section">
 
-            </div>
+    <div class="settings-card">
 
-            <div class="card-body">
+        <div class="card-header">
 
-                <form action="{{ route('admin.profile.update') }}" method="POST"
-                enctype="multipart/form-data">
-                    
-                    @csrf
+            <h3>
+                <i class="fa-solid fa-building"></i>
+                Profil Perusahaan
+            </h3>
+
+            <p>
+                Kelola informasi utama perusahaan
+            </p>
+
+        </div>
+
+        <div class="card-body">
+
+            <form action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
+
+                @csrf
+
+                <div class="form-group">
+
+                    <label>
+                        Nama Website
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="websiteName"
+                        name="website_name"
+                        class="form-control"
+                        placeholder="Masukkan nama website"
+                        value="{{ old('website_name', $setting->website_name ?? '') }}"
+                    >
+
+                </div>
+
+                <div class="profile-logo-wrapper">
 
                     <div class="form-group">
 
-                        <label>
-                            Nama Website
-                            <span class="required">*</span>
-                        </label>
-
-                        <input type="text" id="websiteName" name="website_name" class="form-control"
-                            placeholder="Masukkan nama website"
-                            value="{{ old('website_name', $setting->website_name ?? '') }}">
-
-                    </div>
-
-                    <div class="form-group">
-
-                        <label>
-
-                            Logo Saat Ini
-
-                        </label>
+                        <label>Logo Saat Ini</label>
 
                         <div class="logo-current">
 
-                            <img src="{{ Storage::url($setting->website_logo) }}" alt="Logo Rumah Moeda">
+                            @if (!empty($setting->website_logo))
+                                <img src="{{ Storage::url($setting->website_logo) }}" alt="Logo Website">
+                            @else
+                                <p>Belum ada logo.</p>
+                            @endif
 
                         </div>
 
@@ -54,42 +70,29 @@
                     <div class="form-group">
 
                         <label>
-
                             Upload Logo Baru
-
                             <span class="required">*</span>
-
                         </label>
 
                         <div class="logo-upload">
 
-                            <input type="file" id="formLogo" name="website_logo" accept=".png,.jpg,.jpeg,.svg"
-                                onchange="previewLogo(event)">
+                            <input
+                                type="file"
+                                id="formLogo"
+                                name="website_logo"
+                                accept=".png,.jpg,.jpeg,.svg"
+                                onchange="previewLogo(event)"
+                            >
 
                             <div class="logo-preview" id="logoPreview">
-
+                                <p>Klik untuk upload logo</p>
                                 <i class="fa-solid fa-cloud-upload-alt"></i>
-
-                                <p>
-
-                                    Klik untuk upload logo
-
-                                </p>
-
                                 <small>
-
-                                    Format :
-                                    JPG, PNG, SVG
-
+                                    Format : JPG, PNG, SVG
                                     <br>
-
                                     Maksimal 2 MB
-
                                     <br>
-
-                                    Rekomendasi ukuran
-                                    200 × 80 px
-
+                                    Rekomendasi ukuran 200 × 80 px
                                 </small>
 
                             </div>
@@ -98,136 +101,166 @@
 
                     </div>
 
-                    <div class="form-group">
+                </div>
 
-                        <label>
-                            Deskripsi Website
-                            <span class="required">*</span>
-                        </label>
+                <div class="form-group">
 
-                        <textarea id="websiteDescription" name="website_description" class="form-control" rows="5"
-                            placeholder="Masukkan deskripsi website">{{ old('website_description', $setting->website_description ?? '') }}</textarea>
+                    <label>
+                        Deskripsi Website
+                        <span class="required">*</span>
+                    </label>
 
-                    </div>
+                    <textarea
+                        id="websiteDescription"
+                        name="website_description"
+                        class="form-control"
+                        rows="5"
+                        placeholder="Masukkan deskripsi website"
+                    >{{ old('website_description', $setting->website_description ?? '') }}</textarea>
 
-                    <div class="form-row">
+                </div>
 
-                        <div class="form-group form-group-half">
+                <div class="form-row">
 
-                            <label>
-                                Nomor Telepon
-                            </label>
+                    <div class="form-group form-group-half">
 
-                            <input type="text" id="phoneNumber" name="phone_number" class="form-control"
-                                placeholder="+62 812-xxxx-xxxx"
-                                value="{{ old('phone_number', $setting->phone_number ?? '') }}">
+                        <label>Nomor Telepon</label>
 
-                        </div>
-
-                        <div class="form-group form-group-half">
-
-                            <label>
-                                Email
-                            </label>
-
-                            <input type="email" id="email" name="email" class="form-control"
-                                placeholder="info@rumahmoeda.id" value="{{ old('email', $setting->email ?? '') }}">
-
-                        </div>
+                        <input
+                            type="text"
+                            id="phoneNumber"
+                            name="phone_number"
+                            class="form-control"
+                            placeholder="+62 812-xxxx-xxxx"
+                            value="{{ old('phone_number', $setting->phone_number ?? '') }}"
+                        >
 
                     </div>
 
-                    <div class="form-row">
+                    <div class="form-group form-group-half">
 
-                        <div class="form-group form-group-half">
+                        <label>Email</label>
 
-                            <label>
-                                Nomor Fax
-                            </label>
-
-                            <input type="text" id="faxNumber" name="fax_number" class="form-control"
-                                placeholder="Nomor Fax" value="{{ old('fax_number', $setting->fax_number ?? '') }}">
-
-                        </div>
-
-                    </div>
-
-                    <div class="form-group">
-
-                        <label>
-                            Alamat
-                        </label>
-
-                        <textarea id="address" name="address" class="form-control" rows="3" placeholder="Masukkan alamat lengkap">{{ old('address', $setting->address ?? '') }}</textarea>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="info@website.com"
+                            value="{{ old('email', $setting->email ?? '') }}"
+                        >
 
                     </div>
 
-                    <hr>
+                </div>
 
-                    <h4 class="section-title">
+                <div class="form-row">
 
-                        Sosial Media
+                    <div class="form-group form-group-half">
 
-                    </h4>
+                        <label>Nomor Fax</label>
 
-                    <div class="form-group">
+                        <input
+                            type="text"
+                            id="faxNumber"
+                            name="fax_number"
+                            class="form-control"
+                            placeholder="Nomor Fax"
+                            value="{{ old('fax_number', $setting->fax_number ?? '') }}"
+                        >
 
-                        <label>
+                    </div>
 
-                            Instagram
+                </div>
 
-                        </label>
+                <div class="form-group">
 
-                        <input type="text" id="instagram" name="instagram_url" class="form-control"
+                    <label>Alamat</label>
+
+                    <textarea
+                        id="address"
+                        name="address"
+                        class="form-control"
+                        rows="3"
+                        placeholder="Masukkan alamat lengkap"
+                    >{{ old('address', $setting->address ?? '') }}</textarea>
+
+                </div>
+
+                <h4 class="section-title">
+                    Sosial Media
+                </h4>
+
+                <div class="form-row">
+
+                    <div class="form-group form-group-third">
+
+                        <label>Instagram</label>
+
+                        <input
+                            type="text"
+                            id="instagram"
+                            name="instagram_url"
+                            class="form-control"
                             placeholder="https://instagram.com/..."
-                            value="{{ old('instagram_url', $setting->instagram_url ?? '') }}">
+                            value="{{ old('instagram_url', $setting->instagram_url ?? '') }}"
+                        >
 
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group form-group-third">
 
-                        <label>
+                        <label>Facebook</label>
 
-                            Facebook
-
-                        </label>
-
-                        <input type="text" id="facebook" name="facebook_url" class="form-control"
+                        <input
+                            type="text"
+                            id="facebook"
+                            name="facebook_url"
+                            class="form-control"
                             placeholder="https://facebook.com/..."
-                            value="{{ old('facebook_url', $setting->facebook_url ?? '') }}">
+                            value="{{ old('facebook_url', $setting->facebook_url ?? '') }}"
+                        >
 
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group form-group-third">
 
-                        <label>
+                        <label>TikTok</label>
 
-                            TikTok
-
-                        </label>
-
-                        <input type="text" id="tiktok" name="tiktok_url" class="form-control"
+                        <input
+                            type="text"
+                            id="tiktok"
+                            name="tiktok_url"
+                            class="form-control"
                             placeholder="https://tiktok.com/..."
-                            value="{{ old('tiktok_url', $setting->tiktok_url ?? '') }}">
+                            value="{{ old('tiktok_url', $setting->tiktok_url ?? '') }}"
+                        >
 
                     </div>
 
-                    <div class="form-actions">
+                </div>
 
-                        <button type="submit" class="btn-simpan">
+                <div class="form-actions">
 
-                            <i class="fa-solid fa-save"></i>
+                    <button type="submit" class="btn-simpan">
 
-                            Simpan Profile
+                        <i class="fa-solid fa-save"></i>
 
-                        </button>
+                        Simpan Profil
 
-                    </div>
+                    </button>
 
-                </form>
+                </div>
 
-            </div>
+            </form>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
+
+@endsection
+@push('scripts')
+        <script src="{{ asset('js/admin/profil-perusahaan.js') }}"></script>
+@endpush

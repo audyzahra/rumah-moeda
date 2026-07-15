@@ -112,7 +112,7 @@
                             @else
 
                                 <img
-                                    src="https://img.youtube.com/vi/{{ getYoutubeId($thumbnail->video_url) }}/hqdefault.jpg"
+                                    src="https://img.youtube.com/vi/{{ $thumbnail->youtube_id }}/hqdefault.jpg"
                                     class="foto">
 
                             @endif

@@ -1,0 +1,243 @@
+/* =========================================
+   PROFILE PERUSAHAAN
+========================================= */
+
+.profile-section{
+    padding:20px;
+}
+
+.settings-card{
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.card-header{
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:#fff;
+    padding:22px 28px;
+}
+
+.card-header h3{
+    margin:0;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:22px;
+}
+
+.card-header p{
+    margin-top:8px;
+    opacity:.9;
+}
+
+.card-body{
+    padding:30px;
+}
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-group{
+    margin-bottom:20px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:#374151;
+}
+
+.required{
+    color:#ef4444;
+}
+
+.form-control{
+    width:100%;
+    padding:12px 15px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:14px;
+    transition:.3s;
+    box-sizing:border-box;
+}
+
+.form-control:focus{
+    outline:none;
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+
+/* =========================================
+   LOGO
+========================================= */
+
+.profile-logo-wrapper{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+    margin-bottom:20px;
+}
+
+.logo-current{
+    border:2px dashed #d1d5db;
+    border-radius:14px;
+    background:#f8fafc;
+    height:220px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:15px;
+}
+
+.logo-current img{
+    max-width:100%;
+    max-height:150px;
+    object-fit:contain;
+}
+
+.logo-upload input{
+    display:none;
+}
+
+.logo-preview{
+    border:2px dashed #3b82f6;
+    border-radius:14px;
+    background:#eff6ff;
+    height:220px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    cursor:pointer;
+    transition:.3s;
+    text-align:center;
+    padding:20px;
+}
+
+.logo-preview:hover{
+    background:#dbeafe;
+    border-color:#2563eb;
+    transform:translateY(-3px);
+}
+
+.logo-preview i{
+    font-size:42px;
+    color:#2563eb;
+    margin-bottom:15px;
+}
+
+.logo-preview p{
+    font-weight:600;
+    margin-bottom:10px;
+}
+
+.logo-preview small{
+    color:#6b7280;
+    line-height:1.7;
+}
+
+/* =========================================
+   GRID FORM
+========================================= */
+
+.form-row{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.form-group-half{
+    margin-bottom:20px;
+}
+
+.form-group-third{
+    margin-bottom:8px;
+}
+
+/* =========================================
+   SOSIAL MEDIA
+========================================= */
+
+.section-title{
+    margin:30px 0 20px;
+    color:#1f2937;
+}
+
+.form-row:last-of-type{
+    grid-template-columns:repeat(3,1fr);
+}
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.form-actions{
+    margin-top:15px;
+    text-align:right;
+}
+
+.btn-simpan{
+    background:linear-gradient(135deg,#16a34a,#15803d);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:12px 28px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn-simpan:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(22,163,74,.3);
+}
+
+/* =========================================
+   HR
+========================================= */
+
+hr{
+    border:none;
+    border-top:1px solid #e5e7eb;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media(max-width:992px){
+
+    .profile-logo-wrapper{
+        grid-template-columns:1fr;
+    }
+
+    .form-row{
+        grid-template-columns:1fr;
+    }
+
+    .form-row:last-of-type{
+        grid-template-columns:1fr;
+    }
+
+    .logo-current,
+    .logo-preview{
+        height:200px;
+    }
+
+    .form-actions{
+        text-align:center;
+    }
+
+    .btn-simpan{
+        width:100%;
+    }
+
+}
