@@ -1,0 +1,228 @@
+/* ======================================
+   VISI & MISI
+====================================== */
+
+.visi-misi-section{
+    padding:20px;
+}
+
+.settings-card{
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.card-header{
+    padding:22px 28px;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:#fff;
+}
+
+.card-header h3{
+    margin:0;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:22px;
+}
+
+.card-header p{
+    margin-top:8px;
+    opacity:.9;
+}
+
+.card-body{
+    padding:30px;
+}
+
+/* ======================================
+   FORM
+====================================== */
+
+.form-group{
+    margin-bottom:28px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:#374151;
+}
+
+.required{
+    color:#ef4444;
+}
+
+.form-help{
+    display:block;
+    margin-top:8px;
+    color:#6b7280;
+    font-size:13px;
+}
+
+.form-control{
+    width:100%;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    padding:12px 15px;
+    font-size:15px;
+    transition:.3s;
+    resize:vertical;
+    box-sizing:border-box;
+}
+
+.form-control:focus{
+    outline:none;
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+
+hr{
+    border:none;
+    border-top:1px solid #e5e7eb;
+    margin:30px 0;
+}
+
+/* ======================================
+   HEADER MISI
+====================================== */
+
+.misi-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:18px;
+    gap:20px;
+}
+
+/* ======================================
+   DAFTAR MISI
+====================================== */
+
+#misiContainer{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.misi-item{
+    display:flex;
+    gap:15px;
+    align-items:flex-start;
+
+    padding:18px;
+
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+
+    transition:.3s;
+}
+
+.misi-item:hover{
+    border-color:#2563eb;
+    box-shadow:0 8px 20px rgba(37,99,235,.08);
+}
+
+.misi-text{
+    flex:1;
+}
+
+.btn-remove-misi{
+    width:45px;
+    height:45px;
+
+    border:none;
+    border-radius:10px;
+
+    background:#ef4444;
+    color:#fff;
+
+    cursor:pointer;
+    transition:.3s;
+
+    flex-shrink:0;
+}
+
+.btn-remove-misi:hover{
+    background:#dc2626;
+    transform:scale(1.05);
+}
+
+/* ======================================
+   BUTTON
+====================================== */
+
+.btn-add-misi{
+    background:#2563eb;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:12px 20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    transition:.3s;
+}
+
+.btn-add-misi:hover{
+    background:#1d4ed8;
+}
+
+.form-actions{
+    margin-top:35px;
+    text-align:right;
+}
+
+.btn-simpan{
+    background:linear-gradient(135deg,#16a34a,#15803d);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:13px 28px;
+    cursor:pointer;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn-simpan:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(22,163,74,.3);
+}
+
+/* ======================================
+   RESPONSIVE
+====================================== */
+
+@media(max-width:768px){
+
+    .misi-header{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .btn-add-misi{
+        justify-content:center;
+    }
+
+    .misi-item{
+        flex-direction:column;
+    }
+
+    .btn-remove-misi{
+        width:100%;
+        height:45px;
+    }
+
+    .form-actions{
+        text-align:center;
+    }
+
+    .btn-simpan{
+        width:100%;
+    }
+
+}
