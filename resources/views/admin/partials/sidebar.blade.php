@@ -115,7 +115,7 @@
                 </li>
 
         <!-- Pengaturan -->
-        <li class="has-submenu-setting">
+        <li class="has-submenu-setting {{ request()->routeIs('admin.pengaturan.*') ? 'open active' : '' }}">
 
             <a href="#" class="submenu-toggle-setting">
                 <i class="fa-solid fa-gear"></i>
@@ -147,7 +147,7 @@
 
             </ul>
 
-        </li>    
+        </li>
 
         <!-- Logout -->
         <li class="logout">
