@@ -120,195 +120,176 @@
             </div>
 
             <div class="activity-list">
-                {{-- ================= BERITA ================= --}}
 
-                @foreach ($latestNews as $news)
+                @php
+                    $activities = collect();
+
+                    foreach ($latestNews as $news) {
+                        $activities->push([
+                            'type' => 'news',
+                            'icon' => 'fa-newspaper',
+                            'title' => $news->title,
+                            'date' => $news->created_at,
+                        ]);
+                    }
+
+                    foreach ($latestGallery as $gallery) {
+                        $activities->push([
+                            'type' => 'gallery',
+                            'icon' => 'fa-images',
+                            'title' => $gallery->title,
+                            'date' => $gallery->created_at,
+                        ]);
+                    }
+
+                    foreach ($latestMessages as $message) {
+                        $activities->push([
+                            'type' => 'message',
+                            'icon' => 'fa-envelope',
+                            'title' => \Illuminate\Support\Str::limit($message->message, 60),
+                            'date' => $message->created_at,
+                        ]);
+                    }
+
+                    $activities = $activities->sortByDesc('date')->take(3);
+                @endphp
+
+                @forelse($activities as $activity)
                     <div class="activity-item">
 
-                        <div class="activity-icon news">
+                        <div class="activity-icon {{ $activity['type'] }}">
 
-                            <i class="fa-solid fa-newspaper"></i>
+                            <i class="fa-solid {{ $activity['icon'] }}"></i>
 
                         </div>
 
                         <div class="activity-content">
 
-                            <h4>{{ $news->title }}</h4>
+                            <h4>{{ $activity['title'] }}</h4>
 
                             <small>
 
-                                Berita • {{ $news->created_at->format('d M Y H:i') }}
+                                @switch($activity['type'])
+                                    @case('news')
+                                        Berita
+                                    @break
+
+                                    @case('gallery')
+                                        Dokumentasi
+                                    @break
+
+                                    @case('message')
+                                        Aspirasi
+                                    @break
+                                @endswitch
+
+                                •
+
+                                {{ $activity['date']->format('d M Y H:i') }}
 
                             </small>
 
                         </div>
 
                     </div>
-                @endforeach
 
+                    @empty
 
-                {{-- ================= DOKUMENTASI ================= --}}
+                        <div class="empty-state">
 
-                @foreach ($latestGallery as $gallery)
-                    <div class="activity-item">
+                            <i class="fa-solid fa-box-open"></i>
 
-                        <div class="activity-icon gallery">
-
-                            <i class="fa-solid fa-images"></i>
+                            <p>Belum ada aktivitas.</p>
 
                         </div>
+                    @endforelse
 
-                        <div class="activity-content">
-
-                            <h4>{{ $gallery->title }}</h4>
-
-                            <small>
-
-                                Dokumentasi •
-                                {{ $gallery->created_at->format('d M Y H:i') }}
-
-                            </small>
-
-                        </div>
-
-                    </div>
-                @endforeach
-
-
-                {{-- ================= ASPIRASI ================= --}}
-
-                @foreach ($latestMessages as $message)
-                    <div class="activity-item">
-
-                        <div class="activity-icon message">
-
-                            <i class="fa-solid fa-envelope"></i>
-
-                        </div>
-
-                        <div class="activity-content">
-
-                            <h4>
-
-                                {{ \Illuminate\Support\Str::limit($message->message, 60) }}
-
-                            </h4>
-
-                            <small>
-
-                                Aspirasi •
-                                {{ $message->created_at->format('d M Y H:i') }}
-
-                            </small>
-
-                        </div>
-
-                    </div>
-                @endforeach
-
-
-                @if ($latestNews->isEmpty() && $latestGallery->isEmpty() && $latestMessages->isEmpty())
-                    <div class="empty-state">
-
-                        <i class="fa-solid fa-box-open"></i>
-
-                        <p>
-
-                            Belum ada aktivitas.
-
-                        </p>
-
-                    </div>
-                @endif
+                </div>
 
             </div>
 
-        </div>
 
+            {{-- ===================================== --}}
+            {{-- BERITA TERPOPULER --}}
+            {{-- ===================================== --}}
 
-        {{-- ===================================== --}}
-        {{-- BERITA TERPOPULER --}}
-        {{-- ===================================== --}}
+            <div class="dashboard-card">
 
-        <div class="dashboard-card">
+                <div class="section-header">
 
-            <div class="section-header">
-                <h2>Berita Terpopuler</h2>
-            </div>
+                    <h2>Berita Terpopuler</h2>
 
-            @php
-                $dummyViews = [1245, 986, 742, 631, 518];
-            @endphp
+                </div>
 
-            <div class="popular-news">
+                @php
+                    $dummyViews = [1245, 986, 742, 631, 518];
+                @endphp
 
-                @forelse($popularNews as $index => $item)
-                    <div class="popular-item">
+                <div class="popular-news">
 
-                        <img src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}" class="popular-thumb">
+                    @forelse($popularNews as $index => $item)
+                        <div class="popular-item">
 
-                        <div class="popular-content">
+                            <img src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}" class="popular-thumb">
 
-                            <span class="popular-category">
+                            <div class="popular-content">
 
-                                {{ $item->category->name }}
+                                <span class="popular-category">
 
-                            </span>
-
-                            <h4>
-
-                                {{ $item->title }}
-
-                            </h4>
-
-                            <div class="popular-meta">
-
-                                <span>
-
-                                    <i class="fa-solid fa-eye"></i>
-
-                                    {{ number_format($dummyViews[$index] ?? rand(200, 800)) }}
-
-                                    Views
+                                    {{ $item->category->name ?? '-' }}
 
                                 </span>
 
-                                <span>
+                                <h4>{{ $item->title }}</h4>
 
-                                    {{ $item->publish_date->format('d M Y') }}
+                                <div class="popular-meta">
 
-                                </span>
+                                    <span>
+
+                                        <i class="fa-solid fa-eye"></i>
+
+                                        {{ number_format($dummyViews[$index] ?? rand(200, 800)) }}
+
+                                        Views
+
+                                    </span>
+
+                                    <span>
+
+                                        {{ \Carbon\Carbon::parse($item->publish_date)->format('d M Y') }}
+
+                                    </span>
+
+                                </div>
 
                             </div>
 
                         </div>
 
-                    </div>
+                    @empty
 
-                @empty
+                        <div class="empty-state">
 
-                    <div class="empty-state">
+                            <i class="fa-solid fa-newspaper"></i>
 
-                        <i class="fa-solid fa-newspaper"></i>
+                            <p>Belum ada berita.</p>
 
-                        <p>Belum ada berita.</p>
+                        </div>
+                    @endforelse
 
-                    </div>
-                @endforelse
+                </div>
 
             </div>
 
         </div>
-
-    </div>
-    {{-- ===========================
+        {{-- ===========================
     NOTIFICATION
 =========================== --}}
 
-    <div id="notification" class="notification"></div>
+        <div id="notification" class="notification"></div>
 
-@endsection
+    @endsection
 
-@push('scripts')
-    <script src="{{ asset('js/admin/dashboard.js') }}"></script>
-@endpush
+    @push('scripts')
+        <script src="{{ asset('js/admin/dashboard.js') }}"></script>
+    @endpush
