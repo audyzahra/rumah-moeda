@@ -45,4 +45,12 @@ class OrganizationStructure extends Model
     {
         return $this->children()->with('childrenRecursive');
     }
+
+    public function getPhotoUrlAttribute()
+    {
+        return $this->photo
+            ? asset('storage/' . $this->photo)
+            : asset('images/default-user.png');
+    }
+
 }

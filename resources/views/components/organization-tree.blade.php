@@ -1,5 +1,6 @@
 <div class="team-card">
-    <img src="{{ asset('storage/'.$member->photo) }}">
+    <img src="{{ $member->photo_url }}"
+     alt="{{ $member->full_name }}">
 
     <h4>{{ $member->full_name }}</h4>
 
