@@ -12,6 +12,12 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        /*
+        |--------------------------------------------------------------------------
+        | Statistik
+        |--------------------------------------------------------------------------
+        */
+
         $totalPartner = Partner::count();
 
         $totalNews = News::count();
@@ -20,7 +26,7 @@ class DashboardController extends Controller
 
         $totalAspirasi = ContactMessage::count();
 
-        $aspirasiBaru = ContactMessage::where('is_read',0)->count();
+        $aspirasiBaru = ContactMessage::where('is_read', 0)->count();
 
         $beritaBaru = News::whereDate(
             'created_at',
@@ -32,8 +38,26 @@ class DashboardController extends Controller
             today()
         )->count();
 
+        /*
+        |--------------------------------------------------------------------------
+        | Aspirasi Terbaru (3 Data)
+        |--------------------------------------------------------------------------
+        */
+
         $latestMessages = ContactMessage::latest()
-            ->take(5)
+            ->take(3)
+            ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Berita Terpopuler
+        |--------------------------------------------------------------------------
+        */
+
+        $popularNews = News::with(['category', 'author'])
+            ->orderByDesc('views')
+            ->latest()
+            ->take(3)
             ->get();
 
         return view('admin.dashboard', compact(
@@ -44,7 +68,8 @@ class DashboardController extends Controller
             'aspirasiBaru',
             'beritaBaru',
             'galleryBaru',
-            'latestMessages'
+            'latestMessages',
+            'popularNews'
         ));
     }
 }

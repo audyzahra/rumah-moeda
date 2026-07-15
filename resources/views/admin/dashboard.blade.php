@@ -77,83 +77,136 @@
         </div>
 
     </section>
+    {{-- ===================================== --}}
+    {{-- ASPIRASI TERBARU & BERITA TERPOPULER --}}
+    {{-- ===================================== --}}
 
-    <!-- Tabel Aktivitas -->
-    <section class="table-section">
+    <div class="dashboard-grid">
 
-        <div class="section-header">
-            <h2>Aspirasi Terbaru</h2>
+        {{-- ================= ASPIRASI TERBARU ================= --}}
+        <div class="dashboard-card">
 
-            <a href="{{ route('admin.aspirasi.index') }}" class="btn-kelola">
+            <div class="section-header">
 
-                Kelola Aspirasi
+                <h2>Aspirasi Terbaru</h2>
 
-            </a>
-        </div>
+            </div>
 
-        <table>
-
-            <thead>
-                <tr>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>Subjek</th>
-                    <th>Tanggal</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-
-            <tbody>
+            <div class="activity-list">
 
                 @forelse($latestMessages as $item)
-                    <tr>
+                    <div class="activity-item">
 
-                        <td>{{ $item->full_name }}</td>
+                        <div class="activity-icon message">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
 
-                        <td>{{ $item->email }}</td>
+                        <div class="activity-content">
 
-                        <td>{{ \Illuminate\Support\Str::limit($item->message, 40) }}</td>
+                            <h4>{{ $item->full_name }}</h4>
 
-                        <td>{{ $item->created_at->format('d M Y') }}</td>
+                            <div class="activity-email">
+                                {{ $item->email }}
+                            </div>
 
-                        <td>
+                            <div class="activity-message">
+                                {{ \Illuminate\Support\Str::limit($item->message, 45) }}
+                            </div>
 
-                            @if ($item->is_read)
-                                <span class="status selesai">
+                            <div class="activity-date">
+                                {{ $item->created_at->format('d M Y H:i') }}
+                            </div>
 
-                                    Dibaca
+                        </div>
 
-                                </span>
-                            @else
-                                <span class="status baru">
-
-                                    Belum Dibaca
-
-                                </span>
-                            @endif
-
-                        </td>
-
-                    </tr>
+                    </div>
 
                 @empty
 
-                    <tr>
+                    <div class="empty-state">
 
-                        <td colspan="5" style="text-align:center">
+                        <i class="fa-solid fa-envelope-open"></i>
 
-                            Belum ada aspirasi.
+                        <p>Belum ada aspirasi.</p>
 
-                        </td>
-
-                    </tr>
+                    </div>
                 @endforelse
 
-            </tbody>
+            </div>
 
-        </table>
+        </div>
 
-    </section>
+
+        {{-- ================= BERITA TERPOPULER ================= --}}
+        <div class="dashboard-card">
+
+            <div class="section-header">
+
+                <h2>Berita Terpopuler</h2>
+
+            </div>
+
+            <div class="popular-news">
+
+                @forelse($popularNews as $item)
+                    <div class="popular-item">
+
+                        <img src="{{ Storage::url($item->thumbnail) }}" class="popular-thumb" alt="{{ $item->title }}">
+
+                        <div class="popular-content">
+
+                            <span class="popular-category">
+
+                                {{ $item->category->name ?? '-' }}
+
+                            </span>
+
+                            <h4>
+
+                                {{ $item->title }}
+
+                            </h4>
+
+                            <div class="popular-meta">
+
+                                <span>
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                    {{ number_format($item->views) }}
+
+                                    Views
+
+                                </span>
+
+                                <span>
+
+                                    {{ \Carbon\Carbon::parse($item->publish_date)->format('d M Y') }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                @empty
+
+                    <div class="empty-state">
+
+                        <i class="fa-solid fa-newspaper"></i>
+
+                        <p>Belum ada berita.</p>
+
+                    </div>
+                @endforelse
+
+            </div>
+
+        </div>
+
+    </div>
 
     <!-- Notifikasi -->
     <div id="notification" class="notification"></div>
