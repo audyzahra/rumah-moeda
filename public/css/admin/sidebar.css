@@ -453,4 +453,41 @@
 
 .has-submenu.open .submenu-arrow{
     transform:rotate(180deg);
-}   
+}
+
+/* ==========================
+   SUBMENU PENGATURAN
+========================== */
+
+.has-submenu-setting > .submenu{
+    display:none;
+    list-style:none;
+    margin-top:8px;
+    margin-left:38px;
+}
+
+.has-submenu-setting > .submenu li{
+    margin:8px 0;
+}
+
+.has-submenu-setting > .submenu a{
+    display:block;
+    padding:6px 0;
+    font-size:15px;
+    text-decoration:none;
+    color:#444;
+}
+
+
+.submenu-arrow-setting{
+    margin-left:auto;
+    transition:.3s;
+}
+
+.has-submenu-setting.open > .submenu{
+    display:block;
+}
+
+.has-submenu-setting.open .submenu-arrow-setting{
+    transform:rotate(180deg);
+}

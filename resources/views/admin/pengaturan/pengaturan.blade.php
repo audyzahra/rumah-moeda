@@ -428,7 +428,7 @@
     <!-- TAB : HERO SECTION -->
     <!-- ======================================== -->
 
-    <section class="tab-content" id="tab-hero">
+    {{-- <section class="tab-content" id="tab-hero">
 
         <div class="settings-card">
 
@@ -526,7 +526,7 @@
 
         </div>
 
-    </section>
+    </section> --}}
     <!-- ======================================== -->
     <!-- TAB : KELOLA AKUN -->
     <!-- ======================================== -->

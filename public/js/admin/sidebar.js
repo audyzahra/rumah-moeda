@@ -190,6 +190,34 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
     }
+
+    // ==============================
+    // DROPDOWN MENU PENGATURAN
+    // ==============================
+
+    const settingDropdown = document.querySelector(".submenu-toggle-setting");
+
+    if (settingDropdown) {
+
+        settingDropdown.addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            const parent = this.closest(".has-submenu-setting");
+
+            parent.classList.toggle("open");
+
+        });
+
+    }
+
+    if (window.location.pathname.includes('/admin/pengaturan')) {
+
+        document
+            .querySelector('.has-submenu-setting')
+            ?.classList.add('open');
+
+    }
     console.log('ℹ️ Gunakan tombol hamburger di mobile untuk membuka sidebar');
     console.log('ℹ️ Swipe dari kiri ke kanan untuk buka sidebar di mobile');
 });
