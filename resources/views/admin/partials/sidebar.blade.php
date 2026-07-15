@@ -26,13 +26,25 @@
 
         <!-- Aspirasi -->
         <li class="{{ request()->routeIs('admin.aspirasi.*') ? 'active' : '' }}">
+
             <a href="{{ route('admin.aspirasi.index') }}">
+
                 <i class="fa-solid fa-envelope"></i>
+
                 <span>Aspirasi</span>
 
+                @if ($jumlahNotifSidebar > 0)
+                    <span class="badge">
+                        {{ $jumlahNotifSidebar }}
+                    </span>
+                @else
+                    <span class="badge badge-zero">
+                        0
+                    </span>
+                @endif
 
-                <!-- <span class="badge">12</span> -->
             </a>
+
         </li>
 
         <!-- Berita -->
@@ -108,11 +120,11 @@
 
         <!-- Kelola Akun -->
         <li class="{{ request()->routeIs('admin.kelola-akun.*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.kelola-akun.index') }}">
-                        <i class="fa-solid fa-user-gear"></i>
-                        <span>Kelola Akun</span>
-                    </a>
-                </li>
+            <a href="{{ route('admin.kelola-akun.index') }}">
+                <i class="fa-solid fa-user-gear"></i>
+                <span>Kelola Akun</span>
+            </a>
+        </li>
 
         <!-- Pengaturan -->
         <li class="has-submenu-setting {{ request()->routeIs('admin.pengaturan.*') ? 'open active' : '' }}">
@@ -126,21 +138,21 @@
             <ul id="submenuPengaturan" class="submenu">
                 <li>
                     <a href="{{ route('admin.pengaturan.hero.index') }}"
-                    class="{{ request()->routeIs('admin.pengaturan.hero.*') ? 'active' : '' }}">
+                        class="{{ request()->routeIs('admin.pengaturan.hero.*') ? 'active' : '' }}">
                         Hero Section
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('admin.pengaturan.profil.index') }}"
-                    class="{{ request()->routeIs('admin.pengaturan.profil.*') ? 'active' : '' }}">
+                        class="{{ request()->routeIs('admin.pengaturan.profil.*') ? 'active' : '' }}">
                         Profil Perusahaan
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('admin.pengaturan.visi.index') }}"
-                    class="{{ request()->routeIs('admin.pengaturan.visi.*') ? 'active' : '' }}">
+                        class="{{ request()->routeIs('admin.pengaturan.visi.*') ? 'active' : '' }}">
                         Visi Misi
                     </a>
                 </li>

@@ -20,6 +20,7 @@ class ContactMessage extends Model
         'phone',
         'message',
         'is_read',
+        'notif_sidebar',
 
     ];
 
