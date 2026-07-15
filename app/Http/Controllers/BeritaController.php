@@ -45,44 +45,59 @@ class BeritaController extends Controller
      * Detail Berita
      */
     public function show($slug)
-    {
-        // Guest
-        if (!Auth::check()) {
+{
+    // Guest
+    if (!Auth::check()) {
 
-            $news = News::with(['category', 'author'])
-                ->where('slug', $slug)
-                ->firstOrFail();
+        $news = News::with(['category', 'author'])
+            ->where('slug', $slug)
+            ->firstOrFail();
 
-            $otherNews = News::with(['category', 'author'])
-                ->where('id', '!=', $news->id)
-                ->latest('publish_date')
-                ->take(2)
-                ->get();
+        // Tambah views hanya sekali selama session
+        $sessionKey = 'news_viewed_' . $news->id;
 
-        }
-        // Login (Admin/User)
-        else {
-
-            $news = News::with(['category', 'author'])
-                ->where('slug', $slug)
-                ->where('author_id', Auth::id())
-                ->firstOrFail();
-
-            $otherNews = News::with(['category', 'author'])
-                ->where('author_id', Auth::id())
-                ->where('id', '!=', $news->id)
-                ->latest('publish_date')
-                ->take(2)
-                ->get();
-
+        if (!session()->has($sessionKey)) {
+            $news->increment('views');
+            session()->put($sessionKey, true);
         }
 
-        return view('detail-berita', compact(
-            'news',
-            'otherNews'
-        ));
+        $otherNews = News::with(['category', 'author'])
+            ->where('id', '!=', $news->id)
+            ->latest('publish_date')
+            ->take(2)
+            ->get();
+
+    }
+    // Login (Admin/User)
+    else {
+
+        $news = News::with(['category', 'author'])
+            ->where('slug', $slug)
+            ->where('author_id', Auth::id())
+            ->firstOrFail();
+
+        // Tambah views hanya sekali selama session
+        $sessionKey = 'news_viewed_' . $news->id;
+
+        if (!session()->has($sessionKey)) {
+            $news->increment('views');
+            session()->put($sessionKey, true);
+        }
+
+        $otherNews = News::with(['category', 'author'])
+            ->where('author_id', Auth::id())
+            ->where('id', '!=', $news->id)
+            ->latest('publish_date')
+            ->take(2)
+            ->get();
+
     }
 
+    return view('detail-berita', compact(
+        'news',
+        'otherNews'
+    ));
+}
     /**
      * Simpan Berita
      */

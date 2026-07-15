@@ -221,10 +221,6 @@
 
                 </div>
 
-                @php
-                    $dummyViews = [1245, 986, 742, 631, 518];
-                @endphp
-
                 <div class="popular-news">
 
                     @forelse($popularNews as $index => $item)
@@ -248,7 +244,7 @@
 
                                         <i class="fa-solid fa-eye"></i>
 
-                                        {{ number_format($dummyViews[$index] ?? rand(200, 800)) }}
+                                        {{ number_format($item->views) }}
 
                                         Views
 

@@ -91,9 +91,10 @@ class DashboardController extends Controller
         */
 
         $popularNews = News::where('author_id', $userId)
-            ->latest()
-            ->take(5)
-            ->get();
+        ->with('category')
+        ->orderByDesc('views')
+        ->take(5)
+        ->get();
 
         return view('user.dashboard.index', compact(
             'totalNews',
