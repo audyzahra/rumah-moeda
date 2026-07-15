@@ -423,3 +423,34 @@
     background: #ef4444;
     color: #fff;
 }
+.has-submenu>.submenu{
+    display:none;
+    list-style:none;
+    margin-top:8px;
+    margin-left:38px;
+}
+
+.has-submenu>.submenu li{
+    margin:8px 0;
+}
+
+.has-submenu>.submenu a{
+    padding:6px 0;
+    display:block;
+    font-size:15px;
+    text-decoration:none;
+    color:#444;
+}
+
+.submenu-arrow{
+    margin-left:auto;
+    transition:.3s;
+}
+
+.has-submenu.open .submenu{
+    display:block;
+}
+
+.has-submenu.open .submenu-arrow{
+    transform:rotate(180deg);
+}   

@@ -30,20 +30,40 @@
                 <i class="fa-solid fa-envelope"></i>
                 <span>Aspirasi</span>
 
-                
+
                 <!-- <span class="badge">12</span> -->
             </a>
         </li>
 
         <!-- Berita -->
-        <li class="{{ request()->routeIs('admin.berita.*') ? 'active' : '' }}">
-            <a href="{{ route('admin.berita.index') }}">
+        <li class="has-submenu">
+
+            <a href="#" class="submenu-toggle">
+
                 <i class="fa-solid fa-newspaper"></i>
+
                 <span>Berita</span>
 
+                <i class="fa-solid fa-chevron-down submenu-arrow"></i>
 
-                <!-- <span class="badge">8</span> -->
             </a>
+
+            <ul id="submenuBerita" class="submenu">
+
+                <li>
+                    <a href="{{ route('admin.berita.index') }}">
+                        Berita
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.kategori.index') }}">
+                        Kategori
+                    </a>
+                </li>
+
+            </ul>
+
         </li>
 
         <!-- Gallery -->
@@ -52,7 +72,7 @@
                 <i class="fa-solid fa-images"></i>
                 <span>Galeri</span>
 
-<!-- 
+                <!--
                 <span class="badge">15</span> -->
             </a>
         </li>
@@ -87,7 +107,7 @@
         </li>
 
         <!-- Kelola Akun -->
-                {{-- <li class="{{ request()->routeIs('admin.kelola') ? 'active' : '' }}">
+        {{-- <li class="{{ request()->routeIs('admin.kelola') ? 'active' : '' }}">
                     <a href="{{ route('admin.kelola') }}">
                         <i class="fa-solid fa-user-gear"></i>
                         <span>Kelola Akun</span>
@@ -95,13 +115,13 @@
                 </li> --}}
 
         <!-- Pengaturan -->
-                
-            <li class="{{ request()->routeIs('admin.pengaturan') ? 'active' : '' }}">
-                    <a href="{{ route('admin.pengaturan') }}">
-                        <i class="fa-solid fa-gear"></i>
-                        <span>Pengaturan</span>
-                    </a>
-                </li>        
+
+        <li class="{{ request()->routeIs('admin.pengaturan') ? 'active' : '' }}">
+            <a href="{{ route('admin.pengaturan') }}">
+                <i class="fa-solid fa-gear"></i>
+                <span>Pengaturan</span>
+            </a>
+        </li>
 
         {{-- <li class="dropdown-menu {{ request()->routeIs('admin.hero.*') ||
             request()->routeIs('admin.profil.*') ||
@@ -113,7 +133,7 @@
                 <i class="fa-solid fa-chevron-down arrow"></i>
             </a> --}}
 
-            {{-- <ul class="submenu">
+        {{-- <ul class="submenu">
                 <li>
                     <a href="{{ route('admin.hero.index') }}">Hero Section</a>
                 </li>

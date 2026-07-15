@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
@@ -15,8 +15,11 @@ class Category extends Model
         'name',
     ];
 
+    /**
+     * Relasi ke tabel news
+     */
     public function news()
     {
-        return $this->hasMany(News::class);
+        return $this->hasMany(News::class, 'category_id', 'id');
     }
-}   
+}

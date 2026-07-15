@@ -91,12 +91,12 @@ function updateBadge(page, count) {
 // INISIALISASI SIDEBAR
 // ============================================
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Highlight menu aktif
     highlightActiveMenu();
 
     // ===== TUTUP SIDEBAR SAAT KLIK DI LUAR =====
-    document.addEventListener('click', function(event) {
+    document.addEventListener('click', function (event) {
         const sidebar = document.getElementById('sidebar');
         const hamburger = document.querySelector('.hamburger-btn');
         const overlay = document.getElementById('overlay');
@@ -117,9 +117,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ===== TUTUP SIDEBAR SAAT RESIZE KE DESKTOP =====
     let resizeTimer;
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
+        resizeTimer = setTimeout(function () {
             if (window.innerWidth > 768) {
                 closeSidebar();
             }
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ===== KEYBOARD SHORTCUT: ESC UNTUK TUTUP SIDEBAR =====
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
             closeSidebar();
         }
@@ -137,11 +137,11 @@ document.addEventListener('DOMContentLoaded', function() {
     let touchStartX = 0;
     let touchEndX = 0;
 
-    document.addEventListener('touchstart', function(e) {
+    document.addEventListener('touchstart', function (e) {
         touchStartX = e.changedTouches[0].screenX;
     }, { passive: true });
 
-    document.addEventListener('touchend', function(e) {
+    document.addEventListener('touchend', function (e) {
         touchEndX = e.changedTouches[0].screenX;
         const sidebar = document.getElementById('sidebar');
 
@@ -171,15 +171,26 @@ document.addEventListener('DOMContentLoaded', function() {
     checkScreenSize();
 
     console.log('📱 Sidebar responsif siap digunakan!');
+    // ==============================
+    // DROPDOWN MENU BERITA
+    // ==============================
+
+    const beritaDropdown = document.querySelector(".submenu-toggle");
+
+    if (beritaDropdown) {
+
+        beritaDropdown.addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            const parent = this.closest(".has-submenu");
+
+            parent.classList.toggle("open");
+
+        });
+
+    }
     console.log('ℹ️ Gunakan tombol hamburger di mobile untuk membuka sidebar');
     console.log('ℹ️ Swipe dari kiri ke kanan untuk buka sidebar di mobile');
 });
-document.querySelectorAll(".dropdown-toggle").forEach(toggle => {
 
-    toggle.addEventListener("click", function(){
-
-        this.parentElement.classList.toggle("open");
-
-    });
-
-});

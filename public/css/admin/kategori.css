@@ -1,0 +1,365 @@
+/* ==========================================
+   KATEGORI
+========================================== */
+
+.kategori-container{
+    padding:40px;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.kategori-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.kategori-header h1{
+    font-size:52px;
+    font-weight:700;
+    color:#1F2937;
+    margin-bottom:8px;
+}
+
+.kategori-header p{
+    font-size:18px;
+    color:#6B7280;
+}
+
+/* ==========================================
+   BUTTON
+========================================== */
+
+.btn-primary{
+    background:#3B82F6;
+    color:#fff;
+    text-decoration:none;
+    padding:14px 26px;
+    border-radius:14px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transition:.3s;
+}
+
+.btn-primary:hover{
+    background:#2563EB;
+}
+
+.btn-batal{
+    background:#E5E7EB;
+    color:#374151;
+    text-decoration:none;
+    padding:12px 24px;
+    border-radius:12px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:.3s;
+}
+
+.btn-batal:hover{
+    background:#D1D5DB;
+}
+
+.btn-simpan{
+    background:#22C55E;
+    color:#fff;
+    border:none;
+    padding:12px 24px;
+    border-radius:12px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+}
+
+.btn-simpan:hover{
+    background:#16A34A;
+}
+
+/* ==========================================
+   CARD TOTAL
+========================================== */
+
+.stat-card span{
+    color:#6B7280;
+    font-size:15px;
+}
+
+.stat-card h2{
+    font-size:40px;
+    margin-top:4px;
+    color:#111827;
+}
+
+/* ==========================================
+   TOOLBAR
+========================================== */
+
+.kategori-toolbar{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.search-form{
+    flex:1;
+}
+
+.search-input{
+    width:100%;
+    padding:14px 18px;
+    border:1px solid #D1D5DB;
+    border-radius:12px;
+    outline:none;
+    font-size:15px;
+}
+
+.search-input:focus{
+    border-color:#3B82F6;
+}
+
+.btn-primary{
+    flex-shrink:0;
+    background:#3B82F6;
+    color:#fff;
+    padding:14px 22px;
+    border-radius:12px;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn-primary:hover{
+    background:#2563EB;
+}
+
+/* ==========================================
+   TABLE
+========================================== */
+
+.table-wrapper{
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+
+.kategori-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.kategori-table thead{
+    background:#F9FAFB;
+}
+
+.kategori-table th{
+    text-align:left;
+    padding:18px;
+    font-size:15px;
+    font-weight:700;
+    color:#374151;
+}
+
+.kategori-table td{
+    padding:18px;
+    border-top:1px solid #F1F5F9;
+    color:#4B5563;
+}
+
+.kategori-table tbody tr{
+    transition:.25s;
+}
+
+.kategori-table tbody tr:hover{
+    background:#F9FAFB;
+}
+
+/* ==========================================
+   BADGE
+========================================== */
+
+.badge-news{
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:999px;
+    background:#EEF2FF;
+    color:#4338CA;
+    font-weight:600;
+    font-size:13px;
+}
+
+/* ==========================================
+   ACTION BUTTON
+========================================== */
+
+.action-group{
+    display:flex;
+    gap:10px;
+}
+
+.action-group form{
+    margin:0;
+}
+
+.btn-detail,
+.btn-edit,
+.btn-delete{
+
+    width:42px;
+    height:42px;
+
+    border:none;
+    border-radius:12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+    text-decoration:none;
+
+    transition:.3s;
+
+}
+
+.btn-detail{
+    background:#EEF2FF;
+    color:#3B82F6;
+}
+
+.btn-detail:hover{
+    background:#DBEAFE;
+}
+
+.btn-edit{
+    background:#FEF3C7;
+    color:#D97706;
+}
+
+.btn-edit:hover{
+    background:#FDE68A;
+}
+
+.btn-delete{
+    background:#FEE2E2;
+    color:#DC2626;
+}
+
+.btn-delete:hover{
+    background:#FECACA;
+}
+
+/* ==========================================
+   FORM
+========================================== */
+
+.form-card{
+    background:#fff;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+
+.form-group{
+    margin-bottom:24px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:#374151;
+}
+
+.required{
+    color:#EF4444;
+}
+
+.form-control{
+    width:100%;
+    padding:14px 16px;
+    border:1px solid #D1D5DB;
+    border-radius:12px;
+    outline:none;
+    font-size:15px;
+}
+
+.form-control:focus{
+    border-color:#3B82F6;
+}
+
+.form-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+    margin-top:30px;
+}
+
+/* ==========================================
+   DETAIL
+========================================== */
+
+.detail-group{
+    margin-bottom:25px;
+}
+
+.detail-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:700;
+    color:#6B7280;
+}
+
+.detail-value{
+    background:#F9FAFB;
+    border:1px solid #E5E7EB;
+    border-radius:12px;
+    padding:14px 18px;
+    color:#374151;
+}
+
+/* ==========================================
+   EMPTY
+========================================== */
+
+.empty-state{
+    text-align:center;
+    padding:70px 20px;
+}
+
+.empty-state i{
+    font-size:60px;
+    color:#CBD5E1;
+    margin-bottom:20px;
+}
+
+.empty-state h3{
+    color:#374151;
+    margin-bottom:8px;
+}
+
+.empty-state p{
+    color:#9CA3AF;
+}
+
+/* ==========================================
+   PAGINATION
+========================================== */
+
+.pagination-wrapper{
+    margin-top:25px;
+    display:flex;
+    justify-content:flex-end;
+}

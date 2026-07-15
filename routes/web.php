@@ -19,6 +19,9 @@ use App\Http\Controllers\Admin\OrganizationStructureController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\PartnerController;
+use App\Http\Controllers\Admin\HeroSectionController;
+use App\Http\Controllers\Admin\ProfilPerusahaanController;
+use App\Http\Controllers\Admin\VisiMisiController;
 
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\NewsController as UserNewsController;
@@ -185,17 +188,28 @@ Route::middleware(['auth', 'admin'])
 
         Route::get('/pengaturan', [PengaturanController::class, 'index'])
             ->name('pengaturan');
+        // Hero Section
+            Route::get('/pengaturan/hero-section', [HeroSectionController::class, 'index'])
+                ->name('pengaturan.hero.index');
 
-        Route::post('/pengaturan/visi-misi', [PengaturanController::class, 'updateVisiMisi'])
+            // Profil Perusahaan
+            Route::get('/pengaturan/profil-perusahaan', [ProfilPerusahaanController::class, 'index'])
+                ->name('pengaturan.profil.index');
+
+            // Visi Misi
+            Route::get('/pengaturan/visi-misi', [VisiMisiController::class, 'index'])
+                ->name('pengaturan.visi.index');
+                
+        Route::post('/pengaturan/visi-misi', [VisiMisiController::class, 'update'])
             ->name('visimisi.update');
 
         Route::post('/pengaturan/logo', [PengaturanController::class, 'updateLogo'])
             ->name('logo.update');
 
-        Route::post('/pengaturan/profile', [PengaturanController::class, 'updateProfile'])
+        Route::post('/pengaturan/profile', [ProfilPerusahaanController::class, 'update'])
             ->name('profile.update');
 
-        Route::post('/pengaturan/hero', [PengaturanController::class, 'updateHero'])
+        Route::post('/pengaturan/hero', [HeroSectionController::class, 'update'])
             ->name('hero.update');
 
         Route::post('/pengaturan/user', [PengaturanController::class, 'storeUser'])
@@ -212,6 +226,8 @@ Route::middleware(['auth', 'admin'])
         | Struktur Organisasi
         |--------------------------------------------------------------------------
         */
+        Route::post('organization-structures/import', [OrganizationStructureController::class, 'import'])
+                ->name('organization-structures.import');
         Route::get('organization-structures/export', [OrganizationStructureController::class, 'export'])
                 ->name('organization-structures.export');
 
@@ -274,27 +290,36 @@ Route::middleware(['auth', 'admin'])
 
         /*
         |--------------------------------------------------------------------------
-        | Kategori
+        | KATEGORI
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/kategori', [CategoryController::class, 'index'])
-            ->name('kategori.index');
+        Route::prefix('kategori')
+            ->name('kategori.')
+            ->group(function () {
 
-        Route::get('/kategori/tambah', [CategoryController::class, 'create'])
-            ->name('kategori.create');
+                Route::get('/', [CategoryController::class, 'index'])
+                    ->name('index');
 
-        Route::post('/kategori', [CategoryController::class, 'store'])
-            ->name('kategori.store');
+                Route::get('/tambah', [CategoryController::class, 'create'])
+                    ->name('create');
 
-        Route::get('/kategori/{id}/edit', [CategoryController::class, 'edit'])
-            ->name('kategori.edit');
+                Route::post('/', [CategoryController::class, 'store'])
+                    ->name('store');
 
-        Route::put('/kategori/{id}', [CategoryController::class, 'update'])
-            ->name('kategori.update');
+                Route::get('/{id}', [CategoryController::class, 'show'])
+                    ->name('show');
 
-        Route::delete('/kategori/{id}', [CategoryController::class, 'destroy'])
-            ->name('kategori.destroy');
+                Route::get('/{id}/edit', [CategoryController::class, 'edit'])
+                    ->name('edit');
+
+                Route::put('/{id}', [CategoryController::class, 'update'])
+                    ->name('update');
+
+                Route::delete('/{id}', [CategoryController::class, 'destroy'])
+                    ->name('destroy');
+
+            });
         /*
         |--------------------------------------------------------------------------
         | Gallery
