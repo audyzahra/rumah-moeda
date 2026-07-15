@@ -83,7 +83,7 @@
                 <div class="leader-wrapper">
                     <div class="leader-card">
 
-                        <img src="{{ asset('storage/' . $parent->photo) }}" alt="{{ $parent->full_name }}">
+                        <img src="{{ $parent->photo_url }}" alt="{{ $parent->full_name }}">
 
                         <h3>{{ $parent->full_name }}</h3>
 
@@ -104,7 +104,7 @@
                         @foreach ($children as $item)
                             <div class="member-card">
 
-                                <img src="{{ asset('storage/' . $item->photo) }}" alt="{{ $item->full_name }}">
+                                <img src="{{ $item->photo_url }}" alt="{{ $item->full_name }}">
 
                                 <h4>{{ $item->full_name }}</h4>
 

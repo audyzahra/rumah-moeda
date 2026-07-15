@@ -89,7 +89,8 @@
         @foreach($organizations as $leader)
 
             <div class="leader-card">
-                <img src="{{ asset('storage/'.$leader->photo) }}">
+                <img src="{{ $leader->photo_url }}"
+                    alt="{{ $leader->full_name }}">
 
                 <h3>{{ $leader->full_name }}</h3>
 
