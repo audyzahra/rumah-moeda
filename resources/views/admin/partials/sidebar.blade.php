@@ -115,38 +115,39 @@
                 </li>
 
         <!-- Pengaturan -->
+        <li class="has-submenu-setting">
 
-        <li class="{{ request()->routeIs('admin.pengaturan') ? 'active' : '' }}">
-            <a href="{{ route('admin.pengaturan') }}">
+            <a href="#" class="submenu-toggle-setting">
                 <i class="fa-solid fa-gear"></i>
                 <span>Pengaturan</span>
+                <i class="fa-solid fa-chevron-down submenu-arrow-setting"></i>
             </a>
-        </li>
 
-        {{-- <li class="dropdown-menu {{ request()->routeIs('admin.hero.*') ||
-            request()->routeIs('admin.profil.*') ||
-            request()->routeIs('admin.visi-misi.*') ? 'active open' : '' }}">
-
-            <a href="#" class="dropdown-toggle">
-                <i class="fa-solid fa-gear"></i>
-                <span>Pengaturan</span>
-                <i class="fa-solid fa-chevron-down arrow"></i>
-            </a> --}}
-
-        {{-- <ul class="submenu">
+            <ul id="submenuPengaturan" class="submenu">
                 <li>
-                    <a href="{{ route('admin.hero.index') }}">Hero Section</a>
+                    <a href="{{ route('admin.pengaturan.hero.index') }}"
+                    class="{{ request()->routeIs('admin.pengaturan.hero.*') ? 'active' : '' }}">
+                        Hero Section
+                    </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('admin.profil.index') }}">Profil Perusahaan</a>
+                    <a href="{{ route('admin.pengaturan.profil.index') }}"
+                    class="{{ request()->routeIs('admin.pengaturan.profil.*') ? 'active' : '' }}">
+                        Profil Perusahaan
+                    </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('admin.visi-misi.index') }}">Visi Misi</a>
+                    <a href="{{ route('admin.pengaturan.visi.index') }}"
+                    class="{{ request()->routeIs('admin.pengaturan.visi.*') ? 'active' : '' }}">
+                        Visi Misi
+                    </a>
                 </li>
-            </ul> --}}
-        {{-- </li> --}}
+
+            </ul>
+
+        </li>    
 
         <!-- Logout -->
         <li class="logout">
