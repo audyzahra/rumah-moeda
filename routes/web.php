@@ -183,6 +183,17 @@ Route::middleware(['auth', 'admin'])
 
         /*
         |--------------------------------------------------------------------------
+        | Sidebar Notification (AJAX)
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get(
+            '/sidebar-notification',
+            [DashboardController::class, 'sidebarNotification']
+        )->name('sidebar.notification');
+
+        /*
+        |--------------------------------------------------------------------------
         | Pengaturan
         |--------------------------------------------------------------------------
         */
@@ -200,7 +211,7 @@ Route::middleware(['auth', 'admin'])
             // Visi Misi
             Route::get('/settings/vision-mission', [VisionMissionController::class, 'index'])
                 ->name('settings.visi.index');
-                
+
         Route::post('/settings/vision-mission', [VisionMissionController::class, 'update'])
             ->name('visi.update');
 
@@ -366,7 +377,7 @@ Route::middleware(['auth', 'admin'])
         */
         Route::get('/manage-account', [UserManagementController::class, 'index'])
             ->name('manage-account.index');
-        
+
         Route::get('/manage-account/create', [UserManagementController::class, 'create'])
         ->name('manage-account.create');
 

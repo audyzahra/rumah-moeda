@@ -33,15 +33,11 @@
 
                 <span>Aspirasi</span>
 
-                @if ($jumlahNotifSidebar > 0)
-                    <span class="badge">
-                        {{ $jumlahNotifSidebar }}
-                    </span>
-                @else
-                    <span class="badge badge-zero">
-                        0
-                    </span>
-                @endif
+                <span id="badgeAspirasi" class="badge {{ $jumlahNotifSidebar == 0 ? 'badge-zero' : '' }}">
+
+                    {{ $jumlahNotifSidebar }}
+
+                </span>
 
             </a>
 
@@ -179,3 +175,7 @@
 
 <!-- ===== OVERLAY ===== -->
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<script>
+    window.sidebarNotificationUrl = "{{ route('admin.sidebar.notification') }}";
+</script>

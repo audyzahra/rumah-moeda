@@ -221,4 +221,40 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('ℹ️ Gunakan tombol hamburger di mobile untuk membuka sidebar');
     console.log('ℹ️ Swipe dari kiri ke kanan untuk buka sidebar di mobile');
 });
+// ========================================
+// REALTIME SIDEBAR NOTIFICATION
+// ========================================
 
+function loadSidebarNotification(){
+
+    fetch(window.sidebarNotificationUrl)
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            const badge = document.getElementById("badgeAspirasi");
+
+            if(!badge) return;
+
+            badge.textContent = data.count;
+
+            if(data.count > 0){
+
+                badge.classList.remove("badge-zero");
+
+            }else{
+
+                badge.classList.add("badge-zero");
+
+            }
+
+        })
+
+        .catch(error => console.log(error));
+
+}
+
+loadSidebarNotification();
+
+setInterval(loadSidebarNotification,5000);
