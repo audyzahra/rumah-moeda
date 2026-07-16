@@ -191,7 +191,8 @@
 
 .btn-edit{
 
-    background:#f59e0b;
+    background: #d97706;
+    color: #d97706;
 
 }
 
@@ -290,23 +291,25 @@
 
 }
 
-.modal-header h3{
-
+.modal-header h2{
     margin:0;
     color:#1f2937;
-
+    font-size:22px;
 }
 
-.close{
+.modal-close{
 
     border:none;
     background:none;
-
     font-size:28px;
-
     cursor:pointer;
-
     color:#6b7280;
+    transition:.3s;
+}
+
+.modal-close:hover{
+
+    color:#111827;
 
 }
 
@@ -319,8 +322,7 @@
 /* =========================================================
    FORM
 ========================================================= */
-
-form{
+.card-body form{
 
     padding:25px;
 
@@ -535,4 +537,105 @@ form{
     align-items:center;
     flex-wrap:wrap;
     gap:15px;
+}
+
+.modal-footer{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:20px 24px;
+
+    border-top:1px solid #e5e7eb;
+
+    background:#f9fafb;
+
+}
+
+.modal-footer form{
+
+    padding:0;
+
+    margin:0;
+
+}
+
+.delete-icon{
+
+    width:80px;
+    height:80px;
+
+    margin:0 auto 20px;
+
+    border-radius:50%;
+
+    background:#fee2e2;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+}
+
+.delete-icon i{
+
+    font-size:36px;
+
+    color:#dc2626;
+
+}
+
+.modal-delete h3{
+
+    margin-bottom:12px;
+
+    color:#111827;
+
+}
+/* tombol */
+.action-buttons{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.action-buttons .btn-icon{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:50%;
+
+    text-decoration:none;
+
+    color:#fff;
+
+    transition:.3s;
+
+}
+
+.alert-success{
+
+    background:#ecfdf5;
+
+    border:1px solid #86efac;
+
+    color:#166534;
+
 }

@@ -71,7 +71,7 @@ class UserManagementController extends Controller
 
             'role' => 'required|in:admin,user',
 
-            'password' => 'nullable|string|min:8',
+            'password' => 'nullable|string|min:8|confirmed',
         ]);
 
         $user->name = $validated['name'];

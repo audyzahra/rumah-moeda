@@ -72,4 +72,11 @@ class DashboardController extends Controller
             'popularNews'
         ));
     }
+
+    public function sidebarNotification()
+    {
+        return response()->json([
+            'count' => ContactMessage::where('notif_sidebar', 0)->count()
+        ]);
+    }
 }

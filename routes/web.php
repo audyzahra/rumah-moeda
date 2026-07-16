@@ -63,6 +63,12 @@ Route::get('/berita/{slug}', [BeritaController::class, 'show'])
 Route::get('/galeri', [GalleryController::class, 'index'])
     ->name('galeri.index');
 
+Route::get('/galeri/foto', [GalleryController::class, 'foto'])
+    ->name('galeri.foto');
+
+Route::get('/galeri/video', [GalleryController::class, 'video'])
+    ->name('galeri.video');
+
 // FAQ
 Route::get('/pertanyaan', [FaqController::class, 'index'])
     ->name('faq.index');
@@ -183,6 +189,17 @@ Route::middleware(['auth', 'admin'])
 
         /*
         |--------------------------------------------------------------------------
+        | Sidebar Notification (AJAX)
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get(
+            '/sidebar-notification',
+            [DashboardController::class, 'sidebarNotification']
+        )->name('sidebar.notification');
+
+        /*
+        |--------------------------------------------------------------------------
         | Pengaturan
         |--------------------------------------------------------------------------
         */
@@ -200,7 +217,7 @@ Route::middleware(['auth', 'admin'])
             // Visi Misi
             Route::get('/settings/vision-mission', [VisionMissionController::class, 'index'])
                 ->name('settings.visi.index');
-                
+
         Route::post('/settings/vision-mission', [VisionMissionController::class, 'update'])
             ->name('visi.update');
 
@@ -341,6 +358,11 @@ Route::middleware(['auth', 'admin'])
 
         Route::delete('gallery/media/{media}', [AdminGalleryController::class, 'destroyMedia'])->name('gallery.media.destroy');
 
+        Route::get('/gallery/create', [AdminGalleryController::class, 'create'])
+            ->name('gallery.create');
+
+        Route::get('/gallery/{gallery}/edit', [AdminGalleryController::class, 'edit'])
+                ->name('gallery.edit');
         /*
         |--------------------------------------------------------------------------
         | FAQ
@@ -366,7 +388,7 @@ Route::middleware(['auth', 'admin'])
         */
         Route::get('/manage-account', [UserManagementController::class, 'index'])
             ->name('manage-account.index');
-        
+
         Route::get('/manage-account/create', [UserManagementController::class, 'create'])
         ->name('manage-account.create');
 

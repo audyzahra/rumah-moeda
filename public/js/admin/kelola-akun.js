@@ -29,3 +29,28 @@ document.querySelectorAll('.toggle-password').forEach(icon => {
     });
 
 });
+function openDeleteModal(action) {
+
+    document.getElementById('deleteForm').action = action;
+
+    document.getElementById('deleteModal').classList.add('show');
+
+}
+
+function closeDeleteModal() {
+
+    document.getElementById('deleteModal').classList.remove('show');
+
+}
+
+window.addEventListener('click', function (e) {
+
+    const modal = document.getElementById('deleteModal');
+
+    if (e.target === modal) {
+
+        closeDeleteModal();
+
+    }
+
+});
