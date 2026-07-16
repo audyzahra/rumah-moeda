@@ -13,25 +13,17 @@
     {{-- ================= HEADER ================= --}}
     <div class="gallery-header">
 
-        <div>
+    <a href="{{ route('user.gallery.index') }}" class="btn-batal">
+        <i class="fa-solid fa-arrow-left"></i>
+        Kembali
+    </a>
 
-            <h1>Tambah Galeri</h1>
-
-            <p>Tambahkan dokumentasi kegiatan Rumah Moeda.</p>
-
-        </div>
-
-        <a
-            href="{{ route('user.gallery.index') }}"
-            class="btn-batal">
-
-            <i class="fa-solid fa-arrow-left"></i>
-
-            Kembali
-
-        </a>
-
+    <div class="gallery-title">
+        <h1>Tambah Galeri</h1>
+        <p>Tambahkan dokumentasi kegiatan Rumah Moeda.</p>
     </div>
+
+</div>
 
     {{-- ================= FORM ================= --}}
     <div class="form-card">
