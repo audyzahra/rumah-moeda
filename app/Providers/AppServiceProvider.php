@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\View;
 use App\Models\Setting;
 use App\Models\ContactMessage;
 
+use Illuminate\Support\Facades\Schema;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,13 +25,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Setting Website
         View::share('setting', Setting::first());
 
-        // Jumlah notifikasi sidebar aspirasi
-        View::share(
-            'jumlahNotifSidebar',
-            ContactMessage::where('notif_sidebar', 0)->count()
-        );
+        if (
+            Schema::hasTable('contact_messages') &&
+            Schema::hasColumn('contact_messages', 'notif_sidebar')
+        ) {
+
+            View::share(
+                'jumlahNotifSidebar',
+                ContactMessage::where('notif_sidebar', 0)->count()
+            );
+
+        } else {
+
+            View::share('jumlahNotifSidebar', 0);
+
+        }
     }
 }
