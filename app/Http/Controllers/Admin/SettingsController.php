@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 
-class PengaturanController extends Controller
+class SettingsController extends Controller
 {
     public function index()
     {
@@ -24,7 +24,7 @@ class PengaturanController extends Controller
 
         $users = User::orderBy('id')->get();
 
-        return view('admin.pengaturan.pengaturan', compact(
+        return view('admin.settings.settings', compact(
             'setting',
             'vision',
             'missions',

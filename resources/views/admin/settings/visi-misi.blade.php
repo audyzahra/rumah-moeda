@@ -27,7 +27,7 @@
 
         <div class="card-body">
 
-            <form id="visiMisiForm" action="{{ route('admin.visimisi.update') }}" method="POST">
+            <form id="visiMisiForm" action="{{ route('admin.visi.update') }}" method="POST">
 
                 @csrf
 

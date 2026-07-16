@@ -8,7 +8,7 @@ use App\Models\Setting;
 
 use Illuminate\Support\Facades\Storage;
 
-class ProfilPerusahaanController extends Controller
+class CompanyProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class ProfilPerusahaanController extends Controller
         $setting = Setting::first();
 
         return view(
-            'admin.pengaturan.profil-perusahaan',
+            'admin.settings.profil-perusahaan',
             compact('setting')
         );
     }
@@ -110,7 +110,7 @@ class ProfilPerusahaanController extends Controller
             $setting->save();
 
             return redirect()
-                ->route('admin.pengaturan.profil.index')
+                ->route('admin.settings.profile.index')
                 ->with('success', 'Profile perusahaan berhasil diperbarui.');
     }
 

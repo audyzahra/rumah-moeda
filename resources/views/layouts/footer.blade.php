@@ -18,24 +18,31 @@
         </div>
 
         <!-- Kontak -->
-        <div class="footer-item">
-            <h3>Kontak Kami</h3>
+<div class="footer-item">
+    <h3>Kontak Kami</h3>
 
-            <div class="footer-info">
-                <i class="fas fa-phone"></i>
-                {{ $setting->phone_number }}
-            </div>
+    <div class="footer-info">
+        <i class="fas fa-phone"></i>
+        <a href="tel:+6281234567890">
+            {{ $setting->phone_number }}
+        </a>
+    </div>
 
-            <div class="footer-info">
-                <i class="fas fa-envelope"></i>
-                {{ $setting->email }}
-            </div>
+    <div class="footer-info">
+        <i class="fas fa-envelope"></i>
+        <a href="mailto:{{ $setting->email }}">
+            {{ $setting->email }}
+        </a>
+    </div>
 
-            <div class="footer-info">
-                <i class="fas fa-map-marker-alt"></i>
-                {{ $setting->address }}
-            </div>
-        </div>
+    <div class="footer-info">
+        <i class="fas fa-map-marker-alt"></i>
+        <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($setting->address) }}"
+           target="_blank">
+            {{ $setting->address }}
+        </a>
+    </div>
+</div>
 
         <!-- Maps -->
         <div class="footer-item">

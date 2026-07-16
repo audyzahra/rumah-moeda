@@ -18,7 +18,7 @@ class HeroSectionController extends Controller
         $setting = Setting::first();
 
         return view(
-            'admin.pengaturan.hero-section',
+            'admin.settings.hero-section',
             compact('setting')
         );
     }
@@ -90,7 +90,7 @@ class HeroSectionController extends Controller
         $setting->save();
 
         return redirect()
-            ->route('admin.pengaturan.hero.index')
+            ->route('admin.settings.hero.index')
             ->with('success', 'Hero berhasil diperbarui.');
     }
 

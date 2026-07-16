@@ -11,7 +11,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\FaqController;
 
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\PengaturanController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\AspirasiController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -20,9 +20,9 @@ use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\HeroSectionController;
-use App\Http\Controllers\Admin\ProfilPerusahaanController;
-use App\Http\Controllers\Admin\VisiMisiController;
-use App\Http\Controllers\Admin\KelolaAkunController;
+use App\Http\Controllers\Admin\CompanyProfileController;
+use App\Http\Controllers\Admin\VisionMissionController;
+use App\Http\Controllers\Admin\UserManagementController;
 
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\NewsController as UserNewsController;
@@ -187,39 +187,39 @@ Route::middleware(['auth', 'admin'])
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/pengaturan', [PengaturanController::class, 'index'])
-            ->name('pengaturan');
+        Route::get('/settings', [SettingsController::class, 'index'])
+            ->name('settings');
         // Hero Section
-            Route::get('/pengaturan/hero-section', [HeroSectionController::class, 'index'])
-                ->name('pengaturan.hero.index');
+            Route::get('/settings/hero-section', [HeroSectionController::class, 'index'])
+                ->name('settings.hero.index');
 
             // Profil Perusahaan
-            Route::get('/pengaturan/profil-perusahaan', [ProfilPerusahaanController::class, 'index'])
-                ->name('pengaturan.profil.index');
+            Route::get('/settings/company-profile', [CompanyProfileController::class, 'index'])
+                ->name('settings.profile.index');
 
             // Visi Misi
-            Route::get('/pengaturan/visi-misi', [VisiMisiController::class, 'index'])
-                ->name('pengaturan.visi.index');
+            Route::get('/settings/vision-mission', [VisionMissionController::class, 'index'])
+                ->name('settings.visi.index');
                 
-        Route::post('/pengaturan/visi-misi', [VisiMisiController::class, 'update'])
-            ->name('visimisi.update');
+        Route::post('/settings/vision-mission', [VisionMissionController::class, 'update'])
+            ->name('visi.update');
 
-        Route::post('/pengaturan/logo', [PengaturanController::class, 'updateLogo'])
+        Route::post('/settings/logo', [SettingsController::class, 'updateLogo'])
             ->name('logo.update');
 
-        Route::post('/pengaturan/profile', [ProfilPerusahaanController::class, 'update'])
+        Route::post('/settings/profile', [CompanyProfileController::class, 'update'])
             ->name('profile.update');
 
-        Route::post('/pengaturan/hero', [HeroSectionController::class, 'update'])
+        Route::post('/settings/hero', [HeroSectionController::class, 'update'])
             ->name('hero.update');
 
-        Route::post('/pengaturan/user', [PengaturanController::class, 'storeUser'])
+        Route::post('/settings/user', [SettingsController::class, 'storeUser'])
             ->name('user.store');
 
-        Route::put('/pengaturan/user/{user}', [PengaturanController::class, 'updateUser'])
+        Route::put('/settings/user/{user}', [SettingsController::class, 'updateUser'])
             ->name('user.update');
 
-        Route::delete('/pengaturan/user/{user}', [PengaturanController::class, 'destroyUser'])
+        Route::delete('/settings/user/{user}', [SettingsController::class, 'destroyUser'])
             ->name('user.delete');
 
         /*
@@ -364,16 +364,22 @@ Route::middleware(['auth', 'admin'])
         | Kelola Akun
         |--------------------------------------------------------------------------
         */
-        Route::get('/kelola-akun', [KelolaAkunController::class, 'index'])
-            ->name('kelola-akun.index');
+        Route::get('/manage-account', [UserManagementController::class, 'index'])
+            ->name('manage-account.index');
+        
+        Route::get('/manage-account/create', [UserManagementController::class, 'create'])
+        ->name('manage-account.create');
 
-        Route::post('/kelola-akun', [KelolaAkunController::class, 'store'])
-        ->name('kelola-akun.store');
+        Route::get('/manage-account/{user}/edit', [UserManagementController::class, 'edit'])
+        ->name('manage-account.edit');
 
-        Route::put('/kelola-akun/{user}', [KelolaAkunController::class, 'update'])
-            ->name('kelola-akun.update');
+        Route::post('/manage-account', [UserManagementController::class, 'store'])
+        ->name('manage-account.store');
 
-        Route::delete('/kelola-akun/{user}', [KelolaAkunController::class, 'destroy'])
-            ->name('kelola-akun.destroy');
+        Route::put('/manage-account/{user}', [UserManagementController::class, 'update'])
+            ->name('manage-account.update');
+
+        Route::delete('/manage-account/{user}', [UserManagementController::class, 'destroy'])
+            ->name('manage-account.destroy');
 
     });
