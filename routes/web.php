@@ -63,6 +63,12 @@ Route::get('/berita/{slug}', [BeritaController::class, 'show'])
 Route::get('/galeri', [GalleryController::class, 'index'])
     ->name('galeri.index');
 
+Route::get('/galeri/foto', [GalleryController::class, 'foto'])
+    ->name('galeri.foto');
+
+Route::get('/galeri/video', [GalleryController::class, 'video'])
+    ->name('galeri.video');
+
 // FAQ
 Route::get('/pertanyaan', [FaqController::class, 'index'])
     ->name('faq.index');
@@ -352,6 +358,11 @@ Route::middleware(['auth', 'admin'])
 
         Route::delete('gallery/media/{media}', [AdminGalleryController::class, 'destroyMedia'])->name('gallery.media.destroy');
 
+        Route::get('/gallery/create', [AdminGalleryController::class, 'create'])
+            ->name('gallery.create');
+
+        Route::get('/gallery/{gallery}/edit', [AdminGalleryController::class, 'edit'])
+                ->name('gallery.edit');
         /*
         |--------------------------------------------------------------------------
         | FAQ

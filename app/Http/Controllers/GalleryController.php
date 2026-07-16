@@ -27,4 +27,34 @@ class GalleryController extends Controller
 
         return view('gallery', compact('gallery'));
     }
+    public function foto()
+    {
+        $gallery = Gallery::whereHas('media', function ($q) {
+                $q->where('type', 'image');
+            })
+            ->with(['media' => function ($q) {
+                $q->where('type', 'image');
+            }])
+            ->latest()
+            ->get();
+
+        $pageTitle = "Galeri Foto";
+
+        return view('galeri', compact('gallery', 'pageTitle'));
+    }
+   public function video()
+    {
+        $gallery = Gallery::whereHas('media', function ($q) {
+                $q->where('type', 'video');
+            })
+            ->with(['media' => function ($q) {
+                $q->where('type', 'video');
+            }])
+            ->latest()
+            ->get();
+
+        $pageTitle = "Galeri Video";
+
+        return view('galeri', compact('gallery', 'pageTitle'));
+    }
 }
