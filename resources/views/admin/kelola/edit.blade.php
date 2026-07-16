@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Tambah Akun')
+@section('title', 'Edit Akun')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/kelola-akun.css') }}">
@@ -13,10 +13,10 @@
 
         <div>
 
-            <h1>Tambah Akun</h1>
+            <h1>Edit Akun</h1>
 
             <p>
-                Tambahkan akun administrator atau pengguna baru.
+                Perbarui informasi akun pengguna.
             </p>
 
         </div>
@@ -32,9 +32,9 @@
 
         </a>
 
-        <span>> </span>
+        <span>></span>
 
-        <span>Tambah Akun</span>
+        <span>Edit Akun</span>
 
     </div>
 
@@ -49,15 +49,15 @@
 
                     <h3>
 
-                        <i class="fa-solid fa-user-plus"></i>
+                        <i class="fa-solid fa-user-pen"></i>
 
-                        Tambah Akun
+                        Edit Akun
 
                     </h3>
 
                     <p>
 
-                        Lengkapi informasi akun di bawah ini.
+                        Perbarui informasi akun di bawah ini.
 
                     </p>
 
@@ -76,7 +76,6 @@
 
             <div class="card-body">
 
-                {{-- VALIDATION --}}
                 @if ($errors->any())
 
                     <div class="alert alert-danger">
@@ -95,9 +94,10 @@
 
                 @endif
 
-                <form action="{{ route('admin.manage-account.store') }}" method="POST">
+                <form action="{{ route('admin.manage-account.update', $user) }}" method="POST">
 
                     @csrf
+                    @method('PUT')
 
                     <!-- Nama & Email -->
 
@@ -118,7 +118,7 @@
                                 name="name"
                                 class="form-control"
                                 placeholder="Masukkan nama lengkap"
-                                value="{{ old('name') }}"
+                                value="{{ old('name', $user->name) }}"
                                 required>
 
                         </div>
@@ -138,7 +138,7 @@
                                 name="email"
                                 class="form-control"
                                 placeholder="Masukkan alamat email"
-                                value="{{ old('email') }}"
+                                value="{{ old('email', $user->email) }}"
                                 required>
 
                         </div>
@@ -153,9 +153,7 @@
 
                             <label>
 
-                                Password
-
-                                <span class="required">*</span>
+                                Password Baru
 
                             </label>
 
@@ -166,8 +164,7 @@
                                     id="password"
                                     name="password"
                                     class="form-control"
-                                    placeholder="Minimal 8 karakter"
-                                    required>
+                                    placeholder="Kosongkan jika tidak diubah">
 
                                 <i
                                     class="fa-solid fa-eye toggle-password"
@@ -183,9 +180,7 @@
 
                             <label>
 
-                                Konfirmasi Password
-
-                                <span class="required">*</span>
+                                Konfirmasi Password Baru
 
                             </label>
 
@@ -196,8 +191,7 @@
                                     id="password_confirmation"
                                     name="password_confirmation"
                                     class="form-control"
-                                    placeholder="Ulangi password"
-                                    required>
+                                    placeholder="Ulangi password baru">
 
                                 <i
                                     class="fa-solid fa-eye toggle-password"
@@ -228,7 +222,7 @@
                             class="form-control"
                             required>
 
-                            <option value="" selected disabled>
+                            <option value="" disabled>
 
                                 -- Pilih Role --
 
@@ -236,7 +230,7 @@
 
                             <option
                                 value="admin"
-                                {{ old('role') == 'admin' ? 'selected' : '' }}>
+                                {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>
 
                                 Admin
 
@@ -244,7 +238,7 @@
 
                             <option
                                 value="user"
-                                {{ old('role') == 'user' ? 'selected' : '' }}>
+                                {{ old('role', $user->role) == 'user' ? 'selected' : '' }}>
 
                                 User
 
@@ -271,7 +265,7 @@
 
                             <i class="fa-solid fa-floppy-disk"></i>
 
-                            Simpan Akun
+                            Update Akun
 
                         </button>
 
