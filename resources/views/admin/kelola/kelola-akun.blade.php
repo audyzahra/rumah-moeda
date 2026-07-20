@@ -57,6 +57,25 @@
         </div>
 
         <div class="card-body">
+            @if(session('success'))
+
+                <div class="alert alert-success">
+
+                    {{ session('success') }}
+
+                </div>
+
+            @endif
+
+            @if(session('error'))
+
+                <div class="alert alert-danger">
+
+                    {{ session('error') }}
+
+                </div>
+
+            @endif
 
             <div class="table-responsive">
 
@@ -116,34 +135,23 @@
 
                                     <div class="action-buttons">
 
-                                        <a href="{{ route('admin.manage-account.edit', $user) }}">
-
+                                        <a href="{{ route('admin.manage-account.edit', $user) }}"
+                                            class="btn-icon btn-edit"
+                                            title="Edit">
                                             <i class="fa-solid fa-pen"></i>
-                                            Edit
                                         </a>
 
                                         @if(auth()->id() != $user->id)
 
-                                            <form
-                                                action="{{ route('admin.manage-account.destroy', $user) }}"
-                                                method="POST"
-                                                class="d-inline"
-                                                onsubmit="return confirm('Yakin ingin menghapus akun ini?')">
+                                            <button
+                                                type="button"
+                                                class="btn-icon btn-delete"
+                                                title="Hapus"
+                                                onclick="openDeleteModal('{{ route('admin.manage-account.destroy', $user) }}')">
 
-                                                @csrf
+                                                <i class="fa-solid fa-trash"></i>
 
-                                                @method('DELETE')
-
-                                                <button
-                                                    type="submit"
-                                                    class="btn-icon btn-delete"
-                                                    title="Hapus">
-
-                                                    <i class="fa-solid fa-trash"></i>
-
-                                                </button>
-
-                                            </form>
+                                            </button>
 
                                         @endif
 
@@ -178,7 +186,85 @@
     </div>
 
 </section>
+<!-- ================= DELETE MODAL ================= -->
 
+<div class="modal" id="deleteModal">
+
+    <div class="modal-content modal-delete">
+
+        <div class="modal-header">
+
+            <h2>Hapus Akun</h2>
+
+            <button
+                type="button"
+                class="modal-close"
+                onclick="closeDeleteModal()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+        <div class="modal-body text-center">
+
+            <div class="delete-icon">
+
+                <i class="fa-solid fa-trash-can"></i>
+
+            </div>
+
+            <h3>
+
+                Apakah Anda yakin?
+
+            </h3>
+
+            <p>
+
+                Akun yang dihapus tidak dapat dikembalikan lagi.
+
+            </p>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+                type="button"
+                class="btn-secondary"
+                onclick="closeDeleteModal()">
+
+                Batal
+
+            </button>
+
+            <form
+                id="deleteForm"
+                method="POST">
+
+                @csrf
+
+                @method('DELETE')
+
+                <button
+                    type="submit"
+                    class="btn-delete">
+
+                    <i class="fa-solid fa-trash"></i>
+
+                    Hapus
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
 @endsection
 
 @push('scripts')

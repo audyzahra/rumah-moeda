@@ -46,8 +46,13 @@ class PartnerController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Show the form for creating a new resource.
      */
+    public function create()
+    {
+        return view('admin.mitra.create');
+    }
+
     public function store(Request $request)
     {
         // Validasi
@@ -72,17 +77,23 @@ class PartnerController extends Controller
         // Simpan ke database
         Partner::create($data);
 
-        return redirect()->route('admin.mitra.index')
+        return redirect()->route('admin.partners.index')
                          ->with('success', 'Mitra berhasil ditambahkan!');
+    }
+
+    /**
+ * Show the form for editing the specified resource.
+ */
+    public function edit(Partner $mitra)
+    {
+        return view('admin.mitra.edit', compact('mitra'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Partner $mitra)
     {
-        $mitra = Partner::findOrFail($id);
-
         // Validasi
         $request->validate([
             'name' => 'required|string|max:255',
@@ -110,17 +121,15 @@ class PartnerController extends Controller
         // Update database
         $mitra->update($data);
 
-        return redirect()->route('admin.mitra.index')
+        return redirect()->route('admin.partners.index')
                          ->with('success', 'Mitra berhasil diupdate!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
-    {
-        $mitra = Partner::findOrFail($id);
-
+    public function destroy(Partner $mitra)
+        {
         // Delete logo
         if ($mitra->logo) {
             Storage::disk('public')->delete($mitra->logo);
@@ -128,7 +137,7 @@ class PartnerController extends Controller
 
         $mitra->delete();
 
-        return redirect()->route('admin.mitra.index')
+        return redirect()->route('admin.partners.index')
                          ->with('success', 'Mitra berhasil dihapus!');
     }
 }

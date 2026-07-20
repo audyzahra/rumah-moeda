@@ -88,11 +88,7 @@
 
             </form>
 
-           <a href="{{ route('admin.organization-structures.create') }}" class="btn-tambah">
-                <i class="fa-solid fa-plus"></i>
-                Tambah Anggota
-            </a>
-
+           
             <a href="{{ route('admin.organization-structures.export') }}"
                 class="btn-export">
 
@@ -117,6 +113,11 @@
 
                 <i class="fa-solid fa-rotate-right"></i>
             </button>
+
+            <a href="{{ route('admin.organization-structures.create') }}" class="btn-tambah">
+                <i class="fa-solid fa-plus"></i>
+                Tambah Anggota
+            </a>
 
         </section>
 

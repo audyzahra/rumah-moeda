@@ -97,8 +97,8 @@
         </li>
 
         <!-- Mitra -->
-        <li class="{{ request()->routeIs('admin.mitra.*') ? 'active' : '' }}">
-            <a href="{{ route('admin.mitra.index') }}">
+        <li class="{{ request()->routeIs('admin.partners.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.partners.index') }}">
                 <i class="fa-solid fa-handshake"></i>
                 <span>Mitra</span>
                 <!-- <span class="badge">4</span> -->

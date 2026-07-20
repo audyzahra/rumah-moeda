@@ -114,22 +114,28 @@
 
 /* ===== FILTER ===== */
 .filter-section {
+    width: 95%;
+    max-width: 1180px;   /* sesuaikan */
+    margin: 0 auto 20px;
+
     background: white;
     border-radius: 16px;
-    padding: 10px 24px;
-    margin-bottom: 20px;
+    padding: 10px 20px;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
+
+    flex-wrap: nowrap;
+    gap: 12px;
+
     box-shadow: 0 2px 10px rgba(0,0,0,0.06);
 }
 
-.filter-left {
+.filter-left{
     display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
     flex: 1;
 }
 
@@ -138,9 +144,9 @@
     border: 2px solid #e5e7eb;
     border-radius: 10px;
     font-size: 14px;
-    min-width: 200px;
+    min-width: 130px;
     transition: 0.3s;
-    flex: 1;
+    flex: none;
     height: 44px; /* Tambahkan height tetap */
     box-sizing: border-box;
 }
@@ -161,6 +167,7 @@
     transition: 0.3s;
     height: 44px; /* Tambahkan height tetap */
     box-sizing: border-box;
+    width: 115px;
 }
 
 .filter-select:focus {
@@ -168,12 +175,86 @@
     border-color: #3b82f6;
 }
 
-.filter-right {
-    display: flex;
-    gap: 10px;
-    align-items: center; /* Tambahkan align items */
+.filter-right{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    white-space:nowrap;
+}
+/* Tombol Export */
+.btn-export{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+
+    height:44px;
+    padding:0 18px;
+
+    background:#ffffff;
+    color:#2563eb;
+
+    border:1px solid #2563eb;
+    border-radius:10px;
+
+    font-size:14px;
+    font-weight:600;
+    text-decoration:none;
+    transition:.25s;
 }
 
+.btn-export:hover{
+    background:#2563eb;
+    color:#fff;
+}
+
+/* Tombol Import */
+.btn-import{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+
+    height:44px;
+    padding:0 14px;
+
+    background:#ffffff;
+    color:#2563eb;
+
+    border:1px solid #2563eb;
+    border-radius:10px;
+
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.btn-import:hover{
+    background:#2563eb;
+    color:#fff;
+}
+
+/* Refresh */
+.btn-refresh{
+    width:44px;
+    height:44px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#f3f4f6;
+    border:none;
+    border-radius:10px;
+
+    cursor:pointer;
+    transition:.25s;
+}
+
+.btn-refresh:hover{
+    background:#e5e7eb;
+}
 .btn-tambah {
     padding: 10px 20px;
     background: #3b82f6;

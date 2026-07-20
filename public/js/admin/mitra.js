@@ -3,68 +3,21 @@
 // Manajemen Mitra
 // ==============================
 
-// ===== KONFIGURASI =====
-const API_URL = 'http://localhost:8000/api';
-const API_TOKEN = localStorage.getItem('api_token') || '';
-
 // ===== VARIABEL GLOBAL =====
-let mitraData = [];
-let filteredData = [];
-let currentPage = 1;
-const itemsPerPage = 8;
-let deleteId = null;
-let editId = null;
+// let mitraData = [];
+// let filteredData = [];
+// let currentPage = 1;
+// const itemsPerPage = 8;
+// let deleteId = null;
+// let editId = null;
 
 // ===== DOM ELEMENTS =====
-const grid = document.getElementById('mitraGrid');
-const searchInput = document.getElementById('searchInput');
-const filterWebsite = document.getElementById('filterWebsite');
-
-// ===== INISIALISASI =====
-document.addEventListener('DOMContentLoaded', function () {
-    const modal = document.getElementById('formModal');
-    const btnTambah = document.querySelector('.btn-tambah');
-    const btnClose = document.querySelector('.modal-close');
-
-    btnTambah.addEventListener('click', function () {
-        modal.classList.add('show');
-    });
-
-    btnClose.addEventListener('click', function () {
-        modal.classList.remove('show');
-    });
-
-    modal.addEventListener('click', function (e) {
-        if (e.target === modal) {
-            modal.classList.remove('show');
-        }
-    });
-});
+// const grid = document.getElementById('mitraGrid');
+// const searchInput = document.getElementById('searchInput');
+// const filterWebsite = document.getElementById('filterWebsite');
 
 document.addEventListener('DOMContentLoaded', function() {
         
-        // ==========================================
-        // 1. EDIT MODAL
-        // ==========================================
-        const editModal = document.getElementById('editModal');
-        if (editModal) {
-            editModal.addEventListener('show.bs.modal', function(event) {
-                const button = event.relatedTarget;
-                const id = button.getAttribute('data-id');
-                const name = button.getAttribute('data-name');
-                const website = button.getAttribute('data-website');
-                const description = button.getAttribute('data-description');
-                const order = button.getAttribute('data-order');
-
-                const form = document.getElementById('editForm');
-                form.action = `${window.mitraRoutes.update}/${id}`;
-
-                document.getElementById('editName').value = name || '';
-                document.getElementById('editWebsite').value = website || '';
-                document.getElementById('editDescription').value = description || '';
-                document.getElementById('editOrder').value = order || '';
-            });
-        }
 
         // ==========================================
         // 2. DETAIL MODAL
@@ -80,7 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const logo = button.getAttribute('data-logo');
 
                 const body = document.getElementById('detailBody');
-                const logoUrl = logo ? "{{ asset('storage/') }}/" + logo : null;
+                // const logoUrl = logo ? "{{ asset('storage/') }}/" + logo : null;
+                const logoUrl = logo ? `${window.storageUrl}/${logo}`: null;
                 
                 body.innerHTML = `
                     <div class="text-center mb-3">
@@ -148,6 +102,4 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
 
-    const logoUrl = logo
-    ? `${window.storageUrl}/${logo}`
-    : null;
+    
