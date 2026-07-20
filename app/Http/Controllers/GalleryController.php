@@ -7,54 +7,113 @@ use Illuminate\Support\Facades\Auth;
 
 class GalleryController extends Controller
 {
-    public function index()
+    /*
+    |--------------------------------------------------------------------------
+    | Gallery Landing
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | Photo Gallery
+    |--------------------------------------------------------------------------
+    */
+
+    public function photos()
     {
+        $query = Gallery::with([
+            'media' => function ($q) {
+                $q->where('type', 'image');
+            }
+        ])->whereHas('media', function ($q) {
+            $q->where('type', 'image');
+        });
+
+        // Jika login (Admin/User), hanya tampilkan galeri miliknya
         if (Auth::check()) {
-
-            // Jika sudah login (admin atau user),
-            // hanya tampilkan galeri miliknya sendiri
-            $gallery = Gallery::where('author_id', Auth::id())
-                ->latest('activity_date')
-                ->get();
-
-        } else {
-
-            // Guest melihat semua galeri
-            $gallery = Gallery::latest('activity_date')
-                ->get();
-
+            $query->where('author_id', Auth::id());
         }
 
-        return view('gallery', compact('gallery'));
+        $gallery = $query
+        ->orderByDesc('activity_date')
+        ->get();
+
+        return view('gallery.photos', compact('gallery'));
     }
-    public function foto()
+
+    /*
+    |--------------------------------------------------------------------------
+    | Video Gallery
+    |--------------------------------------------------------------------------
+    */
+
+    public function videos()
     {
-        $gallery = Gallery::whereHas('media', function ($q) {
-                $q->where('type', 'image');
-            })
-            ->with(['media' => function ($q) {
-                $q->where('type', 'image');
-            }])
-            ->latest()
-            ->get();
+        $query = Gallery::with([
+            'media' => function ($q) {
+                $q->where('type', 'video');
+            }
+        ])->whereHas('media', function ($q) {
+            $q->where('type', 'video');
+        });
 
-        $pageTitle = "Galeri Foto";
+        if (Auth::check()) {
+            $query->where('author_id', Auth::id());
+        }
 
-        return view('galeri', compact('gallery', 'pageTitle'));
+        $gallery = $query
+        ->orderByDesc('activity_date')
+        ->get();
+
+        return view('gallery.videos', compact('gallery'));
     }
-   public function video()
+
+    /*
+    |--------------------------------------------------------------------------
+    | Photo Detail
+    |--------------------------------------------------------------------------
+    */
+
+    public function photoDetail(Gallery $gallery)
     {
-        $gallery = Gallery::whereHas('media', function ($q) {
-                $q->where('type', 'video');
-            })
-            ->with(['media' => function ($q) {
-                $q->where('type', 'video');
-            }])
-            ->latest()
-            ->get();
+        // Admin/User hanya boleh membuka galeri miliknya
+        if (Auth::check() && $gallery->author_id != Auth::id()) {
+            abort(403);
+        }
 
-        $pageTitle = "Galeri Video";
+        $gallery->load([
+            'media' => function ($q) {
+                $q->where('type', 'image');
+            }
+        ]);
+        if ($gallery->media->isEmpty()) {
+            abort(404);
+        }
 
-        return view('galeri', compact('gallery', 'pageTitle'));
+        return view('gallery.photo-detail', compact('gallery'));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Video Detail
+    |--------------------------------------------------------------------------
+    */
+
+    public function videoDetail(Gallery $gallery)
+    {
+        if (Auth::check() && $gallery->author_id != Auth::id()) {
+            abort(403);
+        }
+
+        $gallery->load([
+            'media' => function ($q) {
+                $q->where('type', 'video');
+            }
+        ]);
+        if ($gallery->media->isEmpty()) {
+            abort(404);
+        }
+
+        return view('gallery.video-detail', compact('gallery'));
     }
 }

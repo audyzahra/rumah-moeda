@@ -59,15 +59,19 @@ Route::get('/berita', [BeritaController::class, 'index'])
 Route::get('/berita/{slug}', [BeritaController::class, 'show'])
     ->name('berita.show');
 
-// Galeri
-Route::get('/galeri', [GalleryController::class, 'index'])
-    ->name('galeri.index');
+// Gallery
+Route::get('/photos', [GalleryController::class, 'photos'])
+    ->name('gallery.photos');
 
-Route::get('/galeri/foto', [GalleryController::class, 'foto'])
-    ->name('galeri.foto');
+Route::get('/videos', [GalleryController::class, 'videos'])
+    ->name('gallery.videos');
 
-Route::get('/galeri/video', [GalleryController::class, 'video'])
-    ->name('galeri.video');
+Route::get('/photos/{gallery}', [GalleryController::class, 'photoDetail'])
+    ->name('gallery.photos.detail');
+
+Route::get('/videos/{gallery}', [GalleryController::class, 'videoDetail'])
+    ->name('gallery.videos.detail');
+
 
 // FAQ
 Route::get('/pertanyaan', [FaqController::class, 'index'])

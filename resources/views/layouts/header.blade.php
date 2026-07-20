@@ -52,25 +52,39 @@
                 </li>
 
                 <li class="dropdown">
-                    <a href="{{ route('galeri.index') }}"
-                        class="{{ request()->routeIs('galeri.*') ? 'active' : '' }}">
+
+                    <a href="#">
+
                         Galeri
-                        <i class="fas fa-chevron-down dropdown-icon"></i>
+
+                        <i class="fa-solid fa-chevron-down"></i>
+
                     </a>
 
                     <ul class="dropdown-menu-nav">
+
                         <li>
-                            <a href="{{ route('galeri.foto') }}">
+
+                            <a href="{{ route('gallery.photos') }}">
+
                                 Foto
+
                             </a>
+
                         </li>
 
                         <li>
-                            <a href="{{ route('galeri.video') }}">
+
+                            <a href="{{ route('gallery.videos') }}">
+
                                 Video
+
                             </a>
+
                         </li>
+
                     </ul>
+
                 </li>
 
                 <li>
