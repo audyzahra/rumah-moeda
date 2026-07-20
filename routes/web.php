@@ -256,8 +256,23 @@ Route::middleware(['auth', 'admin'])
         | Mitra
         |--------------------------------------------------------------------------
         */
+        Route::get('/partners', [PartnerController::class, 'index'])
+            ->name('partners.index');
 
-        Route::resource('mitra', PartnerController::class);
+        Route::get('/partners/create', [PartnerController::class, 'create'])
+            ->name('partners.create');
+
+        Route::get('/partners/{mitra}/edit', [PartnerController::class, 'edit'])
+            ->name('partners.edit');
+
+        Route::post('/partners', [PartnerController::class, 'store'])
+            ->name('partners.store');
+
+        Route::put('/partners/{mitra}', [PartnerController::class, 'update'])
+            ->name('partners.update');
+
+        Route::delete('/partners/{mitra}', [PartnerController::class, 'destroy'])
+            ->name('partners.destroy');
 
         /*
         |--------------------------------------------------------------------------
