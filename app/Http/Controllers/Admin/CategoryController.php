@@ -53,8 +53,11 @@ class CategoryController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.kategori.index')
-            ->with('success', 'Kategori berhasil ditambahkan.');
+            ->route('admin.categories.index')
+            ->with([
+                'title' => 'Berhasil! 🎉',
+                'success' => 'Kategori berhasil ditambahkan.'
+            ]);
     }
 
     /**
@@ -94,8 +97,11 @@ class CategoryController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.kategori.index')
-            ->with('success', 'Kategori berhasil diperbarui.');
+            ->route('admin.categories.index')
+            ->with([
+                'title' => 'Berhasil! 🎉',
+                'success' => 'Kategori berhasil diperbarui.'
+            ]);
     }
 
     /**
@@ -110,17 +116,19 @@ class CategoryController extends Controller
         if ($category->news_count > 0) {
 
             return redirect()
-                ->route('admin.kategori.index')
-                ->with(
-                    'error',
-                    'Kategori tidak dapat dihapus karena masih digunakan oleh berita.'
-                );
+                ->route('admin.categories.index')
+                ->with([
+                    'error' => 'Kategori tidak dapat dihapus karena masih digunakan oleh berita.'
+                ]);
         }
 
         $category->delete();
 
         return redirect()
-            ->route('admin.kategori.index')
-            ->with('success', 'Kategori berhasil dihapus.');
+            ->route('admin.categories.index')
+            ->with([
+                'title' => 'Berhasil Dihapus 🗑️',
+                'success' => 'Kategori berhasil dihapus.'
+            ]);
     }
 }

@@ -111,19 +111,11 @@
                                     </a>
 
                                     {{-- DELETE --}}
-                                    <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
+                                    <button type="button" class="btn-delete" onclick="deleteKategori({{ $category->id }})">
 
-                                        @csrf
-                                        @method('DELETE')
+                                        <i class="fa-solid fa-trash"></i>
 
-                                        <button type="submit" class="btn-delete">
-
-                                            <i class="fa-solid fa-trash"></i>
-
-                                        </button>
-
-                                    </form>
+                                    </button>
 
                                 </div>
 
@@ -176,3 +168,81 @@
     </div>
 
 @endsection
+@push('scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('success'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    Swal.fire({
+        icon: 'success',
+        title: '{{ session("title") ?? "Berhasil!" }}',
+        text: '{{ session("success") }}',
+        confirmButtonColor: '#D4AF37',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false
+    });
+
+});
+</script>
+@endif
+
+@if(session('error'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: '{{ session("error") }}',
+        confirmButtonColor: '#dc2626'
+    });
+
+});
+</script>
+@endif
+
+<script>
+
+function deleteKategori(id) {
+
+    Swal.fire({
+        title: 'Hapus Kategori?',
+        text: 'Kategori yang dihapus tidak dapat dikembalikan.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Ya, Hapus',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+
+            const form = document.createElement('form');
+
+            form.method = 'POST';
+            form.action = `/admin/categories/${id}`;
+
+            form.innerHTML = `
+                <input type="hidden" name="_token"
+                    value="${document.querySelector('meta[name="csrf-token"]').content}">
+                <input type="hidden" name="_method" value="DELETE">
+            `;
+
+            document.body.appendChild(form);
+            form.submit();
+
+        }
+
+    });
+
+}
+
+</script>
+
+@endpush
