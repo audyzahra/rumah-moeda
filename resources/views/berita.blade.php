@@ -70,7 +70,7 @@
 
                     <div class="action">
 
-                        <a href="{{ route('berita.show', $item->slug) }}">
+                        <a href="{{ route('news.show', $item->slug) }}">
 
                             Baca Selengkapnya →
 

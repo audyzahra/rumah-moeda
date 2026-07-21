@@ -49,7 +49,7 @@
 
             </div>
 
-            <a href="{{ route('admin.berita.create') }}" class="btn-tambah">
+            <a href="{{ route('admin.news.create') }}" class="btn-tambah">
 
     <i class="fa-solid fa-plus"></i>
 
@@ -88,110 +88,113 @@
 
         {{-- ===================== GRID BERITA ===================== --}}
 
-        <div class="berita-grid">
+        <div class="table-container">
 
-            @forelse($news as $item)
-                <div class="berita-card" data-title="{{ strtolower($item->title) }}"
-                    data-category="{{ $item->category_id }}">
-                    <div class="berita-image">
+            <table class="berita-table">
 
-                        @if ($item->thumbnail)
-                            <img src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}">
-                        @else
-                            <img src="{{ asset('assets/no-image.png') }}" alt="No Image">
-                        @endif
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Thumbnail</th>
+                        <th>Judul</th>
+                        <th>Kategori</th>
+                        <th>Penulis</th>
+                        <th>Tanggal Publish</th>
+                        <th >Aksi</th>
+                    </tr>
+                </thead>
 
-                    </div>
+                <tbody>
 
-                    <div class="berita-content">
+                    @forelse($news as $index => $item)
+                        <tr data-title="{{ strtolower($item->title) }}"
+                            data-category="{{ $item->category_id }}">
 
-                        <span class="kategori">
+                            <td>{{ $index + 1 }}</td>
 
-                            {{ $item->category->name ?? '-' }}
+                            <td>
+                                @if ($item->thumbnail)
+                                    <img src="{{ Storage::url($item->thumbnail) }}"
+                                        alt="{{ $item->title }}"
+                                        class="table-thumbnail">
+                                @else
+                                    <img src="{{ asset('assets/no-image.png') }}"
+                                        alt="No Image"
+                                        class="table-thumbnail">
+                                @endif
+                            </td>
 
-                        </span>
+                            <td>
+                                <div class="news-title">
+                                    <strong>{{ $item->title }}</strong>
+                                    <p>
+                                        {{ \Illuminate\Support\Str::limit(strip_tags($item->content), 80) }}
+                                    </p>
+                                </div>
+                            </td>
 
-                        <h3>
+                            <td>
+                                <span class="kategori">
+                                    {{ $item->category->name ?? '-' }}
+                                </span>
+                            </td>
 
-                            {{ $item->title }}
-
-                        </h3>
-
-                        <p>
-
-                            {{ \Illuminate\Support\Str::limit(strip_tags($item->content), 120) }}
-
-                        </p>
-
-                        <div class="berita-info">
-
-                            <span>
-
-                                <i class="fa-solid fa-user"></i>
-
+                            <td>
                                 {{ $item->author->name ?? '-' }}
+                            </td>
 
-                            </span>
-
-                            <span>
-
-                                <i class="fa-solid fa-calendar"></i>
-
+                            <td>
                                 {{ \Carbon\Carbon::parse($item->publish_date)->format('d M Y') }}
+                            </td>
 
-                            </span>
+                            <td>
+                                <div class="table-actions">
 
-                        </div>
+                                    <button
+                                        class="btn-detail"
+                                        onclick='showDetail({
+                                            id: {{ $item->id }},
+                                            title: @json($item->title),
+                                            content: @json($item->content),
+                                            thumbnail: @json($item->thumbnail ? Storage::url($item->thumbnail) : asset("assets/no-image.png")),
+                                            category: @json($item->category->name ?? "-"),
+                                            author: @json($item->author->name ?? "-"),
+                                            publish_date: @json(\Carbon\Carbon::parse($item->publish_date)->format("d M Y H:i"))
+                                        })'>
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
 
-                        <div class="card-actions">
+                                    <a href="{{ route('admin.news.edit', $item->id) }}"
+                                    class="btn-edit">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
 
-                            <button class="btn-detail"
-                                onclick='showDetail({
-                                    id: {{ $item->id }},
-                                    title: @json($item->title),
-                                    content: @json($item->content),
-                                    thumbnail: @json($item->thumbnail ? Storage::url($item->thumbnail) : asset('assets/no-image.png')),
-                                    category: @json($item->category->name ?? "-"),
-                                    author: @json($item->author->name),
-                                    publish_date: @json(\Carbon\Carbon::parse($item->publish_date)->format('d M Y H:i'))
-                                })'>
+                                    <button
+                                        class="btn-delete"
+                                        onclick="deleteBerita({{ $item->id }})">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
 
-                                <i class="fa-solid fa-eye"></i>
+                                </div>
+                            </td>
 
-                            </button>
+                        </tr>
 
-                            <a href="{{ route('admin.berita.edit', $item->id) }}" class="btn-edit">
-    <i class="fa-solid fa-pen"></i>
-</a>
+                    @empty
 
-                            <button class="btn-delete" onclick="deleteBerita({{ $item->id }})">
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                <i class="fa-solid fa-newspaper"></i>
+                                <h3>Belum ada berita</h3>
+                                <p>Silakan tambahkan berita pertama.</p>
+                            </td>
+                        </tr>
 
-                                <i class="fa-solid fa-trash"></i>
+                    @endforelse
 
-                            </button>
+                </tbody>
 
-                        </div>
-
-                    </div>
-
-                </div>
-
-            @empty
-
-                <div class="empty-state">
-
-                    <i class="fa-solid fa-newspaper"></i>
-
-                    <h3>Belum ada berita</h3>
-
-                    <p>
-
-                        Silakan tambahkan berita pertama.
-
-                    </p>
-
-                </div>
-            @endforelse
+            </table>
 
         </div>
         {{-- ===========================
@@ -216,7 +219,7 @@
 
                 </div>
 
-                <form id="beritaForm" action="{{ route('admin.berita.store') }}" method="POST"
+                <form id="beritaForm" action="{{ route('admin.news.store') }}" method="POST"
                     enctype="multipart/form-data">
 
                     @csrf

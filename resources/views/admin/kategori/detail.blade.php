@@ -21,7 +21,7 @@
 
         </div>
 
-        <a href="{{ route('admin.kategori.index') }}" class="btn-batal">
+        <a href="{{ route('admin.categories.index') }}" class="btn-batal">
 
             <i class="fa-solid fa-arrow-left"></i>
 
@@ -89,7 +89,7 @@
         <div class="form-footer">
 
             <a
-                href="{{ route('admin.kategori.edit', $category->id) }}"
+                href="{{ route('admin.categories.edit', $category->id) }}"
                 class="btn-simpan">
 
                 <i class="fa-solid fa-pen"></i>
@@ -99,7 +99,7 @@
             </a>
 
             <a
-                href="{{ route('admin.kategori.index') }}"
+                href="{{ route('admin.categories.index') }}"
                 class="btn-batal">
 
                 <i class="fa-solid fa-arrow-left"></i>

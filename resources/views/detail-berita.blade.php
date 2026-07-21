@@ -10,7 +10,7 @@
 
     <section class="detail-container">
 
-        <a href="{{ route('berita.index') }}" class="back-btn">
+        <a href="{{ route('news.index') }}" class="back-btn">
             <i class="fa-solid fa-arrow-left"></i>
             Kembali ke Berita
         </a>
@@ -80,7 +80,7 @@
                         {{ Str::limit($item->title, 60) }}
                     </h3>
 
-                    <a href="{{ route('berita.show', $item->slug) }}">
+                    <a href="{{ route('news.show', $item->slug) }}">
                         Baca Selengkapnya →
                     </a>
 

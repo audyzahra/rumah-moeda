@@ -27,7 +27,7 @@
         <!-- Aspirasi -->
         <li class="{{ request()->routeIs('admin.aspirasi.*') ? 'active' : '' }}">
 
-            <a href="{{ route('admin.aspirasi.index') }}">
+            <a href="{{ route('admin.messages.index') }}">
 
                 <i class="fa-solid fa-envelope"></i>
 
@@ -59,13 +59,13 @@
             <ul id="submenuBerita" class="submenu">
 
                 <li>
-                    <a href="{{ route('admin.berita.index') }}">
+                    <a href="{{ route('admin.news.index') }}">
                         Berita
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('admin.kategori.index') }}">
+                    <a href="{{ route('admin.categories.index') }}">
                         Kategori
                     </a>
                 </li>

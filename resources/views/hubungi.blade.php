@@ -35,7 +35,7 @@
         </div>
     @endif
 
-    <form action="{{ route('hubungi.store') }}" method="POST" class="contact-form">
+    <form action="{{ route('contact.store') }}" method="POST" class="contact-form">
 
         @csrf
 

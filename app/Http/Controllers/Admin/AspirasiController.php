@@ -47,9 +47,9 @@ class AspirasiController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function markAsRead(ContactMessage $aspirasi)
+    public function markAsRead(ContactMessage $message)
     {
-        $aspirasi->update([
+        $message->update([
             'is_read' => 1
         ]);
 
@@ -65,9 +65,9 @@ class AspirasiController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function destroy(ContactMessage $aspirasi)
+    public function destroy(ContactMessage $message)
     {
-        $aspirasi->delete();
+        $message->delete();
 
         return back()->with(
             'success',

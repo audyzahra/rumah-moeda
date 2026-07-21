@@ -37,14 +37,16 @@ use App\Http\Controllers\User\MessageController as UserMessageController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/tentang', [TentangController::class, 'index'])
-    ->name('tentang');
+// About
+Route::get('/about', [TentangController::class, 'index'])
+    ->name('about');
 
-Route::get('/hubungi', [ContactController::class, 'index'])
-    ->name('hubungi');
+// Contact
+Route::get('/contact', [ContactController::class, 'index'])
+    ->name('contact');
 
-Route::post('/hubungi', [ContactController::class, 'store'])
-    ->name('hubungi.store');
+Route::post('/contact', [ContactController::class, 'store'])
+    ->name('contact.store');
 
 /*
 |--------------------------------------------------------------------------
@@ -52,12 +54,12 @@ Route::post('/hubungi', [ContactController::class, 'store'])
 |--------------------------------------------------------------------------
 */
 
-// Berita
-Route::get('/berita', [BeritaController::class, 'index'])
-    ->name('berita.index');
+// News
+Route::get('/news', [BeritaController::class, 'index'])
+    ->name('news.index');
 
-Route::get('/berita/{slug}', [BeritaController::class, 'show'])
-    ->name('berita.show');
+Route::get('/news/{slug}', [BeritaController::class, 'show'])
+    ->name('news.show');
 
 // Gallery
 Route::get('/photos', [GalleryController::class, 'photos'])
@@ -72,9 +74,8 @@ Route::get('/photos/{gallery}', [GalleryController::class, 'photoDetail'])
 Route::get('/videos/{gallery}', [GalleryController::class, 'videoDetail'])
     ->name('gallery.videos.detail');
 
-
 // FAQ
-Route::get('/pertanyaan', [FaqController::class, 'index'])
+Route::get('/faq', [FaqController::class, 'index'])
     ->name('faq.index');
 
 
@@ -280,83 +281,83 @@ Route::middleware(['auth', 'admin'])
 
         /*
         |--------------------------------------------------------------------------
-        | Aspirasi
+        | Messages
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/aspirasi', [AspirasiController::class, 'index'])
-            ->name('aspirasi.index');
+        Route::get('/messages', [AspirasiController::class, 'index'])
+            ->name('messages.index');
 
-        Route::put('/aspirasi/{aspirasi}/read', [AspirasiController::class, 'markAsRead'])
-            ->name('aspirasi.read');
+        Route::put('/messages/{message}/read', [AspirasiController::class, 'markAsRead'])
+            ->name('messages.read');
 
-        Route::delete('/aspirasi/{aspirasi}', [AspirasiController::class, 'destroy'])
-            ->name('aspirasi.destroy');
+        Route::delete('/messages/{message}', [AspirasiController::class, 'destroy'])
+            ->name('messages.destroy');
 
-        Route::delete('/aspirasi', [AspirasiController::class, 'bulkDelete'])
-            ->name('aspirasi.bulkDelete');
+        Route::delete('/messages', [AspirasiController::class, 'bulkDelete'])
+            ->name('messages.bulkDelete');
 
         /*
         |--------------------------------------------------------------------------
-        | Berita
+        | News
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/berita', [NewsController::class, 'index'])
-            ->name('berita.index');
+        Route::get('/news', [NewsController::class, 'index'])
+            ->name('news.index');
 
-        // Tambah Berita
-        Route::get('/berita/tambah', [NewsController::class, 'create'])
-            ->name('berita.create');
+        // Create News
+        Route::get('/news/create', [NewsController::class, 'create'])
+            ->name('news.create');
 
-        // Simpan Berita
-        Route::post('/berita', [NewsController::class, 'store'])
-            ->name('berita.store');
+        // Store News
+        Route::post('/news', [NewsController::class, 'store'])
+            ->name('news.store');
 
-        // Halaman Edit
-        Route::get('/berita/{id}/edit', [NewsController::class, 'edit'])
-            ->name('berita.edit');
+        // Edit News
+        Route::get('/news/{id}/edit', [NewsController::class, 'edit'])
+            ->name('news.edit');
 
-        // Update
-        Route::put('/berita/{id}', [NewsController::class, 'update'])
-            ->name('berita.update');
+        // Update News
+        Route::put('/news/{id}', [NewsController::class, 'update'])
+            ->name('news.update');
 
-        // Hapus
-        Route::delete('/berita/{id}', [NewsController::class, 'destroy'])
-            ->name('berita.destroy');
+        // Delete News
+        Route::delete('/news/{id}', [NewsController::class, 'destroy'])
+            ->name('news.destroy');
 
         /*
         |--------------------------------------------------------------------------
-        | KATEGORI
+        | Categories
         |--------------------------------------------------------------------------
         */
 
-        Route::prefix('kategori')
-            ->name('kategori.')
+        Route::prefix('categories')
+            ->name('categories.')
             ->group(function () {
 
-                Route::get('/', [CategoryController::class, 'index'])
-                    ->name('index');
+        Route::get('/', [CategoryController::class, 'index'])
+            ->name('index');
 
-                Route::get('/tambah', [CategoryController::class, 'create'])
-                    ->name('create');
+        Route::get('/create', [CategoryController::class, 'create'])
+            ->name('create');
 
-                Route::post('/', [CategoryController::class, 'store'])
-                    ->name('store');
+        Route::post('/', [CategoryController::class, 'store'])
+            ->name('store');
 
-                Route::get('/{id}', [CategoryController::class, 'show'])
-                    ->name('show');
+        Route::get('/{id}', [CategoryController::class, 'show'])
+            ->name('show');
 
-                Route::get('/{id}/edit', [CategoryController::class, 'edit'])
-                    ->name('edit');
+        Route::get('/{id}/edit', [CategoryController::class, 'edit'])
+            ->name('edit');
 
-                Route::put('/{id}', [CategoryController::class, 'update'])
-                    ->name('update');
+        Route::put('/{id}', [CategoryController::class, 'update'])
+            ->name('update');
 
-                Route::delete('/{id}', [CategoryController::class, 'destroy'])
-                    ->name('destroy');
+        Route::delete('/{id}', [CategoryController::class, 'destroy'])
+            ->name('destroy');
 
-            });
+    });
         /*
         |--------------------------------------------------------------------------
         | Gallery
