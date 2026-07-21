@@ -29,7 +29,12 @@
 
             <form action="{{ route('admin.categories.index') }}" method="GET" class="search-form">
 
-                <input type="text" name="search" class="search-input" placeholder="Cari kategori..."
+                <input
+                    type="text"
+                    id="searchInput"
+                    name="search"
+                    class="search-input"
+                    placeholder="Cari kategori..."
                     value="{{ request('search') }}">
 
             </form>
@@ -111,7 +116,10 @@
                                     </a>
 
                                     {{-- DELETE --}}
-                                    <button type="button" class="btn-delete" onclick="deleteKategori({{ $category->id }})">
+                                    <button
+                                        type="button"
+                                        class="btn-delete"
+                                        onclick="deleteKategori({{ $category->id }})">
 
                                         <i class="fa-solid fa-trash"></i>
 
@@ -168,81 +176,26 @@
     </div>
 
 @endsection
+
 @push('scripts')
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @if(session('success'))
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-
-    Swal.fire({
-        icon: 'success',
-        title: '{{ session("title") ?? "Berhasil!" }}',
-        text: '{{ session("success") }}',
-        confirmButtonColor: '#D4AF37',
-        timer: 2000,
-        timerProgressBar: true,
-        showConfirmButton: false
-    });
-
-});
+window.categorySuccess = {
+    title: @json(session('title') ?? 'Berhasil!'),
+    text: @json(session('success'))
+};
 </script>
 @endif
 
 @if(session('error'))
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-
-    Swal.fire({
-        icon: 'error',
-        title: 'Gagal!',
-        text: '{{ session("error") }}',
-        confirmButtonColor: '#dc2626'
-    });
-
-});
+window.categoryError = @json(session('error'));
 </script>
 @endif
 
-<script>
-
-function deleteKategori(id) {
-
-    Swal.fire({
-        title: 'Hapus Kategori?',
-        text: 'Kategori yang dihapus tidak dapat dikembalikan.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#dc2626',
-        cancelButtonColor: '#6b7280',
-        confirmButtonText: 'Ya, Hapus',
-        cancelButtonText: 'Batal',
-        reverseButtons: true
-    }).then((result) => {
-
-        if (result.isConfirmed) {
-
-            const form = document.createElement('form');
-
-            form.method = 'POST';
-            form.action = `/admin/categories/${id}`;
-
-            form.innerHTML = `
-                <input type="hidden" name="_token"
-                    value="${document.querySelector('meta[name="csrf-token"]').content}">
-                <input type="hidden" name="_method" value="DELETE">
-            `;
-
-            document.body.appendChild(form);
-            form.submit();
-
-        }
-
-    });
-
-}
-
-</script>
+<script src="{{ asset('js/admin/kategori.js') }}"></script>
 
 @endpush
