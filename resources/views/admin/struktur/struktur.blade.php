@@ -231,25 +231,25 @@
                 </table>
             </div>
 
-    <div class="pagination-section">
+            <div class="pagination-section">
 
-        <div class="info-data">
-            Menampilkan
-            {{ $struktur->firstItem() ?? 0 }}
-            -
-            {{ $struktur->lastItem() ?? 0 }}
-            dari
-            {{ $struktur->total() }}
-            anggota
-        </div>
+                <div class="info-data">
+                    Menampilkan
+                    {{ $struktur->firstItem() ?? 0 }}
+                    -
+                    {{ $struktur->lastItem() ?? 0 }}
+                    dari
+                    {{ $struktur->total() }}
+                    anggota
+                </div>
 
-        <div class="pagination-controls">
-            {{ $struktur->withQueryString()->links() }}
-        </div>
+                <div class="pagination-controls">
+                    {{ $struktur->withQueryString()->links() }}
+                </div>
 
-    </div>
+            </div>
 
-</section>
+        </section>
 
        <!-- ===== Modal Detail ===== -->
 

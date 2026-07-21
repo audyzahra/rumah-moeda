@@ -309,6 +309,39 @@
     background:#fff;
 }
 
+.table-struktur thead{
+    background: #3b82f6;
+}
+
+.table-struktur thead th{
+    background: #3b82f6;
+    color: #fff;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+}
+.table-struktur tbody td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #e5e7eb;
+}
+.table-struktur tbody tr:hover {
+    background: #f8fafc;
+}
+.table-responsive {
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.table-struktur thead th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.table-struktur thead th:last-child {
+    border-top-right-radius: 12px;
+}
+
 .table-struktur th{
     background:#f8f9fa;
     padding:14px;
