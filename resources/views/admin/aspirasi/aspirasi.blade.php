@@ -329,5 +329,4 @@
             });
         </script>
     @endif
-        <script src="{{ asset('js/admin/aspirasi.js') }}"></script>
 @endpush

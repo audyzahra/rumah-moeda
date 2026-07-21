@@ -9,7 +9,7 @@
 const isAdmin = window.location.pathname.startsWith("/admin");
 
 const beritaBaseUrl = isAdmin
-    ? "/admin/berita"
+    ? "/admin/news"
     : "/dashboard/news";
 
 "use strict";
@@ -331,19 +331,18 @@ function deleteBerita(id) {
         text: 'Berita yang dihapus tidak dapat dikembalikan.',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#ef4444',
+        confirmButtonColor: '#dc2626',
         cancelButtonColor: '#6b7280',
-        confirmButtonText: '<i class="fa-solid fa-trash"></i> Ya, Hapus',
+        confirmButtonText: 'Ya, Hapus',
         cancelButtonText: 'Batal',
         reverseButtons: true
     }).then((result) => {
 
         if (result.isConfirmed) {
 
-            const form = document.createElement("form");
-
-            form.method = "POST";
-            form.action = beritaBaseUrl + "/" + id;
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `${beritaBaseUrl}/${id}`;
 
             form.innerHTML = `
                 <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').content}">
@@ -352,7 +351,6 @@ function deleteBerita(id) {
 
             document.body.appendChild(form);
             form.submit();
-
         }
 
     });
@@ -366,33 +364,25 @@ function deleteBerita(id) {
 function filterBerita() {
 
     const keyword = searchInput.value.toLowerCase().trim();
-
     const selectedCategory = categoryFilter.value;
 
-    const cards = document.querySelectorAll(".berita-card");
+    const rows = document.querySelectorAll(".berita-table tbody tr");
 
-    cards.forEach(function (card) {
+    rows.forEach(function (row) {
 
-        const title = card.dataset.title || "";
+        // Lewati baris empty state
+        if (row.querySelector(".empty-state")) return;
 
-        const category = card.dataset.category || "";
+        const title = row.dataset.title || "";
+        const category = row.dataset.category || "";
 
-        const matchTitle =
-            title.includes(keyword);
+        const matchTitle = title.includes(keyword);
 
         const matchCategory =
             selectedCategory === "" ||
             category === selectedCategory;
 
-        if (matchTitle && matchCategory) {
-
-            card.style.display = "";
-
-        } else {
-
-            card.style.display = "none";
-
-        }
+        row.style.display = (matchTitle && matchCategory) ? "" : "none";
 
     });
 

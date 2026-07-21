@@ -96,7 +96,10 @@ class NewsController extends Controller
 
         return redirect()
         ->route('admin.news.index')
-        ->with('success', 'Data berita berhasil ditambahkan.');
+        ->with([
+            'title' => 'Berhasil! 🎉',
+            'success' => 'Berita berhasil ditambahkan.'
+        ]);
     }
 
     /**
@@ -142,7 +145,10 @@ class NewsController extends Controller
 
         return redirect()
         ->route('admin.news.index')
-        ->with('success', 'Berita berhasil diperbarui.');
+        ->with([
+            'title' => 'Berhasil! 🎉',
+            'success' => 'Berita berhasil diperbarui.'
+        ]);
     }
 
     /**
@@ -163,7 +169,10 @@ class NewsController extends Controller
         $news->delete();
 
         return redirect()
-            ->route('admin.berita.index')
-            ->with('success', 'Berita berhasil dihapus.');
+            ->route('admin.news.index')
+            ->with([
+            'title' => 'Berhasil Dihapus 🗑️',
+            'success' => 'Berita berhasil dihapus.'
+        ]);
     }
 }
