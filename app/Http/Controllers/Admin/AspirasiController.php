@@ -53,10 +53,10 @@ class AspirasiController extends Controller
             'is_read' => 1
         ]);
 
-        return back()->with(
-            'success',
-            'Aspirasi berhasil ditandai sudah dibaca.'
-        );
+        return back()->with([
+        'title'   => 'Berhasil! ✅',
+        'success' => 'Aspirasi berhasil ditandai sudah dibaca.'
+    ]);
     }
 
     /*
@@ -69,10 +69,10 @@ class AspirasiController extends Controller
     {
         $message->delete();
 
-        return back()->with(
-            'success',
-            'Aspirasi berhasil dihapus.'
-        );
+        return redirect()->route('admin.messages.index')->with([
+        'title' => 'Berhasil Dihapus 🗑️',
+        'success' => 'Aspirasi berhasil dihapus.'
+    ]);
     }
 
     /*

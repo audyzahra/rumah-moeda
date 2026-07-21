@@ -2,55 +2,62 @@
    Show / Hide Password
 ========================== */
 
-document.querySelectorAll('.toggle-password').forEach(icon => {
+document.addEventListener('DOMContentLoaded', function () {
 
-    icon.addEventListener('click', function () {
+    // Toggle Password
+    document.querySelectorAll('.toggle-password').forEach(icon => {
 
-        const input = document.getElementById(this.dataset.target);
+        icon.addEventListener('click', function () {
 
-        if (input.type === 'password') {
+            const input = document.getElementById(this.dataset.target);
 
-            input.type = 'text';
+            if (input.type === 'password') {
 
-            this.classList.remove('fa-eye');
+                input.type = 'text';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
 
-            this.classList.add('fa-eye-slash');
+            } else {
 
-        } else {
+                input.type = 'password';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
 
-            input.type = 'password';
+            }
 
-            this.classList.remove('fa-eye-slash');
-
-            this.classList.add('fa-eye');
-
-        }
+        });
 
     });
 
-});
-function openDeleteModal(action) {
+    // Konfirmasi Hapus Akun
+    document.querySelectorAll('.delete-form').forEach(form => {
 
-    document.getElementById('deleteForm').action = action;
+        form.addEventListener('submit', function (e) {
 
-    document.getElementById('deleteModal').classList.add('show');
+            e.preventDefault();
 
-}
+            Swal.fire({
+                title: 'Hapus Akun?',
+                text: 'Akun yang dihapus tidak dapat dikembalikan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                reverseButtons: true
+            }).then((result) => {
 
-function closeDeleteModal() {
+                if (result.isConfirmed) {
 
-    document.getElementById('deleteModal').classList.remove('show');
+                    form.submit();
 
-}
+                }
 
-window.addEventListener('click', function (e) {
+            });
 
-    const modal = document.getElementById('deleteModal');
+        });
 
-    if (e.target === modal) {
-
-        closeDeleteModal();
-
-    }
+    });
 
 });

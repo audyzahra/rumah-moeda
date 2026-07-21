@@ -150,8 +150,11 @@ class GalleryController extends Controller
         }
 
         return redirect()
-            ->route('user.gallery.index')
-            ->with('success','Galeri berhasil ditambahkan.');
+        ->route('user.gallery.index')
+        ->with([
+            'title' => 'Berhasil! 🎉',
+            'success' => 'Galeri berhasil ditambahkan.'
+        ]);
     }
 
     /**
@@ -265,7 +268,10 @@ class GalleryController extends Controller
 
         return redirect()
             ->route('user.gallery.index')
-            ->with('success','Galeri berhasil diperbarui.');
+            ->with([
+                'title' => 'Berhasil! 🎉',
+                'success' => 'Galeri berhasil diperbarui.'
+            ]);
     }
 
     /**
@@ -295,7 +301,10 @@ class GalleryController extends Controller
 
         return redirect()
             ->route('user.gallery.index')
-            ->with('success','Galeri berhasil dihapus.');
+            ->with([
+                'title' => 'Berhasil! 🎉',
+                'success' => 'Galeri berhasil dihapus.'
+            ]);
 
     }
 }

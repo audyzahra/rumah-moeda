@@ -76,129 +76,114 @@
         </div>
 
 
-        {{-- ===================== GRID BERITA ===================== --}}
+        {{-- ===================== TABEL BERITA ===================== --}}
+        <div class="table-container">
 
-        <div class="berita-grid">
+            <table class="berita-table">
 
-            @forelse($news as $item)
-                <div class="berita-card" data-title="{{ strtolower($item->title) }}"
-                    data-category="{{ $item->category_id }}">
-                    <div class="berita-image">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Thumbnail</th>
+                        <th>Judul</th>
+                        <th>Kategori</th>
+                        <th>Penulis</th>
+                        <th>Tanggal Publish</th>
+                        <th >Aksi</th>
+                    </tr>
+                </thead>
 
-                        @if ($item->thumbnail)
-                            <img src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}">
-                        @else
-                            <img src="{{ asset('assets/no-image.png') }}" alt="No Image">
-                        @endif
+                <tbody>
 
-                    </div>
+                    @forelse($news as $index => $item)
+                        <tr data-title="{{ strtolower($item->title) }}"
+                            data-category="{{ $item->category_id }}">
 
-                    <div class="berita-content">
+                            <td>{{ $index + 1 }}</td>
 
-                        <span class="kategori">
+                            <td>
+                                @if ($item->thumbnail)
+                                    <img src="{{ Storage::url($item->thumbnail) }}"
+                                        alt="{{ $item->title }}"
+                                        class="table-thumbnail">
+                                @else
+                                    <img src="{{ asset('assets/no-image.png') }}"
+                                        alt="No Image"
+                                        class="table-thumbnail">
+                                @endif
+                            </td>
 
-                            {{ $item->category->name ?? '-' }}
+                            <td>
+                                <div class="news-title">
+                                    <strong>{{ $item->title }}</strong>
+                                    <p>
+                                        {{ \Illuminate\Support\Str::limit(strip_tags($item->content), 80) }}
+                                    </p>
+                                </div>
+                            </td>
 
-                        </span>
+                            <td>
+                                <span class="kategori">
+                                    {{ $item->category->name ?? '-' }}
+                                </span>
+                            </td>
 
-                        <h3>
-
-                            {{ $item->title }}
-
-                        </h3>
-
-                        <p>
-
-                            {{ \Illuminate\Support\Str::limit(strip_tags($item->content), 120) }}
-
-                        </p>
-
-                        <div class="berita-info">
-
-                            <span>
-
-                                <i class="fa-solid fa-user"></i>
-
+                            <td>
                                 {{ $item->author->name ?? '-' }}
+                            </td>
 
-                            </span>
-
-                            <span>
-
-                                <i class="fa-solid fa-calendar"></i>
-
+                            <td>
                                 {{ \Carbon\Carbon::parse($item->publish_date)->format('d M Y') }}
+                            </td>
 
-                            </span>
+                            <td>
+                                <div class="table-actions">
 
-                        </div>
+                                    <button
+                                        class="btn-detail"
+                                        onclick='showDetail({
+                                            id: {{ $item->id }},
+                                            title: @json($item->title),
+                                            content: @json($item->content),
+                                            thumbnail: @json($item->thumbnail ? Storage::url($item->thumbnail) : asset("assets/no-image.png")),
+                                            category: @json($item->category->name ?? "-"),
+                                            author: @json($item->author->name ?? "-"),
+                                            publish_date: @json(\Carbon\Carbon::parse($item->publish_date)->format("d M Y H:i"))
+                                        })'>
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
 
-                        <div class="card-actions">
+                                    <a href="{{ route('user.news.edit', $item->id) }}"
+                                    class="btn-edit">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
 
-                            {{-- DETAIL --}}
-                            <button class="btn-detail"
-                                onclick='showDetail({
+                                    <button
+                                        class="btn-delete"
+                                        onclick="deleteBerita({{ $item->id }})">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
 
-                                id: {{ $item->id }},
+                                </div>
+                            </td>
 
-                                title: @json($item->title),
+                        </tr>
 
-                                content: @json($item->content),
+                    @empty
 
-                                thumbnail: @json($item->thumbnail ? Storage::url($item->thumbnail) : asset('assets/no-image.png')),
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                <i class="fa-solid fa-newspaper"></i>
+                                <h3>Belum ada berita</h3>
+                                <p>Silakan tambahkan berita pertama.</p>
+                            </td>
+                        </tr>
 
-                                category: @json($item->category->name ?? '-'),
+                    @endforelse
 
-                                author: @json($item->author->name ?? '-'),
+                </tbody>
 
-                                publish_date: @json(\Carbon\Carbon::parse($item->publish_date)->format('d M Y H:i'))
-
-                            })'>
-
-                                <i class="fa-solid fa-eye"></i>
-
-                            </button>
-
-
-                            {{-- EDIT --}}
-                            <a href="{{ route('user.news.edit', $item->id) }}" class="btn-edit">
-                                <i class="fa-solid fa-pen"></i>
-                            </a>
-
-
-                            {{-- DELETE --}}
-                            <button class="btn-delete" onclick="deleteBerita({{ $item->id }})">
-
-                                <i class="fa-solid fa-trash"></i>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            @empty
-
-                <div class="empty-state">
-
-                    <i class="fa-solid fa-newspaper"></i>
-
-                    <h3>
-
-                        Belum ada berita
-
-                    </h3>
-
-                    <p>
-
-                        Silakan tambahkan berita pertama Anda.
-
-                    </p>
-
-                </div>
-            @endforelse
+            </table>
 
         </div>
 

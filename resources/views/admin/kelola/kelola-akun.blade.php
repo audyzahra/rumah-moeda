@@ -8,6 +8,7 @@
 
 @section('content')
 
+<!-- ================= HEADER ================= -->
 <header class="topbar">
 
     <div>
@@ -22,10 +23,12 @@
 
 </header>
 
+<!-- ================= CONTENT ================= -->
 <section class="tab-content">
 
     <div class="settings-card">
 
+        <!-- ================= CARD HEADER ================= -->
         <div class="card-header">
 
             <div>
@@ -56,26 +59,8 @@
 
         </div>
 
+        <!-- ================= CARD BODY ================= -->
         <div class="card-body">
-            @if(session('success'))
-
-                <div class="alert alert-success">
-
-                    {{ session('success') }}
-
-                </div>
-
-            @endif
-
-            @if(session('error'))
-
-                <div class="alert alert-danger">
-
-                    {{ session('error') }}
-
-                </div>
-
-            @endif
 
             <div class="table-responsive">
 
@@ -135,23 +120,37 @@
 
                                     <div class="action-buttons">
 
+                                        <!-- ================= EDIT ================= -->
                                         <a href="{{ route('admin.manage-account.edit', $user) }}"
                                             class="btn-icon btn-edit"
                                             title="Edit">
+
                                             <i class="fa-solid fa-pen"></i>
+
                                         </a>
 
+                                        <!-- ================= DELETE ================= -->
                                         @if(auth()->id() != $user->id)
 
-                                            <button
-                                                type="button"
-                                                class="btn-icon btn-delete"
-                                                title="Hapus"
-                                                onclick="openDeleteModal('{{ route('admin.manage-account.destroy', $user) }}')">
+                                            <form
+                                                action="{{ route('admin.manage-account.destroy', $user) }}"
+                                                method="POST"
+                                                class="delete-form"
+                                                style="display:inline;">
 
-                                                <i class="fa-solid fa-trash"></i>
+                                                @csrf
+                                                @method('DELETE')
 
-                                            </button>
+                                                <button
+                                                    type="submit"
+                                                    class="btn-icon btn-delete"
+                                                    title="Hapus">
+
+                                                    <i class="fa-solid fa-trash"></i>
+
+                                                </button>
+
+                                            </form>
 
                                         @endif
 
@@ -186,87 +185,54 @@
     </div>
 
 </section>
-<!-- ================= DELETE MODAL ================= -->
 
-<div class="modal" id="deleteModal">
-
-    <div class="modal-content modal-delete">
-
-        <div class="modal-header">
-
-            <h2>Hapus Akun</h2>
-
-            <button
-                type="button"
-                class="modal-close"
-                onclick="closeDeleteModal()">
-
-                <i class="fa-solid fa-xmark"></i>
-
-            </button>
-
-        </div>
-
-        <div class="modal-body text-center">
-
-            <div class="delete-icon">
-
-                <i class="fa-solid fa-trash-can"></i>
-
-            </div>
-
-            <h3>
-
-                Apakah Anda yakin?
-
-            </h3>
-
-            <p>
-
-                Akun yang dihapus tidak dapat dikembalikan lagi.
-
-            </p>
-
-        </div>
-
-        <div class="modal-footer">
-
-            <button
-                type="button"
-                class="btn-secondary"
-                onclick="closeDeleteModal()">
-
-                Batal
-
-            </button>
-
-            <form
-                id="deleteForm"
-                method="POST">
-
-                @csrf
-
-                @method('DELETE')
-
-                <button
-                    type="submit"
-                    class="btn-delete">
-
-                    <i class="fa-solid fa-trash"></i>
-
-                    Hapus
-
-                </button>
-
-            </form>
-
-        </div>
-
-    </div>
-
-</div>
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/admin/kelola-akun.js') }}"></script>
+
+    <!-- ================= SWEETALERT ================= -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- ================= PAGE SCRIPT ================= -->
+    <script src="{{ asset('js/admin/kelola-akun.js') }}"></script>
+
+    <!-- ================= SUCCESS ALERT ================= -->
+    @if (session('success'))
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '{{ session('title') ?? 'Berhasil!' }}',
+                    text: '{{ session('success') }}',
+                    confirmButtonColor: '#D4AF37',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+
+            });
+        </script>
+
+    @endif
+
+    <!-- ================= ERROR ALERT ================= -->
+    @if (session('error'))
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: '{{ session('error') }}',
+                    confirmButtonColor: '#dc3545'
+                });
+
+            });
+        </script>
+
+    @endif
+
 @endpush

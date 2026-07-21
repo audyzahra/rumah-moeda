@@ -21,11 +21,7 @@ const aspirasiBaseUrl = isAdmin
 
 const detailModal = document.getElementById("detailModal");
 
-const deleteModal = document.getElementById("deleteModal");
-
 const detailBody = document.getElementById("detailBody");
-
-const deleteForm = document.getElementById("deleteForm");
 
 const searchInput = document.getElementById("searchInput");
 
@@ -66,12 +62,6 @@ function closeModal(modal) {
 function closeDetailModal() {
 
     closeModal(detailModal);
-
-}
-
-function closeDeleteModal() {
-
-    closeModal(deleteModal);
 
 }
 
@@ -239,14 +229,36 @@ document.addEventListener("change", function (e) {
 
 function deleteAspirasi(id) {
 
-    currentId = id;
+    Swal.fire({
+        title: 'Hapus Aspirasi?',
+        text: 'Aspirasi yang dihapus tidak dapat dikembalikan.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: '<i class="fa-solid fa-trash"></i> Ya, Hapus',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
 
-    if (!deleteForm) return;
+        if (result.isConfirmed) {
 
-    deleteForm.action =
-        aspirasiBaseUrl + "/" + id;
+            const form = document.createElement('form');
 
-    openModal(deleteModal);
+            form.method = 'POST';
+            form.action = `/admin/messages/${id}`;
+
+            form.innerHTML = `
+                <input type="hidden" name="_token" content="${document.querySelector('meta[name="csrf-token"]').content}" value="${document.querySelector('meta[name="csrf-token"]').content}">
+                <input type="hidden" name="_method" value="DELETE">
+            `;
+
+            document.body.appendChild(form);
+            form.submit();
+
+        }
+
+    });
 
 }
 
