@@ -21,8 +21,7 @@ class GalleryController extends Controller
             $query->where(function ($q) use ($request) {
 
                 $q->where('title', 'like', '%' . $request->search . '%')
-                  ->orWhere('description', 'like', '%' . $request->search . '%');
-
+                    ->orWhere('description', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -55,7 +54,7 @@ class GalleryController extends Controller
 
     public function create()
     {
-        return view('admin.galeri.index');
+        return view('admin.galeri.create');
     }
 
     public function store(Request $request)
@@ -122,7 +121,7 @@ class GalleryController extends Controller
             ->latest()
             ->paginate(9);
 
-        return view('admin.galeri.galeri', compact(
+        return view('admin.galeri.edit', compact(
             'galleries',
             'gallery'
         ));
@@ -220,4 +219,3 @@ class GalleryController extends Controller
         ]);
     }
 }
-

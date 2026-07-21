@@ -25,55 +25,63 @@
 
 </head>
 
-<body>
+<body
+    data-success="{{ session('success') }}"
+    data-error="{{ session('error') }}"
+    data-validation="{{ $errors->first() }}">
 
-<div class="admin-wrapper">
+    <div class="admin-wrapper">
 
-    @include('admin.partials.sidebar')
+        @include('admin.partials.sidebar')
 
-    <main class="main-content">
+        <main class="main-content">
 
-        @yield('content')
+            @yield('content')
 
-    </main>
+        </main>
 
-</div>
+    </div>
 
-<script src="{{ asset('js/admin/sidebar.js') }}"></script>
+    <!-- sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/admin/sweet-alert.js') }}"></script>
 
-@stack('scripts')
+
+    <script src="{{ asset('js/admin/sidebar.js') }}"></script>
+
+    @stack('scripts')
 
 </body>
 
 </html>
 <style>
-.admin-wrapper{
-    display:flex;
-}
-
-.main-content{
-    margin-left:270px;
-    width:calc(100% - 270px);
-    min-height:100vh;
-    padding:35px;
-    background:#f8f9fc;
-    box-sizing:border-box;
-}
-
-/* Tablet */
-@media(max-width:992px){
-    .main-content{
-        margin-left:220px;
-        width:calc(100% - 220px);
+    .admin-wrapper {
+        display: flex;
     }
-}
 
-/* Mobile */
-@media(max-width:768px){
-    .main-content{
-        margin-left:0;
-        width:100%;
-        padding:20px;
+    .main-content {
+        margin-left: 270px;
+        width: calc(100% - 270px);
+        min-height: 100vh;
+        padding: 35px;
+        background: #f8f9fc;
+        box-sizing: border-box;
     }
-}
+
+    /* Tablet */
+    @media(max-width:992px) {
+        .main-content {
+            margin-left: 220px;
+            width: calc(100% - 220px);
+        }
+    }
+
+    /* Mobile */
+    @media(max-width:768px) {
+        .main-content {
+            margin-left: 0;
+            width: 100%;
+            padding: 20px;
+        }
+    }
 </style>

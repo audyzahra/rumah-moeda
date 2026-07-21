@@ -192,33 +192,79 @@ if (btnEditAddVideo && editVideoContainer) {
 // galery untuk hapus media
 function deleteMedia(id, button)
 {
-    if (!confirm("Hapus media ini?")) {
-        return;
-    }
 
-    fetch(`/admin/gallery/media/${id}`, {
+    Swal.fire({
 
-        method: "DELETE",
+        title: 'Apakah yakin?',
+        text: 'Media yang dihapus tidak dapat dikembalikan!',
+        icon: 'warning',
 
-        headers: {
-            "X-CSRF-TOKEN": document
-                .querySelector('meta[name="csrf-token"]')
-                .content
+        showCancelButton: true,
+
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal',
+
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6'
+
+
+    }).then((result)=>{
+
+
+        if(result.isConfirmed){
+
+
+            fetch(`/admin/gallery/media/${id}`, {
+
+                method: "DELETE",
+
+                headers: {
+
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .content
+
+                }
+
+            })
+
+
+            .then(res => res.json())
+
+
+            .then(data => {
+
+
+                if(data.success){
+
+
+                    button
+                    .closest(".media-item")
+                    .remove();
+
+
+                    Swal.fire({
+
+                        icon:'success',
+                        title:'Berhasil',
+                        text:'Media berhasil dihapus',
+                        timer:1500,
+                        showConfirmButton:false
+
+                    });
+
+
+                }
+
+
+            });
+
+
         }
 
-    })
-    .then(res => res.json())
-    .then(data => {
-
-        if (data.success) {
-
-            button
-                .closest(".media-item")
-                .remove();
-
-        }
 
     });
+
 }
 
 /* ==========================================
@@ -338,78 +384,7 @@ document.addEventListener("keydown", function (e) {
 
 });
 
-/* ==========================================
-   NOTIFICATION
-========================================== */
 
-function showNotification(message, type = "success") {
-
-    const notification = document.getElementById("notification");
-
-    if (!notification) return;
-
-    let icon = "";
-
-    switch (type) {
-
-        case "success":
-            icon = '<i class="fa-solid fa-circle-check"></i>';
-            break;
-
-        case "error":
-            icon = '<i class="fa-solid fa-circle-xmark"></i>';
-            break;
-
-        default:
-            icon = '<i class="fa-solid fa-circle-info"></i>';
-            break;
-
-    }
-
-    notification.innerHTML =
-        `${icon}<span>${message}</span>`;
-
-    notification.className =
-        `notification ${type} show`;
-
-    setTimeout(() => {
-
-        notification.classList.remove("show");
-
-    }, 3000);
-
-}
-
-/* ==========================================
-   FLASH MESSAGE
-========================================== */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const notif =
-        document.getElementById("notification");
-
-    if (!notif) return;
-
-    if (notif.dataset.success) {
-
-        showNotification(
-            notif.dataset.success,
-            "success"
-        );
-
-    }
-
-    if (notif.dataset.error) {
-
-        showNotification(
-            notif.dataset.error,
-            "error"
-        );
-
-    }
-
-});
 
 /* ==========================================
    TAMBAH VIDEO
@@ -522,3 +497,103 @@ function getYoutubeId(url) {
         ? match[2]
         : "";
 }
+
+
+/* ==========================================
+   DELETE GALLERY CONFIRMATION
+========================================== */
+
+document.addEventListener("DOMContentLoaded", function(){
+
+
+    document.querySelectorAll(".btn-delete")
+    .forEach(button => {
+
+
+        button.addEventListener("click", function(e){
+
+
+            e.preventDefault();
+
+
+            let form = this.closest("form");
+
+
+            Swal.fire({
+
+                title:"Apakah yakin?",
+                text:"Data galeri akan dihapus permanen!",
+                icon:"warning",
+
+                showCancelButton:true,
+
+                confirmButtonText:"Ya, hapus!",
+                cancelButtonText:"Batal",
+
+                confirmButtonColor:"#d33",
+                cancelButtonColor:"#3085d6"
+
+
+            }).then((result)=>{
+
+
+                if(result.isConfirmed){
+
+                    form.submit();
+
+                }
+
+
+            });
+
+
+        });
+
+
+    });
+
+
+});
+
+
+// loasing saat simpan
+document.addEventListener("DOMContentLoaded", function(){
+
+
+    const form = document.querySelector(
+        'form[action*="gallery"]'
+    );
+
+
+    if(form){
+
+
+        form.addEventListener("submit", function(){
+
+
+            const button =
+                this.querySelector(".btn-simpan");
+
+
+            if(button){
+
+
+                button.disabled = true;
+
+                button.innerHTML =
+                `
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Menyimpan...
+                `;
+
+
+            }
+
+
+        });
+
+
+    }
+
+
+});
