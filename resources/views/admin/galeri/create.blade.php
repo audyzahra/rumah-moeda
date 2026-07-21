@@ -9,17 +9,21 @@
 <div class="content">
 
     <header class="topbar">
-        <div>
-            <h1>Tambah Galeri</h1>
-            <p>Tambah dokumentasi kegiatan</p>
-        </div>
 
+    <div>
+
+        <h1>Tambah Galeri</h1>
+
+        <p>Tambah dokumentasi kegiatan</p>
 
         <a href="{{ route('admin.gallery.index') }}" class="btn-back">
             <i class="fa-solid fa-arrow-left"></i>
             Kembali
         </a>
-    </header>
+
+    </div>
+
+</header>
 
     <div class="gallery-container">
         <div class="form-card">

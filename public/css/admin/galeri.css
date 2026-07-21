@@ -206,14 +206,27 @@
 }
 
 .gallery-table {
-    width:100%;
-    border-collapse:collapse;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.gallery-table thead th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.gallery-table thead th:last-child {
+    border-top-right-radius: 12px;
+}
+
+.gallery-table th {
+    background: #2563eb;
+    color: #fff;
 }
 
 .gallery-table th {
 
-    background:#f8fafc;
-    color:#475569;
+    background:#2563eb;
+    color:#fff;
     font-size:14px;
     font-weight:700;
     padding:15px;
@@ -248,9 +261,21 @@
 
 /* ACTION */
 .action-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 100%;
+}
 
-    display:flex;
-    gap:8px;
+.action-column form {
+    margin: 0;
+    display: flex;
+}
+
+.gallery-table td:last-child {
+    text-align: center;
+    vertical-align: middle;
 }
 
 .action-btn {
@@ -546,12 +571,13 @@ textarea.form-control {
 .btn-batal {
     padding: 10px 24px;
     background: #2563eb;
-    color: #e5e7eb;
+    color: #fff;
     border: none;
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
+    text-decoration: none !important;
 }
 
 .btn-batal:hover {
