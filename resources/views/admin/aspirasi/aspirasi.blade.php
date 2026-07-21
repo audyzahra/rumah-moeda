@@ -69,37 +69,31 @@
 
     <!-- ================= FILTER ================= -->
 
-<div class="filter-section">
+    <div class="filter-section">
 
-    <div class="filter-left">
+        <div class="filter-left">
 
-        <input
-            type="text"
-            id="searchInput"
-            class="search-input"
-            placeholder="Cari nama atau email...">
+            <input type="text" id="searchInput" class="search-input" placeholder="Cari nama atau email...">
 
-        <select
-            id="filterStatus"
-            class="filter-select">
+            <select id="filterStatus" class="filter-select">
 
-            <option value="">
-                Semua Status
-            </option>
+                <option value="">
+                    Semua Status
+                </option>
 
-            <option value="0">
-                Belum Dibaca
-            </option>
+                <option value="0">
+                    Belum Dibaca
+                </option>
 
-            <option value="1">
-                Sudah Dibaca
-            </option>
+                <option value="1">
+                    Sudah Dibaca
+                </option>
 
-        </select>
+            </select>
+
+        </div>
 
     </div>
-
-</div>
 
     <!-- ================= TABLE ================= -->
     <div class="table-section">
@@ -193,13 +187,9 @@
                                 <div class="action-buttons">
 
                                     {{-- Detail --}}
-                                    <button
-                                        class="btn-detail"
-                                        data-id="{{ $message->id }}"
-                                        data-name="{{ $message->full_name }}"
-                                        data-email="{{ $message->email }}"
-                                        data-phone="{{ $message->phone }}"
-                                        data-message="{{ $message->message }}"
+                                    <button class="btn-detail" data-id="{{ $message->id }}"
+                                        data-name="{{ $message->full_name }}" data-email="{{ $message->email }}"
+                                        data-phone="{{ $message->phone }}" data-message="{{ $message->message }}"
                                         data-status="{{ $message->is_read }}"
                                         data-created="{{ $message->created_at->format('d M Y H:i') }}"
                                         onclick="showDetail(this)">
@@ -314,67 +304,30 @@
 
     </div>
 
-    <!-- ================= MODAL HAPUS ================= -->
-
-    <div id="deleteModal" class="modal">
-
-        <div class="modal-content" style="max-width:420px;">
-
-            <div class="modal-header">
-
-                <h2>Konfirmasi</h2>
-
-                <span class="modal-close" onclick="closeDeleteModal()">
-                    &times;
-                </span>
-
-            </div>
-
-            <div class="modal-body">
-
-                <p>
-                    Yakin ingin menghapus aspirasi ini?
-                </p>
-
-                <div
-                    style="display:flex;
-                       justify-content:flex-end;
-                       gap:10px;
-                       margin-top:25px;">
-
-                    <button class="btn-refresh" onclick="closeDeleteModal()">
-                        Batal
-                    </button>
-
-                    <form id="deleteForm" method="POST">
-
-                        @csrf
-
-                        @method('DELETE')
-
-                        <button type="submit" class="btn-hapus">
-
-                            Hapus
-
-                        </button>
-
-                    </form>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- ================= NOTIFICATION ================= -->
-
-    <div id="notification" class="notification">
-    </div>
-
 @endsection
 
 @push('scripts')
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="{{ asset('js/admin/aspirasi.js') }}"></script>
+
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '{{ session("title") ?? "Berhasil!" }}',
+                    text: '{{ session("success") }}',
+                    confirmButtonColor: '#D4AF37',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+
+            });
+        </script>
+    @endif
+        <script src="{{ asset('js/admin/aspirasi.js') }}"></script>
 @endpush
