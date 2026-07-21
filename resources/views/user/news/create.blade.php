@@ -23,8 +23,6 @@
                 <p>Tambahkan berita baru Rumah Moeda.</p>
             </div>
 
-           
-
         </div>
 
         {{-- FORM --}}
@@ -124,7 +122,7 @@
 
                 <div class="modal-footer">
 
-                    <a href="{{ route('admin.berita.index') }}" class="btn-batal">
+                    <a href="{{ route('admin.news.index') }}" class="btn-batal">
 
                         <i class="fa-solid fa-xmark"></i>
 

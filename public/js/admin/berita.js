@@ -20,13 +20,12 @@ const beritaBaseUrl = isAdmin
 
 const formModal = document.getElementById("formModal");
 const detailModal = document.getElementById("detailModal");
-const deleteModal = document.getElementById("deleteModal");
 
 const beritaForm = document.getElementById("beritaForm");
 
 const preview = document.getElementById("preview");
 
-const deleteForm = document.getElementById("deleteForm");
+
 
 const searchInput = document.getElementById("searchInput");
 
@@ -72,11 +71,6 @@ function closeDetailModal() {
 
 }
 
-function closeDeleteModal() {
-
-    closeModal(deleteModal);
-
-}
 
 
 /* ==========================================
@@ -97,11 +91,7 @@ window.addEventListener("click", function (e) {
 
     }
 
-    if (e.target === deleteModal) {
 
-        closeDeleteModal();
-
-    }
 
 });
 
@@ -118,7 +108,7 @@ document.addEventListener("keydown", function (e) {
 
         closeDetailModal();
 
-        closeDeleteModal();
+
 
     }
 
@@ -336,36 +326,39 @@ function showDetail(news) {
 
 function deleteBerita(id) {
 
-    deleteForm.action = beritaBaseUrl + "/" + id;
+    Swal.fire({
+        title: 'Hapus Berita?',
+        text: 'Berita yang dihapus tidak dapat dikembalikan.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: '<i class="fa-solid fa-trash"></i> Ya, Hapus',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
 
-    openModal(deleteModal);
+        if (result.isConfirmed) {
 
-}
+            const form = document.createElement("form");
 
+            form.method = "POST";
+            form.action = beritaBaseUrl + "/" + id;
 
-/* ==========================================
-   SUBMIT DELETE
-========================================== */
+            form.innerHTML = `
+                <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').content}">
+                <input type="hidden" name="_method" value="DELETE">
+            `;
 
-if (deleteForm) {
-
-    deleteForm.addEventListener("submit", function () {
-
-        const btn =
-            deleteForm.querySelector("button[type='submit']");
-
-        if (btn) {
-
-            btn.disabled = true;
-
-            btn.innerHTML =
-                '<i class="fa-solid fa-spinner fa-spin"></i> Menghapus...';
+            document.body.appendChild(form);
+            form.submit();
 
         }
 
     });
 
 }
+
 /* ==========================================
    SEARCH & FILTER BERITA
 ========================================== */

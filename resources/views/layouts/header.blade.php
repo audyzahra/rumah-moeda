@@ -45,8 +45,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('news.index') }}"
-                        class="{{ request()->routeIs('berita.*') ? 'active' : '' }}">
+                    <a href="{{ route('news.index') }}" class="{{ request()->routeIs('berita.*') ? 'active' : '' }}">
                         Berita
                     </a>
                 </li>
@@ -124,7 +123,7 @@
                         Dashboard
                     </a>
                 @else
-                    <a href="{{ route('user.dashboard') }}" class="btn-login-reg">
+                    <a href="{{ route('user.dashboard') }}" class="btn-login-reg" id="dashboardBtn">
                         Dashboard
                     </a>
                 @endif

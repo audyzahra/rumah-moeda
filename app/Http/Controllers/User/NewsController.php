@@ -79,9 +79,11 @@ class NewsController extends Controller
             'author_id'     => Auth::id(),
         ]);
 
-        return redirect()
-            ->route('user.news.index')
-            ->with('success', 'Berita berhasil ditambahkan.');
+        return redirect()->route('user.news.index')
+        ->with([
+            'title' => 'Berhasil! 🎉',
+            'success' => 'Berita berhasil ditambahkan.'
+        ]);
     }
 
     /**
@@ -152,9 +154,11 @@ class NewsController extends Controller
             'publish_date'  => $request->publish_date,
         ]);
 
-        return redirect()
-            ->route('user.news.index')
-            ->with('success', 'Berita berhasil diperbarui.');
+        return redirect()->route('user.news.index')
+        ->with([
+            'title' => 'Perubahan Disimpan ✨',
+            'success' => 'Berita berhasil diperbarui.'
+        ]);
     }
 
     /**
@@ -174,8 +178,10 @@ class NewsController extends Controller
 
         $news->delete();
 
-        return redirect()
-            ->route('user.news.index')
-            ->with('success', 'Berita berhasil dihapus.');
+        return redirect()->route('user.news.index')
+        ->with([
+            'title' => 'Berhasil Dihapus 🗑️',
+            'success' => 'Berita berhasil dihapus.'
+        ]);
     }
 }

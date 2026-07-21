@@ -20,8 +20,10 @@
     <link rel="stylesheet" href="{{ asset('css/admin/layout.css') }}">
 
     @stack('styles')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>
+
 
 <body>
 
@@ -41,6 +43,24 @@
 <script src="{{ asset('js/admin/sidebar.js') }}"></script>
 
 @stack('scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('success'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'success',
+        title: '{{ session('title') }}',
+        text: '{{ session('success') }}',
+        confirmButtonColor: '#D4AF37',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false
+    });
+});
+</script>
+@endif
 
 </body>
 
