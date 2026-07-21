@@ -85,25 +85,17 @@
             Tim yang berkomitmen membangun Rumah Moeda dengan semangat kolaborasi.
         </p>
 
+<div class="organization-tree">
 
-        @foreach($organizations as $leader)
+    @foreach($organizations->whereNull('parent_id') as $leader)
 
-            <div class="leader-card">
-                <img src="{{ $leader->photo_url }}"
-                    alt="{{ $leader->full_name }}">
+        @include('components.organization-tree', [
+            'member' => $leader
+        ])
 
-                <h3>{{ $leader->full_name }}</h3>
+    @endforeach
 
-                <span>{{ $leader->position }}</span>
-            </div>
-
-            @foreach($leader->childrenRecursive as $member)
-                @include('components.organization-tree', ['member' => $member])
-            @endforeach
-
-        @endforeach
-
-        </div>
+</div>
 
     </section>
 

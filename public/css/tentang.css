@@ -256,122 +256,169 @@
 }
 
 
-/* ===============================
+/* ==========================
    STRUKTUR ORGANISASI
-==================================*/
+========================== */
 
-.struktur-section{
-    margin:90px auto;
-    text-align:center;
-}
-
-.section-title{
-    font-size:2.2rem;
-    margin-bottom:10px;
-}
-
-.section-subtitle{
-    color:#777;
-    margin-bottom:60px;
-}
-
-/* Ketua */
-
-.leader-wrapper{
+.organization-tree{
     display:flex;
     justify-content:center;
-    margin-bottom:60px;
 }
 
-.leader-card{
-    width:320px;
-    background:var(--card-bg);
+.tree-node{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.tree-card{
+    width:240px;
+    padding:24px;
+    background:#fff;
     border-radius:20px;
-    padding:35px 30px;
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
-    transition:.35s;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    position:relative;
+    z-index:2;
+
+    transition: transform .3s ease, box-shadow .3s ease;
+    cursor:pointer;
 }
 
-.leader-card:hover{
-    transform:translateY(-8px);
+.tree-card:hover{
+    transform: scale(1.05);
     box-shadow:0 18px 35px rgba(0,0,0,.15);
 }
 
-.leader-card img{
-    width:140px;
-    height:140px;
+.tree-card img{
+    width:72px;
+    height:72px;
     object-fit:cover;
     border-radius:50%;
-    border:5px solid #cda036;
-
-    display:block;
-    margin:0 auto 20px;
+    border:3px solid #d4a62b;
+    margin-bottom:12px;
 }
 
-.leader-card h3{
-    margin-bottom:8px;
-    color:var(--text-color);
+.tree-card h4{
+    margin:6px 0;
+    font-size:18px;
 }
 
-.leader-card span{
-    display:inline-block;
-    margin-top:10px;
-    padding:8px 18px;
-    background:#cda036;
-    color:#fff;
-    border-radius:30px;
-    font-size:.9rem;
-}
-
-/* Grid Anggota */
-
-.member-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:30px;
-}
-
-/* Card */
-
-.member-card{
-    background:var(--card-bg);
-    padding:30px 20px;
-    border-radius:18px;
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
-    transition:.35s;
-}
-
-.member-card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 18px 35px rgba(0,0,0,.15);
-}
-
-.member-card img{
-    width:100px;
-    height:100px;
-    object-fit:cover;
-    border-radius:50%;
-    border:4px solid #cda036;
-
-    display:block;
-    margin:0 auto 18px;
-}
-
-.member-card h4{
-    margin-bottom:8px;
-    color:var(--text-color);
-}
-
-.member-card p{
+.tree-card span{
+    font-size:14px;
     color:#666;
-    font-size:.95rem;
 }
 
-@media(max-width:768px){
+/* garis turun dari parent */
+.tree-line{
+    width:2px;
+    height:56px;
+    background:#d4a62b;
+}
 
-    .leader-card{
-        width:100%;
-        max-width:320px;
+/* container semua anak */
+.tree-children{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    gap:80px;
+    margin-top:0px;
+    padding-top:28px;
+}
+
+/* garis horizontal */
+.tree-children::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:120px;      /* setengah lebar card */
+    right:120px;     /* setengah lebar card */
+    height:2px;
+    background:#d4a62b;
+}
+
+/* setiap anak */
+.tree-child{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+/* garis vertikal dari garis horizontal ke card */
+.tree-child::before{
+    content:"";
+    position:absolute;
+    top:-28px;
+    left:50%;
+    transform:translateX(-50%);
+    width:2px;
+    height:28px;
+    background:#d4a62b;
+}
+
+/* tidak dipakai lagi */
+.tree-child-line{
+    display:none;
+}
+.organization-wrapper{
+    width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding-bottom:15px;
+
+    /* Smooth scrolling */
+    -webkit-overflow-scrolling:touch;
+
+    /* Firefox */
+    scrollbar-width:thin;
+}
+
+/* Chrome */
+.organization-wrapper::-webkit-scrollbar{
+    height:8px;
+}
+
+.organization-wrapper::-webkit-scrollbar-thumb{
+    background:#d4a62b;
+    border-radius:20px;
+}
+
+.organization-tree{
+    width:max-content;
+    min-width:100%;
+}
+@media (max-width:768px){
+
+    .tree-card{
+        width:180px;
+        padding:18px;
+    }
+
+    .tree-card img{
+        width:60px;
+        height:60px;
+    }
+
+    .tree-card h4{
+        font-size:16px;
+    }
+
+    .tree-card span{
+        font-size:13px;
+    }
+
+    .tree-children{
+        gap:40px;
+    }
+
+    .tree-line{
+        height:40px;
     }
 
 }
