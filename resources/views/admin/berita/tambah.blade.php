@@ -10,7 +10,7 @@
 
     <div class="berita-container">
 <div class="back-wrapper">
-        <a href="{{ route('admin.berita.index') }}" class="btn-back">
+        <a href="{{ route('admin.news.index') }}" class="btn-back">
             <i class="fa-solid fa-arrow-left"></i>
             Kembali
         </a>
@@ -23,14 +23,14 @@
                 <p>Tambahkan berita baru Rumah Moeda.</p>
             </div>
 
-           
+
 
         </div>
 
         {{-- FORM --}}
         <div class="modal-content">
 
-            <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.news.store') }}" method="POST" enctype="multipart/form-data">
 
                 @csrf
 
@@ -124,7 +124,7 @@
 
                 <div class="modal-footer">
 
-                    <a href="{{ route('admin.berita.index') }}" class="btn-batal">
+                    <a href="{{ route('admin.news.index') }}" class="btn-batal">
 
                         <i class="fa-solid fa-xmark"></i>
 

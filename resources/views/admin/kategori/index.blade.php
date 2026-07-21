@@ -21,20 +21,20 @@
 
             </div>
 
-        </div>  
+        </div>
 
 
         {{-- ================= TOOLBAR ================= --}}
         <div class="kategori-toolbar">
 
-            <form action="{{ route('admin.kategori.index') }}" method="GET" class="search-form">
+            <form action="{{ route('admin.categories.index') }}" method="GET" class="search-form">
 
                 <input type="text" name="search" class="search-input" placeholder="Cari kategori..."
                     value="{{ request('search') }}">
 
             </form>
 
-            <a href="{{ route('admin.kategori.create') }}" class="btn-primary">
+            <a href="{{ route('admin.categories.create') }}" class="btn-primary">
 
                 <i class="fa-solid fa-plus"></i>
 
@@ -97,21 +97,21 @@
                                 <div class="action-group">
 
                                     {{-- DETAIL --}}
-                                    <a href="{{ route('admin.kategori.show', $category->id) }}" class="btn-detail">
+                                    <a href="{{ route('admin.categories.show', $category->id) }}" class="btn-detail">
 
                                         <i class="fa-solid fa-eye"></i>
 
                                     </a>
 
                                     {{-- EDIT --}}
-                                    <a href="{{ route('admin.kategori.edit', $category->id) }}" class="btn-edit">
+                                    <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn-edit">
 
                                         <i class="fa-solid fa-pen"></i>
 
                                     </a>
 
                                     {{-- DELETE --}}
-                                    <form action="{{ route('admin.kategori.destroy', $category->id) }}" method="POST"
+                                    <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
                                         onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
 
                                         @csrf

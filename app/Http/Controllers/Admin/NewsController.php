@@ -95,8 +95,8 @@ class NewsController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.berita.index')
-            ->with('success', 'Berita berhasil ditambahkan.');
+        ->route('admin.news.index')
+        ->with('success', 'Data berita berhasil ditambahkan.');
     }
 
     /**
@@ -141,8 +141,8 @@ class NewsController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.berita.index')
-            ->with('success', 'Berita berhasil diperbarui.');
+        ->route('admin.news.index')
+        ->with('success', 'Berita berhasil diperbarui.');
     }
 
     /**

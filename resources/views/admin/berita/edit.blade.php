@@ -11,7 +11,7 @@
 <div class="berita-container">
 
 <div class="back-wrapper">
-        <a href="{{ route('admin.berita.index') }}" class="btn-back">
+        <a href="{{ route('admin.news.index') }}" class="btn-back">
             <i class="fa-solid fa-arrow-left"></i>
             Kembali
         </a>
@@ -31,7 +31,7 @@
     <div class="modal-content">
 
         <form
-            action="{{ route('admin.berita.update', $news->id) }}"
+            action="{{ route('admin.news.update', $news->id) }}"
             method="POST"
             enctype="multipart/form-data">
 
@@ -172,7 +172,7 @@
             <div class="modal-footer">
 
                 <a
-                    href="{{ route('admin.berita.index') }}"
+                    href="{{ route('admin.news.index') }}"
                     class="btn-batal">
 
                     <i class="fa-solid fa-xmark"></i>

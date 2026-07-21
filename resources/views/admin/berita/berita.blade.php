@@ -49,7 +49,7 @@
 
             </div>
 
-            <a href="{{ route('admin.berita.create') }}" class="btn-tambah">
+            <a href="{{ route('admin.news.create') }}" class="btn-tambah">
 
     <i class="fa-solid fa-plus"></i>
 
@@ -160,7 +160,7 @@
 
                             </button>
 
-                            <a href="{{ route('admin.berita.edit', $item->id) }}" class="btn-edit">
+                            <a href="{{ route('admin.news.edit', $item->id) }}" class="btn-edit">
     <i class="fa-solid fa-pen"></i>
 </a>
 
@@ -216,7 +216,7 @@
 
                 </div>
 
-                <form id="beritaForm" action="{{ route('admin.berita.store') }}" method="POST"
+                <form id="beritaForm" action="{{ route('admin.news.store') }}" method="POST"
                     enctype="multipart/form-data">
 
                     @csrf

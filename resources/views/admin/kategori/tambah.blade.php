@@ -21,7 +21,7 @@
 
         </div>
 
-        <a href="{{ route('admin.kategori.index') }}" class="btn-batal">
+        <a href="{{ route('admin.categories.index') }}" class="btn-batal">
 
             <i class="fa-solid fa-arrow-left"></i>
 
@@ -35,7 +35,7 @@
     <div class="form-card">
 
         <form
-            action="{{ route('admin.kategori.store') }}"
+            action="{{ route('admin.categories.store') }}"
             method="POST">
 
             @csrf
@@ -66,7 +66,7 @@
             <div class="form-footer">
 
                 <a
-                    href="{{ route('admin.kategori.index') }}"
+                    href="{{ route('admin.categories.index') }}"
                     class="btn-batal">
 
                     <i class="fa-solid fa-xmark"></i>

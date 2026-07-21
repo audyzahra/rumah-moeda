@@ -208,7 +208,7 @@
 
                                     {{-- Tandai Dibaca --}}
                                     @if (!$message->is_read)
-                                        <form action="{{ route('admin.aspirasi.read', $message) }}" method="POST"
+                                        <form action="{{ route('admin.messages.read', $message) }}" method="POST"
                                             style="display:inline;">
 
                                             @csrf
