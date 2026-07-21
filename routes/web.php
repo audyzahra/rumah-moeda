@@ -37,14 +37,16 @@ use App\Http\Controllers\User\MessageController as UserMessageController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/tentang', [TentangController::class, 'index'])
-    ->name('tentang');
+// About
+Route::get('/about', [TentangController::class, 'index'])
+    ->name('about');
 
-Route::get('/hubungi', [ContactController::class, 'index'])
-    ->name('hubungi');
+// Contact
+Route::get('/contact', [ContactController::class, 'index'])
+    ->name('contact');
 
-Route::post('/hubungi', [ContactController::class, 'store'])
-    ->name('hubungi.store');
+Route::post('/contact', [ContactController::class, 'store'])
+    ->name('contact.store');
 
 /*
 |--------------------------------------------------------------------------
@@ -52,12 +54,12 @@ Route::post('/hubungi', [ContactController::class, 'store'])
 |--------------------------------------------------------------------------
 */
 
-// Berita
-Route::get('/berita', [BeritaController::class, 'index'])
-    ->name('berita.index');
+// News
+Route::get('/news', [BeritaController::class, 'index'])
+    ->name('news.index');
 
-Route::get('/berita/{slug}', [BeritaController::class, 'show'])
-    ->name('berita.show');
+Route::get('/news/{slug}', [BeritaController::class, 'show'])
+    ->name('news.show');
 
 // Gallery
 Route::get('/photos', [GalleryController::class, 'photos'])
@@ -72,9 +74,8 @@ Route::get('/photos/{gallery}', [GalleryController::class, 'photoDetail'])
 Route::get('/videos/{gallery}', [GalleryController::class, 'videoDetail'])
     ->name('gallery.videos.detail');
 
-
 // FAQ
-Route::get('/pertanyaan', [FaqController::class, 'index'])
+Route::get('/faq', [FaqController::class, 'index'])
     ->name('faq.index');
 
 

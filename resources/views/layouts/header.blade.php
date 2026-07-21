@@ -33,19 +33,19 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('tentang') }}" class="{{ request()->routeIs('tentang') ? 'active' : '' }}">
+                    <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">
                         Tentang Kami
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('hubungi') }}" class="{{ request()->routeIs('hubungi') ? 'active' : '' }}">
+                    <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">
                         Hubungi Kami
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('berita.index') }}"
+                    <a href="{{ route('news.index') }}"
                         class="{{ request()->routeIs('berita.*') ? 'active' : '' }}">
                         Berita
                     </a>
