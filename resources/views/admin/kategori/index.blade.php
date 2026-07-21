@@ -29,7 +29,12 @@
 
             <form action="{{ route('admin.categories.index') }}" method="GET" class="search-form">
 
-                <input type="text" name="search" class="search-input" placeholder="Cari kategori..."
+                <input
+                    type="text"
+                    id="searchInput"
+                    name="search"
+                    class="search-input"
+                    placeholder="Cari kategori..."
                     value="{{ request('search') }}">
 
             </form>
@@ -111,19 +116,14 @@
                                     </a>
 
                                     {{-- DELETE --}}
-                                    <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
+                                    <button
+                                        type="button"
+                                        class="btn-delete"
+                                        onclick="deleteKategori({{ $category->id }})">
 
-                                        @csrf
-                                        @method('DELETE')
+                                        <i class="fa-solid fa-trash"></i>
 
-                                        <button type="submit" class="btn-delete">
-
-                                            <i class="fa-solid fa-trash"></i>
-
-                                        </button>
-
-                                    </form>
+                                    </button>
 
                                 </div>
 
@@ -176,3 +176,26 @@
     </div>
 
 @endsection
+
+@push('scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('success'))
+<script>
+window.categorySuccess = {
+    title: @json(session('title') ?? 'Berhasil!'),
+    text: @json(session('success'))
+};
+</script>
+@endif
+
+@if(session('error'))
+<script>
+window.categoryError = @json(session('error'));
+</script>
+@endif
+
+<script src="{{ asset('js/admin/kategori.js') }}"></script>
+
+@endpush

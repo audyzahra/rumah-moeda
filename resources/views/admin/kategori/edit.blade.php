@@ -95,3 +95,35 @@
 </div>
 
 @endsection
+@push('scripts')
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const form = document.querySelector('form');
+
+    if (!form) return;
+
+    form.addEventListener('submit', function () {
+
+        const button = form.querySelector('button[type="submit"]');
+
+        if (button) {
+
+            button.disabled = true;
+
+            button.innerHTML = `
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Menyimpan...
+            `;
+
+        }
+
+    });
+
+});
+
+</script>
+
+@endpush    
