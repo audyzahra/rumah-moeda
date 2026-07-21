@@ -121,156 +121,139 @@
 
         </section>
 
-        <!-- ===== GRID STRUKTUR ===== -->
-        <section class="struktur-grid-section">
+        <!-- ===== TABEL STRUKTUR ===== -->
+        <section class="struktur-table-section">
 
-            <div class="struktur-grid">
+            <div class="table-responsive">
+                <table class="table-struktur">
 
-                @forelse($struktur as $anggota)
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Foto</th>
+                            <th>Nama</th>
+                            <th>Jabatan</th>
+                            <th>Tipe</th>
+                            <th>Deskripsi</th>
+                            <th width="170">Aksi</th>
+                        </tr>
+                    </thead>
 
-                <div class="struktur-card"
-                data-name="{{ strtolower($anggota->full_name) }}"
-                data-position="{{ strtolower($anggota->position) }}">
+                    <tbody>
 
-                    <span class="badge-order">
-                        #{{ $anggota->display_order }}
-                    </span>
+                        @forelse($struktur as $index => $anggota)
 
-                    <div class="foto-wrapper">
+                        <tr>
+                            <td>
+                                {{ $struktur->firstItem() + $index }}
+                            </td>
 
-                        @if($anggota->photo)
+                            <td>
+                                @if($anggota->photo)
+                                    <img
+                                        src="{{ asset('storage/'.$anggota->photo) }}"
+                                        class="table-photo"
+                                        alt="{{ $anggota->full_name }}">
+                                @else
+                                    <div class="table-photo-placeholder">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                @endif
+                            </td>
 
-                            <img
-                                src="{{ asset('storage/' . $anggota->photo) }}"
-                                alt="{{ $anggota->full_name }}"
-                                class="foto">
+                            <td>{{ $anggota->full_name }}</td>
 
-                        @else
+                            <td>{{ $anggota->position }}</td>
 
-                            <div class="foto-placeholder">
-                                <i class="fa-solid fa-user"></i>
-                            </div>
+                            <td>
+                                <span class="badge {{ $anggota->parent_id ? 'badge-child' : 'badge-parent' }}">
+                                    {{ $anggota->parent_id ? 'Child' : 'Parent' }}
+                                </span>
+                            </td>
 
-                        @endif
+                            <td>
+                                {{ Str::limit($anggota->description, 80) ?: '-' }}
+                            </td>
 
-                    </div>
+                            <td>
 
-                    <div class="card-body">
+                                <div class="table-action">
 
-                        <div class="card-name">
-                            {{ $anggota->full_name }}
-                        </div>
+                                    <button
+                                        type="button"
+                                        class="btn-detail"
+                                        onclick="openDetailModal(this)"
+                                        data-photo="{{ $anggota->photo ? asset('storage/'.$anggota->photo) : '' }}"
+                                        data-name="{{ $anggota->full_name }}"
+                                        data-position="{{ $anggota->position }}"
+                                        data-parent="{{ $anggota->parent_id ? 'Child' : 'Parent' }}"
+                                        data-description="{{ $anggota->description }}">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
 
-                        <div class="card-position">
-                            {{ $anggota->position }}
-                        </div>
+                                    <a href="{{ route('admin.organization-structures.edit',$anggota->id) }}"
+                                        class="btn-edit">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
 
-                        <div class="card-periode">
-    <i class="fa-solid fa-sitemap"></i>
+                                    <form
+                                        action="{{ route('admin.organization-structures.destroy',$anggota->id) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Hapus data ini?')">
 
-    <strong>
-        {{ $anggota->parent_id ? 'Child' : 'Parent' }}
-    </strong>
-</div>
+                                        @csrf
+                                        @method('DELETE')
 
-                        <div class="card-deskripsi">
+                                        <button type="submit" class="btn-delete">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
 
-                            {{ $anggota->description
-                                ? Str::limit($anggota->description, 100)
-                                : 'Belum ada deskripsi.' }}
+                                    </form>
 
-                        </div>
+                                </div>
 
-                        <div class="card-actions">
+                            </td>
 
-                         <button
-        type="button"
-        class="btn-detail"
-        onclick="openDetailModal(this)"
-        data-photo="{{ $anggota->photo ? asset('storage/'.$anggota->photo) : '' }}"
-        data-name="{{ $anggota->full_name }}"
-        data-position="{{ $anggota->position }}"
-        data-parent="{{ $anggota->parent_id ? 'Child' : 'Parent' }}"
-        data-description="{{ $anggota->description }}">
+                        </tr>
 
-        <i class="fa-solid fa-eye"></i>
-        Detail
-    </button>
-                            <a href="{{ route('admin.organization-structures.edit', $anggota->id) }}" class="btn-edit">
-                                <i class="fa-solid fa-pen"></i>
-                                Edit
-                            </a>
+                        @empty
 
-                            <form
-                                action="{{ route('admin.organization-structures.destroy', $anggota->id) }}"
-                                method="POST"
-                                onsubmit="return confirm('Hapus data ini?')">
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                Tidak ada data struktur organisasi.
+                            </td>
+                        </tr>
 
-                                @csrf
-                                @method('DELETE')
+                        @endforelse
 
-                                <button type="submit" class="btn-delete">
+                    </tbody>
 
-                                    <i class="fa-solid fa-trash"></i>
-                                    Hapus
-
-                                </button>
-
-                            </form>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                @empty
-
-                <div class="empty-state">
-
-                    <i class="fa-solid fa-users-slash"></i>
-
-                    <h3>Tidak ada data anggota</h3>
-
-                    <p>Belum ada data struktur organisasi yang tersedia.</p>
-
-                </div>
-
-                @endforelse
-
+                </table>
             </div>
 
-            <!-- ===== PAGINATION ===== -->
-            <div class="pagination-section">
+    <div class="pagination-section">
 
-                <div class="info-data">
+        <div class="info-data">
+            Menampilkan
+            {{ $struktur->firstItem() ?? 0 }}
+            -
+            {{ $struktur->lastItem() ?? 0 }}
+            dari
+            {{ $struktur->total() }}
+            anggota
+        </div>
 
-                    Menampilkan
-                    {{ $struktur->firstItem() ?? 0 }}
-                    -
-                    {{ $struktur->lastItem() ?? 0 }}
+        <div class="pagination-controls">
+            {{ $struktur->withQueryString()->links() }}
+        </div>
 
-                    dari
+    </div>
 
-                    {{ $struktur->total() }}
-
-                    anggota
-
-                </div>
-
-                <div class="pagination-controls">
-
-                    {{ $struktur->withQueryString()->links() }}
-
-                </div>
-
-            </div>
-
-        </section>
+</section>
 
        <!-- ===== Modal Detail ===== -->
 
-<div id="detailModal" class="modal">
+<div id="detailModal" class="detail-modal">
 
     <div class="modal-content">
 
