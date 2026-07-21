@@ -71,132 +71,198 @@
 
         </form>
 
-        {{-- ================= GRID ================= --}}
-        <section class="dokumentasi-grid-section">
+        {{-- ================= TABLE ================= --}}
+<section class="table-section">
 
-            <div class="dokumentasi-grid">
+    <div class="table-wrapper">
+
+        <table class="gallery-table">
+
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Thumbnail</th>
+                    <th>Judul</th>
+                    <th>Tanggal Kegiatan</th>
+                    <th>Deskripsi</th>
+                    <th>Jumlah Media</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody>
 
                 @forelse($galleries as $gallery)
+
                     @php
                         $thumbnail = $gallery->media->first();
                     @endphp
 
-                    <div class="dokumentasi-card" data-title="{{ strtolower($gallery->title) }}"
+                    <tr
+                        data-title="{{ strtolower($gallery->title) }}"
                         data-description="{{ strtolower($gallery->description) }}"
-                        data-date="{{ strtolower(\Carbon\Carbon::parse($gallery->activity_date)->format('d M Y')) }}">
+                        data-date="{{ strtolower(\Carbon\Carbon::parse($gallery->activity_date)->format('d M Y')) }}"
+                    >
 
-                        @if ($thumbnail)
-                            @if ($thumbnail->type == 'image')
-                                <img src="{{ asset('storage/' . $thumbnail->file_path) }}" class="foto"
-                                    alt="{{ $gallery->title }}">
+                        <td>
+                            {{ ($galleries->currentPage() - 1) * $galleries->perPage() + $loop->iteration }}
+                        </td>
+
+                        <td>
+
+                            @if($thumbnail)
+
+                                @if($thumbnail->type == 'image')
+
+                                    <img
+                                        src="{{ asset('storage/'.$thumbnail->file_path) }}"
+                                        class="table-thumbnail"
+                                        alt="{{ $gallery->title }}">
+
+                                @else
+
+                                    <img
+                                        src="https://img.youtube.com/vi/{{ $thumbnail->youtube_id }}/hqdefault.jpg"
+                                        class="table-thumbnail"
+                                        alt="{{ $gallery->title }}">
+
+                                @endif
+
                             @else
-                                <img src="https://img.youtube.com/vi/{{ $thumbnail->youtube_id }}/hqdefault.jpg"
-                                    class="foto" alt="{{ $gallery->title }}">
+
+                                <span>-</span>
+
                             @endif
-                        @endif
 
-                        <div class="card-body">
+                        </td>
 
-                            <h3 class="card-title">
+                        <td>
+                            <strong>{{ $gallery->title }}</strong>
+                        </td>
 
-                                {{ $gallery->title }}
+                        <td>
+                            {{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}
+                        </td>
 
-                            </h3>
+                        <td>
+                            {{ Str::limit($gallery->description, 80) }}
+                        </td>
 
-                            <small>
+                        <td>
+                            {{ $gallery->media->count() }} Media
+                        </td>
 
-                                {{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}
+                        <td>
 
-                            </small>
+                            <div class="action-column">
 
-                            <p>
-
-                                {{ Str::limit($gallery->description, 100) }}
-
-                            </p>
-
-                            <div class="card-actions">
-
-                                {{-- DETAIL --}}
-                                <button type="button" class="btn-detail" data-title="{{ $gallery->title }}"
+                                {{-- Detail --}}
+                                <button
+                                    type="button"
+                                    class="action-btn detail"
+                                    data-title="{{ $gallery->title }}"
                                     data-date="{{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}"
                                     data-description="{{ $gallery->description }}"
-                                    data-media='@json($gallery->media)' onclick="showDetail(this)">
+                                    data-media='@json($gallery->media)'
+                                    onclick="showDetail(this)">
 
                                     <i class="fa-solid fa-eye"></i>
 
                                 </button>
 
-                                {{-- EDIT --}}
-                                <a href="{{ route('user.gallery.edit', $gallery->id) }}" class="btn-edit">
+                                {{-- Edit --}}
+                                <a
+                                    href="{{ route('user.gallery.edit', $gallery->id) }}"
+                                    class="action-btn edit">
 
                                     <i class="fa-solid fa-pen"></i>
 
                                 </a>
 
-                                {{-- DELETE --}}
-                                <form action="{{ route('user.gallery.destroy', $gallery->id) }}" method="POST"
+                                {{-- Delete --}}
+                                <form
+                                    action="{{ route('user.gallery.destroy', $gallery->id) }}"
+                                    method="POST"
                                     class="delete-form">
 
                                     @csrf
                                     @method('DELETE')
 
-                                    <button type="submit" class="btn-hapus">
+                                    <button
+                                        type="submit"
+                                        class="action-btn delete">
+
                                         <i class="fa-solid fa-trash"></i>
+
                                     </button>
 
                                 </form>
 
                             </div>
 
-                        </div>
+                        </td>
 
-                    </div>
+                    </tr>
 
                 @empty
 
-                    <div class="empty-state">
+                    <tr>
 
-                        Belum ada dokumentasi.
+                        <td colspan="7" class="empty-table">
+                            Belum ada dokumentasi.
+                        </td>
 
-                    </div>
+                    </tr>
+
                 @endforelse
 
-            </div>
+            </tbody>
 
-            <div class="mt-4">
-
-                {{ $galleries->links() }}
-
-            </div>
-
-        </section>
+        </table>
 
     </div>
+
+    <div class="mt-4">
+        {{ $galleries->links() }}
+    </div>
+
+</section>
     {{-- ================= DETAIL MODAL ================= --}}
-    <div id="detailModal" class="modal" style="display:none;">
+    
+<div id="detailModal" class="modal" style="display:none;">
 
-        <div class="modal-content modal-large">
+    <div class="modal-content modal-large">
 
-            <div class="modal-header">
+        <div class="modal-header">
 
-                <h2>Detail Galeri</h2>
+            <h2>Detail Galeri</h2>
 
-                <button type="button" class="close-modal" onclick="closeDetailModal()">
+            <button
+                type="button"
+                class="close-modal"
+                onclick="closeDetailModal()">
 
-                    &times;
+                &times;
 
-                </button>
+            </button>
+
+        </div>
+
+        <div class="modal-body">
+
+            <div class="detail-image">
+
+                <div id="detail_media"></div>
 
             </div>
 
-            <div class="modal-body">
+            <div class="detail-content">
 
                 <div class="detail-item">
 
                     <label>Judul</label>
 
-                    <p id="detail_title">-</p>
+                    <p id="detail_title"></p>
 
                 </div>
 
@@ -204,7 +270,7 @@
 
                     <label>Tanggal Kegiatan</label>
 
-                    <p id="detail_date">-</p>
+                    <p id="detail_date"></p>
 
                 </div>
 
@@ -212,41 +278,17 @@
 
                     <label>Deskripsi</label>
 
-                    <p id="detail_description">-</p>
+                    <p id="detail_description"></p>
 
                 </div>
-
-                <div class="detail-item">
-
-                    <label>Media</label>
-
-                    <div id="detail_media" class="detail-media">
-
-                        <p class="text-muted">
-
-                            Tidak ada media.
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="modal-footer">
-
-                <button type="button" class="btn-batal" onclick="closeDetailModal()">
-
-                    Tutup
-
-                </button>
 
             </div>
 
         </div>
 
     </div>
+
+</div>
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

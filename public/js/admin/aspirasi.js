@@ -78,12 +78,6 @@ window.addEventListener("click", function (e) {
 
     }
 
-    if (e.target === deleteModal) {
-
-        closeDeleteModal();
-
-    }
-
 });
 
 
@@ -96,8 +90,6 @@ document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") {
 
         closeDetailModal();
-
-        closeDeleteModal();
 
     }
 
@@ -263,28 +255,7 @@ function deleteAspirasi(id) {
 }
 
 
-/* ==========================================
-   SUBMIT DELETE
-========================================== */
 
-if (deleteForm) {
-
-    deleteForm.addEventListener("submit", function () {
-
-        const btn = deleteForm.querySelector("button[type='submit']");
-
-        if (btn) {
-
-            btn.disabled = true;
-
-            btn.innerHTML =
-                '<i class="fa-solid fa-spinner fa-spin"></i> Menghapus...';
-
-        }
-
-    });
-
-}
 
 
 /* ==========================================
@@ -369,9 +340,11 @@ if (filterStatus) {
 }
 
 if (searchInput) {
+    searchInput.addEventListener("keyup", filterData);
+}
 
-    searchInput.addEventListener("input", filterData);
-
+if (filterStatus) {
+    filterStatus.addEventListener("change", filterData);
 }
 
 /* ==========================================
@@ -380,61 +353,34 @@ if (searchInput) {
 
 
 
-    // Ambil keyword pencarian
     function filterData() {
 
-        const keyword = searchInput
-            ? searchInput.value.trim().toLowerCase()
-            : "";
+    const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
+    const status = filterStatus ? filterStatus.value : "";
 
-        const status = filterStatus
-            ? filterStatus.value
-            : "";
+    const rows = document.querySelectorAll("#aspirasiBody tr");
 
-        const rows =
-            document.querySelectorAll("#aspirasiBody tr");
+    rows.forEach(function (row) {
 
-        rows.forEach(function (row) {
+        if (!row.dataset.name) return;
 
-            // Skip baris "Belum ada aspirasi"
-            if (!row.dataset.name) return;
+        const nama = row.dataset.name.toLowerCase();
+        const email = row.dataset.email.toLowerCase();
+        const isRead = row.dataset.status;
 
-            const nama = (row.dataset.name || "").toLowerCase();
-            const email = (row.dataset.email || "").toLowerCase();
-            const isRead = row.dataset.status || "";
+        const cocokKeyword =
+            keyword === "" ||
+            nama.includes(keyword) ||
+            email.includes(keyword);
 
-            let tampil = true;
+        const cocokStatus =
+            status === "" ||
+            isRead === status;
 
-            // ===============================
-            // FILTER NAMA / EMAIL
-            // ===============================
-            if (keyword !== "") {
+        row.style.display = (cocokKeyword && cocokStatus)
+            ? ""
+            : "none";
 
-                const cocokNama = nama.includes(keyword);
-                const cocokEmail = email.includes(keyword);
+    });
 
-                if (!cocokNama && !cocokEmail) {
-                    tampil = false;
-                }
-
-            }
-
-            // ===============================
-            // FILTER STATUS
-            // ===============================
-            if (
-                filterStatus &&
-                status !== "" &&
-                isRead !== status
-            ) {
-
-                tampil = false;
-
-            }
-
-            // Tampilkan / Sembunyikan
-            row.style.display = tampil ? "" : "none";
-
-        });
-
-    }
+}
