@@ -445,37 +445,31 @@ if (btnAddPhoto && photoContainer) {
 }
 
 /* ==========================================
-   LIVE SEARCH
+   LIVE SEARCH TABLE
 ========================================== */
 
 if (searchInput) {
 
     searchInput.addEventListener("input", function () {
 
-        const keyword =
-            this.value.toLowerCase().trim();
+        const keyword = this.value.toLowerCase().trim();
 
-        const cards =
-            document.querySelectorAll(".dokumentasi-card");
+        const rows = document.querySelectorAll(".gallery-table tbody tr");
 
-        cards.forEach(card => {
+        rows.forEach(row => {
 
-            const title =
-                card.dataset.title;
+            // Skip baris "Belum ada dokumentasi"
+            if (row.querySelector(".empty-table")) return;
 
-            const description =
-                card.dataset.description;
+            const text = row.innerText.toLowerCase();
 
-            if (
-                title.includes(keyword) ||
-                description.includes(keyword)
-            ) {
+            if (text.includes(keyword)) {
 
-                card.style.display = "";
+                row.style.display = "";
 
             } else {
 
-                card.style.display = "none";
+                row.style.display = "none";
 
             }
 
