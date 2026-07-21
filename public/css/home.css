@@ -305,164 +305,134 @@ body {
     font-weight: 700;
 }
 
-/* ===================================
+/* ==========================
    STRUKTUR ORGANISASI
-=================================== */
+========================== */
 
-.struktur-section{
-    max-width:1200px;
-    margin:90px auto;
-    padding:0 4%;
+.organization-tree{
+    display:flex;
+    justify-content:center;
 }
 
-.struktur-section .section-title{
-    margin-bottom:10px;
+.tree-node{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
-.struktur-section .section-subtitle{
-    margin-bottom:55px;
-    color:#777;
-}
-
-/* Ketua */
-
-.leader-card{
-
-    width:320px;
-
-    margin:0 auto 60px;
-
+.tree-card{
+    width:240px;
+    padding:24px;
     background:#fff;
-
-    border-radius:28px;
-
-    padding:35px;
-
+    border-radius:20px;
     text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
 
-    box-shadow:0 18px 45px rgba(0,0,0,.08);
-
-    transition:.35s;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    position:relative;
+    z-index:2;
 }
 
-.leader-card:hover{
-
-    transform:translateY(-8px);
-
-}
-
-.leader-card img{
-
-    width:130px;
-    height:130px;
-
-    border-radius:50%;
-
+.tree-card img{
+    width:72px;
+    height:72px;
     object-fit:cover;
-
-    border:5px solid #d4a62b;
-
-    display:block;
-
-    margin:auto;
-
+    border-radius:50%;
+    border:3px solid #d4a62b;
+    margin-bottom:12px;
 }
 
-.leader-card h3{
-
-    margin-top:22px;
-
-    font-size:1.5rem;
-
+.tree-card h4{
+    margin:6px 0;
+    font-size:18px;
 }
 
-.leader-card span{
+.tree-card span{
+    font-size:14px;
+    color:#666;
+}
 
-    display:inline-block;
-
-    margin-top:12px;
-
-    padding:8px 22px;
-
-    border-radius:30px;
-
+/* garis turun dari parent */
+.tree-line{
+    width:2px;
+    height:56px;
     background:#d4a62b;
-
-    color:#fff;
-
-    font-weight:600;
-
 }
 
-/* Grid anggota */
-
-.team-grid{
-
-    display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-
-    gap:30px;
-
+/* container semua anak */
+.tree-children{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    gap:80px;
+    margin-top:0px;
+    padding-top:28px;
 }
 
-.team-card{
-
-    background:#fff;
-
-    border-radius:24px;
-
-    padding:28px;
-
-    text-align:center;
-
-    box-shadow:0 10px 30px rgba(0,0,0,.05);
-
-    transition:.35s;
+/* garis horizontal */
+.tree-children::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:120px;      /* setengah lebar card */
+    right:120px;     /* setengah lebar card */
+    height:2px;
+    background:#d4a62b;
 }
 
-.team-card:hover{
-
-    transform:translateY(-8px);
-
-    box-shadow:0 20px 45px rgba(212,166,43,.18);
-
+/* setiap anak */
+.tree-child{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
-.team-card img{
-
-    width:95px;
-
-    height:95px;
-
-    object-fit:cover;
-
-    border-radius:50%;
-
-    border:4px solid #e7cb7b;
-
-    display:block;
-
-    margin:0 auto 18px;
-
+/* garis vertikal dari garis horizontal ke card */
+.tree-child::before{
+    content:"";
+    position:absolute;
+    top:-28px;
+    left:50%;
+    transform:translateX(-50%);
+    width:2px;
+    height:28px;
+    background:#d4a62b;
 }
 
-.team-card h4{
+/* tidak dipakai lagi */
+.tree-child-line{
+    display:none;
+}
+.organization-wrapper{
+    width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding-bottom:15px;
 
-    font-size:1.08rem;
+    /* Smooth scrolling */
+    -webkit-overflow-scrolling:touch;
 
-    margin-bottom:6px;
-
-    color:#222;
-
+    /* Firefox */
+    scrollbar-width:thin;
 }
 
-.team-card p{
+/* Chrome */
+.organization-wrapper::-webkit-scrollbar{
+    height:8px;
+}
 
-    color:#777;
+.organization-wrapper::-webkit-scrollbar-thumb{
+    background:#d4a62b;
+    border-radius:20px;
+}
 
-    font-size:.92rem;
-
+.organization-tree{
+    width:max-content;
+    min-width:100%;
 }
 
 /* ================= ARTIKEL SECTION ================= */
@@ -1092,6 +1062,35 @@ body {
     .leader-card,
     .team-card{
         padding:22px;
+    }
+
+}
+@media (max-width:768px){
+
+    .tree-card{
+        width:180px;
+        padding:18px;
+    }
+
+    .tree-card img{
+        width:60px;
+        height:60px;
+    }
+
+    .tree-card h4{
+        font-size:16px;
+    }
+
+    .tree-card span{
+        font-size:13px;
+    }
+
+    .tree-children{
+        gap:40px;
+    }
+
+    .tree-line{
+        height:40px;
     }
 
 }

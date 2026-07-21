@@ -1,16 +1,35 @@
-<div class="team-card">
-    <img src="{{ $member->photo_url }}"
-     alt="{{ $member->full_name }}">
+<div class="tree-node">
 
-    <h4>{{ $member->full_name }}</h4>
+    <div class="tree-card">
+        <img src="{{ $member->photo_url }}" alt="{{ $member->full_name }}">
 
-    <p>{{ $member->position }}</p>
-</div>
+        <h4>{{ $member->full_name }}</h4>
 
-@if($member->childrenRecursive->count())
-    <div class="team-grid ms-4">
-        @foreach($member->childrenRecursive as $child)
-            @include('components.organization-tree', ['member' => $child])
-        @endforeach
+        <span>{{ $member->position }}</span>
     </div>
-@endif
+
+    @if($member->childrenRecursive->count())
+
+        <div class="tree-line"></div>
+
+        <div class="tree-children">
+
+            @foreach($member->childrenRecursive as $child)
+
+                <div class="tree-child">
+
+                    <div class="tree-child-line"></div>
+
+                    @include('components.organization-tree', [
+                        'member' => $child
+                    ])
+
+                </div>
+
+            @endforeach
+
+        </div>
+
+    @endif
+
+</div>

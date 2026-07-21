@@ -75,47 +75,21 @@
                 Sinergi para profesional untuk menciptakan dampak sosial yang nyata.
             </p>
 
-            @php
-                $parents = $organizations->whereNull('parent_id');
-            @endphp
+            <div class="organization-wrapper">
 
-            @foreach ($parents as $parent)
-                <div class="leader-wrapper">
-                    <div class="leader-card">
+    <div class="organization-tree">
 
-                        <img src="{{ $parent->photo_url }}" alt="{{ $parent->full_name }}">
+        @foreach($organizations->whereNull('parent_id') as $leader)
 
-                        <h3>{{ $parent->full_name }}</h3>
+            @include('components.organization-tree', [
+                'member' => $leader
+            ])
 
-                        <span>{{ $parent->position }}</span>
+        @endforeach
 
-                    </div>
-                </div>
+    </div>
 
-                @php
-                    $children = $organizations->where('parent_id', $parent->id);
-                @endphp
-
-                @if ($children->count())
-                    <div class="connector-line"></div>
-
-                    <div class="member-grid">
-
-                        @foreach ($children as $item)
-                            <div class="member-card">
-
-                                <img src="{{ $item->photo_url }}" alt="{{ $item->full_name }}">
-
-                                <h4>{{ $item->full_name }}</h4>
-
-                                <p>{{ $item->position }}</p>
-
-                            </div>
-                        @endforeach
-
-                    </div>
-                @endif
-            @endforeach
+</div>
 
         </section>
 
