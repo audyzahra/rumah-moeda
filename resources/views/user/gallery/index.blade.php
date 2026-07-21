@@ -6,11 +6,6 @@
         <link rel="stylesheet" href="{{ asset('css/admin/galeri.css') }}">
     @endpush
 
-    @if (session('success'))
-        <div class="alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
 
     <div class="content">
 
@@ -141,15 +136,13 @@
 
                                 {{-- DELETE --}}
                                 <form action="{{ route('user.gallery.destroy', $gallery->id) }}" method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus galeri ini?')">
+                                    class="delete-form">
 
                                     @csrf
                                     @method('DELETE')
 
                                     <button type="submit" class="btn-hapus">
-
                                         <i class="fa-solid fa-trash"></i>
-
                                     </button>
 
                                 </form>
@@ -254,12 +247,63 @@
         </div>
 
     </div>
+    @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    {{-- ================= NOTIFICATION ================= --}}
-    <div id="notification" class="notification" data-success="{{ session('success') }}"
-        data-error="{{ session('error') }}">
+        <script src="{{ asset('js/admin/galeri.js') }}"></script>
 
-    </div>
+        @if (session('success'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: '{{ session('title') ?? 'Berhasil!' }}',
+                        text: '{{ session('success') }}',
+                        confirmButtonColor: '#D4AF37',
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+
+                });
+            </script>
+        @endif
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+                document.querySelectorAll('.delete-form').forEach(form => {
+
+                    form.addEventListener('submit', function(e) {
+
+                        e.preventDefault();
+
+                        Swal.fire({
+                            title: 'Hapus Galeri?',
+                            text: 'Galeri yang dihapus tidak dapat dikembalikan.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, Hapus',
+                            cancelButtonText: 'Batal',
+                            confirmButtonColor: '#dc3545',
+                            cancelButtonColor: '#6c757d',
+                            reverseButtons: true
+                        }).then((result) => {
+
+                            if (result.isConfirmed) {
+                                form.submit();
+                            }
+
+                        });
+
+                    });
+
+                });
+
+            });
+        </script>
+    @endpush
 
 @endsection
 
