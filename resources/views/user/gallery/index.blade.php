@@ -92,10 +92,10 @@
 
                         @if ($thumbnail)
                             @if ($thumbnail->type == 'image')
-                                <img src="https://img.youtube.com/vi/{{ $thumbnail->youtube_id }}/hqdefault.jpg"
-                                    class="foto" alt="{{ $gallery->title }}">
+                                <img src="{{ asset('storage/' . $thumbnail->file_path) }}" class="foto"
+                                    alt="{{ $gallery->title }}">
                             @else
-                                <img src="https://img.youtube.com/vi/{{ getYoutubeId($thumbnail->video_url) }}/hqdefault.jpg"
+                                <img src="https://img.youtube.com/vi/{{ $thumbnail->youtube_id }}/hqdefault.jpg"
                                     class="foto" alt="{{ $gallery->title }}">
                             @endif
                         @endif
