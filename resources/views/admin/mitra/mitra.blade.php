@@ -24,13 +24,13 @@
         <section class="filter-section">
             <form method="GET" action="{{ route('admin.partners.index') }}" class="filter-form">
 
-                <input 
-                    type="text" 
-                    name="search" 
-                    value="{{ request('search') }}" 
-                    placeholder="Cari mitra..." 
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Cari mitra..."
                     class="search-input">
-                
+
                 <select name="website" class="filter-select">
                     <option value="">Semua</option>
                     <option value="ada" {{ request('website') == 'ada' ? 'selected' : '' }}>Ada Website</option>
@@ -49,12 +49,12 @@
                     </option>
                 </select>
 
-                <button type="submit" 
-                        class="btn-refresh" 
+                <button type="submit"
+                        class="btn-refresh"
                         onclick="location.reload()">
                     <i class="fa-solid fa-rotate-right"></i>
                 </button>
-                
+
             </form>
 
             <div class="filter-right">
@@ -284,7 +284,7 @@
                         </nav>
                     @endif
                 </div>
-            
+
         </section>
     </main>
 </div>
@@ -307,31 +307,6 @@
     </div>
 </div>
 
-<!-- ===== MODAL HAPUS ===== -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Konfirmasi Hapus</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p>Apakah Anda yakin ingin menghapus mitra <strong id="deleteName"></strong>?</p>
-                <p class="text-muted small">Data akan dihapus secara permanen.</p>
-            </div>
-            <div class="modal-footer">
-                <form id="deleteForm" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-danger">
-                        <i class="fa-solid fa-trash"></i> Hapus
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- ===== NOTIFIKASI ===== -->
 <div id="notification" class="notification"></div>
@@ -351,8 +326,7 @@
 
 
     window.mitraRoutes = {
-        update: "{{ url('admin/partners.index') }}",
-        destroy: "{{ url('admin/partners.index') }}"
+        update: "{{ url('admin/partners.index') }}"
     };
 
     window.storageUrl = "{{ asset('storage') }}";
@@ -361,5 +335,38 @@
 @endsection
 
 @push('scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('js/admin/mitra.js') }}"></script>
+@if(session('success'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'success',
+        title: '{{ session("title") ?? "Berhasil!" }}',
+        text: '{{ session("success") }}',
+        confirmButtonColor: '#D4AF37',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false
+    });
+});
+</script>
+@endif
+
+@if(session('error'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: '{{ session("error") }}',
+        confirmButtonColor: '#dc2626'
+    });
+});
+</script>
+@endif
+
 @endpush
+
+<script src="{{ asset('js/admin/mitra.js') }}"></script>

@@ -77,8 +77,12 @@ class PartnerController extends Controller
         // Simpan ke database
         Partner::create($data);
 
-        return redirect()->route('admin.partners.index')
-                         ->with('success', 'Mitra berhasil ditambahkan!');
+        return redirect()
+        ->route('admin.partners.index')
+        ->with([
+            'title' => 'Berhasil! 🎉',
+            'success' => 'Mitra berhasil ditambahkan.'
+        ]);
     }
 
     /**
@@ -121,8 +125,12 @@ class PartnerController extends Controller
         // Update database
         $mitra->update($data);
 
-        return redirect()->route('admin.partners.index')
-                         ->with('success', 'Mitra berhasil diupdate!');
+        return redirect()
+        ->route('admin.partners.index')
+        ->with([
+            'title' => 'Berhasil! 🎉',
+            'success' => 'Mitra berhasil diperbarui.'
+        ]);
     }
 
     /**
@@ -137,7 +145,11 @@ class PartnerController extends Controller
 
         $mitra->delete();
 
-        return redirect()->route('admin.partners.index')
-                         ->with('success', 'Mitra berhasil dihapus!');
+        return redirect()
+        ->route('admin.partners.index')
+        ->with([
+            'title' => 'Berhasil Dihapus 🗑️',
+            'success' => 'Mitra berhasil dihapus.'
+        ]);
     }
 }
