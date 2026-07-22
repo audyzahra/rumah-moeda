@@ -46,7 +46,7 @@ class OrganizationStructureExport implements
                         ? $item->parent->full_name
                         : '-',
 
-                    'Deskripsi' => $item->description,
+                    'Deskripsi' => strip_tags($item->description),
                 ];
             });
     }
