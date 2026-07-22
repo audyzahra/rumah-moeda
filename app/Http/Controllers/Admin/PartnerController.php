@@ -13,37 +13,73 @@ class PartnerController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $query = Partner::query();
+{
+    $query = Partner::query();
 
-        // Search
-        if ($request->search) {
-            $query->where(function($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('description', 'like', '%' . $request->search . '%');
-            });
-        }
+    // ==========================
+    // SEARCH
+    // ==========================
+    if ($request->filled('search')) {
 
-        // Filter Website
-        if ($request->website == 'ada') {
-            $query->whereNotNull('website');
-        } elseif ($request->website == 'tidak') {
-            $query->whereNull('website');
-        }
+        $query->where(function ($q) use ($request) {
 
-        // Sort
-        if ($request->sort == 'nama') {
-            $query->orderBy('name', 'asc');
-        } elseif ($request->sort == 'terbaru') {
-            $query->orderBy('created_at', 'desc');
-        } else {
-            $query->orderBy('display_order', 'asc');
-        }
+            $q->where('name', 'like', '%' . $request->search . '%')
+              ->orWhere('description', 'like', '%' . $request->search . '%');
 
-        $mitra = $query->paginate(8);
+        });
 
-        return view('admin.mitra.mitra', compact('mitra'));
     }
+
+    // ==========================
+    // FILTER WEBSITE
+    // ==========================
+    if ($request->website == 'ada') {
+
+        $query->whereNotNull('website')
+              ->where('website', '!=', '');
+
+    }
+
+    elseif ($request->website == 'tidak') {
+
+        $query->where(function ($q) {
+
+            $q->whereNull('website')
+              ->orWhere('website', '');
+
+        });
+
+    }
+
+    // ==========================
+    // SORTING
+    // ==========================
+    switch ($request->sort) {
+
+        case 'nama_az':
+
+            $query->orderBy('name', 'asc');
+
+            break;
+
+        case 'nama_za':
+
+            $query->orderBy('name', 'desc');
+
+            break;
+
+        default:
+
+            $query->orderBy('display_order', 'asc');
+
+            break;
+
+    }
+
+    $mitra = $query->paginate(8)->withQueryString();
+
+    return view('admin.mitra.mitra', compact('mitra'));
+}
 
     /**
      * Show the form for creating a new resource.

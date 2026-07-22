@@ -66,15 +66,6 @@
 
             </div>
 
-            <a href="{{ route('admin.partners.index') }}"
-               class="btn-secondary">
-
-                <i class="fa-solid fa-arrow-left"></i>
-
-                Kembali
-
-            </a>
-
         </div>
 
         <div class="card-body">
