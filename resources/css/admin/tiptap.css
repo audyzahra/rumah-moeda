@@ -1,0 +1,354 @@
+/* ==========================================
+   TIPTAP EDITOR
+========================================== */
+
+.tiptap-wrapper{
+    width:100%;
+    border:1px solid #dcdfe6;
+    border-radius:14px;
+    overflow:hidden;
+    background:#fff;
+    box-shadow:0 4px 15px rgba(0,0,0,.05);
+}
+
+/* ==========================================
+   TOOLBAR
+========================================== */
+
+.tiptap-toolbar{
+
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+
+    padding:12px 14px;
+
+    background:#111827;
+    border-bottom:1px solid #1f2937;
+
+    position:sticky;
+    top:0;
+    z-index:10;
+
+}
+
+.tiptap-toolbar button{
+
+    width:38px;
+    height:38px;
+
+    border:none;
+    border-radius:10px;
+
+    background:transparent;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:15px;
+
+}
+
+.tiptap-toolbar button:hover{
+
+    background:#374151;
+
+}
+
+.tiptap-toolbar button.is-active{
+
+    background:#2563eb;
+
+}
+
+.tiptap-toolbar button:active{
+
+    transform:scale(.95);
+
+}
+
+.tiptap-toolbar button i{
+
+    pointer-events:none;
+
+}
+
+/* ==========================================
+   H2 H3
+========================================== */
+
+.tiptap-toolbar button[data-action="h2"],
+.tiptap-toolbar button[data-action="h3"]{
+
+    width:48px;
+
+    font-weight:700;
+
+}
+
+/* ==========================================
+   DIVIDER
+========================================== */
+
+.divider{
+
+    width:1px;
+    height:24px;
+
+    background:rgba(255,255,255,.15);
+
+    margin:0 4px;
+
+}
+
+/* ==========================================
+   EDITOR
+========================================== */
+
+.tiptap-editor{
+
+    min-height:420px;
+
+    padding:25px;
+
+    outline:none;
+
+    font-size:16px;
+
+    line-height:1.8;
+
+    color:#374151;
+
+    background:#fff;
+
+}
+
+/* ==========================================
+   PLACEHOLDER
+========================================== */
+
+.tiptap-editor p.is-editor-empty:first-child::before{
+
+    content:attr(data-placeholder);
+
+    color:#9ca3af;
+
+    float:left;
+
+    height:0;
+
+    pointer-events:none;
+
+}
+
+/* ==========================================
+   TYPOGRAPHY
+========================================== */
+
+.tiptap-editor h2{
+
+    font-size:28px;
+
+    margin:25px 0 15px;
+
+    font-weight:700;
+
+}
+
+.tiptap-editor h3{
+
+    font-size:22px;
+
+    margin:20px 0 12px;
+
+    font-weight:700;
+
+}
+
+.tiptap-editor p{
+
+    margin-bottom:14px;
+
+}
+
+.tiptap-editor strong{
+
+    font-weight:700;
+
+}
+
+.tiptap-editor em{
+
+    font-style:italic;
+
+}
+
+.tiptap-editor u{
+
+    text-decoration:underline;
+
+}
+
+/* ==========================================
+   LIST
+========================================== */
+
+.tiptap-editor ul{
+
+    padding-left:28px;
+
+    margin:15px 0;
+
+}
+
+.tiptap-editor ol{
+
+    padding-left:28px;
+
+    margin:15px 0;
+
+}
+
+.tiptap-editor li{
+
+    margin:8px 0;
+
+}
+
+/* ==========================================
+   TASK LIST
+========================================== */
+
+.tiptap-editor ul[data-type="taskList"]{
+
+    list-style:none;
+
+    padding-left:0;
+
+}
+
+.tiptap-editor ul[data-type="taskList"] li{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:10px;
+
+}
+
+.tiptap-editor ul[data-type="taskList"] input{
+
+    margin-top:4px;
+
+}
+
+/* ==========================================
+   BLOCKQUOTE
+========================================== */
+
+.tiptap-editor blockquote{
+
+    border-left:4px solid #2563eb;
+
+    margin:20px 0;
+
+    padding-left:18px;
+
+    color:#6b7280;
+
+    font-style:italic;
+
+}
+
+/* ==========================================
+   LINK
+========================================== */
+
+.tiptap-editor a{
+
+    color:#2563eb;
+
+    text-decoration:none;
+
+}
+
+.tiptap-editor a:hover{
+
+    text-decoration:underline;
+
+}
+
+/* ==========================================
+   IMAGE
+========================================== */
+
+.tiptap-editor img{
+
+    max-width:100%;
+
+    border-radius:12px;
+
+    margin:20px 0;
+
+}
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+.tiptap-editor::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.tiptap-editor::-webkit-scrollbar-thumb{
+
+    background:#d1d5db;
+
+    border-radius:20px;
+
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:768px){
+
+    .tiptap-toolbar{
+
+        gap:5px;
+
+        padding:10px;
+
+    }
+
+    .tiptap-toolbar button{
+
+        width:34px;
+        height:34px;
+        font-size:14px;
+
+    }
+
+    .tiptap-editor{
+
+        min-height:320px;
+
+        padding:18px;
+
+        font-size:15px;
+
+    }
+
+}

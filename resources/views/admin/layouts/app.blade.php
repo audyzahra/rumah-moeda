@@ -14,20 +14,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Font Awesome -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <!-- Sidebar -->
     <link rel="stylesheet" href="{{ asset('css/admin/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin/layout.css') }}">
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 
 </head>
 
-<body
-    data-success="{{ session('success') }}"
-    data-error="{{ session('error') }}"
+<body data-success="{{ session('success') }}" data-error="{{ session('error') }}"
     data-validation="{{ $errors->first() }}">
 
     <div class="admin-wrapper">

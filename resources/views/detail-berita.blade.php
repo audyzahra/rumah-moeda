@@ -53,7 +53,7 @@
 
         <div class="artikel-content">
 
-            {!! nl2br(e($news->content)) !!}
+            {!! $news->content !!}
 
         </div>
 

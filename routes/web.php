@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\HeroSectionController;
 use App\Http\Controllers\Admin\CompanyProfileController;
 use App\Http\Controllers\Admin\VisionMissionController;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Admin\EditorUploadController;
 
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\NewsController as UserNewsController;
@@ -192,6 +193,15 @@ Route::middleware(['auth', 'admin'])
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
 
+        /*
+        |--------------------------------------------------------------------------
+        | Editor Upload (Tiptap)
+        |--------------------------------------------------------------------------
+        */
+
+        Route::post('/upload-image', [EditorUploadController::class, 'store'])
+            ->name('editor.upload');
+            
         /*
         |--------------------------------------------------------------------------
         | Sidebar Notification (AJAX)

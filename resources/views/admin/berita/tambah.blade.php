@@ -9,12 +9,12 @@
 @section('content')
 
     <div class="berita-container">
-<div class="back-wrapper">
-        <a href="{{ route('admin.news.index') }}" class="btn-back">
-            <i class="fa-solid fa-arrow-left"></i>
-            Kembali
-        </a>
-    </div>
+        <div class="back-wrapper">
+            <a href="{{ route('admin.news.index') }}" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i>
+                Kembali
+            </a>
+        </div>
         {{-- HEADER --}}
         <div class="berita-header">
 
@@ -104,7 +104,13 @@
                             <span class="required">*</span>
                         </label>
 
-                        <textarea id="content" name="content" class="form-control" rows="10" placeholder="Masukkan isi berita..."></textarea>
+                        <x-tiptap name="content" :value="old('content')" placeholder="Masukkan isi berita..." />
+
+                        @error('content')
+                            <small class="text-danger">
+                                {{ $message }}
+                            </small>
+                        @enderror
 
                     </div>
 
