@@ -12,49 +12,48 @@ class FaqController extends Controller
     {
         $faqs = Faq::orderBy('display_order')
                     ->orderBy('created_at','desc')
-                    ->get();
+                    ->paginate(3);
 
         return view('admin.faq.faq', compact('faqs'));
     }
 
+    public function create()
+    {
+        return view('admin.faq.create');
+    }
+
+    public function edit(Faq $faq)
+    {
+        return view('admin.faq.edit', compact('faq'));
+    }
+
     public function store(Request $request)
     {
-        $request->validate([
-            'question'=>'required|max:255',
-            'answer'=>'required',
-            'display_order'=>'nullable|integer'
-        ]);
+        // Simpan data...
 
-        Faq::create([
-            'question'=>$request->question,
-            'answer'=>$request->answer,
-            'display_order'=>$request->display_order ?? 0
-        ]);
-
-        return back()->with('success','FAQ berhasil ditambahkan.');
+        return redirect()
+            ->route('admin.faq.index')
+            ->with('success', 'FAQ berhasil ditambahkan.')
+            ->with('title', 'Berhasil!');
     }
 
     public function update(Request $request, Faq $faq)
     {
-        $request->validate([
-            'question'=>'required|max:255',
-            'answer'=>'required',
-            'display_order'=>'nullable|integer'
-        ]);
+        // Update data...
 
-        $faq->update([
-            'question'=>$request->question,
-            'answer'=>$request->answer,
-            'display_order'=>$request->display_order ?? 0
-        ]);
-
-        return back()->with('success','FAQ berhasil diperbarui.');
+        return redirect()
+            ->route('admin.faq.index')
+            ->with('success', 'FAQ berhasil diperbarui.')
+            ->with('title', 'Berhasil!');
     }
 
     public function destroy(Faq $faq)
     {
         $faq->delete();
 
-        return back()->with('success','FAQ berhasil dihapus.');
+        return redirect()
+            ->route('admin.faq.index')
+            ->with('success', 'FAQ berhasil dihapus.')
+            ->with('title', 'Berhasil!');
     }
 }

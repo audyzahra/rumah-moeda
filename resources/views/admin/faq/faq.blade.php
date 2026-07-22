@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title','FAQ')
+@section('title', 'FAQ')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/admin/faq.css') }}">
@@ -8,289 +8,219 @@
 
 @section('content')
 
-@if(session('success'))
-    <div id="notification" class="notification success show">
-        <i class="fa-solid fa-circle-check"></i>
-        <span>{{ session('success') }}</span>
-    </div>
-@endif
+<!-- ================= HEADER ================= -->
 
 <header class="topbar">
+
     <div>
+
         <h1>Manajemen FAQ</h1>
+
         <p>Kelola pertanyaan yang sering diajukan.</p>
+
     </div>
+
 </header>
 
-<div class="filter-section">
+<!-- ================= CONTENT ================= -->
 
-    <button class="btn-tambah"
-            data-bs-toggle="modal"
-            data-bs-target="#tambahModal">
-        <i class="fa-solid fa-plus"></i>
-        Tambah FAQ
-    </button>
+<section class="faq-section">
 
-</div>
+    <div class="settings-card">
 
-<table class="table">
+        <!-- Card Header -->
 
-    <thead>
+        <div class="card-header">
 
-        <tr>
-            <th>Urutan</th>
-            <th>Pertanyaan</th>
-            <th>Jawaban</th>
-            <th width="170">Aksi</th>
-        </tr>
+            <div>
 
-    </thead>
+                <h3>
 
-    <tbody>
+                    <i class="fa-solid fa-circle-question"></i>
 
-    @forelse($faqs as $faq)
+                    Daftar FAQ
 
-        <tr>
+                </h3>
 
-            <td>{{ $faq->display_order }}</td>
+                <p>
 
-            <td>{{ $faq->question }}</td>
+                    Kelola seluruh pertanyaan dan jawaban yang ditampilkan pada website.
 
-            <td>{{ Str::limit($faq->answer,80) }}</td>
+                </p>
 
-            <td>
+            </div>
 
-                <button
-                    class="btn btn-warning btn-sm"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editModal{{ $faq->id }}">
-                    Edit
-                </button>
+            <a href="{{ route('admin.faq.create') }}"
+               class="btn-tambah">
 
-                <form
-                    action="{{ route('admin.faq.destroy',$faq) }}"
-                    method="POST"
-                    style="display:inline">
+                <i class="fa-solid fa-plus"></i>
 
-                    @csrf
-                    @method('DELETE')
+                Tambah FAQ
 
-                    <button
-                        class="btn btn-danger btn-sm"
-                        onclick="return confirm('Hapus FAQ ini?')">
+            </a>
 
-                        Hapus
+        </div>
 
-                    </button>
+        <!-- Card Body -->
 
-                </form>
+        <div class="card-body">
 
-            </td>
+            <div class="table-responsive">
 
-        </tr>
+                <table class="table-admin">
 
-        {{-- ================= EDIT MODAL ================= --}}
+                    <thead>
 
-        <div class="modal fade" id="editModal{{ $faq->id }}">
+                        <tr>
 
-            <div class="modal-dialog modal-lg">
+                            <th width="90">Urutan</th>
 
-                <div class="modal-content">
+                            <th>Pertanyaan</th>
 
-                    <form
-                        action="{{ route('admin.faq.update',$faq) }}"
-                        method="POST">
+                            <th>Jawaban</th>
 
-                        @csrf
-                        @method('PUT')
+                            <th width="190">Aksi</th>
 
-                        <div class="modal-header">
+                        </tr>
 
-                            <h5>Edit FAQ</h5>
+                    </thead>
 
-                            <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal">
-                            </button>
-                        </div>
+                    <tbody>
 
-                        <div class="modal-body">
+                    @forelse($faqs as $faq)
 
-                            <div class="mb-3">
+                        <tr>
 
-                                <label>Pertanyaan</label>
+                            <td>
 
-                                <input
-                                    type="text"
-                                    name="question"
-                                    class="form-control"
-                                    value="{{ $faq->question }}"
-                                    required>
+                                {{ $faq->display_order }}
 
-                            </div>
+                            </td>
 
-                            <div class="mb-3">
+                            <td>
 
-                                <label>Jawaban</label>
+                                <strong>{{ $faq->question }}</strong>
 
-                                <textarea
-                                    name="answer"
-                                    class="form-control"
-                                    rows="5"
-                                    required>{{ $faq->answer }}</textarea>
+                            </td>
 
-                            </div>
+                            <td>
 
-                            <div class="mb-3">
+                                {{ Str::limit($faq->answer, 80) }}
 
-                                <label>Urutan</label>
+                            </td>
 
-                                <input
-                                    type="number"
-                                    name="display_order"
-                                    class="form-control"
-                                    value="{{ $faq->display_order }}">
+                            <td>
 
-                            </div>
+                                <div class="action-buttons">
 
-                        </div>
+                                    <a href="{{ route('admin.faq.edit', $faq) }}"
+                                       class="btn-edit">
 
-                        <div class="modal-footer">
+                                        <i class="fa-solid fa-pen"></i>
 
-                            <button
-                                class="btn btn-secondary"
-                                data-bs-dismiss="modal">
+                                        Edit
 
-                                Batal
+                                    </a>
 
-                            </button>
+                                    <form action="{{ route('admin.faq.destroy', $faq) }}"
+                                        method="POST"
+                                        class="delete-form">
 
-                            <button class="btn btn-primary">
+                                        @csrf
+                                        @method('DELETE')
 
-                                Simpan
+                                        <button
+                                            type="submit"
+                                            class="btn-delete">
 
-                            </button>
+                                            <i class="fa-solid fa-trash"></i>
 
-                        </div>
+                                            Hapus
 
-                    </form>
+                                        </button>
 
-                </div>
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+
+                            <td colspan="4" class="text-center">
+
+                                Belum ada data FAQ.
+
+                            </td>
+
+                        </tr>
+
+                    @endforelse
+
+                    </tbody>
+
+                </table>
 
             </div>
 
         </div>
+        <!-- ================= PAGINATION ================= -->
 
-    @empty
+            @if ($faqs->hasPages())
 
-        <tr>
+                <div class="pagination-wrapper">
 
-            <td colspan="5" align="center">
-                Belum ada data FAQ.
-            </td>
-
-        </tr>
-
-    @endforelse
-
-    </tbody>
-
-</table>
-
-{{-- ================= TAMBAH MODAL ================= --}}
-
-<div class="modal fade" id="tambahModal">
-
-    <div class="modal-dialog modal-lg">
-
-        <div class="modal-content">
-
-            <form
-                action="{{ route('admin.faq.store') }}"
-                method="POST">
-
-                @csrf
-
-                <div class="modal-header">
-
-                    <h5>Tambah FAQ</h5>
-
-                    <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="modal">
-</button>
+                    {{ $faqs->links() }}
 
                 </div>
 
-                <div class="modal-body">
-
-                    <div class="mb-3">
-
-                        <label>Pertanyaan</label>
-
-                        <input
-                            type="text"
-                            name="question"
-                            class="form-control"
-                            required>
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label>Jawaban</label>
-
-                        <textarea
-                            name="answer"
-                            class="form-control"
-                            rows="5"
-                            required></textarea>
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label>Urutan</label>
-
-                        <input
-                            type="number"
-                            name="display_order"
-                            class="form-control"
-                            value="0">
-
-                    </div>
-
-                </div>
-
-                <div class="modal-footer">
-
-                    <button
-    type="button"
-    class="btn btn-secondary"
-    data-bs-dismiss="modal">
-    Batal
-</button>
-
-                    <button class="btn btn-success">
-
-                        Simpan
-
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
+            @endif
 
     </div>
 
-</div>
+</section>
 
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/admin/faq.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="{{ asset('js/admin/faq.js') }}"></script>
+
+    @if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '{{ session('title') ?? 'Berhasil!' }}',
+                    text: '{{ session('success') }}',
+                    confirmButtonColor: '#D4AF37',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: '{{ session('error') }}',
+                    confirmButtonColor: '#dc3545'
+                });
+
+            });
+        </script>
+    @endif
 @endpush

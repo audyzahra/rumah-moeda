@@ -12,8 +12,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/auth/register.css') }}">
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
@@ -25,9 +24,9 @@
 
             <div class="left">
 
-             <a href="{{ url('/') }}" class="btn-back">
-    <i class="fa-solid fa-arrow-left"></i>
-</a>
+                <a href="{{ url('/') }}" class="btn-back">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
 
                 <div class="logo">
                     <img src="{{ asset('assets/logorumahmoeda.png') }}" alt="Logo Rumah Moeda">
@@ -74,14 +73,8 @@
 
                         <i class="fa-solid fa-user"></i>
 
-                        <input
-                            type="text"
-                            id="username"
-                            name="name"
-                            placeholder="Username"
-                            value="{{ old('name') }}"
-                            required
-                            autofocus>
+                        <input type="text" id="username" name="name" placeholder="Username"
+                            value="{{ old('name') }}" required autofocus>
 
                     </div>
 
@@ -90,13 +83,8 @@
 
                         <i class="fa-solid fa-envelope"></i>
 
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="Email"
-                            value="{{ old('email') }}"
-                            required>
+                        <input type="email" id="email" name="email" placeholder="Email"
+                            value="{{ old('email') }}" required>
 
                     </div>
 
@@ -105,16 +93,45 @@
 
                         <i class="fa-solid fa-lock"></i>
 
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Password"
-                            required>
+                        <input type="password" id="password" name="password" placeholder="Password" required>
 
                         <span onclick="togglePassword('password','eye1')">
                             <i class="fa-solid fa-eye" id="eye1"></i>
                         </span>
+
+                    </div>
+                    <div class="password-rules">
+
+                        <p>Password harus memenuhi:</p>
+
+                        <ul>
+
+                            <li id="rule-length">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                Minimal 8 karakter
+                            </li>
+
+                            <li id="rule-upper">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                Huruf besar
+                            </li>
+
+                            <li id="rule-lower">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                Huruf kecil
+                            </li>
+
+                            <li id="rule-number">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                Angka
+                            </li>
+
+                            <li id="rule-symbol">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                Simbol
+                            </li>
+
+                        </ul>
 
                     </div>
 
@@ -123,12 +140,8 @@
 
                         <i class="fa-solid fa-lock"></i>
 
-                        <input
-                            type="password"
-                            id="password_confirmation"
-                            name="password_confirmation"
-                            placeholder="Konfirmasi Password"
-                            required>
+                        <input type="password" id="password_confirmation" name="password_confirmation"
+                            placeholder="Konfirmasi Password" required>
 
                         <span onclick="togglePassword('password_confirmation','eye2')">
                             <i class="fa-solid fa-eye" id="eye2"></i>
@@ -162,6 +175,64 @@
 
     <script src="{{ asset('js/script.js') }}"></script>
 
+    <script>
+        const password = document.getElementById('password');
+
+        password.addEventListener('keyup', function() {
+
+            const value = this.value;
+
+            validateRule(
+                "rule-length",
+                value.length >= 8
+            );
+
+            validateRule(
+                "rule-upper",
+                /[A-Z]/.test(value)
+            );
+
+            validateRule(
+                "rule-lower",
+                /[a-z]/.test(value)
+            );
+
+            validateRule(
+                "rule-number",
+                /\d/.test(value)
+            );
+
+            validateRule(
+                "rule-symbol",
+                /[^A-Za-z0-9]/.test(value)
+            );
+
+        });
+
+        function validateRule(id, valid) {
+
+            const item = document.getElementById(id);
+
+            const icon = item.querySelector("i");
+
+            if (valid) {
+
+                item.classList.remove("invalid");
+                item.classList.add("valid");
+
+                icon.className = "fa-solid fa-circle-check";
+
+            } else {
+
+                item.classList.remove("valid");
+                item.classList.add("invalid");
+
+                icon.className = "fa-solid fa-circle-xmark";
+
+            }
+
+        }
+    </script>
 </body>
 
 </html>
