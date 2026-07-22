@@ -162,113 +162,126 @@
    Pagination
 ========================== */
 
-.pagination-wrapper {
-
+.pagination-wrapper{
     display: flex;
-
-    justify-content: flex-end;
-
+    justify-content: space-between;
     align-items: center;
-
-    padding-top: 10px;
-
-    margin-bottom: 10px;
-
-    margin-right: 10px;
-
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 15px;
     border-top: 1px solid #eef2f7;
-
+    gap: 20px;
 }
 
-.pagination {
+/* Tulisan Showing */
+.pagination-summary{
+    font-size: 15px;
+    color: #64748b;
+    white-space: nowrap;
+    flex: 1;
+}
 
+/* Pagination di kanan */
+.pagination{
     display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex-shrink: 0;
+}
 
+.pagination .page-item{
+    list-style: none;
+}
+
+.pagination .page-link{
+    display: flex;
+    justify-content: center;
     align-items: center;
 
-    gap: 8px;
-
-    margin: 0;
+    width: 56px;
+    height: 56px;
 
     padding: 0;
 
-    list-style: none;
-
-    flex-wrap: wrap;
-
-}
-
-.pagination .page-item {
-
-    list-style: none;
-
-}
-
-.pagination .page-link {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    min-width: 38px;
-
-    height: 38px;
-
-    padding: 0 14px;
-
     border: 1px solid #dbe4ee;
-
-    border-radius: 10px;
+    border-radius: 14px;
 
     background: #fff;
+    color: #334155;
 
-    color: #475569;
-
+    font-size: 22px;
+    font-weight: 500;
     text-decoration: none;
 
-    font-size: 14px;
-
-    font-weight: 500;
-
-    transition: all .25s ease;
-
+    transition: .25s ease;
 }
 
-.pagination .page-link:hover {
-
+.pagination .page-link:hover{
     background: #eff6ff;
-
+    border-color: #2563eb;
     color: #2563eb;
-
-    border-color: #2563eb;
-
     transform: translateY(-2px);
-
 }
 
-.pagination .page-item.active .page-link {
-
+.pagination .page-item.active .page-link{
     background: #2563eb;
-
-    border-color: #2563eb;
-
     color: #fff;
+    border-color: #2563eb;
+    box-shadow: 0 8px 18px rgba(37,99,235,.25);
+}
 
-    box-shadow: 0 4px 12px rgba(37, 99, 235, .25);
+.pagination .page-item.disabled .page-link{
+    background: #f8fafc;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* ==========================
+   Responsive
+========================== */
+
+@media (max-width:768px){
+
+    .pagination-wrapper{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pagination{
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .pagination .page-link{
+        width: 48px;
+        height: 48px;
+        font-size: 18px;
+    }
 
 }
 
-.pagination .page-item.disabled .page-link {
+@media (max-width:480px){
 
-    background: #f8fafc;
+    .pagination-summary{
+        text-align: center;
+        width: 100%;
+    }
 
-    color: #94a3b8;
+    .pagination{
+        justify-content: center;
+    }
 
-    border-color: #e2e8f0;
-
-    cursor: not-allowed;
+    .pagination .page-link{
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+        border-radius: 12px;
+    }
 
 }
 
