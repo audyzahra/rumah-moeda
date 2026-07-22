@@ -3,7 +3,7 @@
 @section('title', 'Visi & Misi')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/admin/visi-misi.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/visi-misi.css') }}">
 @endpush
 
 @section('content')
@@ -39,17 +39,21 @@
                         <span class="required">*</span>
                     </label>
 
-                    <textarea
-                        id="visiText"
+                    <x-tiptap
                         name="vision"
-                        class="form-control"
-                        rows="4"
+                        :value="old('vision', $vision->vision ?? '')"
                         placeholder="Masukkan visi perusahaan..."
-                        required>{{ old('vision', $vision->vision ?? '') }}</textarea>
+                        :image="false" />
 
                     <small class="form-help">
                         Tuliskan visi perusahaan secara jelas dan inspiratif.
                     </small>
+
+                    @error('vision')
+                    <small class="text-danger">
+                        {{ $message }}
+                    </small>
+                    @enderror
 
                 </div>
 
@@ -89,47 +93,47 @@
 
                         @forelse($missions as $mission)
 
-                            <div class="misi-item">
+                        <div class="misi-item">
 
-                                <textarea
-                                    class="form-control misi-text"
-                                    name="missions[]"
-                                    rows="3"
-                                    placeholder="Masukkan misi perusahaan..."
-                                    required>{{ old('missions.' . $loop->index, $mission->mission) }}</textarea>
+                            <textarea
+                                class="form-control misi-text"
+                                name="missions[]"
+                                rows="3"
+                                placeholder="Masukkan misi perusahaan..."
+                                required>{{ old('missions.' . $loop->index, $mission->mission) }}</textarea>
 
-                                <button
-                                    type="button"
-                                    class="btn-remove-misi"
-                                    onclick="removeMisi(this)">
+                            <button
+                                type="button"
+                                class="btn-remove-misi"
+                                onclick="removeMisi(this)">
 
-                                    <i class="fa-solid fa-trash"></i>
+                                <i class="fa-solid fa-trash"></i>
 
-                                </button>
+                            </button>
 
-                            </div>
+                        </div>
 
                         @empty
 
-                            <div class="misi-item">
+                        <div class="misi-item">
 
-                                <textarea
-                                    class="form-control misi-text"
-                                    name="missions[]"
-                                    rows="3"
-                                    placeholder="Masukkan misi perusahaan..."
-                                    required></textarea>
+                            <textarea
+                                class="form-control misi-text"
+                                name="missions[]"
+                                rows="3"
+                                placeholder="Masukkan misi perusahaan..."
+                                required></textarea>
 
-                                <button
-                                    type="button"
-                                    class="btn-remove-misi"
-                                    onclick="removeMisi(this)">
+                            <button
+                                type="button"
+                                class="btn-remove-misi"
+                                onclick="removeMisi(this)">
 
-                                    <i class="fa-solid fa-trash"></i>
+                                <i class="fa-solid fa-trash"></i>
 
-                                </button>
+                            </button>
 
-                            </div>
+                        </div>
 
                         @endforelse
 
@@ -160,5 +164,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/admin/visi-misi.js') }}"></script>
+<script src="{{ asset('js/admin/visi-misi.js') }}"></script>
 @endpush

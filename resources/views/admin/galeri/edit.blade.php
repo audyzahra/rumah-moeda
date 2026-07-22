@@ -10,20 +10,20 @@
 
     <header class="topbar">
 
-    <div>
+        <div>
 
-        <h1>Edit Galeri</h1>
+            <h1>Edit Galeri</h1>
 
-        <p>Ubah dokumentasi kegiatan</p>
+            <p>Ubah dokumentasi kegiatan</p>
 
-        <a href="{{ route('admin.gallery.index') }}" class="btn-back">
-            <i class="fa-solid fa-arrow-left"></i>
-            Kembali
-        </a>
+            <a href="{{ route('admin.gallery.index') }}" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i>
+                Kembali
+            </a>
 
-    </div>
+        </div>
 
-</header>
+    </header>
 
     <div class="gallery-container">
 
@@ -58,11 +58,24 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Deskripsi</label>
-                    <textarea
+
+                    <label>
+                        Deskripsi
+                        <span class="required">*</span>
+                    </label>
+
+                    <x-tiptap
                         name="description"
-                        class="form-control"
-                        rows="4">{{ old('description', $gallery->description) }}</textarea>
+                        :value="old('description', $gallery->description)"
+                        placeholder="Masukkan deskripsi kegiatan..."
+                        :image="false" />
+
+                    @error('description')
+                    <small class="text-danger">
+                        {{ $message }}
+                    </small>
+                    @enderror
+
                 </div>
 
                 {{-- Media yang sudah ada --}}

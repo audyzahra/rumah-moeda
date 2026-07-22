@@ -3,186 +3,177 @@
 @section('title', 'FAQ')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/admin/faq.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/faq.css') }}">
 @endpush
 
 @section('content')
 
-<!-- ================= HEADER ================= -->
+    <!-- ================= HEADER ================= -->
 
-<header class="topbar">
+    <header class="topbar">
 
-    <div>
+        <div>
 
-        <h1>Manajemen FAQ</h1>
+            <h1>Manajemen FAQ</h1>
 
-        <p>Kelola pertanyaan yang sering diajukan.</p>
-
-    </div>
-
-</header>
-
-<!-- ================= CONTENT ================= -->
-
-<section class="faq-section">
-
-    <div class="settings-card">
-
-        <!-- Card Header -->
-
-        <div class="card-header">
-
-            <div>
-
-                <h3>
-
-                    <i class="fa-solid fa-circle-question"></i>
-
-                    Daftar FAQ
-
-                </h3>
-
-                <p>
-
-                    Kelola seluruh pertanyaan dan jawaban yang ditampilkan pada website.
-
-                </p>
-
-            </div>
-
-            <a href="{{ route('admin.faq.create') }}"
-               class="btn-tambah">
-
-                <i class="fa-solid fa-plus"></i>
-
-                Tambah FAQ
-
-            </a>
+            <p>Kelola pertanyaan yang sering diajukan.</p>
 
         </div>
 
-        <!-- Card Body -->
+    </header>
 
-        <div class="card-body">
+    <!-- ================= CONTENT ================= -->
 
-            <div class="table-responsive">
+    <section class="faq-section">
 
-                <table class="table-admin">
+        <div class="settings-card">
 
-                    <thead>
+            <!-- Card Header -->
 
-                        <tr>
+            <div class="card-header">
 
-                            <th width="90">Urutan</th>
+                <div>
 
-                            <th>Pertanyaan</th>
+                    <h3>
 
-                            <th>Jawaban</th>
+                        <i class="fa-solid fa-circle-question"></i>
 
-                            <th width="190">Aksi</th>
+                        Daftar FAQ
 
-                        </tr>
+                    </h3>
 
-                    </thead>
+                    <p>
 
-                    <tbody>
+                        Kelola seluruh pertanyaan dan jawaban yang ditampilkan pada website.
 
-                    @forelse($faqs as $faq)
+                    </p>
 
-                        <tr>
+                </div>
 
-                            <td>
+                <a href="{{ route('admin.faq.create') }}" class="btn-tambah">
 
-                                {{ $faq->display_order }}
+                    <i class="fa-solid fa-plus"></i>
 
-                            </td>
+                    Tambah FAQ
 
-                            <td>
-
-                                <strong>{{ $faq->question }}</strong>
-
-                            </td>
-
-                            <td>
-
-                                {{ Str::limit($faq->answer, 80) }}
-
-                            </td>
-
-                            <td>
-
-                                <div class="action-buttons">
-
-                                    <a href="{{ route('admin.faq.edit', $faq) }}"
-                                       class="btn-edit">
-
-                                        <i class="fa-solid fa-pen"></i>
-
-                                        Edit
-
-                                    </a>
-
-                                    <form action="{{ route('admin.faq.destroy', $faq) }}"
-                                        method="POST"
-                                        class="delete-form">
-
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button
-                                            type="submit"
-                                            class="btn-delete">
-
-                                            <i class="fa-solid fa-trash"></i>
-
-                                            Hapus
-
-                                        </button>
-
-                                    </form>
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-                    @empty
-
-                        <tr>
-
-                            <td colspan="4" class="text-center">
-
-                                Belum ada data FAQ.
-
-                            </td>
-
-                        </tr>
-
-                    @endforelse
-
-                    </tbody>
-
-                </table>
+                </a>
 
             </div>
 
-        </div>
-        <!-- ================= PAGINATION ================= -->
+            <!-- Card Body -->
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table-admin">
+
+                        <thead>
+
+                            <tr>
+
+                                <th width="90">Urutan</th>
+
+                                <th>Pertanyaan</th>
+
+                                <th>Jawaban</th>
+
+                                <th width="190">Aksi</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @forelse($faqs as $faq)
+                                <tr>
+
+                                    <td>
+
+                                        {{ $faq->display_order }}
+
+                                    </td>
+
+                                    <td>
+
+                                        <strong>{{ $faq->question }}</strong>
+
+                                    </td>
+
+                                    <td>
+
+                                        {{ Str::limit(strip_tags(html_entity_decode($faq->answer)), 80) }}
+
+                                    </td>
+
+                                    <td>
+
+                                        <div class="action-buttons">
+
+                                            <a href="{{ route('admin.faq.edit', $faq) }}" class="btn-edit">
+
+                                                <i class="fa-solid fa-pen"></i>
+
+                                                Edit
+
+                                            </a>
+
+                                            <form action="{{ route('admin.faq.destroy', $faq) }}" method="POST"
+                                                class="delete-form">
+
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit" class="btn-delete">
+
+                                                    <i class="fa-solid fa-trash"></i>
+
+                                                    Hapus
+
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            @empty
+
+                                <tr>
+
+                                    <td colspan="4" class="text-center">
+
+                                        Belum ada data FAQ.
+
+                                    </td>
+
+                                </tr>
+                            @endforelse
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+            <!-- ================= PAGINATION ================= -->
 
             @if ($faqs->hasPages())
-
                 <div class="pagination-wrapper">
 
                     {{ $faqs->links() }}
 
                 </div>
-
             @endif
 
-    </div>
+        </div>
 
-</section>
+    </section>
 
 @endsection
 
@@ -193,7 +184,7 @@
 
     @if (session('success'))
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
 
                 Swal.fire({
                     icon: 'success',
@@ -211,7 +202,7 @@
 
     @if (session('error'))
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
 
                 Swal.fire({
                     icon: 'error',

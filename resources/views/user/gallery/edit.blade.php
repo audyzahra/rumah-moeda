@@ -99,8 +99,8 @@
 
                     </label>
 
-                    <textarea name="description" rows="6" class="form-control @error('description') is-invalid @enderror"
-                        placeholder="Masukkan deskripsi kegiatan...">{{ old('description', $gallery->description) }}</textarea>
+                    <x-tiptap name="description" :value="old('description', $gallery->description)" placeholder="Masukkan deskripsi kegiatan..."
+                        :image="false" />
 
                     @error('description')
                         <small class="text-danger">

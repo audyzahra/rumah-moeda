@@ -1,7 +1,8 @@
 @props([
     'name' => 'content',
     'value' => '',
-    'placeholder' => 'Tulis isi berita di sini...'
+    'placeholder' => 'Tulis isi di sini...',
+    'image' => true,
 ])
 
 <div
@@ -58,14 +59,15 @@
             <i class="fa-solid fa-link"></i>
         </button>
 
-        {{-- Upload Image --}}
-        <button
-            type="button"
-            data-action="image"
-            title="Upload Image"
-        >
-            <i class="fa-solid fa-image"></i>
-        </button>
+        @if($image)
+            <button
+                type="button"
+                data-action="image"
+                title="Upload Image"
+            >
+                <i class="fa-solid fa-image"></i>
+            </button>
+        @endif
 
         <div class="divider"></div>
 
@@ -93,12 +95,14 @@
         class="tiptap-content"
     >
 
-    {{-- Hidden Upload --}}
-    <input
-        type="file"
-        class="tiptap-image-input"
-        accept="image/png,image/jpeg,image/jpg,image/webp"
-        hidden
-    >
+    @if($image)
+        {{-- Hidden Upload --}}
+        <input
+            type="file"
+            class="tiptap-image-input"
+            accept="image/png,image/jpeg,image/jpg,image/webp"
+            hidden
+        >
+    @endif
 
 </div>

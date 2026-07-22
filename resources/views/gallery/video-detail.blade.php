@@ -33,11 +33,9 @@
                 @endif
 
                 @if ($gallery->description)
-                    <p class="deskripsi">
-
-                        {{ $gallery->description }}
-
-                    </p>
+                    <div class="deskripsi">
+                        {!! $gallery->description !!}
+                    </div>
                 @endif
 
             </div>

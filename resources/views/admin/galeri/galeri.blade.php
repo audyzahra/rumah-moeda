@@ -80,9 +80,6 @@
 
     </form>
 
-    <!-- Grid Gallery -->
-    <!-- Table Gallery -->
-
     <section class="table-section">
 
         <div class="table-wrapper">
@@ -166,7 +163,7 @@
 
 
                         <td>
-                            {{ Str::limit($gallery->description,80) }}
+                            {{ Str::limit(strip_tags($gallery->description,80)) }}
                         </td>
 
 

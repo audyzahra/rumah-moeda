@@ -52,7 +52,7 @@
 
                 <p>
 
-                    {{ \Illuminate\Support\Str::limit($item->description,100) }}
+                    {{ Str::limit(strip_tags($item->description), 100) }}       
 
                 </p>
 
