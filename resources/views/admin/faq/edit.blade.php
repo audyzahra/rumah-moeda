@@ -3,204 +3,190 @@
 @section('title', 'Edit FAQ')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/admin/faq.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/faq.css') }}">
 @endpush
 
 @section('content')
 
-<!-- ================= HEADER ================= -->
+    <!-- ================= HEADER ================= -->
 
-<header class="topbar">
+    <header class="topbar">
 
-    <div>
+        <div>
 
-        <h1>Edit FAQ</h1>
+            <h1>Edit FAQ</h1>
 
-        <p>
-            Perbarui pertanyaan dan jawaban FAQ.
-        </p>
+            <p>
+                Perbarui pertanyaan dan jawaban FAQ.
+            </p>
+
+        </div>
+
+    </header>
+
+    <!-- ================= BREADCRUMB ================= -->
+
+    <div class="page-breadcrumb">
+
+        <a href="{{ route('admin.faq.index') }}">
+            FAQ
+        </a>
+
+        <span>></span>
+
+        <span>Edit FAQ</span>
 
     </div>
 
-</header>
+    <!-- ================= FORM ================= -->
 
-<!-- ================= BREADCRUMB ================= -->
+    <section>
 
-<div class="page-breadcrumb">
+        <div class="settings-card">
 
-    <a href="{{ route('admin.faq.index') }}">
-        FAQ
-    </a>
+            <div class="card-header">
 
-    <span>></span>
+                <div>
 
-    <span>Edit FAQ</span>
+                    <h3>
 
-</div>
+                        <i class="fa-solid fa-pen-to-square"></i>
 
-<!-- ================= FORM ================= -->
+                        Edit FAQ
 
-<section>
+                    </h3>
 
-    <div class="settings-card">
+                    <p>
 
-        <div class="card-header">
+                        Perbarui data FAQ di bawah ini.
 
-            <div>
+                    </p>
 
-                <h3>
+                </div>
 
-                    <i class="fa-solid fa-pen-to-square"></i>
+                <a href="{{ route('admin.faq.index') }}" class="btn-secondary">
 
-                    Edit FAQ
+                    <i class="fa-solid fa-arrow-left"></i>
 
-                </h3>
+                    Kembali
 
-                <p>
-
-                    Perbarui data FAQ di bawah ini.
-
-                </p>
+                </a>
 
             </div>
 
-            <a href="{{ route('admin.faq.index') }}"
-               class="btn-secondary">
+            <div class="card-body">
 
-                <i class="fa-solid fa-arrow-left"></i>
+                @if ($errors->any())
 
-                Kembali
+                    <div class="alert alert-danger">
 
-            </a>
+                        <ul>
 
-        </div>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
 
-        <div class="card-body">
+                        </ul>
 
-            @if ($errors->any())
+                    </div>
 
-                <div class="alert alert-danger">
+                @endif
 
-                    <ul>
+                <form action="{{ route('admin.faq.update', $faq) }}" method="POST">
 
-                        @foreach ($errors->all() as $error)
+                    @csrf
+                    @method('PUT')
 
-                            <li>{{ $error }}</li>
+                    <!-- Pertanyaan -->
 
-                        @endforeach
+                    <div class="form-group">
 
-                    </ul>
+                        <label>
 
-                </div>
+                            Pertanyaan
 
-            @endif
+                            <span class="required">*</span>
 
-            <form
-                action="{{ route('admin.faq.update', $faq) }}"
-                method="POST">
+                        </label>
 
-                @csrf
-                @method('PUT')
+                        <input type="text" name="question" class="form-control"
+                            value="{{ old('question', $faq->question) }}" placeholder="Masukkan pertanyaan" required>
 
-                <!-- Pertanyaan -->
+                    </div>
 
-                <div class="form-group">
+                    <!-- Jawaban -->
 
-                    <label>
+                    <div class="form-group">
 
-                        Pertanyaan
+                        <label>
 
-                        <span class="required">*</span>
+                            Jawaban
 
-                    </label>
+                            <span class="required">*</span>
 
-                    <input
-                        type="text"
-                        name="question"
-                        class="form-control"
-                        value="{{ old('question', $faq->question) }}"
-                        placeholder="Masukkan pertanyaan"
-                        required>
+                        </label>
 
-                </div>
+                        <x-tiptap name="answer" :value="old('answer', $faq->answer)" placeholder="Masukkan jawaban..." :image="false" />
 
-                <!-- Jawaban -->
+                        @error('answer')
+                            <small class="text-danger">
 
-                <div class="form-group">
+                                {{ $message }}
 
-                    <label>
+                            </small>
+                        @enderror
 
-                        Jawaban
+                    </div>
 
-                        <span class="required">*</span>
+                    <!-- Urutan -->
 
-                    </label>
+                    <div class="form-group">
 
-                    <textarea
-                        name="answer"
-                        rows="6"
-                        class="form-control"
-                        placeholder="Masukkan jawaban"
-                        required>{{ old('answer', $faq->answer) }}</textarea>
+                        <label>
 
-                </div>
+                            Urutan Tampil
 
-                <!-- Urutan -->
+                        </label>
 
-                <div class="form-group">
+                        <input type="number" name="display_order" class="form-control" min="0"
+                            value="{{ old('display_order', $faq->display_order) }}">
 
-                    <label>
+                        <small>
+                            Semakin kecil angka, semakin atas FAQ ditampilkan.
+                        </small>
 
-                        Urutan Tampil
+                    </div>
 
-                    </label>
+                    <!-- BUTTON -->
 
-                    <input
-                        type="number"
-                        name="display_order"
-                        class="form-control"
-                        min="0"
-                        value="{{ old('display_order', $faq->display_order) }}">
+                    <div class="form-actions">
 
-                    <small>
-                        Semakin kecil angka, semakin atas FAQ ditampilkan.
-                    </small>
+                        <a href="{{ route('admin.faq.index') }}" class="btn-secondary">
 
-                </div>
+                            Batal
 
-                <!-- BUTTON -->
+                        </a>
 
-                <div class="form-actions">
+                        <button type="submit" class="btn-primary">
 
-                    <a href="{{ route('admin.faq.index') }}"
-                       class="btn-secondary">
+                            <i class="fa-solid fa-floppy-disk"></i>
 
-                        Batal
+                            Update FAQ
 
-                    </a>
+                        </button>
 
-                    <button
-                        type="submit"
-                        class="btn-primary">
+                    </div>
 
-                        <i class="fa-solid fa-floppy-disk"></i>
+                </form>
 
-                        Update FAQ
-
-                    </button>
-
-                </div>
-
-            </form>
+            </div>
 
         </div>
 
-    </div>
-
-</section>
+    </section>
 
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/admin/faq.js') }}"></script>
+    <script src="{{ asset('js/admin/faq.js') }}"></script>
 @endpush
