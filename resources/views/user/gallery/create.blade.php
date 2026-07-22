@@ -8,277 +8,236 @@
 
 @section('content')
 
-<div class="gallery-container">
+    <div class="gallery-container">
 
-    {{-- ================= HEADER ================= --}}
-    <div class="gallery-header">
+        {{-- ================= HEADER ================= --}}
+        <div class="gallery-header">
 
-    <a href="{{ route('user.gallery.index') }}" class="btn-batal">
-        <i class="fa-solid fa-arrow-left"></i>
-        Kembali
-    </a>
+            <a href="{{ route('user.gallery.index') }}" class="btn-batal">
+                <i class="fa-solid fa-arrow-left"></i>
+                Kembali
+            </a>
 
-    <div class="gallery-title">
-        <h1>Tambah Galeri</h1>
-        <p>Tambahkan dokumentasi kegiatan Rumah Moeda.</p>
-    </div>
-
-</div>
-
-    {{-- ================= FORM ================= --}}
-    <div class="form-card">
-
-        <form
-            action="{{ route('user.gallery.store') }}"
-            method="POST"
-            enctype="multipart/form-data">
-
-            @csrf
-
-            {{-- ================= JUDUL ================= --}}
-            <div class="form-group">
-
-                <label>
-
-                    Judul Dokumentasi
-
-                    <span class="required">*</span>
-
-                </label>
-
-                <input
-                    type="text"
-                    name="title"
-                    class="form-control @error('title') is-invalid @enderror"
-                    value="{{ old('title') }}"
-                    placeholder="Masukkan judul dokumentasi">
-
-                @error('title')
-
-                    <small class="text-danger">
-
-                        {{ $message }}
-
-                    </small>
-
-                @enderror
-
+            <div class="gallery-title">
+                <h1>Tambah Galeri</h1>
+                <p>Tambahkan dokumentasi kegiatan Rumah Moeda.</p>
             </div>
 
-            {{-- ================= TANGGAL ================= --}}
-            <div class="form-group">
+        </div>
 
-                <label>
+        {{-- ================= FORM ================= --}}
+        <div class="form-card">
 
-                    Tanggal Kegiatan
+            <form action="{{ route('user.gallery.store') }}" method="POST" enctype="multipart/form-data">
 
-                    <span class="required">*</span>
+                @csrf
 
-                </label>
+                {{-- ================= JUDUL ================= --}}
+                <div class="form-group">
 
-                <input
-                    type="date"
-                    name="activity_date"
-                    class="form-control @error('activity_date') is-invalid @enderror"
-                    value="{{ old('activity_date') }}">
+                    <label>
 
-                @error('activity_date')
+                        Judul Dokumentasi
 
-                    <small class="text-danger">
+                        <span class="required">*</span>
 
-                        {{ $message }}
+                    </label>
 
-                    </small>
+                    <input type="text" name="title" class="form-control @error('title') is-invalid @enderror"
+                        value="{{ old('title') }}" placeholder="Masukkan judul dokumentasi">
 
-                @enderror
+                    @error('title')
+                        <small class="text-danger">
 
-            </div>
+                            {{ $message }}
 
-            {{-- ================= DESKRIPSI ================= --}}
-            <div class="form-group">
-
-                <label>
-
-                    Deskripsi
-
-                    <span class="required">*</span>
-
-                </label>
-
-                <textarea
-                    name="description"
-                    rows="6"
-                    class="form-control @error('description') is-invalid @enderror"
-                    placeholder="Masukkan deskripsi kegiatan...">{{ old('description') }}</textarea>
-
-                @error('description')
-
-                    <small class="text-danger">
-
-                        {{ $message }}
-
-                    </small>
-
-                @enderror
-
-            </div>
-                        {{-- ================= FOTO ================= --}}
-            <div class="form-group">
-
-                <label>
-
-                    Upload Foto
-
-                    <span class="required">*</span>
-
-                </label>
-
-                <input
-                    type="file"
-                    name="photos[]"
-                    id="photoInput"
-                    class="form-control @error('photos') is-invalid @enderror"
-                    accept="image/*"
-                    multiple>
-
-                <small class="text-muted">
-
-                    Format JPG, JPEG, PNG. Maksimal 2 MB per file.
-
-                </small>
-
-                @error('photos')
-
-                    <small class="text-danger">
-
-                        {{ $message }}
-
-                    </small>
-
-                @enderror
-
-                @error('photos.*')
-
-                    <small class="text-danger">
-
-                        {{ $message }}
-
-                    </small>
-
-                @enderror
-
-                <div
-                    id="photoPreview"
-                    class="preview-grid">
+                        </small>
+                    @enderror
 
                 </div>
 
-            </div>
+                {{-- ================= TANGGAL ================= --}}
+                <div class="form-group">
 
-            {{-- ================= VIDEO ================= --}}
-            <div class="form-group">
+                    <label>
 
-                <label>
+                        Tanggal Kegiatan
 
-                    Link Video YouTube
+                        <span class="required">*</span>
 
-                </label>
+                    </label>
 
-                <div id="videoContainer">
+                    <input type="date" name="activity_date"
+                        class="form-control @error('activity_date') is-invalid @enderror"
+                        value="{{ old('activity_date') }}">
 
-                    <div class="video-input">
+                    @error('activity_date')
+                        <small class="text-danger">
 
-                        <input
-                            type="url"
-                            name="videos[]"
-                            class="form-control"
-                            placeholder="https://www.youtube.com/watch?v=...">
+                            {{ $message }}
+
+                        </small>
+                    @enderror
+
+                </div>
+
+                {{-- ================= DESKRIPSI ================= --}}
+                <div class="form-group">
+
+                    <label>
+
+                        Deskripsi
+
+                        <span class="required">*</span>
+
+                    </label>
+
+                    <x-tiptap name="description" :value="old('description')" placeholder="Masukkan deskripsi kegiatan..."
+                        :image="false" />
+
+                    @error('description')
+                        <small class="text-danger">
+
+                            {{ $message }}
+
+                        </small>
+                    @enderror
+
+                </div>
+                {{-- ================= FOTO ================= --}}
+                <div class="form-group">
+
+                    <label>
+
+                        Upload Foto
+
+                        <span class="required">*</span>
+
+                    </label>
+
+                    <input type="file" name="photos[]" id="photoInput"
+                        class="form-control @error('photos') is-invalid @enderror" accept="image/*" multiple>
+
+                    <small class="text-muted">
+
+                        Format JPG, JPEG, PNG. Maksimal 2 MB per file.
+
+                    </small>
+
+                    @error('photos')
+                        <small class="text-danger">
+
+                            {{ $message }}
+
+                        </small>
+                    @enderror
+
+                    @error('photos.*')
+                        <small class="text-danger">
+
+                            {{ $message }}
+
+                        </small>
+                    @enderror
+
+                    <div id="photoPreview" class="preview-grid">
 
                     </div>
 
                 </div>
 
-                <button
-                    type="button"
-                    class="btn-secondary"
-                    id="btnTambahVideo">
+                {{-- ================= VIDEO ================= --}}
+                <div class="form-group">
 
-                    <i class="fa-solid fa-plus"></i>
+                    <label>
 
-                    Tambah Link Video
+                        Link Video YouTube
 
-                </button>
+                    </label>
 
-            </div>
+                    <div id="videoContainer">
 
-            {{-- ================= FOOTER ================= --}}
-            <div class="form-footer">
+                        <div class="video-input">
 
-                <a
-                    href="{{ route('user.gallery.index') }}"
-                    class="btn-batal">
+                            <input type="url" name="videos[]" class="form-control"
+                                placeholder="https://www.youtube.com/watch?v=...">
 
-                    <i class="fa-solid fa-xmark"></i>
+                        </div>
 
-                    Batal
+                    </div>
 
-                </a>
+                    <button type="button" class="btn-secondary" id="btnTambahVideo">
 
-                <button
-                    type="submit"
-                    class="btn-simpan">
+                        <i class="fa-solid fa-plus"></i>
 
-                    <i class="fa-solid fa-floppy-disk"></i>
+                        Tambah Link Video
 
-                    Simpan Dokumentasi
+                    </button>
 
-                </button>
+                </div>
 
-            </div>
+                {{-- ================= FOOTER ================= --}}
+                <div class="form-footer">
 
-        </form>
+                    <a href="{{ route('user.gallery.index') }}" class="btn-batal">
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                        Batal
+
+                    </a>
+
+                    <button type="submit" class="btn-simpan">
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Simpan Dokumentasi
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
 
     </div>
-
-</div>
 
 @endsection
 
 @push('scripts')
+    <script>
+        document.getElementById('photoInput').addEventListener('change', function(e) {
 
-<script>
+            const preview = document.getElementById('photoPreview');
 
-document.getElementById('photoInput').addEventListener('change', function (e) {
+            preview.innerHTML = '';
 
-    const preview = document.getElementById('photoPreview');
+            Array.from(e.target.files).forEach(file => {
 
-    preview.innerHTML = '';
+                const reader = new FileReader();
 
-    Array.from(e.target.files).forEach(file => {
+                reader.onload = function(event) {
 
-        const reader = new FileReader();
-
-        reader.onload = function (event) {
-
-            preview.innerHTML += `
+                    preview.innerHTML += `
                 <div class="preview-item">
                     <img src="${event.target.result}">
                 </div>
             `;
 
-        };
+                };
 
-        reader.readAsDataURL(file);
+                reader.readAsDataURL(file);
 
-    });
+            });
 
-});
+        });
 
-document.getElementById('btnTambahVideo').addEventListener('click', function () {
+        document.getElementById('btnTambahVideo').addEventListener('click', function() {
 
-    const container = document.getElementById('videoContainer');
+            const container = document.getElementById('videoContainer');
 
-    container.insertAdjacentHTML('beforeend', `
+            container.insertAdjacentHTML('beforeend', `
 
         <div class="video-input" style="margin-top:10px;display:flex;gap:10px;">
 
@@ -300,18 +259,16 @@ document.getElementById('btnTambahVideo').addEventListener('click', function () 
 
     `);
 
-});
+        });
 
-document.addEventListener('click', function(e){
+        document.addEventListener('click', function(e) {
 
-    if(e.target.closest('.remove-video')){
+            if (e.target.closest('.remove-video')) {
 
-        e.target.closest('.video-input').remove();
+                e.target.closest('.video-input').remove();
 
-    }
+            }
 
-});
-
-</script>
-
+        });
+    </script>
 @endpush
