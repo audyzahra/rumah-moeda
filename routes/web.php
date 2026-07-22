@@ -392,6 +392,12 @@ Route::middleware(['auth', 'admin'])
         Route::get('/faq', [AdminFaqController::class, 'index'])
             ->name('faq.index');
 
+        Route::get('/faq/create', [AdminFaqController::class, 'create'])
+        ->name('faq.create');
+
+        Route::get('/faq/{faq}/edit', [AdminFaqController::class, 'edit'])
+        ->name('faq.edit');
+
         Route::post('/faq', [AdminFaqController::class, 'store'])
             ->name('faq.store');
 
