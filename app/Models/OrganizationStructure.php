@@ -19,7 +19,7 @@ class OrganizationStructure extends Model
         'description',
     ];
 
-     /**
+    /**
      * Relasi ke atasan (parent)
      */
     public function parent()
@@ -46,11 +46,27 @@ class OrganizationStructure extends Model
         return $this->children()->with('childrenRecursive');
     }
 
+    public function getDescendantIds()
+    {
+        $ids = [];
+
+        foreach ($this->children as $child) {
+            $ids[] = $child->id;
+            $ids = array_merge($ids, $child->getDescendantIds());
+        }
+
+        return $ids;
+    }
+
+    public function descendants()
+{
+    return $this->children()->with('descendants');
+}
+
     public function getPhotoUrlAttribute()
     {
         return $this->photo
             ? asset('storage/' . $this->photo)
             : asset('images/default-user.png');
     }
-
 }

@@ -305,135 +305,153 @@ body {
     font-weight: 700;
 }
 
-/* ==========================
-   STRUKTUR ORGANISASI
-========================== */
 
-.organization-tree{
-    display:flex;
-    justify-content:center;
+/* ================= STRUKTUR SECTION ================= */
+.struktur-section {
+    width: 100%;
+    overflow: hidden;
 }
 
-.tree-node{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+.organization-wrapper {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    padding: 50px 80px; /* jarak kiri kanan */
+
+    box-sizing: border-box;
+
 }
 
-.tree-card{
-    width:240px;
-    padding:24px;
-    background:#fff;
-    border-radius:20px;
-    text-align:center;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
 
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    position:relative;
-    z-index:2;
+#organization-chart {
+
+    min-width: max-content;
+
+    display: flex;
+
+    justify-content: center;
+
 }
 
-.tree-card img{
-    width:72px;
-    height:72px;
-    object-fit:cover;
-    border-radius:50%;
-    border:3px solid #d4a62b;
-    margin-bottom:12px;
-}
+/* CSS ORG CHART STRUKTUR ORGANISASI */
+#organization-chart{
 
-.tree-card h4{
-    margin:6px 0;
-    font-size:18px;
-}
-
-.tree-card span{
-    font-size:14px;
-    color:#666;
-}
-
-/* garis turun dari parent */
-.tree-line{
-    width:2px;
-    height:56px;
-    background:#d4a62b;
-}
-
-/* container semua anak */
-.tree-children{
-    position:relative;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-    gap:80px;
-    margin-top:0px;
-    padding-top:28px;
-}
-
-/* garis horizontal */
-.tree-children::before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:120px;      /* setengah lebar card */
-    right:120px;     /* setengah lebar card */
-    height:2px;
-    background:#d4a62b;
-}
-
-/* setiap anak */
-.tree-child{
-    position:relative;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-}
-
-/* garis vertikal dari garis horizontal ke card */
-.tree-child::before{
-    content:"";
-    position:absolute;
-    top:-28px;
-    left:50%;
-    transform:translateX(-50%);
-    width:2px;
-    height:28px;
-    background:#d4a62b;
-}
-
-/* tidak dipakai lagi */
-.tree-child-line{
-    display:none;
-}
-.organization-wrapper{
     width:100%;
+
     overflow-x:auto;
-    overflow-y:hidden;
-    padding-bottom:15px;
 
-    /* Smooth scrolling */
-    -webkit-overflow-scrolling:touch;
+    padding:40px 0;
 
-    /* Firefox */
-    scrollbar-width:thin;
 }
 
-/* Chrome */
-.organization-wrapper::-webkit-scrollbar{
-    height:8px;
+
+
+.org-card {
+    width: 150px;
+    min-height: 150px;
+    padding: 15px;
+    text-align: center;
+
+    padding: 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
 }
 
-.organization-wrapper::-webkit-scrollbar-thumb{
-    background:#d4a62b;
-    border-radius:20px;
+
+.org-card img {
+
+    width: 55px;
+    height: 55px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    margin-bottom: 10px;
+    /* margin: 0 auto 20px auto;
+
+    display: block; */
+
 }
 
-.organization-tree{
-    width:max-content;
-    min-width:100%;
+
+.org-card b {
+
+    /* display: block; */
+
+    font-size: 13px;
+
+    margin: 0;
+
+    /* margin-bottom: 5px; */
+
+    line-height: 1.3;
+
+    text-align: center;
+
 }
+
+
+.org-card span {
+
+    /* display: block; */
+    margin-top: 5px;
+    text-align: center;
+
+    font-size: 11px;
+
+    color: #777;
+
+}
+
+.organization-wrapper {
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+    padding: 60px 0;
+
+}
+
+
+#organization-chart {
+
+    transform: scale(0.8);
+
+    transform-origin: top center;
+
+    margin-bottom: -80px;
+
+}
+
+.google-visualization-orgchart-table {
+
+    margin: 0 auto !important;
+
+}
+
+.google-visualization-orgchart-node {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.google-visualization-orgchart-node .org-card {
+    margin: auto;
+}
+
+
 
 /* ================= ARTIKEL SECTION ================= */
 .artikel-section {

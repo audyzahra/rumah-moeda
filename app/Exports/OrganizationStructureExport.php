@@ -36,12 +36,17 @@ class OrganizationStructureExport implements
             ->map(function ($item, $index) {
 
                 return [
-                    'No'         => $index + 1,
-                    'Nama'       => $item->full_name,
-                    'Jabatan'    => $item->position,
-                    'Status'     => $item->parent_id ? 'Child' : 'Parent',
-                    'Atasan'     => $item->parent?->full_name ?? '-',
-                    'Deskripsi'  => $item->description,
+                    'No'        => $index + 1,
+                    'Nama'      => $item->full_name,
+                    'Jabatan'   => $item->position,
+                    'Status'    => $item->parent_id ? 'Child' : 'Parent',
+
+                    // hanya parent langsung
+                    'Atasan'    => $item->parent
+                        ? $item->parent->full_name
+                        : '-',
+
+                    'Deskripsi' => $item->description,
                 ];
             });
     }
@@ -66,12 +71,12 @@ class OrganizationStructureExport implements
     public function columnWidths(): array
     {
         return [
-            'A' => 6,
-            'B' => 25,
-            'C' => 22,
+            'A' => 8,
+            'B' => 20,
+            'C' => 20,
             'D' => 15,
-            'E' => 25,
-            'F' => 45,
+            'E' => 20,
+            'F' => 35,
         ];
     }
 
@@ -93,6 +98,11 @@ class OrganizationStructureExport implements
                     'rgb' => '4F81BD'
                 ],
             ],
+
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical'   => Alignment::VERTICAL_CENTER,
+            ],
         ]);
 
         // Border tabel
@@ -110,6 +120,10 @@ class OrganizationStructureExport implements
         $sheet->getStyle("A5:E{$lastRow}")
             ->getAlignment()
             ->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+        $sheet->getStyle("A4:F{$lastRow}")
+            ->getAlignment()
+            ->setVertical(Alignment::VERTICAL_CENTER);
     }
 
     public function registerEvents(): array
@@ -143,8 +157,7 @@ class OrganizationStructureExport implements
                 $master->setCellValue('C1', 'ATASAN');
                 $master->setCellValue('C2', '-');
 
-                $leaders = OrganizationStructure::whereNull('parent_id')
-                    ->orderBy('full_name')
+                $leaders = OrganizationStructure::orderBy('full_name')
                     ->pluck('full_name');
 
                 $rowLeader = 3;
@@ -201,6 +214,8 @@ class OrganizationStructureExport implements
                             'horizontal' => Alignment::HORIZONTAL_CENTER,
                         ],
                     ]);
+
+                $sheet->getRowDimension(4)->setRowHeight(25);
 
                 /*
                 |--------------------------------------------------------------------------

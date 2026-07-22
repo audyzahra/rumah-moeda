@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use App\Models\OrganizationStructure;
 use Illuminate\Http\Request;
@@ -23,10 +24,8 @@ class OrganizationStructureController extends Controller
             $query->where(function ($q) use ($request) {
 
                 $q->where('full_name', 'like', '%' . $request->search . '%')
-                ->orWhere('position', 'like', '%' . $request->search . '%');
-
+                    ->orWhere('position', 'like', '%' . $request->search . '%');
             });
-
         }
 
 
@@ -34,7 +33,6 @@ class OrganizationStructureController extends Controller
         if ($request->filled('jabatan')) {
 
             $query->where('position', $request->jabatan);
-
         }
 
 
@@ -58,9 +56,9 @@ class OrganizationStructureController extends Controller
                 break;
 
             default:
-            $query->orderBy('parent_id')
-                ->orderBy('full_name');
-            break;
+                $query->orderBy('parent_id')
+                    ->orderBy('full_name');
+                break;
         }
 
 
@@ -82,7 +80,7 @@ class OrganizationStructureController extends Controller
 
     public function create()
     {
-        $parents = OrganizationStructure::whereNull('parent_id')->get();
+        $parents = OrganizationStructure::orderBy('full_name')->get();
 
         return view('admin.struktur.tambah', compact('parents'));
     }
@@ -122,10 +120,16 @@ class OrganizationStructureController extends Controller
 
     public function edit($id)
     {
-        $organization = OrganizationStructure::findOrFail($id);
+        $organization = OrganizationStructure::with('descendants')
+            ->findOrFail($id);
 
-        $parents = OrganizationStructure::whereNull('parent_id')
-            ->where('id', '!=', $id)
+        $excludeIds = $organization->descendants
+            ->pluck('id')
+            ->toArray();
+
+        $excludeIds[] = $organization->id;
+        $parents = OrganizationStructure::whereNotIn('id', $excludeIds)
+            ->orderBy('full_name')
             ->get();
 
         return view('admin.struktur.edit', compact(
@@ -164,11 +168,42 @@ class OrganizationStructureController extends Controller
                 ->store('struktur', 'public');
         }
 
+        if ($request->filled('parent_id')) {
+
+    $parent = OrganizationStructure::find($request->parent_id);
+
+    $visited = [];
+
+    while ($parent) {
+
+        // cegah infinite loop
+        if (in_array($parent->id, $visited)) {
+            break;
+        }
+
+        $visited[] = $parent->id;
+
+
+        // parent tidak boleh menjadi dirinya sendiri
+        if ($parent->id == $struktur->id) {
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'parent_id' => 'Parent yang dipilih menyebabkan struktur menjadi loop.'
+                ]);
+        }
+
+
+        $parent = $parent->parent;
+    }
+}
+
         $struktur->update($data);
 
         return redirect()
-        ->route('admin.organization-structures.index', $struktur->id)
-        ->with('success', 'Data berhasil diubah');
+    ->route('admin.organization-structures.index')
+    ->with('success', 'Data berhasil diubah');
     }
 
     public function destroy($id)
@@ -182,8 +217,8 @@ class OrganizationStructureController extends Controller
         $struktur->delete();
 
         return redirect()
-        ->route('admin.organization-structures.index')
-        ->with('success', 'Data berhasil dihapus');
+            ->route('admin.organization-structures.index')
+            ->with('success', 'Data berhasil dihapus');
     }
 
     // untuk export data struktur ke format CSV
@@ -210,5 +245,4 @@ class OrganizationStructureController extends Controller
             ->route('admin.organization-structures.index')
             ->with('success', 'Data berhasil diimport.');
     }
-
 }

@@ -22,9 +22,9 @@
         <div class="card">
 
             <form
-            action="{{ route('admin.organization-structures.update', $organization->id) }}"
-            method="POST"
-            enctype="multipart/form-data">
+                action="{{ route('admin.organization-structures.update', $organization->id) }}"
+                method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -33,92 +33,89 @@
                     <div class="col-md-6 mb-3">
                         <label>Nama Lengkap</label>
                         <input type="text"
-       name="full_name"
-       class="form-control"
-       value="{{ old('full_name', $organization->full_name) }}">
+                            name="full_name"
+                            class="form-control"
+                            value="{{ old('full_name', $organization->full_name) }}">
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label>Jabatan</label>
                         <input type="text"
-       name="position"
-       class="form-control"
-       value="{{ old('position', $organization->position) }}">
+                            name="position"
+                            class="form-control"
+                            value="{{ old('position', $organization->position) }}">
                     </div>
 
                 </div>
 
                 <div class="row">
 
-    <div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-3">
 
-        <label>Posisi Struktur</label>
+                        <label>Posisi Struktur</label>
 
-        <select id="typeSelect" class="form-control">
+                        <select id="typeSelect" class="form-control">
 
-            <option value="parent"
-                {{ old('parent_id', $organization->parent_id) ? '' : 'selected' }}>
-                Parent
-            </option>
+                            <option value="parent"
+                                {{ old('parent_id', $organization->parent_id) ? '' : 'selected' }}>
+                                Parent
+                            </option>
 
-            <option value="child"
-                {{ old('parent_id', $organization->parent_id) ? 'selected' : '' }}>
-                Child
-            </option>
+                            <option value="child"
+                                {{ old('parent_id', $organization->parent_id) ? 'selected' : '' }}>
+                                Child
+                            </option>
 
-        </select>
+                        </select>
 
-    </div>
+                    </div>
 
-    <div class="col-md-6 mb-3">
-        <label>Upload Foto</label>
-        <input type="file" name="photo" class="form-control">
-    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Upload Foto</label>
+                        <input type="file" name="photo" class="form-control">
+                    </div>
 
-</div>
+                </div>
 
-<div class="row">
+                <div class="row">
 
-    <div class="col-md-6 mb-3"
-        id="parentWrapper"
-        style="{{ old('parent_id', $organization->parent_id) ? '' : 'display:none;' }}">
+                    <div class="col-md-6 mb-3"
+                        id="parentWrapper"
+                        style="{{ old('parent_id', $organization->parent_id) ? '' : 'display:none;' }}">
 
-        <label>Parent</label>
+                        <label>Parent</label>
 
-        <select name="parent_id" class="form-control">
+                        <select name="parent_id" class="form-control">
+    <option value="">-- Parent Utama --</option>
 
-            <option value="">-- Pilih Parent --</option>
+    @foreach($parents as $parent)
+        <option
+            value="{{ $parent->id }}"
+            {{ old('parent_id', $organization->parent_id) == $parent->id ? 'selected' : '' }}>
 
-            @foreach($parents as $parent)
+            {{ $parent->full_name }} ({{ $parent->position }})
 
-                <option value="{{ $parent->id }}"
-                    {{ old('parent_id', $organization->parent_id) == $parent->id ? 'selected' : '' }}>
+        </option>
+    @endforeach
+</select>
 
-                    {{ $parent->full_name }}
+                    </div>
 
-                </option>
-
-            @endforeach
-
-        </select>
-
-    </div>
-
-</div>
+                </div>
 
                 <div class="mb-3">
                     <label>Deskripsi</label>
                     <textarea
-    name="description"
-    rows="5"
-    class="form-control">{{ old('description', $organization->description) }}</textarea>
+                        name="description"
+                        rows="5"
+                        class="form-control">{{ old('description', $organization->description) }}</textarea>
                 </div>
 
                 <div class="d-flex gap-2">
 
                     <a href="{{ route('admin.organization-structures.index') }}" class="btn btn-secondary">
-    Kembali
-</a>
+                        Kembali
+                    </a>
 
                     <button type="submit" class="btn btn-primary">
                         <i class="fa-solid fa-save"></i>

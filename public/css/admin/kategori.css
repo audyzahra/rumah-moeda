@@ -51,8 +51,8 @@
 }
 
 .btn-batal{
-    background:#E5E7EB;
-    color:#374151;
+    background:#2563EB;
+    color:#fff;
     text-decoration:none;
     padding:12px 24px;
     border-radius:12px;
@@ -63,7 +63,7 @@
 }
 
 .btn-batal:hover{
-    background:#D1D5DB;
+    background:#5b8fdf;
 }
 
 .btn-simpan{
@@ -77,6 +77,7 @@
     align-items:center;
     gap:8px;
     font-weight:600;
+    text-decoration:none;
 }
 
 .btn-simpan:hover{
@@ -161,7 +162,7 @@
 }
 
 .kategori-table thead{
-    background:#F9FAFB;
+    background:#2563EB;
 }
 
 .kategori-table th{
@@ -169,7 +170,7 @@
     padding:18px;
     font-size:15px;
     font-weight:700;
-    color:#374151;
+    color:#fff;
 }
 
 .kategori-table td{
