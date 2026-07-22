@@ -3,27 +3,27 @@
 @section('content')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/admin/galeri.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/galeri.css') }}">
 @endpush
 
 <div class="content">
 
     <header class="topbar">
 
-    <div>
+        <div>
 
-        <h1>Tambah Galeri</h1>
+            <h1>Tambah Galeri</h1>
 
-        <p>Tambah dokumentasi kegiatan</p>
+            <p>Tambah dokumentasi kegiatan</p>
 
-        <a href="{{ route('admin.gallery.index') }}" class="btn-back">
-            <i class="fa-solid fa-arrow-left"></i>
-            Kembali
-        </a>
+            <a href="{{ route('admin.gallery.index') }}" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i>
+                Kembali
+            </a>
 
-    </div>
+        </div>
 
-</header>
+    </header>
 
     <div class="gallery-container">
         <div class="form-card">
@@ -35,21 +35,37 @@
                 @csrf
 
                 <div class="form-group">
-                        <label>Judul</label>
-                        <input type="text" name="title" class="form-control" required>
-                    </div>
+                    <label>Judul</label>
+                    <input type="text" name="title" class="form-control" required>
+                </div>
 
-                    <div class="form-group">
-                        <label>Tanggal</label>
-                        <input type="date" name="activity_date" class="form-control" required>
-                    </div>
+                <div class="form-group">
+                    <label>Tanggal</label>
+                    <input type="date" name="activity_date" class="form-control" required>
+                </div>
 
-                    <div class="form-group">
-                        <label>Deskripsi</label>
-                        <textarea name="description" class="form-control"></textarea>
-                    </div>
+                <div class="form-group">
 
-                    <div id="photo-container">
+                    <label>
+                        Deskripsi
+                        <span class="required">*</span>
+                    </label>
+
+                    <x-tiptap
+                        name="description"
+                        :value="old('description')"
+                        placeholder="Masukkan deskripsi kegiatan..."
+                        :image="false" />
+
+                    @error('description')
+                    <small class="text-danger">
+                        {{ $message }}
+                    </small>
+                    @enderror
+
+                </div>
+
+                <div id="photo-container">
 
                     <div class="form-group">
 
@@ -74,34 +90,34 @@
 
                 </button>
 
-                    <div id="video-container">
+                <div id="video-container">
 
-                        <div class="form-group">
+                    <div class="form-group">
 
-                            <label>Video YouTube</label>
+                        <label>Video YouTube</label>
 
-                            <input
-                                type="url"
-                                name="videos[]"
-                                class="form-control"
-                                placeholder="https://www.youtube.com/watch?v=xxxx">
+                        <input
+                            type="url"
+                            name="videos[]"
+                            class="form-control"
+                            placeholder="https://www.youtube.com/watch?v=xxxx">
 
-                            <small class="text-muted">
-                                Tambahkan satu atau lebih link video YouTube (opsional).
-                            </small>
-
-                        </div>
+                        <small class="text-muted">
+                            Tambahkan satu atau lebih link video YouTube (opsional).
+                        </small>
 
                     </div>
 
-                    <button
-                        type="button"
-                        id="btn-add-video"
-                        class="btn btn-secondary">
+                </div>
 
-                        + Tambah Link Video
+                <button
+                    type="button"
+                    id="btn-add-video"
+                    class="btn btn-secondary">
 
-                    </button>
+                    + Tambah Link Video
+
+                </button>
 
                 <div class="modal-footer">
 
@@ -122,7 +138,7 @@
 
         </div>
 
-        </div>
+    </div>
 
 </div>
 

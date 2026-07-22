@@ -3,7 +3,7 @@
 @section('title', 'Profil Perusahaan')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/admin/profil-perusahaan.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/profil-perusahaan.css') }}">
 @endpush
 
 @section('content')
@@ -44,8 +44,7 @@
                         name="website_name"
                         class="form-control"
                         placeholder="Masukkan nama website"
-                        value="{{ old('website_name', $setting->website_name ?? '') }}"
-                    >
+                        value="{{ old('website_name', $setting->website_name ?? '') }}">
 
                 </div>
 
@@ -58,9 +57,9 @@
                         <div class="logo-current">
 
                             @if (!empty($setting->website_logo))
-                                <img src="{{ Storage::url($setting->website_logo) }}" alt="Logo Website">
+                            <img src="{{ Storage::url($setting->website_logo) }}" alt="Logo Website">
                             @else
-                                <p>Belum ada logo.</p>
+                            <p>Belum ada logo.</p>
                             @endif
 
                         </div>
@@ -81,8 +80,7 @@
                                 id="formLogo"
                                 name="website_logo"
                                 accept=".png,.jpg,.jpeg,.svg"
-                                onchange="previewLogo(event)"
-                            >
+                                onchange="previewLogo(event)">
 
                             <div class="logo-preview" id="logoPreview">
                                 <p>Klik untuk upload logo</p>
@@ -110,13 +108,17 @@
                         <span class="required">*</span>
                     </label>
 
-                    <textarea
-                        id="websiteDescription"
+                    <x-tiptap
                         name="website_description"
-                        class="form-control"
-                        rows="5"
-                        placeholder="Masukkan deskripsi website"
-                    >{{ old('website_description', $setting->website_description ?? '') }}</textarea>
+                        :value="old('website_description', $setting->website_description ?? '')"
+                        placeholder="Masukkan deskripsi website..."
+                        :image="false" />
+
+                    @error('website_description')
+                    <small class="text-danger">
+                        {{ $message }}
+                    </small>
+                    @enderror
 
                 </div>
 
@@ -132,8 +134,7 @@
                             name="phone_number"
                             class="form-control"
                             placeholder="+62 812-xxxx-xxxx"
-                            value="{{ old('phone_number', $setting->phone_number ?? '') }}"
-                        >
+                            value="{{ old('phone_number', $setting->phone_number ?? '') }}">
 
                     </div>
 
@@ -147,8 +148,7 @@
                             name="email"
                             class="form-control"
                             placeholder="info@website.com"
-                            value="{{ old('email', $setting->email ?? '') }}"
-                        >
+                            value="{{ old('email', $setting->email ?? '') }}">
 
                     </div>
 
@@ -166,8 +166,7 @@
                             name="fax_number"
                             class="form-control"
                             placeholder="Nomor Fax"
-                            value="{{ old('fax_number', $setting->fax_number ?? '') }}"
-                        >
+                            value="{{ old('fax_number', $setting->fax_number ?? '') }}">
 
                     </div>
 
@@ -182,8 +181,7 @@
                         name="address"
                         class="form-control"
                         rows="3"
-                        placeholder="Masukkan alamat lengkap"
-                    >{{ old('address', $setting->address ?? '') }}</textarea>
+                        placeholder="Masukkan alamat lengkap">{{ old('address', $setting->address ?? '') }}</textarea>
 
                 </div>
 
@@ -203,8 +201,7 @@
                             name="instagram_url"
                             class="form-control"
                             placeholder="https://instagram.com/..."
-                            value="{{ old('instagram_url', $setting->instagram_url ?? '') }}"
-                        >
+                            value="{{ old('instagram_url', $setting->instagram_url ?? '') }}">
 
                     </div>
 
@@ -218,8 +215,7 @@
                             name="facebook_url"
                             class="form-control"
                             placeholder="https://facebook.com/..."
-                            value="{{ old('facebook_url', $setting->facebook_url ?? '') }}"
-                        >
+                            value="{{ old('facebook_url', $setting->facebook_url ?? '') }}">
 
                     </div>
 
@@ -233,8 +229,7 @@
                             name="tiktok_url"
                             class="form-control"
                             placeholder="https://tiktok.com/..."
-                            value="{{ old('tiktok_url', $setting->tiktok_url ?? '') }}"
-                        >
+                            value="{{ old('tiktok_url', $setting->tiktok_url ?? '') }}">
 
                     </div>
 
@@ -262,5 +257,5 @@
 
 @endsection
 @push('scripts')
-        <script src="{{ asset('js/admin/profil-perusahaan.js') }}"></script>
+<script src="{{ asset('js/admin/profil-perusahaan.js') }}"></script>
 @endpush
