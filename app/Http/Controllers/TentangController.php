@@ -14,7 +14,8 @@ class TentangController extends Controller
 
         $vision = VisionMission::with('missions')->first();
 
-        $organizations = OrganizationStructure::orderBy('parent_id')
+        $organizations = OrganizationStructure::with('childrenRecursive')
+            ->whereNull('parent_id')
             ->orderBy('full_name')
             ->get();
 

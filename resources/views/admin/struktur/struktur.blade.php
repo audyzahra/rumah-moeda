@@ -3,16 +3,10 @@
 @section('title', 'Manajemen Struktur Organisasi')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/admin/struktur.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/struktur.css') }}">
 @endpush
 
 @section('content')
-
-<!-- @if(session('success'))
-    <div class="alert-success">
-        {{ session('success') }}
-    </div>
-@endif -->
 
 <div class="wrapper">
 
@@ -49,10 +43,10 @@
                     <option value="">Semua Jabatan</option>
 
                     @foreach($jabatanList as $jabatan)
-                        <option value="{{ $jabatan }}"
-                            {{ request('jabatan') == $jabatan ? 'selected' : '' }}>
-                            {{ $jabatan }}
-                        </option>
+                    <option value="{{ $jabatan }}"
+                        {{ request('jabatan') == $jabatan ? 'selected' : '' }}>
+                        {{ $jabatan }}
+                    </option>
                     @endforeach
 
                 </select>
@@ -88,7 +82,7 @@
 
             </form>
 
-           
+
             <a href="{{ route('admin.organization-structures.export') }}"
                 class="btn-export">
 
@@ -106,7 +100,7 @@
 
             </button>
 
-            <button 
+            <button
                 type="button"
                 class="btn-refresh"
                 onclick="location.reload()">
@@ -150,14 +144,14 @@
 
                             <td>
                                 @if($anggota->photo)
-                                    <img
-                                        src="{{ asset('storage/'.$anggota->photo) }}"
-                                        class="table-photo"
-                                        alt="{{ $anggota->full_name }}">
+                                <img
+                                    src="{{ asset('storage/'.$anggota->photo) }}"
+                                    class="table-photo"
+                                    alt="{{ $anggota->full_name }}">
                                 @else
-                                    <div class="table-photo-placeholder">
-                                        <i class="fa-solid fa-user"></i>
-                                    </div>
+                                <div class="table-photo-placeholder">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
                                 @endif
                             </td>
 
@@ -197,18 +191,18 @@
                                     </a>
 
                                     <form
-                                        action="{{ route('admin.organization-structures.destroy',$anggota->id) }}"
-                                        method="POST"
-                                        onsubmit="return confirm('Hapus data ini?')">
+    action="{{ route('admin.organization-structures.destroy',$anggota->id) }}"
+    method="POST"
+    class="delete-form">
 
-                                        @csrf
-                                        @method('DELETE')
+    @csrf
+    @method('DELETE')
 
-                                        <button type="submit" class="btn-delete">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
+    <button type="submit" class="btn-delete">
+        <i class="fa-solid fa-trash"></i>
+    </button>
 
-                                    </form>
+</form>
 
                                 </div>
 
@@ -251,100 +245,94 @@
 
         </section>
 
-       <!-- ===== Modal Detail ===== -->
+        <!-- ===== Modal Detail ===== -->
 
-<div id="detailModal" class="detail-modal">
-
-    <div class="modal-content">
-
-        <span class="close" onclick="closeDetailModal()">&times;</span>
-
-        <div id="detailBody"></div>
-
-    </div>
-
-</div>
-
-        <!-- ===== NOTIFIKASI ===== -->
-    <div id="notification" class="notification"
-        data-success="{{ session('success') }}"
-        data-error="{{ session('error') }}">
-    </div>
-
-    <!-- Modal Import -->
-    <div class="modal fade" id="importModal" tabindex="-1" aria-hidden="true">
-
-        <div class="modal-dialog">
+        <div id="detailModal" class="detail-modal">
 
             <div class="modal-content">
 
-                <form action="{{ route('admin.organization-structures.import') }}"
-                    method="POST"
-                    enctype="multipart/form-data">
+                <span class="close" onclick="closeDetailModal()">&times;</span>
 
-                    @csrf
-
-                    <div class="modal-header">
-                        <h5 class="modal-title">
-                            Import Data Struktur Organisasi
-                        </h5>
-
-                        <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal">
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-
-                        <label class="form-label">
-                            Pilih File Excel
-                        </label>
-
-                        <input
-                            type="file"
-                            name="file"
-                            class="form-control"
-                            accept=".xlsx,.xls"
-                            required>
-
-                        <small class="text-muted">
-                            Format yang didukung:
-                            .xlsx dan .xls
-                        </small>
-
-                    </div>
-
-                    <div class="modal-footer">
-
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal">
-                            Batal
-                        </button>
-
-                        <button
-                            type="submit"
-                            class="btn btn-primary">
-
-                            <i class="fa-solid fa-file-import"></i>
-                            Import
-
-                        </button>
-
-                    </div>
-
-                </form>
+                <div id="detailBody"></div>
 
             </div>
 
         </div>
 
-    </div>
+        <!-- Modal Import -->
+        <div class="modal fade" id="importModal" tabindex="-1" aria-hidden="true">
 
-@endsection
+            <div class="modal-dialog">
 
-@push('scripts')
-<script src="{{ asset('js/admin/struktur.js') }}"></script>
-@endpush
+                <div class="modal-content">
+
+                    <form action="{{ route('admin.organization-structures.import') }}"
+                        method="POST"
+                        enctype="multipart/form-data">
+
+                        @csrf
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                Import Data Struktur Organisasi
+                            </h5>
+
+                            <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal">
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <label class="form-label">
+                                Pilih File Excel
+                            </label>
+
+                            <input
+                                type="file"
+                                name="file"
+                                class="form-control"
+                                accept=".xlsx,.xls"
+                                required>
+
+                            <small class="text-muted">
+                                Format yang didukung:
+                                .xlsx dan .xls
+                            </small>
+
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                                Batal
+                            </button>
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary">
+
+                                <i class="fa-solid fa-file-import"></i>
+                                Import
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        @endsection
+
+        @push('scripts')
+        <script src="{{ asset('js/admin/struktur.js') }}"></script>
+        @endpush
