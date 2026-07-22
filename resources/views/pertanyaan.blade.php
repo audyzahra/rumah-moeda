@@ -1,84 +1,78 @@
 @extends('Layouts.app')
 
-@section('title','Pertanyaan')
+@section('title', 'Pertanyaan')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/pertanyaan.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pertanyaan.css') }}">
 @endpush
 
 @section('content')
 
-<section class="faq-header">
+    <section class="faq-header">
 
-    <div class="header-text">
+        <div class="header-text">
 
-        <h1>
-            Pertanyaan Umum
-        </h1>
+            <h1>
+                Pertanyaan Umum
+            </h1>
 
-        <p>
-            Temukan jawaban dari pertanyaan yang sering diajukan.
-        </p>
-
-    </div>
-
-</section>
-
-<section class="faq-container">
-
-    @foreach($faqs as $faq)
-
-        <div class="faq-item">
-
-            <button class="faq-question">
-
-                {{ $faq->question }}
-
-                <i class="fa-solid fa-chevron-down"></i>
-
-            </button>
-
-            <div class="faq-answer">
-
-                {!! nl2br(e($faq->answer)) !!}
-
-            </div>
+            <p>
+                Temukan jawaban dari pertanyaan yang sering diajukan.
+            </p>
 
         </div>
 
-    @endforeach
+    </section>
 
-</section>
+    <section class="faq-container">
+
+        @foreach ($faqs as $faq)
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    {{ $faq->question }}
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                </button>
+
+                <div class="faq-answer">
+
+                    {!! $faq->answer !!}
+
+                </div>
+
+            </div>
+        @endforeach
+
+    </section>
 
 @endsection
 
 
 @push('scripts')
+    <script>
+        document.querySelectorAll(".faq-question").forEach(button => {
 
-<script>
+            button.addEventListener("click", () => {
 
-document.querySelectorAll(".faq-question").forEach(button=>{
+                const item = button.parentElement;
 
-    button.addEventListener("click",()=>{
+                document.querySelectorAll(".faq-item").forEach(faq => {
 
-        const item = button.parentElement;
+                    if (faq !== item) {
 
-        document.querySelectorAll(".faq-item").forEach(faq=>{
+                        faq.classList.remove("active");
 
-            if(faq!==item){
+                    }
 
-                faq.classList.remove("active");
+                });
 
-            }
+                item.classList.toggle("active");
+
+            });
 
         });
-
-        item.classList.toggle("active");
-
-    });
-
-});
-
-</script>
-
+    </script>
 @endpush
