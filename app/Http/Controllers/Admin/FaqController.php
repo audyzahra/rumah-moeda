@@ -11,8 +11,8 @@ class FaqController extends Controller
     public function index()
     {
         $faqs = Faq::orderBy('display_order')
-                    ->orderBy('created_at','desc')
-                    ->paginate(3);
+            ->orderBy('created_at', 'desc')
+            ->paginate(3);
 
         return view('admin.faq.faq', compact('faqs'));
     }
@@ -29,7 +29,17 @@ class FaqController extends Controller
 
     public function store(Request $request)
     {
-        // Simpan data...
+        $validated = $request->validate([
+            'question'      => 'required|string|max:255',
+            'answer'        => 'required|string',
+            'display_order' => 'nullable|integer|min:0',
+        ]);
+
+        Faq::create([
+            'question'      => $validated['question'],
+            'answer'        => $validated['answer'],
+            'display_order' => $validated['display_order'] ?? 0,
+        ]);
 
         return redirect()
             ->route('admin.faq.index')
@@ -39,7 +49,17 @@ class FaqController extends Controller
 
     public function update(Request $request, Faq $faq)
     {
-        // Update data...
+        $validated = $request->validate([
+            'question'      => 'required|string|max:255',
+            'answer'        => 'required|string',
+            'display_order' => 'nullable|integer|min:0',
+        ]);
+
+        $faq->update([
+            'question'      => $validated['question'],
+            'answer'        => $validated['answer'],
+            'display_order' => $validated['display_order'] ?? 0,
+        ]);
 
         return redirect()
             ->route('admin.faq.index')
