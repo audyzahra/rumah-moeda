@@ -310,15 +310,16 @@
 
 }
 .galeri-info p{
+    color: #666;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 10px 0 18px;
 
-    margin:12px 0;
-
-    color:#666;
-
-    line-height:1.6;
-
-    font-size:15px;
-
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;   /* maksimal 2 baris */
+    -webkit-box-orient: vertical;
+    word-break: break-word;
 }
 
 /* ==========================
