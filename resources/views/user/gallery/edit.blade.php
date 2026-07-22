@@ -166,12 +166,34 @@
 
                     </label>
 
-                    <input type="file" id="photoInput" name="photos[]"
-                        class="form-control @error('photos') is-invalid @enderror" accept="image/*" multiple>
+                    <div id="photoContainer">
+
+    <div class="photo-input">
+
+        <input
+            type="file"
+            name="photos[]"
+            class="form-control @error('photos') is-invalid @enderror"
+            accept="image/*">
+
+    </div>
+
+</div>
+
+<button
+    type="button"
+    id="btnTambahFoto"
+    class="btn-secondary">
+
+    <i class="fa-solid fa-plus"></i>
+
+    Tambah Foto
+
+</button>
 
                     <small class="text-muted">
 
-                        Kosongkan jika tidak ingin menambah foto baru.
+                        Format JPG, JPEG, PNG. Maksimal 2 MB per file.
 
                     </small>
 
@@ -258,41 +280,73 @@
 
 @push('scripts')
     <script>
-        const photoInput = document.getElementById('photoInput');
+        function previewPhotos() {
 
-        if (photoInput) {
+    const preview = document.getElementById('photoPreview');
 
-            photoInput.addEventListener('change', function(e) {
+    preview.innerHTML = '';
 
-                const preview = document.getElementById('photoPreview');
+    document.querySelectorAll('#photoContainer input[type="file"]').forEach(input => {
 
-                preview.innerHTML = '';
+        Array.from(input.files).forEach(file => {
 
-                Array.from(e.target.files).forEach(file => {
+            const reader = new FileReader();
 
-                    const reader = new FileReader();
+            reader.onload = function(event) {
 
-                    reader.onload = function(event) {
-
-                        preview.innerHTML += `
-
+                preview.innerHTML += `
                     <div class="preview-item">
-
                         <img src="${event.target.result}">
-
                     </div>
-
                 `;
 
-                    };
+            };
 
-                    reader.readAsDataURL(file);
+            reader.readAsDataURL(file);
 
-                });
+        });
 
-            });
+    });
 
-        }
+}
+
+document.addEventListener('change', function(e){
+
+    if(e.target.matches('#photoContainer input[type="file"]')){
+
+        previewPhotos();
+
+    }
+
+});
+
+document.getElementById('btnTambahFoto').addEventListener('click', function(){
+
+    const container = document.getElementById('photoContainer');
+
+    container.insertAdjacentHTML('beforeend', `
+
+        <div class="photo-input" style="display:flex;gap:10px;margin-top:10px;">
+
+            <input
+                type="file"
+                name="photos[]"
+                class="form-control"
+                accept="image/*">
+
+            <button
+                type="button"
+                class="btn-delete remove-photo">
+
+                <i class="fa-solid fa-trash"></i>
+
+            </button>
+
+        </div>
+
+    `);
+
+});
 
         const btnTambahVideo = document.getElementById('btnTambahVideo');
 
@@ -330,14 +384,22 @@
 
         }
 
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function(e){
 
-            if (e.target.closest('.remove-video')) {
+    if(e.target.closest('.remove-photo')){
 
-                e.target.closest('.video-input').remove();
+        e.target.closest('.photo-input').remove();
 
-            }
+        previewPhotos();
 
-        });
+    }
+
+    if(e.target.closest('.remove-video')){
+
+        e.target.closest('.video-input').remove();
+
+    }
+
+});
     </script>
 @endpush
