@@ -22,37 +22,46 @@
 
         <!-- ===== FILTER & SEARCH ===== -->
         <section class="filter-section">
-            <form method="GET" action="{{ route('admin.partners.index') }}" class="filter-form">
+            <form
+                method="GET"
+                action="{{ route('admin.partners.index') }}"
+                class="filter-form">
 
                 <input
+                    id="searchInput"
                     type="text"
                     name="search"
                     value="{{ request('search') }}"
                     placeholder="Cari mitra..."
                     class="search-input">
 
-                <select name="website" class="filter-select">
-                    <option value="">Semua</option>
-                    <option value="ada" {{ request('website') == 'ada' ? 'selected' : '' }}>Ada Website</option>
-                    <option value="tidak" {{ request('website') == 'tidak' ? 'selected' : '' }}>Tanpa Website</option>
-                </select>
-
-                <select name="sort" class="filter-select">
-                    <option value="display_order" {{ request('sort') == 'display_order' ? 'selected' : '' }}>
-                        Urutan Tampil
+                <select id="websiteFilter" name="website" class="filter-select">
+                    <option value="">Semua Website</option>
+                    <option
+                        value="ada"
+                        {{ request('website') == 'ada' ? 'selected' : '' }}>
+                        Ada Website
                     </option>
-                    <option value="nama" {{ request('sort') == 'nama' ? 'selected' : '' }}>
-                        Nama A-Z
-                    </option>
-                    <option value="terbaru" {{ request('sort') == 'terbaru' ? 'selected' : '' }}>
-                        Terbaru
+                    <option
+                        value="tidak"
+                        {{ request('website') == 'tidak' ? 'selected' : '' }}>
+                        Tidak Ada Website
                     </option>
                 </select>
 
-                <button type="submit"
-                        class="btn-refresh"
-                        onclick="location.reload()">
+                <select id="sortFilter" name="sort" class="filter-select">
+                    <option value="display_order">Urutan Tampil</option>
+                    <option value="nama_az">Nama A-Z</option>
+                    <option value="nama_za">Nama Z-A</option>
+                </select>
+
+                <button
+                    type="button"
+                    id="refreshBtn"
+                    class="btn-refresh">
+
                     <i class="fa-solid fa-rotate-right"></i>
+
                 </button>
 
             </form>
@@ -70,11 +79,11 @@
 
             <div class="table-responsive">
 
-                <table class="table-admin">
+                <table class="table-admin mitra-table">
 
                     <thead>
 
-                        <tr>
+                        <tr >
 
                             <th>No</th>
 
@@ -95,8 +104,10 @@
                     <tbody>
 
                         @forelse($mitra as $item)
-
-                            <tr>
+                            <tr 
+                                data-name="{{ strtolower($item->name) }}"
+                                data-website="{{ $item->website ? 'ada' : 'tidak' }}"
+                                data-order="{{ $item->display_order }}">
 
                                 <td>
                                     {{ $loop->iteration + ($mitra->firstItem() - 1) }}
@@ -231,59 +242,62 @@
             </div>
 
             <!-- ===== PAGINATION ===== -->
-                <div class="pagination-controls">
+                <!-- ================= PAGINATION ================= -->
+
                     @if ($mitra->hasPages())
-                        <nav aria-label="Pagination">
-                            <ul class="pagination">
 
-                                {{-- Previous --}}
-                                @if ($mitra->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link">&laquo; Previous</span>
-                                    </li>
-                                @else
-                                    <li class="page-item">
+                        <div class="pagination-wrapper">
+
+                            <nav>
+
+                                <ul class="pagination">
+
+                                    {{-- Previous --}}
+                                    <li class="page-item {{ $mitra->onFirstPage() ? 'disabled' : '' }}">
+
                                         <a class="page-link"
-                                        href="{{ $mitra->previousPageUrl() }}">
-                                            &laquo; Previous
-                                        </a>
-                                    </li>
-                                @endif
+                                            href="{{ $mitra->onFirstPage() ? '#' : $mitra->previousPageUrl() }}">
 
-                                {{-- Nomor Halaman --}}
-                                @foreach ($mitra->getUrlRange(1, $mitra->lastPage()) as $page => $url)
-                                    @if ($page == $mitra->currentPage())
-                                        <li class="page-item active">
-                                            <span class="page-link">{{ $page }}</span>
-                                        </li>
-                                    @else
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                            href="{{ $url }}">
+                                            <i class="fa-solid fa-chevron-left"></i>
+
+                                        </a>
+
+                                    </li>
+
+                                    {{-- Nomor Halaman --}}
+                                    @foreach ($mitra->getUrlRange(1, $mitra->lastPage()) as $page => $url)
+
+                                        <li class="page-item {{ $page == $mitra->currentPage() ? 'active' : '' }}">
+
+                                            <a class="page-link" href="{{ $url }}">
+
                                                 {{ $page }}
+
                                             </a>
+
                                         </li>
-                                    @endif
-                                @endforeach
 
-                                {{-- Next --}}
-                                @if ($mitra->hasMorePages())
-                                    <li class="page-item">
+                                    @endforeach
+
+                                    {{-- Next --}}
+                                    <li class="page-item {{ !$mitra->hasMorePages() ? 'disabled' : '' }}">
+
                                         <a class="page-link"
-                                        href="{{ $mitra->nextPageUrl() }}">
-                                            Next &raquo;
-                                        </a>
-                                    </li>
-                                @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Next &raquo;</span>
-                                    </li>
-                                @endif
+                                            href="{{ $mitra->hasMorePages() ? $mitra->nextPageUrl() : '#' }}">
 
-                            </ul>
-                        </nav>
+                                            <i class="fa-solid fa-chevron-right"></i>
+
+                                        </a>
+
+                                    </li>
+
+                                </ul>
+
+                            </nav>
+
+                        </div>
+
                     @endif
-                </div>
 
         </section>
     </main>
@@ -309,47 +323,31 @@
 
 
 <!-- ===== NOTIFIKASI ===== -->
-<div id="notification" class="notification"></div>
-<script>
 
-    document.addEventListener('DOMContentLoaded', function () {
-
-        @if(session('success'))
-            showNotification("{{ session('success') }}", "success");
-        @endif
-
-        @if(session('error'))
-            showNotification("{{ session('error') }}", "error");
-        @endif
-
-    });
-
-
-    window.mitraRoutes = {
-        update: "{{ url('admin/partners.index') }}"
-    };
-
-    window.storageUrl = "{{ asset('storage') }}";
-</script>
+<script> window.storageUrl = "{{ asset('storage') }}"; </script>
 
 @endsection
 
 @push('scripts')
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script src="{{ asset('js/admin/mitra.js') }}"></script>
+
 @if(session('success'))
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
     Swal.fire({
         icon: 'success',
         title: '{{ session("title") ?? "Berhasil!" }}',
         text: '{{ session("success") }}',
-        confirmButtonColor: '#D4AF37',
+        confirmButtonColor: '#2563eb',
         timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false
     });
+
 });
 </script>
 @endif
@@ -357,16 +355,16 @@ document.addEventListener('DOMContentLoaded', function () {
 @if(session('error'))
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
     Swal.fire({
         icon: 'error',
         title: 'Gagal!',
         text: '{{ session("error") }}',
         confirmButtonColor: '#dc2626'
     });
+
 });
 </script>
 @endif
 
 @endpush
-
-<script src="{{ asset('js/admin/mitra.js') }}"></script>
