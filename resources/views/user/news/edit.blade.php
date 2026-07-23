@@ -114,7 +114,7 @@
                             <span class="required">*</span>
                         </label>
 
-                        <x-tiptap name="content" :value="old('content', $news->content)" placeholder="Masukkan isi berita..." />
+                        <x-tiptap name="content" :value="old('content', $news->content)" placeholder="Masukkan isi berita..." :uploadRoute="route('user.editor.upload')" />
 
                         @error('content')
                             <small class="text-danger">

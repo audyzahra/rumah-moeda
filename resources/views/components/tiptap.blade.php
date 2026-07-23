@@ -3,11 +3,12 @@
     'value' => '',
     'placeholder' => 'Tulis isi di sini...',
     'image' => true,
+    'uploadRoute' => route('admin.editor.upload'),
 ])
 
 <div
     class="tiptap-wrapper"
-    data-upload-url="{{ route('admin.editor.upload') }}"
+    data-upload-url="{{ $uploadRoute }}"
 >
 
     {{-- Toolbar --}}

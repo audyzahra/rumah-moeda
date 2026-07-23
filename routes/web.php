@@ -122,6 +122,8 @@ Route::middleware(['auth', 'verified'])
 
         Route::resource('news', UserNewsController::class);
 
+        Route::post('/upload-image', [EditorUploadController::class, 'store'])
+         ->name('editor.upload');
         /*
         |--------------------------------------------------------------------------
         | Gallery
@@ -201,7 +203,7 @@ Route::middleware(['auth', 'admin'])
 
         Route::post('/upload-image', [EditorUploadController::class, 'store'])
             ->name('editor.upload');
-            
+
         /*
         |--------------------------------------------------------------------------
         | Sidebar Notification (AJAX)
