@@ -18,6 +18,21 @@
                     <p>Tambahkan data anggota struktur organisasi.</p>
                 </div>
             </header>
+            <!-- ================= BREADCRUMB ================= -->
+
+            <div class="page-breadcrumb">
+
+                <a href="{{ route('admin.organization-structures.index') }}">
+
+                    Struktur Organisasi
+
+                </a>
+
+                <span>></span>
+
+                <span>Tambah Berita</span>
+
+            </div>
 
             <div class="card">
 
@@ -115,12 +130,13 @@
                     <div class="d-flex gap-2">
 
                         <a href="{{ route('admin.organization-structures.index') }}" class="btn btn-secondary">
-                            Kembali
+                             <i class="fa-solid fa-xmark"></i>
+                            Batal
                         </a>
 
                         <button type="submit" class="btn btn-primary">
                             <i class="fa-solid fa-save"></i>
-                            Simpan
+                            Simpan Anggota
                         </button>
 
                     </div>

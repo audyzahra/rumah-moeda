@@ -63,7 +63,7 @@ class OrganizationStructureController extends Controller
 
 
         // ===== DATA STRUKTUR =====
-        $struktur = $query->paginate(12);
+        $struktur = $query->paginate(5);
 
 
         // ===== LIST JABATAN UNTUK FILTER =====

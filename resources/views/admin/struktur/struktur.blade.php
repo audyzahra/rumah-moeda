@@ -192,23 +192,77 @@
                     </table>
                 </div>
 
-                <div class="pagination-section">
+                <!-- ================= PAGINATION ================= -->
 
-                    <div class="info-data">
-                        Menampilkan
-                        {{ $struktur->firstItem() ?? 0 }}
-                        -
-                        {{ $struktur->lastItem() ?? 0 }}
-                        dari
-                        {{ $struktur->total() }}
-                        anggota
-                    </div>
+            <div class="pagination-section">
 
-                    <div class="pagination-controls">
-                        {{ $struktur->withQueryString()->links() }}
-                    </div>
+                <div class="info-data">
+
+                    Menampilkan
+
+                    <strong>{{ $struktur->firstItem() ?? 0 }}</strong>
+
+                    -
+
+                    <strong>{{ $struktur->lastItem() ?? 0 }}</strong>
+
+                    dari
+
+                    <strong>{{ $struktur->total() }}</strong>
+
+                    data
 
                 </div>
+
+                <div class="pagination-controls">
+
+                    {{-- Previous --}}
+                    @if ($struktur->onFirstPage())
+
+                        <button class="page-btn" disabled>
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+
+                    @else
+
+                        <a href="{{ $struktur->previousPageUrl() }}" class="page-btn">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
+
+                    @endif
+
+                    <span id="pageInfo">
+
+                        Halaman
+
+                        {{ $struktur->currentPage() }}
+
+                        dari
+
+                        {{ $struktur->lastPage() }}
+
+                    </span>
+
+                    {{-- Next --}}
+                    @if ($struktur->hasMorePages())
+
+                        <a href="{{ $struktur->nextPageUrl() }}" class="page-btn">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+
+                    @else
+
+                        <button class="page-btn" disabled>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+
+                    @endif
+
+                </div>
+
+            </div>
+
+        </section>
 
             </section>
 
