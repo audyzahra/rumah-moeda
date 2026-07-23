@@ -72,283 +72,254 @@
         </form>
 
         {{-- ================= TABLE ================= --}}
-<section class="table-section">
+        <section class="table-section">
 
-    <div class="table-wrapper">
+            <div class="table-wrapper">
 
-        <table class="gallery-table">
+                <table class="gallery-table">
 
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Thumbnail</th>
-                    <th>Judul</th>
-                    <th>Tanggal Kegiatan</th>
-                    <th>Deskripsi</th>
-                    <th>Jumlah Media</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Thumbnail</th>
+                            <th>Judul</th>
+                            <th>Tanggal Kegiatan</th>
+                            <th>Deskripsi</th>
+                            <th>Jumlah Media</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
 
-            <tbody>
+                    <tbody>
 
-                @forelse($galleries as $gallery)
+                        @forelse($galleries as $gallery)
+                            @php
+                                $thumbnail = $gallery->media->first();
+                            @endphp
 
-                    @php
-                        $thumbnail = $gallery->media->first();
-                    @endphp
+                            <tr data-title="{{ strtolower($gallery->title) }}"
+                                data-description="{{ strtolower($gallery->description) }}"
+                                data-date="{{ strtolower(\Carbon\Carbon::parse($gallery->activity_date)->format('d M Y')) }}">
 
-                    <tr
-                        data-title="{{ strtolower($gallery->title) }}"
-                        data-description="{{ strtolower($gallery->description) }}"
-                        data-date="{{ strtolower(\Carbon\Carbon::parse($gallery->activity_date)->format('d M Y')) }}"
-                    >
+                                <td>
+                                    {{ ($galleries->currentPage() - 1) * $galleries->perPage() + $loop->iteration }}
+                                </td>
 
-                        <td>
-                            {{ ($galleries->currentPage() - 1) * $galleries->perPage() + $loop->iteration }}
-                        </td>
+                                <td>
 
-                        <td>
+                                    @if ($thumbnail)
+                                        @if ($thumbnail->type == 'image')
+                                            <img src="{{ asset('storage/' . $thumbnail->file_path) }}"
+                                                class="table-thumbnail" alt="{{ $gallery->title }}">
+                                        @else
+                                            <img src="https://img.youtube.com/vi/{{ $thumbnail->youtube_id }}/hqdefault.jpg"
+                                                class="table-thumbnail" alt="{{ $gallery->title }}">
+                                        @endif
+                                    @else
+                                        <span>-</span>
+                                    @endif
 
-                            @if($thumbnail)
+                                </td>
 
-                                @if($thumbnail->type == 'image')
+                                <td>
+                                    <strong>{{ $gallery->title }}</strong>
+                                </td>
 
-                                    <img
-                                        src="{{ asset('storage/'.$thumbnail->file_path) }}"
-                                        class="table-thumbnail"
-                                        alt="{{ $gallery->title }}">
+                                <td>
+                                    {{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}
+                                </td>
 
-                                @else
+                                <td>
+                                    {{ Str::limit(strip_tags(html_entity_decode($gallery->description)), 80) }}
+                                </td>
 
-                                    <img
-                                        src="https://img.youtube.com/vi/{{ $thumbnail->youtube_id }}/hqdefault.jpg"
-                                        class="table-thumbnail"
-                                        alt="{{ $gallery->title }}">
+                                <td>
+                                    {{ $gallery->media->count() }} Media
+                                </td>
 
-                                @endif
+                                <td>
 
-                            @else
+                                    <div class="action-column">
 
-                                <span>-</span>
+                                        {{-- Detail --}}
+                                        <button type="button" class="action-btn detail" data-title="{{ $gallery->title }}"
+                                            data-date="{{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}"
+                                            data-description="{{ $gallery->description }}"
+                                            data-media='@json($gallery->media)' onclick="showDetail(this)">
 
-                            @endif
+                                            <i class="fa-solid fa-eye"></i>
 
-                        </td>
+                                        </button>
 
-                        <td>
-                            <strong>{{ $gallery->title }}</strong>
-                        </td>
+                                        {{-- Edit --}}
+                                        <a href="{{ route('user.gallery.edit', $gallery->id) }}" class="action-btn edit">
 
-                        <td>
-                            {{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}
-                        </td>
+                                            <i class="fa-solid fa-pen"></i>
 
-                        <td>
-                            {{ Str::limit($gallery->description, 80) }}
-                        </td>
+                                        </a>
 
-                        <td>
-                            {{ $gallery->media->count() }} Media
-                        </td>
+                                        {{-- Delete --}}
+                                        <form action="{{ route('user.gallery.destroy', $gallery->id) }}" method="POST"
+                                            class="delete-form">
 
-                        <td>
+                                            @csrf
+                                            @method('DELETE')
 
-                            <div class="action-column">
+                                            <button type="submit" class="action-btn delete">
 
-                                {{-- Detail --}}
-                                <button
-                                    type="button"
-                                    class="action-btn detail"
-                                    data-title="{{ $gallery->title }}"
-                                    data-date="{{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}"
-                                    data-description="{{ $gallery->description }}"
-                                    data-media='@json($gallery->media)'
-                                    onclick="showDetail(this)">
+                                                <i class="fa-solid fa-trash"></i>
 
-                                    <i class="fa-solid fa-eye"></i>
+                                            </button>
 
-                                </button>
+                                        </form>
 
-                                {{-- Edit --}}
-                                <a
-                                    href="{{ route('user.gallery.edit', $gallery->id) }}"
-                                    class="action-btn edit">
+                                    </div>
 
-                                    <i class="fa-solid fa-pen"></i>
+                                </td>
 
-                                </a>
+                            </tr>
 
-                                {{-- Delete --}}
-                                <form
-                                    action="{{ route('user.gallery.destroy', $gallery->id) }}"
-                                    method="POST"
-                                    class="delete-form">
+                        @empty
 
-                                    @csrf
-                                    @method('DELETE')
+                            <tr>
 
-                                    <button
-                                        type="submit"
-                                        class="action-btn delete">
+                                <td colspan="7" class="empty-table">
+                                    Belum ada dokumentasi.
+                                </td>
 
-                                        <i class="fa-solid fa-trash"></i>
+                            </tr>
+                        @endforelse
 
-                                    </button>
+                    </tbody>
 
-                                </form>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-                @empty
-
-                    <tr>
-
-                        <td colspan="7" class="empty-table">
-                            Belum ada dokumentasi.
-                        </td>
-
-                    </tr>
-
-                @endforelse
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-    <div class="mt-4">
-        {{ $galleries->links() }}
-    </div>
-
-</section>
-    {{-- ================= DETAIL MODAL ================= --}}
-    
-<div id="detailModal" class="modal" style="display:none;">
-
-    <div class="modal-content modal-large">
-
-        <div class="modal-header">
-
-            <h2>Detail Galeri</h2>
-
-            <button
-                type="button"
-                class="close-modal"
-                onclick="closeDetailModal()">
-
-                &times;
-
-            </button>
-
-        </div>
-
-        <div class="modal-body">
-
-            <div class="detail-image">
-
-                <div id="detail_media"></div>
+                </table>
 
             </div>
 
-            <div class="detail-content">
+            <div class="mt-4">
+                {{ $galleries->links() }}
+            </div>
 
-                <div class="detail-item">
+        </section>
+        {{-- ================= DETAIL MODAL ================= --}}
 
-                    <label>Judul</label>
+        <div id="detailModal" class="modal" style="display:none;">
 
-                    <p id="detail_title"></p>
+            <div class="modal-content modal-large">
+
+                <div class="modal-header">
+
+                    <h2>Detail Galeri</h2>
+
+                    <button type="button" class="close-modal" onclick="closeDetailModal()">
+
+                        &times;
+
+                    </button>
 
                 </div>
 
-                <div class="detail-item">
+                <div class="modal-body">
 
-                    <label>Tanggal Kegiatan</label>
+                    <div class="detail-image">
 
-                    <p id="detail_date"></p>
+                        <div id="detail_media"></div>
 
-                </div>
+                    </div>
 
-                <div class="detail-item">
+                    <div class="detail-content">
 
-                    <label>Deskripsi</label>
+                        <div class="detail-item">
 
-                    <p id="detail_description"></p>
+                            <label>Judul</label>
+
+                            <p id="detail_title"></p>
+
+                        </div>
+
+                        <div class="detail-item">
+
+                            <label>Tanggal Kegiatan</label>
+
+                            <p id="detail_date"></p>
+
+                        </div>
+
+                        <div class="detail-item">
+
+                            <label>Deskripsi</label>
+
+                            <p id="detail_description"></p>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
             </div>
 
         </div>
+        @push('scripts')
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    </div>
+            <script src="{{ asset('js/admin/galeri.js') }}"></script>
 
-</div>
-    @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            @if (session('success'))
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
 
-        <script src="{{ asset('js/admin/galeri.js') }}"></script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: '{{ session('title') ?? 'Berhasil!' }}',
+                            text: '{{ session('success') }}',
+                            confirmButtonColor: '#D4AF37',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
 
-        @if (session('success'))
+                    });
+                </script>
+            @endif
+
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: '{{ session('title') ?? 'Berhasil!' }}',
-                        text: '{{ session('success') }}',
-                        confirmButtonColor: '#D4AF37',
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    });
+                    document.querySelectorAll('.delete-form').forEach(form => {
 
-                });
-            </script>
-        @endif
+                        form.addEventListener('submit', function(e) {
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
+                            e.preventDefault();
 
-                document.querySelectorAll('.delete-form').forEach(form => {
+                            Swal.fire({
+                                title: 'Hapus Galeri?',
+                                text: 'Galeri yang dihapus tidak dapat dikembalikan.',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonText: 'Ya, Hapus',
+                                cancelButtonText: 'Batal',
+                                confirmButtonColor: '#dc3545',
+                                cancelButtonColor: '#6c757d',
+                                reverseButtons: true
+                            }).then((result) => {
 
-                    form.addEventListener('submit', function(e) {
+                                if (result.isConfirmed) {
+                                    form.submit();
+                                }
 
-                        e.preventDefault();
-
-                        Swal.fire({
-                            title: 'Hapus Galeri?',
-                            text: 'Galeri yang dihapus tidak dapat dikembalikan.',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: 'Ya, Hapus',
-                            cancelButtonText: 'Batal',
-                            confirmButtonColor: '#dc3545',
-                            cancelButtonColor: '#6c757d',
-                            reverseButtons: true
-                        }).then((result) => {
-
-                            if (result.isConfirmed) {
-                                form.submit();
-                            }
+                            });
 
                         });
 
                     });
 
                 });
+            </script>
+        @endpush
 
-            });
-        </script>
+    @endsection
+
+    @push('scripts')
+        <script src="{{ asset('js/admin/galeri.js') }}"></script>
     @endpush
-
-@endsection
-
-@push('scripts')
-    <script src="{{ asset('js/admin/galeri.js') }}"></script>
-@endpush
