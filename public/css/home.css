@@ -349,9 +349,9 @@ body {
 
 
 .org-card {
-    width: 150px;
-    min-height: 150px;
-    padding: 15px;
+    width: 210px;
+    min-height: 180px;
+    padding: 20px;
     text-align: center;
 
     padding: 15px;
@@ -367,8 +367,8 @@ body {
 
 .org-card img {
 
-    width: 55px;
-    height: 55px;
+    width: 75px;
+    height: 75px;
 
     border-radius: 50%;
 
@@ -386,7 +386,7 @@ body {
 
     /* display: block; */
 
-    font-size: 13px;
+    font-size: 16px;
 
     margin: 0;
 
@@ -405,7 +405,7 @@ body {
     margin-top: 5px;
     text-align: center;
 
-    font-size: 11px;
+    font-size: 13px;
 
     color: #777;
 
