@@ -85,6 +85,7 @@
                             <th>Judul</th>
                             <th>Tanggal Kegiatan</th>
                             <th>Deskripsi</th>
+                            <th>Penulis</th>
                             <th>Jumlah Media</th>
                             <th>Aksi</th>
                         </tr>
@@ -131,6 +132,10 @@
 
                                 <td>
                                     {{ Str::limit(strip_tags(html_entity_decode($gallery->description)), 80) }}
+                                </td>
+                                
+                                <td>
+                                    {{ $gallery->author?->name ?? '-' }}
                                 </td>
 
                                 <td>
