@@ -85,6 +85,7 @@
                             <th>Judul</th>
                             <th>Tanggal Kegiatan</th>
                             <th>Deskripsi</th>
+                            <th>Penulis</th>
                             <th>Jumlah Media</th>
                             <th>Aksi</th>
                         </tr>
@@ -132,6 +133,10 @@
                                 <td>
                                     {{ Str::limit(strip_tags(html_entity_decode($gallery->description)), 80) }}
                                 </td>
+                                
+                                <td>
+                                    {{ $gallery->author?->name ?? '-' }}
+                                </td>
 
                                 <td>
                                     {{ $gallery->media->count() }} Media
@@ -144,7 +149,7 @@
                                         {{-- Detail --}}
                                         <button type="button" class="action-btn detail" data-title="{{ $gallery->title }}"
                                             data-date="{{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}"
-                                            data-description="{{ $gallery->description }}"
+                                            data-description='@json($gallery->description)'
                                             data-media='@json($gallery->media)' onclick="showDetail(this)">
 
                                             <i class="fa-solid fa-eye"></i>

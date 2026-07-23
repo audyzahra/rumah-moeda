@@ -111,6 +111,12 @@
 
                                         <div class="action-buttons">
 
+                                            <button type="button" class="btn-detail" data-question="{{ $faq->question }}"
+                                                data-answer="{{ html_entity_decode($faq->answer) }}">
+                                                <i class="fa-solid fa-eye"></i>
+                                                Detail
+                                            </button>
+
                                             <a href="{{ route('admin.faq.edit', $faq) }}" class="btn-edit">
 
                                                 <i class="fa-solid fa-pen"></i>
@@ -174,6 +180,55 @@
         </div>
 
     </section>
+
+
+    <!-- ================= MODAL DETAIL FAQ ================= -->
+
+    <div class="faq-modal" id="faqModal">
+
+        <div class="faq-modal-content">
+
+            <div class="faq-modal-header">
+
+                <h3>
+                    <i class="fa-solid fa-circle-question"></i>
+                    Detail FAQ
+                </h3>
+
+                <button class="faq-close" id="closeFaqModal">
+                    &times;
+                </button>
+
+            </div>
+
+
+            <div class="faq-modal-body">
+
+
+                <div class="detail-item">
+
+                    <label>Pertanyaan</label>
+
+                    <p id="detailQuestion"></p>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <label>Jawaban</label>
+
+                    <div id="detailAnswer"></div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
 
 @endsection
 

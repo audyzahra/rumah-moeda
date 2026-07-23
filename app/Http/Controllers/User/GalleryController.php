@@ -16,8 +16,10 @@ class GalleryController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Gallery::with('media')
-            ->where('author_id', Auth::id());
+        $query = Gallery::with([
+            'media',
+            'author'
+        ])->where('author_id', Auth::id());
 
         if ($request->filled('search')) {
 
@@ -164,7 +166,10 @@ class GalleryController extends Controller
     {
         abort_if($gallery->author_id!=Auth::id(),403);
 
-        $gallery->load('media');
+        $gallery->load([
+            'media',
+            'author'
+        ]);
 
         return response()->json($gallery);
     }
@@ -176,7 +181,10 @@ class GalleryController extends Controller
     {
         abort_if($gallery->author_id!=Auth::id(),403);
 
-        $gallery->load('media');
+        $gallery->load([
+            'media',
+            'author'
+        ]);
 
         return view('user.gallery.edit',compact('gallery'));
     }
