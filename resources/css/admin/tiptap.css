@@ -24,8 +24,8 @@
 
     padding:12px 14px;
 
-    background:#111827;
-    border-bottom:1px solid #1f2937;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    border-bottom:1px solid #1e40af;
 
     position:sticky;
     top:0;
@@ -42,11 +42,9 @@
     border-radius:10px;
 
     background:transparent;
-
     color:#fff;
 
     cursor:pointer;
-
     transition:.25s;
 
     display:flex;
@@ -59,19 +57,14 @@
 
 .tiptap-toolbar button:hover{
 
-    background:#374151;
+    background:rgba(255,255,255,.18);
 
 }
 
 .tiptap-toolbar button.is-active{
 
-    background:#2563eb;
-
-}
-
-.tiptap-toolbar button:active{
-
-    transform:scale(.95);
+    background:#ffffff;
+    color:#2563eb;
 
 }
 
@@ -351,4 +344,21 @@
 
     }
 
+}
+
+.tiptap-editor {
+    min-height: 420px;
+    padding: 25px;
+    cursor: text;
+}
+
+.tiptap-editor .ProseMirror,
+.ProseMirror {
+    min-height: 370px;
+    height: 100%;
+    outline: none;
+}
+
+.ProseMirror p:first-child {
+    min-height: 1.5em;
 }
