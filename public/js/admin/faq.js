@@ -31,3 +31,69 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+// UNTUK MODAL DETAIL
+
+document.addEventListener("DOMContentLoaded", function(){
+
+
+    const modal = document.getElementById("faqModal");
+
+    const closeBtn = document.getElementById("closeFaqModal");
+
+    const question = document.getElementById("detailQuestion");
+
+    const answer = document.getElementById("detailAnswer");
+
+
+    const detailButtons = document.querySelectorAll(".btn-detail");
+
+
+
+    detailButtons.forEach(button => {
+
+
+        button.addEventListener("click", function(){
+
+
+            question.innerHTML = this.dataset.question;
+
+
+            answer.innerHTML = this.dataset.answer;
+
+
+            modal.classList.add("active");
+
+
+        });
+
+
+    });
+
+
+
+    closeBtn.addEventListener("click", function(){
+
+
+        modal.classList.remove("active");
+
+
+    });
+
+
+
+    modal.addEventListener("click", function(e){
+
+
+        if(e.target === modal){
+
+            modal.classList.remove("active");
+
+        }
+
+
+    });
+
+
+
+});
