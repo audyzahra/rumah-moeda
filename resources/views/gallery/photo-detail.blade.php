@@ -3,7 +3,7 @@
 @section('title', $gallery->title)
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/photo-detail.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/galeri.css') }}">
 @endpush
 
 @section('content')
