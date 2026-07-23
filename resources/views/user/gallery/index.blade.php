@@ -144,7 +144,7 @@
                                         {{-- Detail --}}
                                         <button type="button" class="action-btn detail" data-title="{{ $gallery->title }}"
                                             data-date="{{ \Carbon\Carbon::parse($gallery->activity_date)->format('d M Y') }}"
-                                            data-description="{{ $gallery->description }}"
+                                            data-description='@json($gallery->description)'
                                             data-media='@json($gallery->media)' onclick="showDetail(this)">
 
                                             <i class="fa-solid fa-eye"></i>

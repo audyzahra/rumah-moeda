@@ -115,7 +115,7 @@ function editGallery(button, id, title, date, description) {
 
 });
 
-    
+
 
     }
 
@@ -307,8 +307,8 @@ function showDetail(button) {
     document.getElementById("detail_date").textContent =
         button.dataset.date;
 
-    document.getElementById("detail_description").textContent =
-        button.dataset.description;
+    document.getElementById("detail_description").innerHTML =
+    JSON.parse(button.dataset.description);
 
     const mediaContainer = document.getElementById("detail_media");
 
