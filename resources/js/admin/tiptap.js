@@ -117,6 +117,9 @@ function initTiptap() {
 
         wrapper.editor = editor;
 
+        editorElement.addEventListener("click", () => {
+            editor.chain().focus().run();
+        });
         editorElement.addEventListener("dragover", (e) => {
             e.preventDefault();
         });
