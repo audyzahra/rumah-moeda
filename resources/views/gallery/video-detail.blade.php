@@ -1,81 +1,151 @@
-    @extends('layouts.app')
+@extends('layouts.app')
 
-    @section('title', $gallery->title)
+@section('title', $gallery->title)
 
-    @push('styles')
-        <link rel="stylesheet" href="{{ asset('css/galeri.css') }}">
-    @endpush
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/video-detail.css') }}">
+@endpush
 
-    @section('content')
+@section('content')
 
-        <section class="galeri-detail-header">
+<div class="video-detail-page">
 
-            <div class="container">
+    <section class="video-detail-header">
 
-                <a href="{{ route('gallery.videos') }}" class="back-button">
+        <div class="video-detail-container">
 
-                    <i class="fa-solid fa-arrow-left"></i>
+            <a href="{{ route('gallery.videos') }}" class="back-button">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Kembali ke Galeri Video</span>
+            </a>
 
-                    Kembali ke Galeri Video
+            <h1>{{ $gallery->title }}</h1>
 
-                </a>
+            @if($gallery->activity_date)
+                <p class="tanggal">
+                    <i class="fa-regular fa-calendar"></i>
+                    {{ \Carbon\Carbon::parse($gallery->activity_date)->translatedFormat('d F Y') }}
+                </p>
+            @endif
 
-                <h1>{{ $gallery->title }}</h1>
+        </div>
 
-                @if ($gallery->activity_date)
-                    <p class="tanggal">
+    </section>
 
-                        <i class="fa-regular fa-calendar"></i>
+    @php
+        $hero = $gallery->media->first();
+    @endphp
 
-                        {{ \Carbon\Carbon::parse($gallery->activity_date)->translatedFormat('d F Y') }}
+    @if($hero)
 
-                    </p>
-                @endif
+        <section class="hero-video">
 
-                @if ($gallery->description)
-                    <div class="deskripsi">
-                        {!! $gallery->description !!}
-                    </div>
+            <div class="video-detail-container">
+
+                @if($hero->video_url)
+
+                    <iframe
+                        class="hero-player"
+                        src="https://www.youtube.com/embed/{{ $hero->youtube_id }}"
+                        title="{{ $gallery->title }}"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+
+                @else
+
+                    <video
+                        class="hero-player"
+                        controls
+                        preload="metadata">
+
+                        <source
+                            src="{{ asset('storage/'.$hero->file_path) }}"
+                            type="video/mp4">
+
+                        Browser Anda tidak mendukung video.
+
+                    </video>
+
                 @endif
 
             </div>
 
         </section>
 
+    @endif
+
+
+    {{-- Video lainnya (jika ada) --}}
+    @if($gallery->media->count() > 1)
+
         <section class="video-detail-section">
 
-            <div class="video-grid">
+            <div class="video-detail-container">
 
-                @forelse($gallery->media as $media)
-                    <div class="video-card">
+                <div class="video-grid">
 
-                        @if ($media->youtube_id)
-                            <div class="youtube-wrapper">
+                    @foreach($gallery->media->skip(1) as $media)
 
-                                <iframe src="https://www.youtube.com/embed/{{ $media->youtube_id }}"
-                                    title="{{ $gallery->title }}" frameborder="0"
+                        <div class="video-card">
+
+                            @if($media->video_url)
+
+                                <iframe
+                                    src="https://www.youtube.com/embed/{{ $media->youtube_id }}"
+                                    title="{{ $gallery->title }}"
+                                    frameborder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     allowfullscreen>
                                 </iframe>
 
-                            </div>
-                        @endif
+                            @else
 
-                    </div>
+                                <video controls preload="metadata">
 
-                @empty
+                                    <source
+                                        src="{{ asset('storage/'.$media->file_path) }}"
+                                        type="video/mp4">
 
-                    <div class="empty-gallery">
+                                    Browser Anda tidak mendukung video.
 
-                        <i class="fa-solid fa-video-slash"></i>
+                                </video>
 
-                        <h3>Tidak ada video.</h3>
+                            @endif
 
-                    </div>
-                @endforelse
+                        </div>
+
+                    @endforeach
+
+                </div>
 
             </div>
 
         </section>
 
-    @endsection
+    @endif
+
+
+    {{-- Deskripsi --}}
+    @if($gallery->description)
+
+        <section class="gallery-description">
+
+            <div class="video-detail-container">
+
+                <div class="deskripsi">
+
+                    {!! $gallery->description !!}
+
+                </div>
+
+            </div>
+
+        </section>
+
+    @endif
+
+</div>
+
+@endsection
