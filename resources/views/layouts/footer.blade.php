@@ -12,9 +12,9 @@
 
             <h3>{{ $setting->website_name }}</h3>
 
-            <p>
-                {{ $setting->website_description }}
-            </p>
+            <div class="website-description">
+                {!! $setting->website_description !!}
+            </div>
         </div>
 
         <!-- Kontak -->
