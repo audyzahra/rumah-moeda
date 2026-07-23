@@ -26,6 +26,7 @@
 
         <input
             type="text"
+            id="searchBerita"
             placeholder="Cari dokumentasi..."
         >
 
@@ -33,13 +34,11 @@
 
     <div class="sort-box">
 
-        <select>
-
-            <option>Terbaru</option>
-            <option>Terlama</option>
-            <option>Judul A-Z</option>
-            <option>Judul Z-A</option>
-
+        <select id="sortBerita">
+            <option value="terbaru">Terbaru</option>
+            <option value="terlama">Terlama</option>
+            <option value="az">Judul A-Z</option>
+            <option value="za">Judul Z-A</option>
         </select>
 
     </div>
@@ -53,7 +52,10 @@
     <section class="berita-list">
 
         @forelse($news as $item)
-            <div class="berita-card">
+            <div class="berita-card"
+                data-title="{{ strtolower($item->title) }}"
+                data-content="{{ strtolower(strip_tags($item->content)) }}"
+                data-date="{{ \Carbon\Carbon::parse($item->publish_date)->timestamp }}">
 
                 @if ($item->thumbnail)
                     <img src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}">
@@ -161,5 +163,66 @@
             }
         }
     </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const searchInput = document.getElementById("searchBerita");
+    const sortSelect = document.getElementById("sortBerita");
+    const beritaList = document.querySelector(".berita-list");
+
+    function filterAndSort() {
+
+        const keyword = searchInput.value.toLowerCase().trim();
+
+        let cards = Array.from(document.querySelectorAll(".berita-card"));
+
+        // SEARCH
+        cards.forEach(function(card) {
+
+            const title = card.dataset.title;
+            const content = card.dataset.content;
+
+            if (title.includes(keyword) || content.includes(keyword)) {
+                card.style.display = "flex";
+            } else {
+                card.style.display = "none";
+            }
+
+        });
+
+        // SORT
+        cards.sort(function(a, b) {
+
+            switch (sortSelect.value) {
+
+                case "terbaru":
+                    return Number(b.dataset.date) - Number(a.dataset.date);
+
+                case "terlama":
+                    return Number(a.dataset.date) - Number(b.dataset.date);
+
+                case "az":
+                    return a.dataset.title.localeCompare(b.dataset.title);
+
+                case "za":
+                    return b.dataset.title.localeCompare(a.dataset.title);
+
+                default:
+                    return 0;
+            }
+
+        });
+
+        cards.forEach(function(card) {
+            beritaList.appendChild(card);
+        });
+
+    }
+
+    searchInput.addEventListener("keyup", filterAndSort);
+    sortSelect.addEventListener("change", filterAndSort);
+
+});
+</script>
 
 @endsection
