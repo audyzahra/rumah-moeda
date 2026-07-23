@@ -302,111 +302,7 @@
     transform: scale(1.03);
 }
 
-/* ==========================
-   Pagination
-========================== */
 
-.pagination-wrapper {
-
-    display: flex;
-
-    justify-content: flex-end;
-
-    align-items: center;
-
-    padding-top: 20px;
-
-}
-
-.pagination {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    margin: 0;
-
-    padding: 0;
-
-    list-style: none;
-
-}
-
-.page-item {
-
-    list-style: none;
-
-}
-
-.page-link {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    min-width: 38px;
-
-    height: 38px;
-
-    padding: 0 14px;
-
-    border: 1px solid #dbe4ee;
-
-    border-radius: 10px;
-
-    background: #fff;
-
-    color: #475569;
-
-    text-decoration: none;
-
-    font-size: 14px;
-
-    font-weight: 500;
-
-    transition: all .25s ease;
-
-}
-
-.page-link:hover {
-
-    background: #eff6ff;
-
-    color: #2563eb;
-
-    border-color: #2563eb;
-
-}
-
-.page-item.active .page-link {
-
-    background: #2563eb;
-
-    color: #fff;
-
-    border-color: #2563eb;
-
-    box-shadow: 0 4px 12px rgba(37, 99, 235, .20);
-
-}
-
-.page-item.disabled .page-link {
-
-    background: #f8fafc;
-
-    color: #94a3b8;
-
-    border-color: #e2e8f0;
-
-    cursor: not-allowed;
-
-    pointer-events: none;
-
-}
 
 /* ========================================
    MODAL (Bootstrap Override)
@@ -622,7 +518,8 @@
 ========================================================= */
 
 .topbar{
-    margin-bottom:25px;
+    margin-bottom:1px;
+    
 }
 
 .topbar h1{
@@ -633,7 +530,7 @@
 
 .topbar p{
     color:#6b7280;
-    font-size:15px;
+   
 }
 
 /* =========================================================
@@ -667,31 +564,6 @@
     border-radius:18px;
     overflow:hidden;
     box-shadow:0 10px 25px rgba(0,0,0,.08);
-}
-
-.settings-card .card-header{
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
-    color:#fff;
-    padding:22px 28px;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:15px;
-}
-
-.settings-card .card-header h3{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin:0;
-    font-size:22px;
-}
-
-.settings-card .card-header p{
-    margin-top:6px;
-    opacity:.9;
 }
 
 .settings-card .card-body{
@@ -897,6 +769,67 @@ textarea.form-control{
 .table-admin tbody tr:hover{
     background:#f8fafc;
 }
+
+/* ===== PAGINATION ===== */
+
+.pagination-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.info-data {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-btn{
+    width: 36px;
+    height: 36px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fff;
+    color: #475569;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.page-btn:hover{
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+}
+
+.page-btn:disabled,
+.page-btn.disabled{
+    opacity: .4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.page-btn i{
+    pointer-events: none;
+}
+
+#pageInfo {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+}
+
 /* ================= ACTION BUTTONS ================= */
 
 .action-buttons {

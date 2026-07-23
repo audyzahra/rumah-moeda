@@ -74,6 +74,17 @@
 
         </li>
 
+        <!-- Portofolio -->
+        <li class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.gallery.index') }}">
+                <i class="fa-solid fa-images"></i>
+                <span>Portofolio</span>
+
+                <!--
+                <span class="badge">15</span> -->
+            </a>
+        </li>
+
         <!-- Gallery -->
         <li class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
             <a href="{{ route('admin.gallery.index') }}">
