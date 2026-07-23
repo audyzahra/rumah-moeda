@@ -76,7 +76,7 @@ class PartnerController extends Controller
 
     }
 
-    $mitra = $query->paginate(8)->withQueryString();
+    $mitra = $query->paginate(5)->withQueryString();
 
     return view('admin.mitra.mitra', compact('mitra'));
 }
