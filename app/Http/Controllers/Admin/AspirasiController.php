@@ -16,13 +16,12 @@ class AspirasiController extends Controller
 
     public function index()
     {
-        // Reset badge sidebar karena halaman Aspirasi sudah dibuka
         ContactMessage::where('notif_sidebar', 0)
             ->update([
                 'notif_sidebar' => 1
             ]);
 
-        $messages = ContactMessage::latest()->get();
+        $messages = ContactMessage::latest()->paginate(5);
 
         $totalMessages = ContactMessage::count();
 

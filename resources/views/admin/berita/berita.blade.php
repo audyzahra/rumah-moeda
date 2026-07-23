@@ -101,9 +101,9 @@
 
                 @forelse($news as $index => $item)
                     <tr data-title="{{ strtolower($item->title) }}" data-category="{{ $item->category_id }}">
-
-                        <td>{{ $index + 1 }}</td>
-
+                            <td>
+                                {{ $news->firstItem() + $index }}
+                            </td>
                         <td>
                             @if ($item->thumbnail)
                                 <img src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}"
@@ -179,8 +179,78 @@
             </tbody>
 
         </table>
+        <!-- ================= PAGINATION ================= -->
+
+        <div class="pagination-section">
+
+            <div class="info-data">
+
+                Menampilkan
+
+                <strong>{{ $news->firstItem() ?? 0 }}</strong>
+
+                -
+
+                <strong>{{ $news->lastItem() ?? 0 }}</strong>
+
+                dari
+
+                <strong>{{ $news->total() }}</strong>
+
+                data
+
+            </div>
+
+            <div class="pagination-controls">
+
+                {{-- Previous --}}
+                @if ($news->onFirstPage())
+
+                    <button class="page-btn" disabled>
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                @else
+
+                    <a href="{{ $news->previousPageUrl() }}" class="page-btn">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+
+                @endif
+
+                <span id="pageInfo">
+
+                    Halaman
+
+                    {{ $news->currentPage() }}
+
+                    dari
+
+                    {{ $news->lastPage() }}
+
+                </span>
+
+                {{-- Next --}}
+                @if ($news->hasMorePages())
+
+                    <a href="{{ $news->nextPageUrl() }}" class="page-btn">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                @else
+
+                    <button class="page-btn" disabled>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+
+                @endif
+
+            </div>
+
+        </div>
 
     </div>
+    
     {{-- ===========================
             MODAL TAMBAH / EDIT
     ============================ --}}

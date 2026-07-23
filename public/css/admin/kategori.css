@@ -14,19 +14,36 @@
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:30px;
 }
 
 .kategori-header h1{
-    font-size:52px;
-    font-weight:700;
-    color:#1F2937;
-    margin-bottom:8px;
+  font-size: calc(1.375rem + 1.5vw);
 }
 
 .kategori-header p{
-    font-size:18px;
-    color:#6B7280;
+    color:#666;
+}
+
+/* =========================================
+   BREADCRUMB
+========================================= */
+
+.page-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 24px;
+    font-size: 14px;
+}
+
+.page-breadcrumb a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.page-breadcrumb span:last-child {
+    color: #6b7280;
 }
 
 /* ==========================================
@@ -51,8 +68,8 @@
 }
 
 .btn-batal{
-    background:#2563EB;
-    color:#fff;
+    background: #e5e7eb;
+    color: #374151;
     text-decoration:none;
     padding:12px 24px;
     border-radius:12px;
@@ -60,28 +77,35 @@
     align-items:center;
     gap:8px;
     transition:.3s;
+        font-weight: 600;
 }
 
 .btn-batal:hover{
-    background:#5b8fdf;
+    background:#d1d5db;
 }
 
 .btn-simpan{
-    background:#22C55E;
+    background:#2563eb;
     color:#fff;
     border:none;
     padding:12px 24px;
     border-radius:12px;
     cursor:pointer;
-    display:flex;
+    display:inline-flex;
     align-items:center;
     gap:8px;
     font-weight:600;
     text-decoration:none;
+    transition:.3s;
 }
 
 .btn-simpan:hover{
-    background:#16A34A;
+    background:#1d4ed8;
+}
+
+.btn-batal i,
+.btn-simpan i{
+    font-size:15px;
 }
 
 /* ==========================================
@@ -355,12 +379,62 @@
     color:#9CA3AF;
 }
 
-/* ==========================================
-   PAGINATION
-========================================== */
+/* ===== PAGINATION ===== */
 
-.pagination-wrapper{
-    margin-top:25px;
-    display:flex;
-    justify-content:flex-end;
+.pagination-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.info-data {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-btn{
+    width: 36px;
+    height: 36px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fff;
+    color: #475569;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.page-btn:hover{
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+}
+
+.page-btn:disabled,
+.page-btn.disabled{
+    opacity: .4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.page-btn i{
+    pointer-events: none;
+}
+
+#pageInfo {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
 }

@@ -69,31 +69,24 @@
 
     <!-- ================= FILTER ================= -->
 
-    <div class="filter-section">
+        <div class="filter-section">
+            <div class="filter-left">
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="Cari nama atau email...">
 
-        <div class="filter-left">
+                <select
+                    id="filterStatus"
+                    class="filter-select">
 
-            <input type="text" id="searchInput" class="search-input" placeholder="Cari nama atau email...">
-
-            <select id="filterStatus" class="filter-select">
-
-                <option value="">
-                    Semua Status
-                </option>
-
-                <option value="0">
-                    Belum Dibaca
-                </option>
-
-                <option value="1">
-                    Sudah Dibaca
-                </option>
-
-            </select>
-
+                    <option value="">Semua Status</option>
+                    <option value="0">Belum Dibaca</option>
+                    <option value="1">Sudah Dibaca</option>
+                </select>
+            </div>
         </div>
-
-    </div>
 
     <!-- ================= TABLE ================= -->
     <div class="table-section">
@@ -154,7 +147,7 @@
 
                             <td>
 
-                                {{ \Illuminate\Support\Str::limit($message->message, 60) }}
+                                {{ \Illuminate\Support\Str::limit($message->message, 10) }}
 
                             </td>
 
@@ -251,28 +244,64 @@
         <div class="pagination-section">
 
             <div class="info-data">
+
                 Menampilkan
-                <span id="startData">0</span>
+
+                <strong>{{ $messages->firstItem() ?? 0 }}</strong>
+
                 -
-                <span id="endData">0</span>
+
+                <strong>{{ $messages->lastItem() ?? 0 }}</strong>
+
                 dari
-                <span id="totalData">0</span>
+
+                <strong>{{ $messages->total() }}</strong>
+
                 data
+
             </div>
 
             <div class="pagination-controls">
 
-                <button class="page-btn" id="prevBtn" onclick="prevPage()">
-                    <i class="fa-solid fa-chevron-left"></i>
-                </button>
+                {{-- Tombol Previous --}}
+                @if($messages->onFirstPage())
+
+                    <button class="page-btn" disabled>
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                @else
+
+                    <a href="{{ $messages->previousPageUrl() }}" class="page-btn">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+
+                @endif
 
                 <span id="pageInfo">
-                    Halaman 1
+
+                    Halaman {{ $messages->currentPage() }}
+
+                    dari
+
+                    {{ $messages->lastPage() }}
+
                 </span>
 
-                <button class="page-btn" id="nextBtn" onclick="nextPage()">
-                    <i class="fa-solid fa-chevron-right"></i>
-                </button>
+                {{-- Tombol Next --}}
+                @if($messages->hasMorePages())
+
+                    <a href="{{ $messages->nextPageUrl() }}" class="page-btn">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                @else
+
+                    <button class="page-btn" disabled>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+
+                @endif
 
             </div>
 

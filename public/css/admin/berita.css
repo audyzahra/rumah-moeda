@@ -7,7 +7,7 @@
 
 .berita-container{
     width:100%;
-    padding:30px;
+    padding:40px 40px 0px 40px;
 }
 
 /* ===== HEADER ===== */
@@ -21,15 +21,11 @@
 }
 
 .berita-header h1{
-    font-size:38px;
-    font-weight:700;
-    color:#1f2937;
-    margin-bottom:8px;
+    font-size: calc(1.375rem + 1.5vw);
 }
 
 .berita-header p{
-    color:#6b7280;
-    font-size:16px;
+    color:#666;
 }
 
 .header-action{
@@ -53,7 +49,7 @@
     text-decoration:none; 
     transition:.25s;
     box-shadow:0 8px 20px rgba(59,130,246,.25);
-    
+    margin-top: 20px;
 }
 
 .btn-tambah:hover{
@@ -249,13 +245,14 @@
 
 /* TABEL BERITA */
 .table-container{
-    width:100%;
-    overflow-x:auto;
     background:#fff;
-    border-radius:12px;
+    border-radius:16px;
     box-shadow:0 2px 10px rgba(0,0,0,.06);
+    overflow:hidden;
 }
-
+.table-wrapper{
+    overflow-x:auto;
+}
 .berita-table{
     width:100%;
     border-collapse:collapse;
@@ -291,7 +288,67 @@
     object-fit:cover;
     border-radius:8px;
 }
+/* ===== PAGINATION ===== */
 
+.pagination-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.info-data {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-btn{
+    width: 36px;
+    height: 36px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fff;
+    color: #475569;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.page-btn:hover{
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+}
+
+.page-btn:disabled,
+.page-btn.disabled{
+    opacity: .4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.page-btn i{
+    pointer-events: none;
+}
+
+#pageInfo {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+}
+
+/* berita */
 .news-title strong{
     display:block;
     margin-bottom:6px;
@@ -470,77 +527,6 @@
 
 }
 
-/* ===== PAGINATION ===== */
-
-.pagination-section{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-top:30px;
-
-    padding-top:20px;
-
-    border-top:1px solid #e5e7eb;
-
-}
-
-.info-data{
-
-    color:#6b7280;
-
-    font-size:14px;
-
-}
-
-.pagination-controls{
-
-    display:flex;
-
-    gap:10px;
-
-}
-
-.page-btn{
-
-    width:38px;
-    height:38px;
-
-    border:none;
-
-    background:#f3f4f6;
-
-    border-radius:10px;
-
-    cursor:pointer;
-
-    transition:.25s;
-
-}
-
-.page-btn:hover{
-
-    background:#3b82f6;
-    color:#fff;
-
-}
-
-.page-btn:disabled{
-
-    opacity:.4;
-    cursor:not-allowed;
-
-}
-
-#pageInfo{
-
-    font-weight:600;
-    color:#374151;
-
-}
 /* ==========================================
    BERITA.CSS
    Part 3 - Modal
@@ -735,12 +721,12 @@
 }
 
 .modal-footer .btn-batal {
-    background: #f3f4f6;
-    color: #374151;
+    background:#e5e7eb;
+    color:#374151;
 }
 
 .modal-footer .btn-batal:hover {
-    background: #e5e7eb;
+    background: #d1d5db;
 }
 
 .modal-footer .btn-simpan {
@@ -1179,42 +1165,28 @@ input[type="file"]:hover{
 /* ==========================
    HALAMAN TAMBAH / EDIT BERITA
 ========================== */
+/* =========================================
+   BREADCRUMB
+========================================= */
 
-.back-wrapper{
-    margin-bottom:18px;
+.page-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 24px;
+    font-size: 14px;
 }
 
-.btn-back{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-
-    padding:10px 18px;
-
-    background:#2563eb;
-    color:#fff;
-
-    text-decoration:none;
-
-    border:1px solid #2563eb;
-    border-radius:10px;
-
-    font-size:15px;
-    font-weight:600;
-
-    transition:.25s;
+.page-breadcrumb a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
 }
 
-.btn-back:hover{
-    background:#2563eb;
-    border-color:#2563eb;
-    color:#fff;
-    transform:translateX(-2px);
+.page-breadcrumb span:last-child {
+    color: #6b7280;
 }
 
-.berita-header{
-    margin-bottom:25px;
-}
 /* ==========================================
    BERITA.CSS
    Part 5 - Responsive & Utilities
