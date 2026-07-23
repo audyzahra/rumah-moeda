@@ -351,3 +351,23 @@
 .google-visualization-orgchart-node .org-card {
     margin: auto;
 }
+
+/* Hilangkan warna biru bawaan Google */
+.google-visualization-orgchart-node{
+
+    background:#fffdf5 !important;
+    border:2px solid #d4af37 !important;
+    border-radius:14px !important;
+    box-shadow:0 4px 12px rgba(0,0,0,.15) !important;
+    padding:0 !important;
+
+}
+
+/* Warna garis */
+.google-visualization-orgchart-lineleft,
+.google-visualization-orgchart-lineright,
+.google-visualization-orgchart-linebottom{
+
+    border-color:#d4af37 !important;
+
+}

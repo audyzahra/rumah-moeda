@@ -334,7 +334,7 @@ function showDetail(button) {
                     <div class="detail-media-item">
                         <img
                             src="/storage/${media.file_path}"
-                            class="detail-image">
+                            class="detail-photo">
                     </div>
                 `;
 
