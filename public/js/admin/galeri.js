@@ -134,7 +134,9 @@ function closeEditModal() {
 
 }
 
-// untuk tambah foto di edit
+/* ==========================================
+   TAMBAH FOTO HALAMAN EDIT
+========================================== */
 const btnEditAddPhoto = document.getElementById("btn-edit-add-photo");
 const editPhotoContainer = document.getElementById("edit-photo-container");
 
@@ -144,14 +146,26 @@ if (btnEditAddPhoto && editPhotoContainer) {
 
         const div = document.createElement("div");
 
-        div.classList.add("form-group");
+        div.classList.add("form-group", "photo-item");
 
         div.innerHTML = `
-            <input
-                type="file"
-                name="images[]"
-                class="form-control"
-                accept=".jpg,.jpeg,.png,.webp">
+            <div class="input-with-action">
+
+                <input
+                    type="file"
+                    name="images[]"
+                    class="form-control"
+                    accept=".jpg,.jpeg,.png,.webp">
+
+                <button
+                    type="button"
+                    class="btn-remove">
+
+                    <i class="fa-solid fa-trash"></i>
+
+                </button>
+
+            </div>
         `;
 
         editPhotoContainer.appendChild(div);
@@ -161,7 +175,7 @@ if (btnEditAddPhoto && editPhotoContainer) {
 }
 
 /* ==========================================
-   TAMBAH VIDEO EDIT
+   TAMBAH VIDEO HALAMAN EDIT
 ========================================== */
 
 const btnEditAddVideo = document.getElementById("btn-edit-add-video");
@@ -173,14 +187,26 @@ if (btnEditAddVideo && editVideoContainer) {
 
         const div = document.createElement("div");
 
-        div.classList.add("form-group");
+        div.classList.add("form-group", "video-item");
 
         div.innerHTML = `
-            <input
-                type="url"
-                name="videos[]"
-                class="form-control"
-                placeholder="https://www.youtube.com/watch?v=xxxx">
+            <div class="input-with-action">
+
+                <input
+                    type="url"
+                    name="videos[]"
+                    class="form-control"
+                    placeholder="https://www.youtube.com/watch?v=xxxx">
+
+                <button
+                    type="button"
+                    class="btn-remove">
+
+                    <i class="fa-solid fa-trash"></i>
+
+                </button>
+
+            </div>
         `;
 
         editVideoContainer.appendChild(div);
@@ -189,7 +215,9 @@ if (btnEditAddVideo && editVideoContainer) {
 
 }
 
-// galery untuk hapus media
+/* ==========================================
+   UNTUK HAPUS MEDIA PADA FORM
+========================================== */
 function deleteMedia(id, button)
 {
 
@@ -387,7 +415,7 @@ document.addEventListener("keydown", function (e) {
 
 
 /* ==========================================
-   TAMBAH VIDEO
+   TAMBAH VIDEO HALAMAN CREATE
 ========================================== */
 
 const btnAddVideo = document.getElementById("btn-add-video");
@@ -399,14 +427,22 @@ if (btnAddVideo && videoContainer) {
 
         const div = document.createElement("div");
 
-        div.classList.add("form-group");
+        div.classList.add("form-group", "video-item");
 
         div.innerHTML = `
-            <input
-                type="url"
-                name="videos[]"
-                class="form-control"
-                placeholder="https://www.youtube.com/watch?v=xxxx">
+            <div class="input-with-action">
+
+                <input
+                    type="url"
+                    name="videos[]"
+                    class="form-control"
+                    placeholder="https://www.youtube.com/watch?v=xxxx">
+
+                <button type="button" class="btn-remove">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+
+            </div>
         `;
 
         videoContainer.appendChild(div);
@@ -416,7 +452,7 @@ if (btnAddVideo && videoContainer) {
 }
 
 /* ==========================================
-   TAMBAH FOTO
+   TAMBAH FOTO HALAMAN CREATE
 ========================================== */
 
 const btnAddPhoto = document.getElementById("btn-add-photo");
@@ -428,14 +464,22 @@ if (btnAddPhoto && photoContainer) {
 
         const div = document.createElement("div");
 
-        div.classList.add("form-group");
+        div.classList.add("form-group", "photo-item");
 
         div.innerHTML = `
-            <input
-                type="file"
-                name="images[]"
-                class="form-control"
-                accept=".jpg,.jpeg,.png,.webp">
+            <div class="input-with-action">
+
+                <input
+                    type="file"
+                    name="images[]"
+                    class="form-control"
+                    accept=".jpg,.jpeg,.png,.webp">
+
+                <button type="button" class="btn-remove">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+
+            </div>
         `;
 
         photoContainer.appendChild(div);
@@ -443,6 +487,24 @@ if (btnAddPhoto && photoContainer) {
     });
 
 }
+
+/* ==========================================
+   HAPUS INPUT FOTO / VIDEO
+========================================== */
+
+document.addEventListener("click", function (e) {
+
+    const btn = e.target.closest(".btn-remove");
+
+    if (!btn) return;
+
+    const item = btn.closest(".photo-item, .video-item");
+
+    if (item) {
+        item.remove();
+    }
+
+});
 
 /* ==========================================
    LIVE SEARCH TABLE

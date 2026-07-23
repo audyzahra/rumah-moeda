@@ -1081,6 +1081,53 @@ textarea.form-control {
     background: #c7d2fe;
 }
 
+
+/* ==========================================
+   INPUT FOTO / VIDEO DENGAN TOMBOL HAPUS
+========================================== */
+
+.input-with-action {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-with-action .form-control {
+    flex: 1;
+}
+
+.btn-remove {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #fee2e2;
+    color: #dc2626;
+
+    cursor: pointer;
+    transition: .25s;
+
+    flex-shrink: 0;
+}
+
+.btn-remove:hover {
+    background: #fecaca;
+    transform: scale(1.05);
+}
+
+.photo-item,
+.video-item {
+    margin-top: 12px;
+}
+
+
+
 /* footer */
 
 .form-footer {
@@ -1140,3 +1187,4 @@ textarea.form-control {
         padding: 20px;
     }
 }
+

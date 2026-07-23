@@ -134,23 +134,27 @@
 
                 <div id="edit-photo-container">
 
-                    <div class="form-group">
+    <div class="form-group photo-item">
 
-                        <label>Tambah Foto</label>
+        <label>Tambah Foto</label>
 
-                        <input
-                            type="file"
-                            name="images[]"
-                            class="form-control"
-                            accept=".jpg,.jpeg,.png,.webp">
+        <div class="input-with-action">
 
-                        <small class="text-muted">
-                            Format: JPG, JPEG, PNG, WEBP. Maksimal 2 MB per file.
-                        </small>
+            <input
+                type="file"
+                name="images[]"
+                class="form-control"
+                accept=".jpg,.jpeg,.png,.webp">
 
-                    </div>
+        </div>
 
-                </div>
+        <small class="text-muted">
+            Format: JPG, JPEG, PNG, WEBP. Maksimal 2 MB per file.
+        </small>
+
+    </div>
+
+</div>
 
                 <button
                     type="button"
@@ -163,19 +167,23 @@
 
                 <div id="edit-video-container">
 
-                    <div class="form-group">
+    <div class="form-group video-item">
 
-                        <label>Tambah Video YouTube</label>
+        <label>Tambah Video YouTube</label>
 
-                        <input
-                            type="url"
-                            name="videos[]"
-                            class="form-control"
-                            placeholder="https://www.youtube.com/watch?v=xxxx">
+        <div class="input-with-action">
 
-                    </div>
+            <input
+                type="url"
+                name="videos[]"
+                class="form-control"
+                placeholder="https://www.youtube.com/watch?v=xxxx">
 
-                </div>
+        </div>
+
+    </div>
+
+</div>
 
                 <button
                     type="button"

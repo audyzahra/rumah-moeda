@@ -67,19 +67,23 @@
 
                 <div id="photo-container">
 
-                    <div class="form-group">
+    <div class="form-group photo-item">
 
-                        <label>Foto</label>
+        <label>Foto</label>
 
-                        <input
-                            type="file"
-                            name="images[]"
-                            class="form-control"
-                            accept=".jpg,.jpeg,.png,.webp">
+        <div class="input-with-action">
 
-                    </div>
+            <input
+                type="file"
+                name="images[]"
+                class="form-control"
+                accept=".jpg,.jpeg,.png,.webp">
 
-                </div>
+        </div>
+
+    </div>
+
+</div>
 
                 <button
                     type="button"
@@ -92,23 +96,27 @@
 
                 <div id="video-container">
 
-                    <div class="form-group">
+    <div class="form-group video-item">
 
-                        <label>Video YouTube</label>
+        <label>Video YouTube</label>
 
-                        <input
-                            type="url"
-                            name="videos[]"
-                            class="form-control"
-                            placeholder="https://www.youtube.com/watch?v=xxxx">
+        <div class="input-with-action">
 
-                        <small class="text-muted">
-                            Tambahkan satu atau lebih link video YouTube (opsional).
-                        </small>
+            <input
+                type="url"
+                name="videos[]"
+                class="form-control"
+                placeholder="https://www.youtube.com/watch?v=xxxx">
 
-                    </div>
+        </div>
 
-                </div>
+        <small class="text-muted">
+            Tambahkan satu atau lebih link video YouTube (opsional).
+        </small>
+
+    </div>
+
+</div>
 
                 <button
                     type="button"
@@ -147,4 +155,3 @@
 @push('scripts')
 <script src="{{ asset('js/admin/galeri.js') }}"></script>
 @endpush
-
