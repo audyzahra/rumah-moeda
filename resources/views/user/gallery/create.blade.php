@@ -24,55 +24,6 @@
     </a>
 </div>
 
-    {{-- ================= FORM ================= --}}
-    <div class="form-card">
-
-        <form
-            action="{{ route('user.gallery.store') }}"
-            method="POST"
-            enctype="multipart/form-data">
-
-            @csrf
-
-            {{-- ================= JUDUL ================= --}}
-            <div class="form-group">
-
-                <label>
-
-                    Judul Dokumentasi
-
-                    <span class="required">*</span>
-
-                </label>
-
-                <input
-                    type="text"
-                    name="title"
-                    class="form-control @error('title') is-invalid @enderror"
-                    value="{{ old('title') }}"
-                    placeholder="Masukkan judul dokumentasi">
-
-                @error('title')
-
-                    <small class="text-danger">
-
-                        {{ $message }}
-
-                    </small>
-
-                @enderror
-            <a href="{{ route('user.gallery.index') }}" class="btn-batal">
-                <i class="fa-solid fa-arrow-left"></i>
-                Kembali
-            </a>
-
-            <div class="gallery-title">
-                <h1>Tambah Galeri</h1>
-                <p>Tambahkan dokumentasi kegiatan Rumah Moeda.</p>
-            </div>
-
-        </div>
-
         {{-- ================= FORM ================= --}}
         <div class="form-card">
 
@@ -99,85 +50,7 @@
 
                             {{ $message }}
 
-            {{-- ================= DESKRIPSI ================= --}}
-            <div class="form-group">
-
-                <label>
-
-                    Deskripsi
-
-                    <span class="required">*</span>
-
-                </label>
-
-                <textarea
-                    name="description"
-                    rows="6"
-                    class="form-control @error('description') is-invalid @enderror"
-                    placeholder="Masukkan deskripsi kegiatan...">{{ old('description') }}</textarea>
-
-                @error('description')
-
-                    <small class="text-danger">
-
-                        {{ $message }}
-
-                    </small>
-
-                @enderror
-
-            </div>
-                        {{-- ================= FOTO ================= --}}
-<div class="form-group">
-
-    <label>
-        Upload Foto
-        <span class="required">*</span>
-    </label>
-
-    <div id="photoContainer">
-
-        <div class="photo-input">
-
-            <input
-                type="file"
-                name="photos[]"
-                class="form-control"
-                accept="image/*">
-
-        </div>
-
-    </div>
-
-    <button
-        type="button"
-        class="btn-secondary"
-        id="btnTambahFoto">
-
-        <i class="fa-solid fa-plus"></i>
-        Tambah Foto
-
-    </button>
-
-    <small class="text-muted">
-        Format JPG, JPEG, PNG. Maksimal 2 MB per file.
-    </small>
-
-    @error('photos')
-        <small class="text-danger">{{ $message }}</small>
-    @enderror
-
-    @error('photos.*')
-        <small class="text-danger">{{ $message }}</small>
-    @enderror
-
-    <div
-        id="photoPreview"
-        class="preview-grid">
-
-    </div>
-
-</div>
+            
                         </small>
                     @enderror
 
@@ -231,47 +104,57 @@
                     @enderror
 
                 </div>
-                {{-- ================= FOTO ================= --}}
-                <div class="form-group">
+                        {{-- ================= FOTO ================= --}}
+<div class="form-group">
 
-                    <label>
+    <label>
+        Upload Foto
+        <span class="required">*</span>
+    </label>
 
-                        Upload Foto
+    <div id="photoContainer">
 
-                        <span class="required">*</span>
+        <div class="photo-input">
 
-                    </label>
+            <input
+                type="file"
+                name="photos[]"
+                class="form-control"
+                accept="image/*">
 
-                    <input type="file" name="photos[]" id="photoInput"
-                        class="form-control @error('photos') is-invalid @enderror" accept="image/*" multiple>
+        </div>
 
-                    <small class="text-muted">
+    </div>
 
-                        Format JPG, JPEG, PNG. Maksimal 2 MB per file.
+    <button
+        type="button"
+        class="btn-secondary"
+        id="btnTambahFoto">
 
-                    </small>
+        <i class="fa-solid fa-plus"></i>
+        Tambah Foto
 
-                    @error('photos')
-                        <small class="text-danger">
+    </button>
 
-                            {{ $message }}
+    <small class="text-muted">
+        Format JPG, JPEG, PNG. Maksimal 2 MB per file.
+    </small>
 
-                        </small>
-                    @enderror
+    @error('photos')
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
 
-                    @error('photos.*')
-                        <small class="text-danger">
+    @error('photos.*')
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
 
-                            {{ $message }}
+    <div
+        id="photoPreview"
+        class="preview-grid">
 
-                        </small>
-                    @enderror
+    </div>
 
-                    <div id="photoPreview" class="preview-grid">
-
-                    </div>
-
-                </div>
+</div>
 
                 {{-- ================= VIDEO ================= --}}
                 <div class="form-group">
@@ -333,44 +216,29 @@
 @endsection
 
 @push('scripts')
-    <script>
-        document.getElementById('photoInput').addEventListener('change', function(e) {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
 
-            const preview = document.getElementById('photoPreview');
+    const photoContainer = document.getElementById('photoContainer');
+    const photoPreview = document.getElementById('photoPreview');
 
-function previewPhotos() {
-            preview.innerHTML = '';
+    // ================= PREVIEW FOTO =================
+    function previewPhotos() {
+        photoPreview.innerHTML = '';
 
-            Array.from(e.target.files).forEach(file => {
+        document.querySelectorAll('#photoContainer input[type="file"]').forEach(input => {
+
+            Array.from(input.files).forEach(file => {
 
                 const reader = new FileReader();
 
-    document.querySelectorAll('#photoContainer input[type="file"]').forEach(input => {
+                reader.onload = function (e) {
 
-        Array.from(input.files).forEach(file => {
-
-            const reader = new FileReader();
-
-            reader.onload = function(e){
-
-                preview.innerHTML += `
-                    <div class="preview-item">
-                        <img src="${e.target.result}">
-                    </div>
-                `;
-
-            };
-
-            reader.readAsDataURL(file);
-
-        });
-                reader.onload = function(event) {
-
-                    preview.innerHTML += `
-                <div class="preview-item">
-                    <img src="${event.target.result}">
-                </div>
-            `;
+                    photoPreview.innerHTML += `
+                        <div class="preview-item">
+                            <img src="${e.target.result}">
+                        </div>
+                    `;
 
                 };
 
@@ -378,101 +246,86 @@ function previewPhotos() {
 
             });
 
-}
-
-document.addEventListener('change', function(e){
-
-    if(e.target.matches('#photoContainer input[type="file"]')){
-
-        previewPhotos();
-
+        });
     }
 
+    // Preview ketika memilih foto
+    document.addEventListener('change', function (e) {
+
+        if (e.target.matches('#photoContainer input[type="file"]')) {
+            previewPhotos();
+        }
+
+    });
+
+    // ================= TAMBAH FOTO =================
+    document.getElementById('btnTambahFoto').addEventListener('click', function () {
+
+        photoContainer.insertAdjacentHTML('beforeend', `
+            <div class="photo-input" style="display:flex;gap:10px;margin-top:10px;align-items:center;">
+
+                <input
+                    type="file"
+                    name="photos[]"
+                    class="form-control"
+                    accept="image/*">
+
+                <button
+                    type="button"
+                    class="btn-delete remove-photo">
+
+                    <i class="fa-solid fa-trash"></i>
+
+                </button>
+
+            </div>
+        `);
+
+    });
+
+    // ================= TAMBAH VIDEO =================
+    document.getElementById('btnTambahVideo').addEventListener('click', function () {
+
+        document.getElementById('videoContainer').insertAdjacentHTML('beforeend', `
+            <div class="video-input" style="display:flex;gap:10px;margin-top:10px;align-items:center;">
+
+                <input
+                    type="url"
+                    name="videos[]"
+                    class="form-control"
+                    placeholder="https://www.youtube.com/watch?v=...">
+
+                <button
+                    type="button"
+                    class="btn-delete remove-video">
+
+                    <i class="fa-solid fa-trash"></i>
+
+                </button>
+
+            </div>
+        `);
+
+    });
+
+    // ================= HAPUS FOTO / VIDEO =================
+    document.addEventListener('click', function (e) {
+
+        if (e.target.closest('.remove-photo')) {
+
+            e.target.closest('.photo-input').remove();
+            previewPhotos();
+
+        }
+
+        if (e.target.closest('.remove-video')) {
+
+            e.target.closest('.video-input').remove();
+
+        }
+
+    });
+
 });
-
-document.getElementById('btnTambahFoto').addEventListener('click', function(){
-
-    const container = document.getElementById('photoContainer');
-
-    container.insertAdjacentHTML('beforeend', `
-
-        <div class="photo-input" style="display:flex;gap:10px;margin-top:10px;">
-
-            <input
-                type="file"
-                name="photos[]"
-                class="form-control"
-                accept="image/*">
-
-            <button
-                type="button"
-                class="btn-delete remove-photo">
-
-                <i class="fa-solid fa-trash"></i>
-
-            </button>
-
-        </div>
-
-    `);
-
-});
-
-document.addEventListener('click', function(e){
-
-    if(e.target.closest('.remove-photo')){
-
-        e.target.closest('.photo-input').remove();
-
-        previewPhotos();
-
-    }
-
-    if(e.target.closest('.remove-video')){
-
-        e.target.closest('.video-input').remove();
-
-    }
-
-});
-        });
-
-        document.getElementById('btnTambahVideo').addEventListener('click', function() {
-
-            const container = document.getElementById('videoContainer');
-
-            container.insertAdjacentHTML('beforeend', `
-
-        <div class="video-input" style="margin-top:10px;display:flex;gap:10px;">
-
-            <input
-                type="url"
-                name="videos[]"
-                class="form-control"
-                placeholder="https://www.youtube.com/watch?v=...">
-
-            <button
-                type="button"
-                class="btn-delete remove-video">
-
-                <i class="fa-solid fa-trash"></i>
-
-            </button>
-
-        </div>
-
-    `);
-
-        });
-
-        document.addEventListener('click', function(e) {
-
-            if (e.target.closest('.remove-video')) {
-
-                e.target.closest('.video-input').remove();
-
-            }
-
-        });
-    </script>
+</script>
 @endpush
