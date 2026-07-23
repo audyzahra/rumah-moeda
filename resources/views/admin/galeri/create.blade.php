@@ -147,3 +147,4 @@
 @push('scripts')
 <script src="{{ asset('js/admin/galeri.js') }}"></script>
 @endpush
+
