@@ -18,6 +18,33 @@
                 Informasi terbaru mengenai kegiatan Rumah Moeda.
             </p>
 
+            <div class="berita-toolbar">
+
+    <div class="search-box">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            placeholder="Cari dokumentasi..."
+        >
+
+    </div>
+
+    <div class="sort-box">
+
+        <select>
+
+            <option>Terbaru</option>
+            <option>Terlama</option>
+            <option>Judul A-Z</option>
+            <option>Judul Z-A</option>
+
+        </select>
+
+    </div>
+
+</div>
         </div>
 
     </div>
@@ -92,7 +119,28 @@
         @endforelse
 
     </section>
+   
+<div class="custom-pagination">
 
+    <div class="pagination-info">
+        Menampilkan 1 - 10 dari 10 data
+    </div>
+
+    <div class="pagination-page">
+
+        <button class="page-btn" disabled>
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <span>Halaman 1 dari 2</span>
+
+        <button class="page-btn">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+    </div>
+
+</div>
 
     <script>
         const modal = document.getElementById("beritaModal");

@@ -44,11 +44,33 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{ route('news.index') }}" class="{{ request()->routeIs('berita.*') ? 'active' : '' }}">
-                        Berita
-                    </a>
-                </li>
+                <li class="dropdown">
+
+    <a href="#">
+
+        Informasi
+
+        <i class="fa-solid fa-chevron-down"></i>
+
+    </a>
+
+    <ul class="dropdown-menu-nav">
+
+        <li>
+            <a href="{{ route('news.index') }}">
+                Berita
+            </a>
+        </li>
+
+        <li>
+            <a href="#">
+                Portofolio
+            </a>
+        </li>
+
+    </ul>
+
+</li>
 
                 <li class="dropdown">
 

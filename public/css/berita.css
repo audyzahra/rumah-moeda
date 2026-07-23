@@ -88,7 +88,7 @@ body{
 
 .berita-header{
     max-width:1200px;
-    margin:0 auto 40px;
+    margin:0 auto 10px;
     padding:0 4%;
     display:flex;
     justify-content:space-between;
@@ -642,4 +642,193 @@ body{
 [data-theme="dark"] .btn-tambah:hover,
 [data-theme="dark"] .btn-simpan:hover{
     background: #e0b84b;
+}
+
+/* ==========================
+   SEARCH & SORT
+========================== */
+
+.berita-toolbar{
+
+    margin-top:30px;
+
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+}
+
+.search-box{
+    width:700px;
+    position:relative;
+    flex:none;
+}
+
+.search-box i{
+
+    position:absolute;
+    left:18px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:#999;
+
+    font-size:15px;
+
+}
+
+.search-box input{
+
+    width:100%;
+
+    height:48px;
+
+    padding:0 18px 0 48px;
+
+    border:1px solid #ddd;
+
+    border-radius:14px;
+
+    outline:none;
+
+    font-size:15px;
+
+    transition:.3s;
+
+    box-sizing:border-box;
+
+}
+
+.search-box input:focus{
+
+    border-color:#cda036;
+
+    box-shadow:0 0 0 3px rgba(205,160,54,.15);
+
+}
+
+.sort-box{
+    width:400px;
+}
+
+.sort-box select{
+
+    width:100%;
+    height:48px;
+
+    padding:0 18px;
+
+    border:1px solid #ddd;
+
+    border-radius:14px;
+
+    outline:none;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    background:#fff;
+
+}
+
+.sort-box select:focus{
+
+    border-color:#cda036;
+
+}
+@media (max-width: 768px){
+
+    .berita-toolbar{
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .search-box{
+        width: 100%;
+    }
+
+    .sort-box{
+        width: 100%;
+    }
+
+    .sort-box select{
+        width: 100%;
+    }
+
+}
+
+@media (max-width: 480px){
+
+    .berita-toolbar{
+        gap: 12px;
+    }
+
+    .search-box input,
+    .sort-box select{
+        height: 45px;
+        font-size: 14px;
+    }
+
+}
+
+/* ===========================
+   Pagination
+=========================== */
+
+.custom-pagination{
+    margin-top:50px;
+    padding:18px 0;
+    border-top:1px solid #e5e7eb;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.pagination-info{
+    font-size:15px;
+    color:#64748b;
+}
+
+.pagination-page{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.pagination-page span{
+    font-size:15px;
+    font-weight:600;
+    color:#1f2937;
+}
+
+.page-btn{
+    width:40px;
+    height:40px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    background:#fff;
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:.25s;
+}
+
+.page-btn:hover:not(:disabled){
+    background:#0b5ed7;
+    color:#fff;
+    border-color:#0b5ed7;
+}
+
+.page-btn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
 }
