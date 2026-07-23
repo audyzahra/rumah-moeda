@@ -1,5 +1,7 @@
 @extends('admin.layouts.app')
 
+@section('title', 'Edit Galeri')
+
 @section('content')
 
 @push('styles')
@@ -16,14 +18,24 @@
 
             <p>Ubah dokumentasi kegiatan</p>
 
-            <a href="{{ route('admin.gallery.index') }}" class="btn-back">
-                <i class="fa-solid fa-arrow-left"></i>
-                Kembali
-            </a>
-
         </div>
 
     </header>
+     <!-- ================= BREADCRUMB ================= -->
+
+            <div class="page-breadcrumb">
+
+                <a href="{{ route('admin.gallery.index') }}">
+
+                    Galeri
+
+                </a>
+
+                <span>></span>
+
+                <span>Edit Galeri</span>
+
+            </div>
 
     <div class="gallery-container">
 
@@ -199,13 +211,14 @@
 
                     <a href="{{ route('admin.gallery.index') }}"
                         class="btn-batal">
-
+                        <i class="fa-solid fa-xmark"></i>
                         Batal
 
                     </a>
 
                     <button type="submit" class="btn-simpan">
-                        Update
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Update Galeri
                     </button>
                 </div>
 

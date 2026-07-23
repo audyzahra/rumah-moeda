@@ -19,16 +19,24 @@
 
             <p>Tambahkan kategori baru untuk berita Rumah Moeda.</p>
 
-            <a href="{{ route('admin.categories.index') }}" class="btn-batal">
-
-            <i class="fa-solid fa-arrow-left"></i>
-
-            Kembali
-
-        </a>
         </div>
 
     </div>
+    <!-- ================= BREADCRUMB ================= -->
+
+            <div class="page-breadcrumb">
+
+                <a href="{{ route('admin.categories.index') }}">
+
+                    Galeri
+
+                </a>
+
+                <span>></span>
+
+                <span>Tambah Galeri</span>
+
+            </div>
 
     {{-- ================= FORM ================= --}}
     <div class="form-card">

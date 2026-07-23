@@ -1,5 +1,7 @@
 @extends('admin.layouts.app')
 
+@section('title', 'Tambah Galeri')
+
 @section('content')
 
 @push('styles')
@@ -16,14 +18,24 @@
 
             <p>Tambah dokumentasi kegiatan</p>
 
-            <a href="{{ route('admin.gallery.index') }}" class="btn-back">
-                <i class="fa-solid fa-arrow-left"></i>
-                Kembali
-            </a>
-
         </div>
 
     </header>
+        <!-- ================= BREADCRUMB ================= -->
+
+            <div class="page-breadcrumb">
+
+                <a href="{{ route('admin.gallery.index') }}">
+
+                    Galeri
+
+                </a>
+
+                <span>></span>
+
+                <span>Tambah Galeri</span>
+
+            </div>
 
     <div class="gallery-container">
         <div class="form-card">
@@ -131,13 +143,15 @@
 
                     <a href="{{ route('admin.gallery.index') }}"
                         class="btn-batal">
+                        <i class="fa-solid fa-xmark"></i>
 
                         Batal
 
                     </a>
 
                     <button class="btn-simpan">
-                        Simpan
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Simpan Galeri
                     </button>
 
                 </div>

@@ -164,15 +164,78 @@
 
             </table>
 
+            {{--===PAGINATOIN=== --}}
+            <div class="pagination-section">
+
+                    <div class="info-data">
+
+                        Menampilkan
+
+                        <strong>{{ $categories->firstItem() ?? 0 }}</strong>
+
+                        -
+
+                        <strong>{{ $categories->lastItem() ?? 0 }}</strong>
+
+                        dari
+
+                        <strong>{{ $categories->total() }}</strong>
+
+                        data
+
+                    </div>
+
+                    <div class="pagination-controls">
+
+                        {{-- Previous --}}
+                        @if ($categories->onFirstPage())
+
+                            <button class="page-btn" disabled>
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+
+                        @else
+
+                            <a href="{{ $categories->previousPageUrl() }}" class="page-btn">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </a>
+
+                        @endif
+
+                        <span id="pageInfo">
+
+                            Halaman
+
+                            {{ $categories->currentPage() }}
+
+                            dari
+
+                            {{ $categories->lastPage() }}
+
+                        </span>
+
+                        {{-- Next --}}
+                        @if ($categories->hasMorePages())
+
+                            <a href="{{ $categories->nextPageUrl() }}" class="page-btn">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+
+                        @else
+
+                            <button class="page-btn" disabled>
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+
+                        @endif
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-
-        {{-- ================= PAGINATION ================= --}}
-        <div class="pagination-wrapper">
-
-            {{ $categories->links() }}
-
-        </div>
-
     </div>
 
 @endsection

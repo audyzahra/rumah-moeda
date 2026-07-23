@@ -21,7 +21,7 @@ class CategoryController extends Controller
 
         $categories = $query
             ->orderBy('name', 'ASC')
-            ->paginate(10);
+            ->paginate(5);
 
         $totalCategory = Category::count();
 

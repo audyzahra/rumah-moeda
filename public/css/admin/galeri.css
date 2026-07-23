@@ -29,7 +29,35 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+   
+}
+/* ===HEADER=== */
+.topbar h1{
+    font-size: calc(1.375rem + 1.5vw);
+}
+.topbar p{
+    color: #666;
+}
+/* =========================================
+   BREADCRUMB
+========================================= */
+
+.page-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 24px;
+    font-size: 14px;
+}
+
+.page-breadcrumb a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.page-breadcrumb span:last-child {
+    color: #6b7280;
 }
 
 .dokumentasi-stats {
@@ -339,14 +367,14 @@
 
 
 /* ===== PAGINATION ===== */
+
 .pagination-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 0 5px 0;
+    padding: 10px 12px;
     flex-wrap: wrap;
     gap: 15px;
-    border-top: 1px solid #f1f5f9;
 }
 
 .info-data {
@@ -360,29 +388,36 @@
     gap: 12px;
 }
 
-.page-btn {
+.page-btn{
     width: 36px;
     height: 36px;
     border: 2px solid #e2e8f0;
     border-radius: 8px;
-    background: white;
-    cursor: pointer;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: #fff;
     color: #475569;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
 }
 
-.page-btn:hover:not(:disabled) {
-    background: #8b5cf6;
-    border-color: #8b5cf6;
-    color: white;
+.page-btn:hover{
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
 }
 
-.page-btn:disabled {
-    opacity: 0.4;
+.page-btn:disabled,
+.page-btn.disabled{
+    opacity: .4;
     cursor: not-allowed;
+    pointer-events: none;
+}
+
+.page-btn i{
+    pointer-events: none;
 }
 
 #pageInfo {
@@ -434,25 +469,6 @@
 }
 /* ==== ENDING Tombol Hapus di Form (media) Halaman Edit ==== */
 
-
-/* ==== TOMBOL KEMBALI HALAMAN EDIT ==== */
-.btn-back {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 18px;
-    background: #2563eb;
-    color: #ffff;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.3s;
-}
-
-.btn-back:hover {
-    background: #d1d5db;
-    color: #111827;
-}
 /* ==== ENDING TOMBOL KEMBALI HALAMAN EDIT ==== */
 
 
@@ -570,8 +586,8 @@ textarea.form-control {
 
 .btn-batal {
     padding: 10px 24px;
-    background: #2563eb;
-    color: #fff;
+    background:#e5e7eb;
+    color:#374151;
     border: none;
     border-radius: 10px;
     font-weight: 600;
@@ -581,13 +597,14 @@ textarea.form-control {
 }
 
 .btn-batal:hover {
-    background: #2563eb;
+    background: #d1d5db;
+    transform: translateY(-2px);
 }
 
 .btn-simpan {
     padding: 10px 24px;
     background: #2563eb;
-    color: white;
+    color: #fff;
     border: none;
     border-radius: 10px;
     font-weight: 600;
@@ -599,7 +616,7 @@ textarea.form-control {
 }
 
 .btn-simpan:hover {
-    background: #2563eb;
+    background: #1d4ed8;
     transform: translateY(-2px);
 }
 
