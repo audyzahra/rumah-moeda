@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             NewsSeeder::class,
             SettingSeeder::class,
             FaqSeeder::class,
+            PortfolioCategorySeeder::class,
         ]);
     }
 }
