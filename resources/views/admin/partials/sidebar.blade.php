@@ -75,14 +75,34 @@
         </li>
 
         <!-- Portofolio -->
-        <li class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
-            <a href="{{ route('admin.gallery.index') }}">
-                <i class="fa-solid fa-images"></i>
+        <li class="has-submenu-portofolio {{ request()->routeIs('admin.portfolio.*') ? 'open active' : '' }}">
+
+            <a href="#" class="submenu-toggle-portofolio">
+
+                <i class="fa-solid fa-briefcase"></i>
+
                 <span>Portofolio</span>
 
-                <!--
-                <span class="badge">15</span> -->
+                <i class="fa-solid fa-chevron-down submenu-arrow-portofolio"></i>
+
             </a>
+
+            <ul id="submenuPortofolio" class="submenu">
+
+                <li>
+                    <a href="#">
+                        Portofolio
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        Kategori
+                    </a>
+                </li>
+
+            </ul>
+
         </li>
 
         <!-- Gallery -->

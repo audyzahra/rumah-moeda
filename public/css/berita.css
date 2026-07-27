@@ -109,6 +109,28 @@ body{
 
 }
 
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.page-breadcrumb{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:18px 0;
+    font-size:14px;
+}
+
+.page-breadcrumb a{
+    color:#2563eb;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.page-breadcrumb span:last-child{
+    color:#6b7280;
+}
+
 .btn-tambah{
 
     background:#cda036;
@@ -832,3 +854,4 @@ body{
     opacity:.5;
     cursor:not-allowed;
 }
+

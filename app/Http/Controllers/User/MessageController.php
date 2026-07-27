@@ -15,7 +15,7 @@ class MessageController extends Controller
     {
         $messages = ContactMessage::where('user_id', Auth::id())
             ->latest()
-            ->get();
+            ->paginate(3);
 
         $totalMessages = $messages->count();
 
