@@ -9,6 +9,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\PortfolioController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -62,6 +63,12 @@ Route::get('/news', [BeritaController::class, 'index'])
 
 Route::get('/news/{slug}', [BeritaController::class, 'show'])
     ->name('news.show');
+
+Route::get('/portfolio', [PortfolioController::class, 'index'])
+    ->name('portfolio.index');
+
+Route::get('/portfolio/{portfolio:slug}', [PortfolioController::class, 'show'])
+    ->name('portfolio.show');
 
 // Gallery
 Route::get('/photos', [GalleryController::class, 'photos'])
