@@ -46,28 +46,6 @@
 
     <div class="settings-card">
 
-        <div class="card-header">
-
-            <div>
-
-                <h3>
-
-                    <i class="fa-solid fa-handshake"></i>
-
-                    Edit Mitra
-
-                </h3>
-
-                <p>
-
-                    Perbarui informasi mitra di bawah ini.
-
-                </p>
-
-            </div>
-
-        </div>
-
         <div class="card-body">
 
             @if ($errors->any())
@@ -230,27 +208,20 @@
                 </div>
 
                 <!-- BUTTON -->
-
                 <div class="form-actions">
-
                     <a
                         href="{{ route('admin.partners.index') }}"
                         class="btn-secondary">
-
+                        <i class="fa-solid fa-xmark"></i>
                         Batal
-
                     </a>
 
                     <button
                         type="submit"
                         class="btn-primary">
-
                         <i class="fa-solid fa-floppy-disk"></i>
-
                         Update Mitra
-
                     </button>
-
                 </div>
 
             </form>

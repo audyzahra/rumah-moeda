@@ -74,6 +74,37 @@
 
         </li>
 
+        <!-- Portofolio -->
+        <li class="has-submenu-portofolio {{ request()->routeIs('admin.portfolio.*') ? 'open active' : '' }}">
+
+            <a href="#" class="submenu-toggle-portofolio">
+
+                <i class="fa-solid fa-briefcase"></i>
+
+                <span>Portofolio</span>
+
+                <i class="fa-solid fa-chevron-down submenu-arrow-portofolio"></i>
+
+            </a>
+
+            <ul id="submenuPortofolio" class="submenu">
+
+                <li>
+                    <a href="#">
+                        Portofolio
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.portfolio-categories.index') }}">
+                        Kategori
+                    </a>
+                </li>
+
+            </ul>
+
+        </li>
+
         <!-- Gallery -->
         <li class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
             <a href="{{ route('admin.gallery.index') }}">

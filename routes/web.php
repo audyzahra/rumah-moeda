@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\CompanyProfileController;
 use App\Http\Controllers\Admin\VisionMissionController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Admin\EditorUploadController;
+use App\Http\Controllers\Admin\PortfolioCategoryController;
 
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\NewsController as UserNewsController;
@@ -442,4 +443,52 @@ Route::middleware(['auth', 'admin'])
         Route::delete('/manage-account/{user}', [UserManagementController::class, 'destroy'])
             ->name('manage-account.destroy');
 
+
+
+                    /*
+|--------------------------------------------------------------------------
+| Portfolio Categories
+|--------------------------------------------------------------------------
+*/
+
+        Route::prefix('portfolio-categories')
+            ->name('portfolio-categories.')
+            ->group(function () {
+
+
+                // Index
+                Route::get('/', [PortfolioCategoryController::class, 'index'])
+                    ->name('index');
+
+
+                // Create
+                Route::get('/create', [PortfolioCategoryController::class, 'create'])
+                    ->name('create');
+
+
+                // Store
+                Route::post('/', [PortfolioCategoryController::class, 'store'])
+                    ->name('store');
+
+
+                // Edit
+                Route::get('/{id}/edit', [PortfolioCategoryController::class, 'edit'])
+                    ->name('edit');
+
+
+                // Update
+                Route::put('/{id}', [PortfolioCategoryController::class, 'update'])
+                    ->name('update');
+
+
+                // Delete
+                Route::delete('/{id}', [PortfolioCategoryController::class, 'destroy'])
+                    ->name('destroy');
+            });
+
+        // untuk generate slug kategori portfolio
+            Route::get('/portfolio-categories/generate-slug/{name}',
+    [PortfolioCategoryController::class, 'generateSlugPreview'])
+    ->name('portfolio-categories.slug');
     });
+

@@ -239,65 +239,77 @@
 
                 </table>
 
-            </div>
-
-            <!-- ===== PAGINATION ===== -->
                 <!-- ================= PAGINATION ================= -->
 
-                    @if ($mitra->hasPages())
+                <div class="pagination-section">
 
-                        <div class="pagination-wrapper">
+                    <div class="info-data">
 
-                            <nav>
+                        Menampilkan
 
-                                <ul class="pagination">
+                        <strong>{{ $mitra->firstItem() ?? 0 }}</strong>
 
-                                    {{-- Previous --}}
-                                    <li class="page-item {{ $mitra->onFirstPage() ? 'disabled' : '' }}">
+                        -
 
-                                        <a class="page-link"
-                                            href="{{ $mitra->onFirstPage() ? '#' : $mitra->previousPageUrl() }}">
+                        <strong>{{ $mitra->lastItem() ?? 0 }}</strong>
 
-                                            <i class="fa-solid fa-chevron-left"></i>
+                        dari
 
-                                        </a>
+                        <strong>{{ $mitra->total() }}</strong>
 
-                                    </li>
+                        data
 
-                                    {{-- Nomor Halaman --}}
-                                    @foreach ($mitra->getUrlRange(1, $mitra->lastPage()) as $page => $url)
+                    </div>
 
-                                        <li class="page-item {{ $page == $mitra->currentPage() ? 'active' : '' }}">
+                    <div class="pagination-controls">
 
-                                            <a class="page-link" href="{{ $url }}">
+                        {{-- Previous --}}
+                        @if ($mitra->onFirstPage())
 
-                                                {{ $page }}
+                            <button class="page-btn" disabled>
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
 
-                                            </a>
+                        @else
 
-                                        </li>
+                            <a href="{{ $mitra->previousPageUrl() }}" class="page-btn">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </a>
 
-                                    @endforeach
+                        @endif
 
-                                    {{-- Next --}}
-                                    <li class="page-item {{ !$mitra->hasMorePages() ? 'disabled' : '' }}">
+                        <span id="pageInfo">
 
-                                        <a class="page-link"
-                                            href="{{ $mitra->hasMorePages() ? $mitra->nextPageUrl() : '#' }}">
+                            Halaman
 
-                                            <i class="fa-solid fa-chevron-right"></i>
+                            {{ $mitra->currentPage() }}
 
-                                        </a>
+                            dari
 
-                                    </li>
+                            {{ $mitra->lastPage() }}
 
-                                </ul>
+                        </span>
 
-                            </nav>
+                        {{-- Next --}}
+                        @if ($mitra->hasMorePages())
 
-                        </div>
+                            <a href="{{ $mitra->nextPageUrl() }}" class="page-btn">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </a>
 
-                    @endif
+                        @else
+
+                            <button class="page-btn" disabled>
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+
+                        @endif
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </section>
     </main>

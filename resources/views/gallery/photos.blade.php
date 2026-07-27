@@ -22,14 +22,40 @@
 
 </section>
 
+<div class="galeri-toolbar">
+
+    <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            id="searchGaleri"
+            placeholder="Cari dokumentasi..."
+        >
+    </div>
+
+    <div class="sort-box">
+        <select id="sortGaleri">
+            <option value="terbaru">Terbaru</option>
+            <option value="terlama">Terlama</option>
+            <option value="az">Judul A-Z</option>
+            <option value="za">Judul Z-A</option>
+        </select>
+    </div>
+
+</div>
+
 <section class="galeri-container">
 
     @forelse($gallery as $item)
 
         <a
-            href="{{ route('gallery.photos.detail', $item) }}"
-            class="galeri-card"
-        >
+    href="{{ route('gallery.photos.detail', $item) }}"
+    class="galeri-card"
+    data-title="{{ strtolower($item->title) }}"
+    data-description="{{ strtolower(strip_tags($item->description)) }}"
+    data-date="{{ \Carbon\Carbon::parse($item->activity_date)->timestamp }}"
+>
 
             {{-- Thumbnail --}}
             @if($item->media->isNotEmpty())
@@ -97,5 +123,75 @@
     @endforelse
 
 </section>
+        {{-- PAGINATION --}}
+        <div class="custom-pagination">
 
+            <div class="pagination-info">
+
+                Menampilkan
+
+                <strong>{{ $gallery->firstItem() ?? 0 }}</strong>
+
+                -
+
+                <strong>{{ $gallery->lastItem() ?? 0 }}</strong>
+
+                dari
+
+                <strong>{{ $gallery->total() }}</strong>
+
+                data
+
+            </div>
+
+            <div class="pagination-page">
+
+                {{-- Previous --}}
+                @if($gallery->onFirstPage())
+
+                    <button class="page-btn" disabled>
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                @else
+
+                    <a href="{{ $gallery->previousPageUrl() }}" class="page-btn">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+
+                @endif
+
+                <span>
+
+                    Halaman
+
+                    {{ $gallery->currentPage() }}
+
+                    dari
+
+                    {{ $gallery->lastPage() }}
+
+                </span>
+
+                {{-- Next --}}
+                @if($gallery->hasMorePages())
+
+                    <a href="{{ $gallery->nextPageUrl() }}" class="page-btn">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                @else
+
+                    <button class="page-btn" disabled>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+
+                @endif
+
+            </div>
+
+        </div>
+@push('scripts')
+    <script src="{{ asset('js/admin/galeri.js') }}"></script>
+@endpush
 @endsection

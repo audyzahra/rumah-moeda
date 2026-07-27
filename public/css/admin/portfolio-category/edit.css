@@ -1,0 +1,237 @@
+/* =========================================
+   PORTFOLIO CATEGORY EDIT PAGE
+========================================= */
+
+
+/* FORM CONTAINER */
+
+.portfolio-category-table {
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 5px 18px rgba(0,0,0,.06);
+    margin-top: 25px;
+}
+
+
+
+/* FORM */
+
+.portfolio-form {
+    width: 100%;
+}
+
+
+
+/* FORM GROUP */
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+
+
+/* INPUT */
+
+.form-group input {
+    width: 100%;
+    height: 45px;
+
+    padding: 0 14px;
+
+    border: 1px solid #ddd;
+    border-radius: 10px;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: .3s;
+}
+
+
+.form-group input:focus {
+
+    border-color: #f8c3c7;
+
+    box-shadow: 0 0 0 3px rgba(248,195,199,.25);
+
+}
+
+
+
+/* READONLY SLUG */
+
+.form-group input[readonly] {
+
+    background: #f8f8f8;
+
+    color: #666;
+
+    cursor: not-allowed;
+
+}
+
+
+
+/* INFORMATION TEXT */
+
+.form-info {
+
+    display: block;
+
+    margin-top: 8px;
+
+    font-size: 12px;
+
+    color: #888;
+
+}
+
+
+
+/* ERROR */
+
+.text-danger {
+
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 12px;
+
+}
+
+
+
+/* FOOTER BUTTON */
+
+.form-footer {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: 30px;
+
+}
+
+
+
+/* SAVE BUTTON */
+
+.btn-save {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 11px 22px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #f8c3c7;
+
+    color: #333;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .3s;
+
+}
+
+
+
+.btn-save:hover {
+
+    background: #f3aeb5;
+
+    transform: translateY(-2px);
+
+}
+
+
+
+/* BACK BUTTON */
+
+.btn-add {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 10px 18px;
+
+    border-radius: 10px;
+
+    background: #f8c3c7;
+
+    color: #333;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: .3s;
+
+}
+
+
+
+.btn-add:hover {
+
+    background: #f3aeb5;
+
+}
+
+
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+
+    .portfolio-category-table {
+
+        padding:20px;
+
+    }
+
+
+    .form-footer {
+
+        justify-content:center;
+
+    }
+
+
+    .btn-save {
+
+        width:100%;
+
+        justify-content:center;
+
+    }
+
+}

@@ -46,28 +46,6 @@
 
     <div class="settings-card">
 
-        <div class="card-header">
-
-            <div>
-
-                <h3>
-
-                    <i class="fa-solid fa-handshake"></i>
-
-                    Tambah Mitra
-
-                </h3>
-
-                <p>
-
-                    Lengkapi informasi mitra di bawah ini.
-
-                </p>
-
-            </div>
-
-        </div>
-
         <div class="card-body">
 
             @if ($errors->any())
@@ -184,23 +162,20 @@
                         placeholder="Masukkan deskripsi mitra">{{ old('description') }}</textarea>
 
                 </div>
-                                <div class="form-actions">
+
+                <div class="form-actions">
 
                     <a href="{{ route('admin.partners.index') }}"
                         class="btn-secondary">
-
+                        <i class="fa-solid fa-xmark"></i>
                         Batal
-
                     </a>
 
                     <button
                         type="submit"
                         class="btn-primary">
-
                         <i class="fa-solid fa-floppy-disk"></i>
-
                         Simpan Mitra
-
                     </button>
 
                 </div>
