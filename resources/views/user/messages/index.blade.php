@@ -164,47 +164,71 @@
 
         <div class="pagination-section">
 
-            <div class="info-data">
+                    <div class="info-data">
 
-                Menampilkan
+                        Menampilkan
 
-                <span id="startData">0</span>
+                        <strong>{{ $messages->firstItem() ?? 0 }}</strong>
 
-                -
+                        -
 
-                <span id="endData">0</span>
+                        <strong>{{ $messages->lastItem() ?? 0 }}</strong>
 
-                dari
+                        dari
 
-                <span id="totalData">0</span>
+                        <strong>{{ $messages->total() }}</strong>
 
-                data
+                        data
 
-            </div>
+                    </div>
 
-            <div class="pagination-controls">
+                    <div class="pagination-controls">
 
-                <button class="page-btn" id="prevBtn" onclick="prevPage()">
+                        {{-- Previous --}}
+                        @if ($messages->onFirstPage())
 
-                    <i class="fa-solid fa-chevron-left"></i>
+                            <button class="page-btn" disabled>
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
 
-                </button>
+                        @else
 
-                <span id="pageInfo">
+                            <a href="{{ $messages->previousPageUrl() }}" class="page-btn">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </a>
 
-                    Halaman 1
+                        @endif
 
-                </span>
+                        <span id="pageInfo">
 
-                <button class="page-btn" id="nextBtn" onclick="nextPage()">
+                            Halaman
 
-                    <i class="fa-solid fa-chevron-right"></i>
+                            {{ $messages->currentPage() }}
 
-                </button>
+                            dari
 
-            </div>
+                            {{ $messages->lastPage() }}
 
-        </div>
+                        </span>
+
+                        {{-- Next --}}
+                        @if ($messages->hasMorePages())
+
+                            <a href="{{ $messages->nextPageUrl() }}" class="page-btn">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+
+                        @else
+
+                            <button class="page-btn" disabled>
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+
+                        @endif
+
+                    </div>
+
+                </div>
 
     </div>
 
