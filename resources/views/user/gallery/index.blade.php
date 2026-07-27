@@ -1,5 +1,5 @@
 @extends('user.layouts.app')
-
+@section('title', 'Galeri')
 @section('content')
 
     @push('styles')
@@ -201,8 +201,74 @@
 
             </div>
 
-            <div class="mt-4">
-                {{ $galleries->links() }}
+            <!-- ================= PAGINATION ================= -->
+
+            <div class="pagination-section">
+
+                <div class="info-data">
+
+                    Menampilkan
+
+                    <strong>{{ $galleries->firstItem() ?? 0 }}</strong>
+
+                    -
+
+                    <strong>{{ $galleries->lastItem() ?? 0 }}</strong>
+
+                    dari
+
+                    <strong>{{ $galleries->total() }}</strong>
+
+                    data
+
+                </div>
+
+                <div class="pagination-controls">
+
+                    {{-- Previous --}}
+                    @if ($galleries->onFirstPage())
+
+                        <button class="page-btn" disabled>
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+
+                    @else
+
+                        <a href="{{ $galleries->previousPageUrl() }}" class="page-btn">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
+
+                    @endif
+
+                    <span id="pageInfo">
+
+                        Halaman
+
+                        {{ $galleries->currentPage() }}
+
+                        dari
+
+                        {{ $galleries->lastPage() }}
+
+                    </span>
+
+                    {{-- Next --}}
+                    @if ($galleries->hasMorePages())
+
+                        <a href="{{ $galleries->nextPageUrl() }}" class="page-btn">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+
+                    @else
+
+                        <button class="page-btn" disabled>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+
+                    @endif
+
+                </div>
+
             </div>
 
         </section>
