@@ -31,7 +31,7 @@
 
                 <span>></span>
 
-                <span>Tambah Berita</span>
+                <span>Edit Berita</span>
 
             </div>
 

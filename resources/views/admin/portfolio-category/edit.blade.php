@@ -1,5 +1,7 @@
 @extends('admin.layouts.app')
 
+@section('title', 'Edit Kategori')
+
 @section('content')
 
 @push('styles')
@@ -16,28 +18,33 @@
             <p>Ubah informasi kategori portofolio</p>
         </div>
 
-
-        <a href="{{ route('admin.portfolio-categories.index') }}" class="btn-add">
-            <i class="fa-solid fa-arrow-left"></i>
-            Kembali
-        </a>
-
     </header>
 
+    <!-- ================= BREADCRUMB ================= -->
 
+        <div class="page-breadcrumb">
 
+            <a href="{{ route('admin.portfolio-categories.index') }}">
+
+                Kategori
+
+            </a>
+
+            <span>></span>
+
+            <span>Edit Kategori</span>
+
+        </div>
+
+        {{-- FORM EDIT --}}
     <div class="portfolio-category-table">
-
 
         <form action="{{ route('admin.portfolio-categories.update', $category->id) }}"
               method="POST"
               class="portfolio-form">
 
-
             @csrf
             @method('PUT')
-
-
 
             <div class="form-group">
 
@@ -45,14 +52,12 @@
                     Nama Kategori
                 </label>
 
-
                 <input type="text"
-       id="name"
-       name="name"
-       value="{{ old('name', $category->name) }}"
-       class="@error('name') is-invalid @enderror"
-       placeholder="Masukkan nama kategori">
-
+                    id="name"
+                    name="name"
+                    value="{{ old('name', $category->name) }}"
+                    class="@error('name') is-invalid @enderror"
+                    placeholder="Masukkan nama kategori">
 
                 @error('name')
 
@@ -62,23 +67,18 @@
 
                 @enderror
 
-
             </div>
 
-
-
             <div class="form-group">
-
 
                 <label>
                     Slug
                 </label>
 
-
                 <input type="text"
-       id="slug"
-       value="{{ $category->slug }}"
-       readonly>
+                    id="slug"
+                    value="{{ $category->slug }}"
+                    readonly>
 
 
                 <small class="form-info">
@@ -88,26 +88,24 @@
 
             </div>
 
+            <div class="form-actions">
 
+                    <a href="{{ route('admin.portfolio-categories.index') }}"
+                        class="btn-secondary">
+                        <i class="fa-solid fa-xmark"></i>
+                        Batal
+                    </a>
 
+                    <button type="submit" class="btn-primary">
 
-            <div class="form-footer">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Simpan Kategori
 
+                    </button>
 
-                <button type="submit" class="btn-save">
-
-                    <i class="fa-solid fa-save"></i>
-                    Simpan Perubahan
-
-                </button>
-
-
-            </div>
-
-
-
+                </div>
+                
         </form>
-
 
     </div>
 

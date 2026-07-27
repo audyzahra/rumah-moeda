@@ -28,13 +28,13 @@
 
                 <a href="{{ route('admin.categories.index') }}">
 
-                    Galeri
+                    Kategori
 
                 </a>
 
                 <span>></span>
 
-                <span>Tambah Galeri</span>
+                <span>Tambah Kategori</span>
 
             </div>
 

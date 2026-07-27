@@ -15,7 +15,7 @@ class PortfolioCategoryController extends Controller
      */
     public function index()
     {
-        $categories = PortfolioCategory::latest()->get();
+        $categories = PortfolioCategory::latest()->paginate(5);
 
         return view('admin.portfolio-category.index', compact('categories'));
     }

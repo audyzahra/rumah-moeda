@@ -1,5 +1,7 @@
 @extends('admin.layouts.app')
 
+@section('title', 'Tambah Kategori')
+
 @section('content')
     @push('styles')
         <link rel="stylesheet" href="{{ asset('css/admin/portfolio-category/create.css') }}">
@@ -15,16 +17,25 @@
                 <p>Tambahkan kategori baru untuk portofolio</p>
             </div>
 
-
-            <a href="{{ route('admin.portfolio-categories.index') }}" class="btn-back">
-                <i class="fa-solid fa-arrow-left"></i>
-                Kembali
-            </a>
-
         </header>
 
+        <!-- ================= BREADCRUMB ================= -->
 
+        <div class="page-breadcrumb">
 
+            <a href="{{ route('admin.portfolio-categories.index') }}">
+
+                Kategori
+
+            </a>
+
+            <span>></span>
+
+            <span>Tambah Kategori</span>
+
+        </div>
+
+        {{-- FORM TAMBAH--}}
         <div class="portfolio-category-form">
 
 
@@ -72,12 +83,17 @@
 
 
 
-                <div class="form-footer">
+                <div class="form-actions">
 
+                    <a href="{{ route('admin.portfolio-categories.index') }}"
+                        class="btn-secondary">
+                        <i class="fa-solid fa-xmark"></i>
+                        Batal
+                    </a>
 
-                    <button type="submit" class="btn-save">
+                    <button type="submit" class="btn-primary">
 
-                        <i class="fa-solid fa-save"></i>
+                        <i class="fa-solid fa-floppy-disk"></i>
                         Simpan Kategori
 
                     </button>
