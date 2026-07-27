@@ -96,7 +96,7 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="{{ route('admin.portfolio-categories.index') }}">
                         Kategori
                     </a>
                 </li>
