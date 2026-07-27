@@ -8,6 +8,7 @@
     <div class="content">
 
 
+
         <div class="d-flex justify-content-between mb-4">
 
             <div>
@@ -22,6 +23,85 @@
 
         </div>
 
+        <form method="GET" action="{{ route('admin.portfolios.index') }}" class="mb-4">
+
+    <div class="row g-2">
+
+
+        <div class="col-md-6">
+
+            <input
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="Cari judul, kategori, mitra, author..."
+                value="{{ request('search') }}"
+            >
+
+        </div>
+
+
+
+        <div class="col-md-3">
+
+            <select name="sort" class="form-control">
+
+
+                <option value="">
+                    Terbaru
+                </option>
+
+
+                <option value="oldest"
+                @selected(request('sort') == 'oldest')>
+                    Terlama
+                </option>
+
+
+                <option value="title_asc"
+                @selected(request('sort') == 'title_asc')>
+                    Judul A-Z
+                </option>
+
+
+                <option value="title_desc"
+                @selected(request('sort') == 'title_desc')>
+                    Judul Z-A
+                </option>
+
+
+            </select>
+
+
+        </div>
+
+
+
+        <div class="col-md-3">
+
+            <button class="btn btn-primary">
+
+                <i class="fa fa-search"></i>
+                Cari
+
+            </button>
+
+
+            <a href="{{ route('admin.portfolios.index') }}"
+                class="btn btn-secondary">
+
+                Reset
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</form>
 
 
         <div class="card">
@@ -37,6 +117,8 @@
                         <th>Judul</th>
                         <th>Kategori</th>
                         <th>Mitra</th>
+                        <th>Media</th>
+                        <th>Author</th>
                         <th>Deskripsi</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
@@ -69,6 +151,24 @@
                             </td>
 
                             <td>
+
+                                @if ($portfolio->media->count())
+                                    <span class="badge bg-success">
+                                        {{ $portfolio->media->count() }} Media
+                                    </span>
+                                @else
+                                    <span class="badge bg-secondary">
+                                        Tidak Ada
+                                    </span>
+                                @endif
+
+                            </td>
+
+                            <td>
+                                {{ $portfolio->author->name ?? '-' }}
+                            </td>
+
+                            <td>
                                 {!! Str::limit(strip_tags($portfolio->description), 80) !!}
                             </td>
 
@@ -88,7 +188,9 @@
                                     data-date="{{ date('d M Y', strtotime($portfolio->activity_date)) }}"
                                     data-location="{{ $portfolio->location ?? '-' }}"
                                     data-participants="{{ $portfolio->participants ?? 0 }}"
-                                    data-description='@json($portfolio->description)'>
+                                    data-author="{{ $portfolio->author->name ?? '-' }}"
+                                    data-description='@json($portfolio->description)'
+                                    data-media='@json($portfolio->media)'>
 
                                     <i class="fa fa-eye"></i>
 
@@ -248,6 +350,30 @@
                         </label>
 
                         <p id="detailParticipants"></p>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="fw-bold">
+                            Author
+                        </label>
+
+                        <p id="detailAuthor"></p>
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label class="fw-bold">
+                            Media
+                        </label>
+
+
+                        <div id="detailMedia" class="row g-3">
+
+                        </div>
 
                     </div>
 
