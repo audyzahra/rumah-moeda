@@ -9,23 +9,29 @@
 @section('content')
 
     <div class="berita-container">
-
-        <div class="back-wrapper">
-            <a href="{{ route('user.news.index') }}" class="btn-back">
-                <i class="fa-solid fa-arrow-left"></i>
-                Kembali
-            </a>
         </div>
         {{-- HEADER --}}
         <div class="berita-header">
-
             <div>
                 <h1>Edit Berita</h1>
                 <p>Perbarui data berita Rumah Moeda.</p>
             </div>
-
-
         </div>
+        <!-- ================= BREADCRUMB ================= -->
+
+            <div class="page-breadcrumb">
+
+                <a href="{{ route('user.news.index') }}">
+
+                    Berita
+
+                </a>
+
+                <span>></span>
+
+                <span>Edit Berita</span>
+
+            </div>
 
         {{-- FORM --}}
         <div class="modal-content">
