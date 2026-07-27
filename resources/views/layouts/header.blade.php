@@ -46,31 +46,31 @@
 
                 <li class="dropdown">
 
-    <a href="#">
+                    <a href="#">
 
-        Informasi
+                        Informasi
 
-        <i class="fa-solid fa-chevron-down"></i>
+                        <i class="fa-solid fa-chevron-down"></i>
 
-    </a>
+                    </a>
 
-    <ul class="dropdown-menu-nav">
+                    <ul class="dropdown-menu-nav">
 
-        <li>
-            <a href="{{ route('news.index') }}">
-                Berita
-            </a>
-        </li>
+                        <li>
+                            <a href="{{ route('news.index') }}">
+                                Berita
+                            </a>
+                        </li>
 
-        <li>
-            <a href="#">
-                Portofolio
-            </a>
-        </li>
+                        <li>
+                            <a href="{{ route('portfolio.index') }}">
+                                Portofolio
+                            </a>
+                        </li>
 
-    </ul>
+                    </ul>
 
-</li>
+                </li>
 
                 <li class="dropdown">
 
