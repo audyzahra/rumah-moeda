@@ -653,3 +653,86 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 });
+
+/* ==========================================
+   SEARCH & SORT GALERI PUBLIK
+========================================== */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    initGallerySearchSort(
+        "searchGaleri",
+        "sortGaleri",
+        ".galeri-container"
+    );
+
+    initGallerySearchSort(
+        "searchVideo",
+        "sortVideo",
+        ".galeri-container"
+    );
+
+});
+
+function initGallerySearchSort(searchId, sortId, containerSelector) {
+
+    const searchInput = document.getElementById(searchId);
+    const sortSelect = document.getElementById(sortId);
+    const galleryContainer = document.querySelector(containerSelector);
+
+    // Kalau bukan halaman yang sesuai, hentikan
+    if (!searchInput || !sortSelect || !galleryContainer) return;
+
+    function filterAndSort() {
+
+        const keyword = searchInput.value.toLowerCase().trim();
+
+        let cards = Array.from(
+            galleryContainer.querySelectorAll(".galeri-card")
+        );
+
+        // SEARCH
+        cards.forEach(card => {
+
+            const title = card.dataset.title || "";
+            const description = card.dataset.description || "";
+
+            card.style.display =
+                title.includes(keyword) || description.includes(keyword)
+                    ? ""
+                    : "none";
+
+        });
+
+        // SORT
+        cards.sort((a, b) => {
+
+            switch (sortSelect.value) {
+
+                case "terbaru":
+                    return Number(b.dataset.date) - Number(a.dataset.date);
+
+                case "terlama":
+                    return Number(a.dataset.date) - Number(b.dataset.date);
+
+                case "az":
+                    return a.dataset.title.localeCompare(b.dataset.title);
+
+                case "za":
+                    return b.dataset.title.localeCompare(a.dataset.title);
+
+                default:
+                    return 0;
+
+            }
+
+        });
+
+        cards.forEach(card => galleryContainer.appendChild(card));
+
+    }
+
+    searchInput.addEventListener("input", filterAndSort);
+    sortSelect.addEventListener("change", filterAndSort);
+
+}

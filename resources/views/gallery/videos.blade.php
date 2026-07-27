@@ -22,11 +22,39 @@
 
     </section>
 
+    <div class="galeri-toolbar">
+
+    <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            id="searchVideo"
+            placeholder="Cari dokumentasi..."
+        >
+    </div>
+
+    <div class="sort-box">
+        <select id="sortVideo">
+            <option value="terbaru">Terbaru</option>
+            <option value="terlama">Terlama</option>
+            <option value="az">Judul A-Z</option>
+            <option value="za">Judul Z-A</option>
+        </select>
+    </div>
+
+</div>
     <section class="galeri-container">
 
         @forelse($gallery as $item)
 
-            <a href="{{ route('gallery.videos.detail', $item) }}" class="galeri-card">
+            <a
+    href="{{ route('gallery.videos.detail', $item) }}"
+    class="galeri-card"
+    data-title="{{ strtolower($item->title) }}"
+    data-description="{{ strtolower(strip_tags($item->description)) }}"
+    data-date="{{ \Carbon\Carbon::parse($item->activity_date)->timestamp }}"
+>
 
                 {{-- Thumbnail Video --}}
                 @if ($item->media->isNotEmpty())
@@ -110,4 +138,29 @@
 
     </section>
 
+<div class="custom-pagination">
+
+    <div class="pagination-info">
+        Menampilkan 1 - 10 dari 10 data
+    </div>
+
+    <div class="pagination-page">
+
+        <button class="page-btn" disabled>
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <span>Halaman 1 dari 2</span>
+
+        <button class="page-btn">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+    </div>
+
+</div>
+
+@push('scripts')
+    <script src="{{ asset('js/admin/galeri.js') }}"></script>
+@endpush
 @endsection
