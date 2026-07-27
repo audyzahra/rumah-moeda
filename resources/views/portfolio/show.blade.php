@@ -433,7 +433,7 @@
 
                         <article class="related-card">
 
-                            <a href="{{ route('portfolio.show', $item->id) }}">
+                            <a href="{{ route('portfolio.show', $item->slug) }}">
 
                                 <div class="related-image">
 
