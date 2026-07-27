@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
 
 class Portfolio extends Model
 {
@@ -12,11 +13,14 @@ class Portfolio extends Model
     protected $fillable = [
         'partner_id',
         'category_id',
+        'author_id',
         'title',
+        'slug',
         'description',
         'activity_date',
         'location',
         'participants',
+        'views',
     ];
 
     protected $casts = [
@@ -42,5 +46,13 @@ class Portfolio extends Model
         return $this->hasOne(PortfolioMedia::class)
             ->where('type', 'image')
             ->orderBy('display_order');
+    }
+    public function author()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

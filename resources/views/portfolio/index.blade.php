@@ -332,7 +332,7 @@
 
                             </p>
 
-                            <a href="{{ route('portfolio.show', $portfolio->id) }}" class="detail-btn">
+                            <a href="{{ route('portfolio.show', $portfolio) }}" class="detail-btn">
 
                                 <span>Lihat Detail</span>
 

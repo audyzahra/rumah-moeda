@@ -1,0 +1,44 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('portfolios', function (Blueprint $table) {
+
+            $table->foreignId('author_id')
+                ->after('category_id')
+                ->constrained('users')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+
+            $table->string('slug')
+                ->after('title')
+                ->unique();
+
+            $table->unsignedInteger('views')
+                ->default(0)
+                ->after('participants');
+
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('portfolios', function (Blueprint $table) {
+
+            $table->dropForeign(['author_id']);
+
+            $table->dropColumn([
+                'author_id',
+                'slug',
+                'views'
+            ]);
+
+        });
+    }
+};

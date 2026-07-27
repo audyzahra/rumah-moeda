@@ -65,7 +65,7 @@ class PortfolioController extends Controller
             ->take(3)
             ->get();
 
-        return view('portfolio.detail', compact(
+        return view('portfolio.show', compact(
             'portfolio',
             'relatedPortfolios'
         ));
