@@ -121,28 +121,74 @@
         @endforelse
 
     </section>
-   
-<div class="custom-pagination">
+       {{-- PAGINATION --}}
+        <div class="custom-pagination">
 
-    <div class="pagination-info">
-        Menampilkan 1 - 10 dari 10 data
-    </div>
+            <div class="pagination-info">
 
-    <div class="pagination-page">
+                Menampilkan
 
-        <button class="page-btn" disabled>
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
+                <strong>{{ $news->firstItem() ?? 0 }}</strong>
 
-        <span>Halaman 1 dari 2</span>
+                -
 
-        <button class="page-btn">
-            <i class="fa-solid fa-chevron-right"></i>
-        </button>
+                <strong>{{ $news->lastItem() ?? 0 }}</strong>
 
-    </div>
+                dari
 
-</div>
+                <strong>{{ $news->total() }}</strong>
+
+                data
+
+            </div>
+
+            <div class="pagination-page">
+
+                {{-- Previous --}}
+                @if($news->onFirstPage())
+
+                    <button class="page-btn" disabled>
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                @else
+
+                    <a href="{{ $news->previousPageUrl() }}" class="page-btn">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+
+                @endif
+
+                <span>
+
+                    Halaman
+
+                    {{ $news->currentPage() }}
+
+                    dari
+
+                    {{ $news->lastPage() }}
+
+                </span>
+
+                {{-- Next --}}
+                @if($news->hasMorePages())
+
+                    <a href="{{ $news->nextPageUrl() }}" class="page-btn">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                @else
+
+                    <button class="page-btn" disabled>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+
+                @endif
+
+            </div>
+
+        </div>
 
     <script>
         const modal = document.getElementById("beritaModal");

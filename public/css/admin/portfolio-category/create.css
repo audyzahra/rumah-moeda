@@ -2,6 +2,58 @@
    PORTFOLIO CATEGORY CREATE PAGE
 ========================================= */
 
+/* ===== CONTAINER ===== */
+
+.content{
+    width:100%;
+    padding:0px 0px 0px 0px;
+}
+
+/* ===== HEADER ===== */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+    /* margin-bottom:12px !important; */
+}
+
+.topbar h1{
+    font-size: calc(1.375rem + 1.5vw);
+}
+
+.topbar p{
+    color:#666;
+}
+
+.header-action{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.page-breadcrumb{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom: 13px;
+    font-size:14px;
+}
+
+.page-breadcrumb a{
+    color:#2563eb;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.page-breadcrumb span:last-child{
+    color:#6b7280;
+}
 
 /* =========================================
    FORM CONTAINER
@@ -162,110 +214,58 @@
 
 }
 
+/* =========================================================
+   ACTION BUTTON
+========================================================= */
 
-
-/* =========================================
-   BUTTON AREA
-========================================= */
-
-
-.form-footer {
-
-    margin-top: 30px;
-
-    display: flex;
-
-    justify-content: flex-end;
-
+.form-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+    margin-top:30px;
 }
 
+/* =========================================================
+   BUTTON
+========================================================= */
 
-
-/* Save Button */
-
-.btn-save {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    padding: 12px 25px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background: #2563eb;
-
-    color: #fff;
-
-    font-size: 14px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition: .2s ease;
-
-}
-
-
-
-.btn-save:hover {
-
-    background: #1d4ed8;
-
-    transform: translateY(-1px);
-
-}
-
-/* =========================================
-   BACK BUTTON
-========================================= */
-
-.btn-back{
-
+.btn-primary,
+.btn-secondary{
     display:inline-flex;
-
     align-items:center;
-
-    justify-content:center;
-
     gap:8px;
 
-    width:auto;
+    padding:11px 20px;
 
-    padding:11px 18px;
-    margin-bottom:20px;
+    border:none;
+    border-radius:10px;
 
-    background:#2563eb;
+    cursor:pointer;
 
-    color:#fff;
+    font-size:14px;
+    font-weight:600;
 
     text-decoration:none;
 
-    border:1px solid #d1d5db;
-
-    border-radius:10px;
-
-    font-size:14px;
-
-    font-weight:600;
-
-    transition:.25s ease;
-
+    transition:.3s;
 }
 
-.btn-back:hover{
-
-    background:#1d4ed8;
-
+.btn-primary{
+    background:#2563eb;
     color:#fff;
+}
 
-    border-color:#1d4ed8;
+.btn-primary:hover{
+    background:#1d4ed8;
+}
 
+.btn-secondary{
+    background:#e5e7eb;
+    color:#374151;
+}
+
+.btn-secondary:hover{
+    background:#d1d5db;
 }
 
 /* =========================================

@@ -20,7 +20,7 @@ class BeritaController extends Controller
 
             $news = News::with(['category', 'author'])
                 ->latest('publish_date')
-                ->get();
+                ->paginate(5);
 
         }
         // Login (Admin/User) -> hanya berita miliknya

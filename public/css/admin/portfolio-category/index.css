@@ -7,38 +7,18 @@
 ========================================= */
 
 .topbar{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
-    margin-bottom:24px;
-
     gap:20px;
-
 }
 
 .topbar h1{
-
-    margin:0;
-
-    font-size:28px;
-
-    font-weight:700;
-
-    color:#222;
-
+    font-size: calc(1.375rem + 1.5vw);
 }
 
 .topbar p{
-
-    margin-top:6px;
-
-    color:#777;
-
-    font-size:15px;
+ color:#666
 
 }
 /* =========================================
@@ -184,7 +164,65 @@
     text-overflow: ellipsis;
 }
 
+/* ===== PAGINATION ===== */
 
+.pagination-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.info-data {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-btn{
+    width: 36px;
+    height: 36px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fff;
+    color: #475569;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.page-btn:hover{
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+}
+
+.page-btn:disabled,
+.page-btn.disabled{
+    opacity: .4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.page-btn i{
+    pointer-events: none;
+}
+
+#pageInfo {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+}
 
 /* =========================================
    ACTION BUTTON

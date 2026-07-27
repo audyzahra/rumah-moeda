@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Kategori')
+@section('title', 'Kategori Berita')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/kategori.css') }}">
@@ -15,7 +15,7 @@
 
             <div>
 
-                <h1>Kategori</h1>
+                <h1>Kategori Berita</h1>
 
                 <p>Kelola kategori berita Rumah Moeda.</p>
 
