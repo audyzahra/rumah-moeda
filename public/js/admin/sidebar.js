@@ -259,21 +259,22 @@ loadSidebarNotification();
 
 setInterval(loadSidebarNotification,5000);
 
-/* ===========================
-   SUBMENU PORTOFOLIO
-=========================== */
+// ==============================
+// DROPDOWN MENU PORTOFOLIO
+// ==============================
 
-const portfolioToggle = document.querySelector(".submenu-toggle-portofolio");
-const portfolioMenu = document.getElementById("submenuPortofolio");
-const portfolioParent = document.querySelector(".has-submenu-portofolio");
+const portfolioDropdown = document.querySelector(".submenu-toggle-portofolio");
 
-if (portfolioToggle && portfolioMenu && portfolioParent) {
+if (portfolioDropdown) {
 
-    portfolioToggle.addEventListener("click", function (e) {
+    portfolioDropdown.addEventListener("click", function (e) {
+
         e.preventDefault();
 
-        portfolioMenu.classList.toggle("show");
-        portfolioParent.classList.toggle("open");
+        const parent = this.closest(".has-submenu-portofolio");
+
+        parent.classList.toggle("open");
+
     });
 
 }
