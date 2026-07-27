@@ -3,7 +3,7 @@
 @section('content')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/admin/portfolio_category.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/portfolio-category/edit.css') }}">
 @endpush
 
 
@@ -119,5 +119,4 @@
 
 @push('scripts')
 <script src="{{ asset('js/admin/portfolio_category.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('css/admin/portfolio-category/edit.css') }}">
 @endpush

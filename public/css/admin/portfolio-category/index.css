@@ -2,6 +2,86 @@
    PORTFOLIO CATEGORY PAGE
 ========================================= */
 
+/* =========================================
+   TOPBAR
+========================================= */
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:24px;
+
+    gap:20px;
+
+}
+
+.topbar h1{
+
+    margin:0;
+
+    font-size:28px;
+
+    font-weight:700;
+
+    color:#222;
+
+}
+
+.topbar p{
+
+    margin-top:6px;
+
+    color:#777;
+
+    font-size:15px;
+
+}
+/* =========================================
+   BUTTON TAMBAH
+========================================= */
+
+.btn-add{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    padding:11px 18px;
+
+    background:#2563eb;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:.25s ease;
+
+}
+
+.btn-add:hover{
+
+    background:#1d4ed8;
+
+    color:#fff;
+
+    transform:translateY(-2px);
+
+}
 
 /* =========================================
    TABLE WRAPPER
@@ -27,17 +107,24 @@
 ========================================= */
 
 .portfolio-category-table table {
-
     width: 100%;
-    border-collapse: collapse;
-
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
+/* Header */
+.portfolio-category-table thead th:first-child{
+    border-top-left-radius:12px;
+}
 
+.portfolio-category-table thead th:last-child{
+    border-top-right-radius:12px;
+}
 
 .portfolio-category-table thead {
 
-    background: #f8f9fa;
+    background: #2563eb;
 
 }
 
@@ -52,7 +139,7 @@
     font-size: 14px;
     font-weight: 600;
 
-    color: #555;
+    color: #fff;
 
     border-bottom: 1px solid #eee;
 
@@ -88,6 +175,15 @@
 
 }
 
+/* Kolom Nama Kategori & Slug */
+.portfolio-category-table td:nth-child(2),
+.portfolio-category-table td:nth-child(3) {
+    max-width: 250px;   /* sesuaikan */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 
 
 /* =========================================
@@ -102,7 +198,7 @@
     gap: 8px;
 
     align-items: center;
-
+    
 }
 
 
@@ -303,6 +399,11 @@
 
     font-size: 14px;
 
+    /* Tambahkan */
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    line-height: 1.7;
 }
 
 
@@ -326,7 +427,7 @@
 
     border: none;
 
-    background: #6c757d;
+    background: #2563eb;
 
     color: white;
 
@@ -344,11 +445,79 @@
 
 .btn-close-modal:hover {
 
-    background: #5c636a;
+    background: #1d4ed8;
 
 }
 
+/* ===============================
+   FILTER
+================================ */
 
+.filter-container{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+
+    margin-bottom:20px;
+}
+
+.search-input{
+
+    flex:1;
+
+    height:45px;
+
+    padding:0 15px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    outline:none;
+
+    font-size:14px;
+}
+
+.search-input:focus{
+
+    border-color:#2563eb;
+}
+
+.filter-select{
+
+    width:180px;
+
+    height:45px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    padding:0 12px;
+
+    outline:none;
+
+    font-size:14px;
+}
+
+@media (max-width: 768px) {
+
+    .filter-container{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .search-input,
+    .filter-select{
+        width: 100%;
+        flex: none;
+        box-sizing: border-box;
+    }
+
+}
 
 /* =========================================
    RESPONSIVE

@@ -89,7 +89,7 @@
 
 .form-group input:focus {
 
-    border-color: #f8c3c7;
+    border-color: #2563eb;
 
     box-shadow:
         0 0 0 3px rgba(248,195,199,.25);
@@ -197,9 +197,9 @@
 
     border-radius: 10px;
 
-    background: #f8c3c7;
+    background: #2563eb;
 
-    color: #333;
+    color: #fff;
 
     font-size: 14px;
 
@@ -215,13 +215,58 @@
 
 .btn-save:hover {
 
-    background: #f3aeb5;
+    background: #1d4ed8;
 
     transform: translateY(-1px);
 
 }
 
+/* =========================================
+   BACK BUTTON
+========================================= */
 
+.btn-back{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    width:auto;
+
+    padding:11px 18px;
+    margin-bottom:20px;
+
+    background:#2563eb;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    border:1px solid #d1d5db;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:.25s ease;
+
+}
+
+.btn-back:hover{
+
+    background:#1d4ed8;
+
+    color:#fff;
+
+    border-color:#1d4ed8;
+
+}
 
 /* =========================================
    RESPONSIVE

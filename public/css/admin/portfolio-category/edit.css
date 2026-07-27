@@ -61,7 +61,7 @@
 
 .form-group input:focus {
 
-    border-color: #f8c3c7;
+    border-color: #1d4ed8;
 
     box-shadow: 0 0 0 3px rgba(248,195,199,.25);
 
@@ -143,9 +143,9 @@
 
     border-radius: 10px;
 
-    background: #f8c3c7;
+    background: #2563eb;
 
-    color: #333;
+    color: #fff;
 
     font-size: 14px;
 
@@ -161,7 +161,7 @@
 
 .btn-save:hover {
 
-    background: #f3aeb5;
+    background: #1d4ed8;
 
     transform: translateY(-2px);
 
@@ -183,9 +183,9 @@
 
     border-radius: 10px;
 
-    background: #f8c3c7;
+    background: #2563eb;
 
-    color: #333;
+    color: #fff;
 
     text-decoration: none;
 
@@ -201,7 +201,7 @@
 
 .btn-add:hover {
 
-    background: #f3aeb5;
+    background: #1d4ed8;
 
 }
 
