@@ -2,7 +2,7 @@
 
 @section('content')
     @push('styles')
-        <link rel="stylesheet" href="{{ asset('css/admin/portfolio_category.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/admin/portfolio-category/create.css') }}">
     @endpush
 
 
@@ -16,7 +16,7 @@
             </div>
 
 
-            <a href="{{ route('admin.portfolio-categories.index') }}" class="btn-add">
+            <a href="{{ route('admin.portfolio-categories.index') }}" class="btn-back">
                 <i class="fa-solid fa-arrow-left"></i>
                 Kembali
             </a>
@@ -25,7 +25,7 @@
 
 
 
-        <div class="portfolio-category-table">
+        <div class="portfolio-category-form">
 
 
             <form action="{{ route('admin.portfolio-categories.store') }}" method="POST" class="portfolio-form">
@@ -98,5 +98,4 @@
 
 @push('scripts')
     <script src="{{ asset('js/admin/portfolio_category.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('css/admin/portfolio-category/create.css') }}">
 @endpush

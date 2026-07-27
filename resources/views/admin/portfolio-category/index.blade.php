@@ -3,7 +3,7 @@
 @section('content')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/admin/portfolio_category.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/portfolio-category/index.css') }}">
 @endpush
 
 
@@ -24,6 +24,22 @@
 
     </header>
 
+    <div class="filter-container">
+
+    <input
+        type="text"
+        id="searchInput"
+        class="search-input"
+        placeholder="Cari kategori...">
+
+    <select id="sortSelect" class="filter-select">
+        <option value="newest">Terbaru</option>
+        <option value="oldest">Terlama</option>
+        <option value="az">Nama (A-Z)</option>
+        <option value="za">Nama (Z-A)</option>
+    </select>
+
+</div>
 
 
     <div class="portfolio-category-table">
@@ -34,11 +50,11 @@
             <thead>
 
                 <tr>
-                    <th>Aksi</th>
                     <th>No</th>
                     <th>Nama Kategori</th>
                     <th>Slug</th>
                     <th>Dibuat</th>
+                    <th>Aksi</th>
                 </tr>
 
             </thead>
@@ -49,82 +65,58 @@
 
             @forelse($categories as $category)
 
-                <tr>
+                <tr
+                data-name="{{ strtolower($category->name) }}"
+                data-date="{{ $category->created_at->timestamp }}">
 
 
                     <td>
+    {{ $loop->iteration }}
+</td>
 
-                        <div class="portfolio-category-action">
+<td>
+    {{ $category->name }}
+</td>
 
+<td>
+    {{ $category->slug }}
+</td>
 
-                            {{-- Detail --}}
+<td>
+    {{ $category->created_at->format('d M Y') }}
+</td>
 
-                            <button
-                                class="btn-action detail"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailModal{{ $category->id }}">
+<td>
+    <div class="portfolio-category-action">
 
-                                <i class="fa-solid fa-eye"></i>
+        {{-- Detail --}}
+        <button
+            class="btn-action detail"
+            data-bs-toggle="modal"
+            data-bs-target="#detailModal{{ $category->id }}">
+            <i class="fa-solid fa-eye"></i>
+        </button>
 
-                            </button>
+        {{-- Edit --}}
+        <a href="{{ route('admin.portfolio-categories.edit', $category->id) }}"
+           class="btn-action edit">
+            <i class="fa-solid fa-pen"></i>
+        </a>
 
+        {{-- Delete --}}
+        <form action="{{ route('admin.portfolio-categories.destroy', $category->id) }}"
+              method="POST"
+              class="delete-form">
+            @csrf
+            @method('DELETE')
 
+            <button type="submit" class="btn-delete">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </form>
 
-                            {{-- Edit --}}
-
-                            <a href="{{ route('admin.portfolio-categories.edit', $category->id) }}"
-                               class="btn-action edit">
-
-                                <i class="fa-solid fa-pen"></i>
-
-                            </a>
-
-
-
-                            {{-- Delete --}}
-
-                            <form action="{{ route('admin.portfolio-categories.destroy', $category->id) }}"
-      method="POST"
-      class="delete-form">
-
-    @csrf
-    @method('DELETE')
-
-    <button type="submit" class="btn-delete">
-        <i class="fa-solid fa-trash"></i>
-    </button>
-
-</form>
-
-                        </div>
-
-
-                    </td>
-
-
-
-                    <td>
-                        {{ $loop->iteration }}
-                    </td>
-
-
-
-                    <td>
-                        {{ $category->name }}
-                    </td>
-
-
-
-                    <td>
-                        {{ $category->slug }}
-                    </td>
-
-
-
-                    <td>
-                        {{ $category->created_at->format('d M Y') }}
-                    </td>
-
+    </div>
+</td>
 
 
                 </tr>
@@ -284,5 +276,4 @@
 
 @push('scripts')
 <script src="{{ asset('js/admin/portfolio_category.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('css/admin/portfolio-category/index.css') }}">
 @endpush
