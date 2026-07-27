@@ -138,27 +138,74 @@
 
     </section>
 
-<div class="custom-pagination">
+{{-- PAGINATION --}}
+        <div class="custom-pagination">
 
-    <div class="pagination-info">
-        Menampilkan 1 - 10 dari 10 data
-    </div>
+            <div class="pagination-info">
 
-    <div class="pagination-page">
+                Menampilkan
 
-        <button class="page-btn" disabled>
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
+                <strong>{{ $gallery->firstItem() ?? 0 }}</strong>
 
-        <span>Halaman 1 dari 2</span>
+                -
 
-        <button class="page-btn">
-            <i class="fa-solid fa-chevron-right"></i>
-        </button>
+                <strong>{{ $gallery->lastItem() ?? 0 }}</strong>
 
-    </div>
+                dari
 
-</div>
+                <strong>{{ $gallery->total() }}</strong>
+
+                data
+
+            </div>
+
+            <div class="pagination-page">
+
+                {{-- Previous --}}
+                @if($gallery->onFirstPage())
+
+                    <button class="page-btn" disabled>
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                @else
+
+                    <a href="{{ $gallery->previousPageUrl() }}" class="page-btn">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+
+                @endif
+
+                <span>
+
+                    Halaman
+
+                    {{ $gallery->currentPage() }}
+
+                    dari
+
+                    {{ $gallery->lastPage() }}
+
+                </span>
+
+                {{-- Next --}}
+                @if($gallery->hasMorePages())
+
+                    <a href="{{ $gallery->nextPageUrl() }}" class="page-btn">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                @else
+
+                    <button class="page-btn" disabled>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+
+                @endif
+
+            </div>
+
+        </div>
 
 @push('scripts')
     <script src="{{ asset('js/admin/galeri.js') }}"></script>
