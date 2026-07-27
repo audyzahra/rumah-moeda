@@ -90,7 +90,7 @@
             <ul id="submenuPortofolio" class="submenu">
 
                 <li>
-                    <a href="#">
+                    <a href="{{ route('admin.portfolios.index') }}">
                         Portofolio
                     </a>
                 </li>

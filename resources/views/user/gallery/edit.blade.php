@@ -21,15 +21,22 @@
 
             </div>
 
-            <a href="{{ route('user.gallery.index') }}" class="btn-batal">
-
-                <i class="fa-solid fa-arrow-left"></i>
-
-                Kembali
-
-            </a>
-
         </div>
+        <!-- ================= BREADCRUMB ================= -->
+
+            <div class="page-breadcrumb">
+
+                <a href="{{ route('user.gallery.index') }}">
+
+                    Galeri
+
+                </a>
+
+                <span>></span>
+
+                <span>Tambah Galeri</span>
+
+            </div>
 
         {{-- ================= FORM ================= --}}
         <div class="form-card">

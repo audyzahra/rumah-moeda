@@ -37,4 +37,10 @@ class Portfolio extends Model
     {
         return $this->hasMany(PortfolioMedia::class);
     }
+        public function thumbnail()
+    {
+        return $this->hasOne(PortfolioMedia::class)
+            ->where('type', 'image')
+            ->orderBy('display_order');
+    }
 }

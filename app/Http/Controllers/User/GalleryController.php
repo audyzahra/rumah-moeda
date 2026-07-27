@@ -52,7 +52,7 @@ class GalleryController extends Controller
         }
 
         $galleries = $query
-            ->paginate(9)
+            ->paginate(5)
             ->withQueryString();
 
         return view('user.gallery.index', compact('galleries'));
