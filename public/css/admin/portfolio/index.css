@@ -1,0 +1,197 @@
+/* =========================================
+   PORTFOLIO INDEX PAGE
+========================================= */
+
+/* Header */
+
+.content h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 6px;
+}
+
+.content p {
+    color: #6b7280;
+    margin-bottom: 0;
+}
+
+/* Add Button */
+
+.btn-primary {
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-weight: 500;
+}
+
+/* Card */
+
+.card {
+    background: #fff;
+    border: none;
+    border-radius: 16px;
+
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+
+    overflow: hidden;
+}
+
+/* Table */
+
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background: #f8fafc;
+
+    color: #374151;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    padding: 15px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.table tbody td {
+    padding: 15px;
+
+    vertical-align: middle;
+
+    color: #4b5563;
+
+    font-size: 14px;
+}
+
+.table tbody tr {
+    transition: 0.2s;
+}
+
+.table tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* Description */
+
+.table td:nth-child(5) {
+    max-width: 300px;
+
+    color: #6b7280;
+
+    line-height: 1.5;
+}
+
+/* Action Button */
+
+.table .btn-sm {
+    width: 34px;
+
+    height: 34px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 8px;
+
+    padding: 0;
+}
+
+.table .btn-info {
+    background: #0dcaf0;
+
+    border: none;
+}
+
+.table .btn-warning {
+    background: #ffc107;
+
+    border: none;
+}
+
+.table .btn-danger {
+    background: #dc3545;
+
+    border: none;
+}
+
+/* Modal */
+
+.modal-content {
+    border: none;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 18px 24px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title {
+    font-weight: 700;
+
+    color: #1f2937;
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-body label {
+    color: #374151;
+
+    font-size: 14px;
+}
+
+.modal-body p {
+    color: #4b5563;
+
+    margin-top: 5px;
+}
+
+/* Detail Description */
+
+#detailDescription {
+    min-height: 120px;
+
+    background: #f8fafc !important;
+
+    color: #374151;
+
+    line-height: 1.7;
+}
+
+/* Modal Footer */
+
+.modal-footer {
+    padding: 15px 24px;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+    .table {
+        font-size: 13px;
+    }
+
+    .content .d-flex {
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+}

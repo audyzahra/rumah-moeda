@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\VisionMissionController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Admin\EditorUploadController;
 use App\Http\Controllers\Admin\PortfolioCategoryController;
+use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
 
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\NewsController as UserNewsController;
@@ -99,7 +100,6 @@ Route::middleware('auth')->group(function () {
     // Simpan Berita (sementara)
     Route::post('/berita/store', [BeritaController::class, 'store'])
         ->name('berita.store');
-
 });
 
 /*
@@ -131,7 +131,7 @@ Route::middleware(['auth', 'verified'])
         Route::resource('news', UserNewsController::class);
 
         Route::post('/upload-image', [EditorUploadController::class, 'store'])
-         ->name('editor.upload');
+            ->name('editor.upload');
         /*
         |--------------------------------------------------------------------------
         | Gallery
@@ -148,7 +148,6 @@ Route::middleware(['auth', 'verified'])
 
         Route::get('/messages', [UserMessageController::class, 'index'])
             ->name('messages.index');
-
     });
 
 /*
@@ -176,9 +175,7 @@ Route::middleware('auth')->group(function () {
         request()->session()->regenerateToken();
 
         return redirect()->route('login');
-
     })->name('logout.login');
-
 });
 
 require __DIR__ . '/auth.php';
@@ -232,16 +229,16 @@ Route::middleware(['auth', 'admin'])
         Route::get('/settings', [SettingsController::class, 'index'])
             ->name('settings');
         // Hero Section
-            Route::get('/settings/hero-section', [HeroSectionController::class, 'index'])
-                ->name('settings.hero.index');
+        Route::get('/settings/hero-section', [HeroSectionController::class, 'index'])
+            ->name('settings.hero.index');
 
-            // Profil Perusahaan
-            Route::get('/settings/company-profile', [CompanyProfileController::class, 'index'])
-                ->name('settings.profile.index');
+        // Profil Perusahaan
+        Route::get('/settings/company-profile', [CompanyProfileController::class, 'index'])
+            ->name('settings.profile.index');
 
-            // Visi Misi
-            Route::get('/settings/vision-mission', [VisionMissionController::class, 'index'])
-                ->name('settings.visi.index');
+        // Visi Misi
+        Route::get('/settings/vision-mission', [VisionMissionController::class, 'index'])
+            ->name('settings.visi.index');
 
         Route::post('/settings/vision-mission', [VisionMissionController::class, 'update'])
             ->name('visi.update');
@@ -270,9 +267,9 @@ Route::middleware(['auth', 'admin'])
         |--------------------------------------------------------------------------
         */
         Route::post('organization-structures/import', [OrganizationStructureController::class, 'import'])
-                ->name('organization-structures.import');
+            ->name('organization-structures.import');
         Route::get('organization-structures/export', [OrganizationStructureController::class, 'export'])
-                ->name('organization-structures.export');
+            ->name('organization-structures.export');
 
         Route::resource('organization-structures', OrganizationStructureController::class);
 
@@ -356,28 +353,27 @@ Route::middleware(['auth', 'admin'])
             ->name('categories.')
             ->group(function () {
 
-        Route::get('/', [CategoryController::class, 'index'])
-            ->name('index');
+                Route::get('/', [CategoryController::class, 'index'])
+                    ->name('index');
 
-        Route::get('/create', [CategoryController::class, 'create'])
-            ->name('create');
+                Route::get('/create', [CategoryController::class, 'create'])
+                    ->name('create');
 
-        Route::post('/', [CategoryController::class, 'store'])
-            ->name('store');
+                Route::post('/', [CategoryController::class, 'store'])
+                    ->name('store');
 
-        Route::get('/{id}', [CategoryController::class, 'show'])
-            ->name('show');
+                Route::get('/{id}', [CategoryController::class, 'show'])
+                    ->name('show');
 
-        Route::get('/{id}/edit', [CategoryController::class, 'edit'])
-            ->name('edit');
+                Route::get('/{id}/edit', [CategoryController::class, 'edit'])
+                    ->name('edit');
 
-        Route::put('/{id}', [CategoryController::class, 'update'])
-            ->name('update');
+                Route::put('/{id}', [CategoryController::class, 'update'])
+                    ->name('update');
 
-        Route::delete('/{id}', [CategoryController::class, 'destroy'])
-            ->name('destroy');
-
-    });
+                Route::delete('/{id}', [CategoryController::class, 'destroy'])
+                    ->name('destroy');
+            });
         /*
         |--------------------------------------------------------------------------
         | Gallery
@@ -402,7 +398,7 @@ Route::middleware(['auth', 'admin'])
             ->name('gallery.create');
 
         Route::get('/gallery/{gallery}/edit', [AdminGalleryController::class, 'edit'])
-                ->name('gallery.edit');
+            ->name('gallery.edit');
         /*
         |--------------------------------------------------------------------------
         | FAQ
@@ -413,10 +409,10 @@ Route::middleware(['auth', 'admin'])
             ->name('faq.index');
 
         Route::get('/faq/create', [AdminFaqController::class, 'create'])
-        ->name('faq.create');
+            ->name('faq.create');
 
         Route::get('/faq/{faq}/edit', [AdminFaqController::class, 'edit'])
-        ->name('faq.edit');
+            ->name('faq.edit');
 
         Route::post('/faq', [AdminFaqController::class, 'store'])
             ->name('faq.store');
@@ -427,7 +423,7 @@ Route::middleware(['auth', 'admin'])
         Route::delete('/faq/{faq}', [AdminFaqController::class, 'destroy'])
             ->name('faq.destroy');
 
-    /*
+        /*
         |--------------------------------------------------------------------------
         | Kelola Akun
         |--------------------------------------------------------------------------
@@ -436,13 +432,13 @@ Route::middleware(['auth', 'admin'])
             ->name('manage-account.index');
 
         Route::get('/manage-account/create', [UserManagementController::class, 'create'])
-        ->name('manage-account.create');
+            ->name('manage-account.create');
 
         Route::get('/manage-account/{user}/edit', [UserManagementController::class, 'edit'])
-        ->name('manage-account.edit');
+            ->name('manage-account.edit');
 
         Route::post('/manage-account', [UserManagementController::class, 'store'])
-        ->name('manage-account.store');
+            ->name('manage-account.store');
 
         Route::put('/manage-account/{user}', [UserManagementController::class, 'update'])
             ->name('manage-account.update');
@@ -452,7 +448,7 @@ Route::middleware(['auth', 'admin'])
 
 
 
-                    /*
+        /*
 |--------------------------------------------------------------------------
 | Portfolio Categories
 |--------------------------------------------------------------------------
@@ -494,8 +490,56 @@ Route::middleware(['auth', 'admin'])
             });
 
         // untuk generate slug kategori portfolio
-            Route::get('/portfolio-categories/generate-slug/{name}',
-    [PortfolioCategoryController::class, 'generateSlugPreview'])
-    ->name('portfolio-categories.slug');
-    });
+        Route::get(
+            '/portfolio-categories/generate-slug/{name}',
+            [PortfolioCategoryController::class, 'generateSlugPreview']
+        )
+            ->name('portfolio-categories.slug');
 
+       /*
+|--------------------------------------------------------------------------
+| Portfolio
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('portfolios')
+    ->name('portfolios.')
+    ->group(function () {
+
+
+        // Index
+        Route::get('/', [AdminPortfolioController::class, 'index'])
+            ->name('index');
+
+
+        // Create
+        Route::get('/create', [AdminPortfolioController::class, 'create'])
+            ->name('create');
+
+
+        // Store
+        Route::post('/', [AdminPortfolioController::class, 'store'])
+            ->name('store');
+
+
+        // Detail
+        Route::get('/{id}', [AdminPortfolioController::class, 'show'])
+            ->name('show');
+
+
+        // Edit
+        Route::get('/{id}/edit', [AdminPortfolioController::class, 'edit'])
+            ->name('edit');
+
+
+        // Update
+        Route::put('/{id}', [AdminPortfolioController::class, 'update'])
+            ->name('update');
+
+
+        // Delete
+        Route::delete('/{id}', [AdminPortfolioController::class, 'destroy'])
+            ->name('destroy');
+
+    });
+    });
