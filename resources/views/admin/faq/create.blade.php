@@ -111,8 +111,15 @@
 
                         </label>
 
-                        <input type="number" name="display_order" class="form-control" min="0"
-                            value="{{ old('display_order', 0) }}">
+                        <input type="number" name="display_order"
+                            class="form-control @error('display_order') is-invalid @enderror" min="1"
+                            value="{{ old('display_order', $nextOrder) }}">
+
+                        @error('display_order')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
 
                         <small>
                             Semakin kecil angka, semakin atas FAQ ditampilkan.

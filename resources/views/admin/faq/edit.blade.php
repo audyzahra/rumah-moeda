@@ -111,20 +111,23 @@
                     <!-- Urutan -->
 
                     <div class="form-group">
-
-                        <label>
-
+                        <label for="display_order" class="form-label">
                             Urutan Tampil
-
                         </label>
 
-                        <input type="number" name="display_order" class="form-control" min="0"
-                            value="{{ old('display_order', $faq->display_order) }}">
+                        <input type="number" id="display_order" name="display_order"
+                            class="form-control @error('display_order') is-invalid @enderror" min="1"
+                            value="{{ old('display_order', $faq->display_order) }}" placeholder="Masukkan urutan tampil">
 
-                        <small>
+                        <small class="text-muted">
                             Semakin kecil angka, semakin atas FAQ ditampilkan.
                         </small>
 
+                        @error('display_order')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
                     <!-- BUTTON -->

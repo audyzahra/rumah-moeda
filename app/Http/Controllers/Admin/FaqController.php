@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class FaqController extends Controller
 {
@@ -19,7 +20,9 @@ class FaqController extends Controller
 
     public function create()
     {
-        return view('admin.faq.create');
+        $nextOrder = (\App\Models\Faq::max('display_order') ?? 0) + 1;
+
+        return view('admin.faq.create', compact('nextOrder'));
     }
 
     public function edit(Faq $faq)
@@ -32,7 +35,19 @@ class FaqController extends Controller
         $validated = $request->validate([
             'question'      => 'required|string|max:255',
             'answer'        => 'required|string',
-            'display_order' => 'nullable|integer|min:0',
+            'display_order' => [
+                'required',
+                'integer',
+                'min:1',
+                Rule::unique('faqs', 'display_order'),
+            ],
+        ],[
+            'question.required' => 'Pertanyaan wajib diisi.',
+            'answer.required' => 'Jawaban wajib diisi.',
+            'display_order.required' => 'Urutan tampil wajib diisi.',
+            'display_order.integer' => 'Urutan tampil harus berupa angka.',
+            'display_order.min' => 'Urutan tampil minimal 1.',
+            'display_order.unique' => 'Urutan tampil sudah digunakan. Silakan gunakan nomor lain atau ubah urutan FAQ yang sudah ada.',
         ]);
 
         Faq::create([
@@ -50,9 +65,21 @@ class FaqController extends Controller
     public function update(Request $request, Faq $faq)
     {
         $validated = $request->validate([
-            'question'      => 'required|string|max:255',
-            'answer'        => 'required|string',
-            'display_order' => 'nullable|integer|min:0',
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string',
+            'display_order' => [
+                'required',
+                'integer',
+                'min:1',
+                Rule::unique('faqs', 'display_order')->ignore($faq->id),
+            ],
+        ],[
+            'question.required' => 'Pertanyaan wajib diisi.',
+            'answer.required' => 'Jawaban wajib diisi.',
+            'display_order.required' => 'Urutan tampil wajib diisi.',
+            'display_order.integer' => 'Urutan tampil harus berupa angka.',
+            'display_order.min' => 'Urutan tampil minimal 1.',
+            'display_order.unique' => 'Urutan tampil sudah digunakan. Silakan gunakan nomor lain atau ubah urutan FAQ yang sudah ada.',
         ]);
 
         $faq->update([
