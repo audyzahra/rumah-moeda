@@ -23,91 +23,113 @@ class PortfolioController extends Controller
 
 
     public function index(Request $request)
-{
+    {
 
-    $query = Portfolio::with([
-        'category',
-        'partner',
-        'media',
-        'author'
-    ]);
+        $query = Portfolio::with([
+            'category',
+            'partner',
+            'media',
+            'author'
+        ]);
 
 
-    // SEARCH
-    if($request->search){
+        // SEARCH
+        if ($request->search) {
 
-        $query->where(function($q) use ($request){
+            $search = $request->search;
 
-            $q->where('title', 'like', '%' . $request->search . '%')
 
-            ->orWhereHas('category', function($category) use ($request){
+            $query->where(function ($q) use ($search) {
 
-                $category->where(
-                    'name',
-                    'like',
-                    '%' . $request->search . '%'
-                );
+                $q->where('title', 'like', "%$search%")
 
-            })
 
-            ->orWhereHas('partner', function($partner) use ($request){
+                    ->orWhereHas('category', function ($category) use ($search) {
 
-                $partner->where(
-                    'name',
-                    'like',
-                    '%' . $request->search . '%'
-                );
+                        $category->where(
+                            'name',
+                            'like',
+                            "%$search%"
+                        );
+                    })
 
-            })
 
-            ->orWhereHas('author', function($author) use ($request){
+                    ->orWhereHas('partner', function ($partner) use ($search) {
 
-                $author->where(
-                    'name',
-                    'like',
-                    '%' . $request->search . '%'
-                );
+                        $partner->where(
+                            'name',
+                            'like',
+                            "%$search%"
+                        );
+                    })
 
+
+                    ->orWhereHas('author', function ($author) use ($search) {
+
+                        $author->where(
+                            'name',
+                            'like',
+                            "%$search%"
+                        );
+                    });
             });
+        }
 
-        });
 
+
+        // SORTING
+
+        switch ($request->sort) {
+
+            case 'oldest':
+
+                $query->orderBy(
+                    'created_at',
+                    'asc'
+                );
+
+                break;
+
+
+            case 'title_asc':
+
+                $query->orderBy(
+                    'title',
+                    'asc'
+                );
+
+                break;
+
+
+            case 'title_desc':
+
+                $query->orderBy(
+                    'title',
+                    'desc'
+                );
+
+                break;
+
+
+            default:
+
+                $query->latest();
+
+                break;
+        }
+
+
+
+        $portfolios = $query->paginate(10)
+            ->withQueryString();
+
+
+
+        return view(
+            'admin.portfolios.index',
+            compact('portfolios')
+        );
     }
-
-
-
-    // SORTING
-
-    if($request->sort == 'oldest'){
-
-        $query->oldest();
-
-    }elseif($request->sort == 'title_asc'){
-
-        $query->orderBy('title','asc');
-
-    }elseif($request->sort == 'title_desc'){
-
-        $query->orderBy('title','desc');
-
-    }else{
-
-        $query->latest();
-
-    }
-
-
-
-    $portfolios = $query->get();
-
-
-    return view(
-        'admin.portfolios.index',
-        compact('portfolios')
-    );
-
-}
-
 
 
 
@@ -142,101 +164,95 @@ class PortfolioController extends Controller
 
         $request->validate([
 
-    'category_id' => 'required',
-    'partner_id' => 'nullable',
-    'title' => 'required',
-    'description' => 'required',
-    'activity_date' => 'required',
-    'author_id' => 'nullable|exists:users,id',
-    'location' => 'nullable',
-    'participants' => 'nullable|integer',
+            'category_id' => 'required',
+            'partner_id' => 'nullable',
+            'title' => 'required',
+            'description' => 'required',
+            'activity_date' => 'required',
+            'author_id' => 'nullable|exists:users,id',
+            'location' => 'nullable',
+            'participants' => 'nullable|integer',
 
-    'images.*' => 'nullable|image|max:2048',
-    'video_url.*' => 'nullable|url'
+            'images.*' => 'nullable|image|max:2048',
+            'video_url.*' => 'nullable|url'
 
-]);
+        ]);
 
 
 
 
         $portfolio = Portfolio::create([
 
-    'author_id' => Auth::id(),
+            'author_id' => Auth::id(),
 
-    'category_id' => $request->category_id,
+            'category_id' => $request->category_id,
 
-    'partner_id' => $request->partner_id,
+            'partner_id' => $request->partner_id,
 
-    'title' => $request->title,
+            'title' => $request->title,
 
-    'slug' => Str::slug($request->title),
+            'slug' => Str::slug($request->title),
 
-    'description' => $request->description,
+            'description' => $request->description,
 
-    'activity_date' => $request->activity_date,
+            'activity_date' => $request->activity_date,
 
-    'location' => $request->location,
+            'location' => $request->location,
 
-    'participants' => $request->participants ?? 0,
+            'participants' => $request->participants ?? 0,
 
-    'location'  => $request->location,
+            'location'  => $request->location,
 
-    'latitude'  => $request->latitude,
+            'latitude'  => $request->latitude,
 
-    'longitude' => $request->longitude
+            'longitude' => $request->longitude
 
-]);
-
-
-// Upload gambar
-if($request->hasFile('images')){
-
-    foreach($request->file('images') as $index => $image){
-
-        $path = $image->store(
-            'portfolio',
-            'public'
-        );
-
-
-        PortfolioMedia::create([
-            'portfolio_id' => $portfolio->id,
-            'type' => 'image',
-            'file_path' => $path,
-            'display_order' => $index
         ]);
 
-    }
 
-}
+        // Upload gambar
+        if ($request->hasFile('images')) {
 
+            foreach ($request->file('images') as $index => $image) {
 
-// Simpan video
-// Simpan video
-
-if($request->video_url){
-
-    foreach($request->video_url as $index => $video){
-
-
-        if($video){
+                $path = $image->store(
+                    'portfolio',
+                    'public'
+                );
 
 
-            PortfolioMedia::create([
-
-                'portfolio_id' => $portfolio->id,
-                'type' => 'video',
-                'video_url' => $video,
-                'display_order' => $index
-
-            ]);
-
-
+                PortfolioMedia::create([
+                    'portfolio_id' => $portfolio->id,
+                    'type' => 'image',
+                    'file_path' => $path,
+                    'display_order' => $index
+                ]);
+            }
         }
 
-    }
 
-}
+        // Simpan video
+        // Simpan video
+
+        if ($request->video_url) {
+
+            foreach ($request->video_url as $index => $video) {
+
+
+                if ($video) {
+
+
+                    PortfolioMedia::create([
+
+                        'portfolio_id' => $portfolio->id,
+                        'type' => 'video',
+                        'video_url' => $video,
+                        'display_order' => $index
+
+                    ]);
+                }
+            }
+        }
 
         return redirect()
             ->route('admin.portfolios.index')
@@ -251,10 +267,10 @@ if($request->video_url){
     {
 
         $portfolio = Portfolio::with([
-    'category',
-    'partner',
-    'media'
-])
+            'category',
+            'partner',
+            'media'
+        ])
             ->findOrFail($id);
 
 
@@ -271,7 +287,7 @@ if($request->video_url){
 
 
         $portfolio = Portfolio::with('media', 'author')
-    ->findOrFail($id);
+            ->findOrFail($id);
 
         $categories = PortfolioCategory::all();
 
@@ -299,19 +315,19 @@ if($request->video_url){
 
 
         $request->validate([
-    'category_id' => 'required',
-    'partner_id' => 'nullable',
-    'title' => 'required',
-    'description' => 'required',
-    'activity_date' => 'required',
-    'location' => 'nullable',
-    'participants' => 'nullable|integer',
+            'category_id' => 'required',
+            'partner_id' => 'nullable',
+            'title' => 'required',
+            'description' => 'required',
+            'activity_date' => 'required',
+            'location' => 'nullable',
+            'participants' => 'nullable|integer',
 
-    'images.*' => 'nullable|image|max:2048',
-    'video_url.*' => 'nullable|url',
-    'delete_media.*' => 'nullable|exists:portfolio_media,id'
+            'images.*' => 'nullable|image|max:2048',
+            'video_url.*' => 'nullable|url',
+            'delete_media.*' => 'nullable|exists:portfolio_media,id'
 
-]);
+        ]);
 
 
 
@@ -321,125 +337,117 @@ if($request->video_url){
 
         $portfolio->update([
 
-    'category_id' => $request->category_id,
+            'category_id' => $request->category_id,
 
-    'partner_id' => $request->partner_id,
+            'partner_id' => $request->partner_id,
 
-    'title' => $request->title,
+            'title' => $request->title,
 
-    'slug' => Str::slug($request->title),
+            'slug' => Str::slug($request->title),
 
-    'description' => $request->description,
+            'description' => $request->description,
 
-    'activity_date' => $request->activity_date,
+            'activity_date' => $request->activity_date,
 
-    'location' => $request->location,
+            'location' => $request->location,
 
-    'participants' => $request->participants ?? 0,
+            'participants' => $request->participants ?? 0,
 
-    'location'  => $request->location,
+            'location'  => $request->location,
 
-    'latitude'  => $request->latitude,
+            'latitude'  => $request->latitude,
 
-    'longitude' => $request->longitude
-
-]);
-
-
-// =========================
-// HAPUS MEDIA LAMA
-// =========================
-
-if($request->delete_media){
-
-    $media = PortfolioMedia::whereIn(
-        'id',
-        $request->delete_media
-    )->get();
-
-
-    foreach($media as $item){
-
-        if($item->type == 'image' && $item->file_path){
-
-            Storage::disk('public')
-                ->delete($item->file_path);
-
-        }
-
-
-        $item->delete();
-
-    }
-
-}
-
-
-
-// =========================
-// TAMBAH FOTO
-// =========================
-
-if($request->hasFile('images')){
-
-
-    foreach($request->file('images') as $index => $image){
-
-
-        $path = $image->store(
-            'portfolio',
-            'public'
-        );
-
-
-        PortfolioMedia::create([
-
-            'portfolio_id' => $portfolio->id,
-
-            'type' => 'image',
-
-            'file_path' => $path,
-
-            'display_order' => $index
+            'longitude' => $request->longitude
 
         ]);
 
-    }
 
-}
+        // =========================
+        // HAPUS MEDIA LAMA
+        // =========================
 
+        if ($request->delete_media) {
 
-
-// =========================
-// TAMBAH VIDEO
-// =========================
-
-if($request->video_url){
-
-
-    foreach($request->video_url as $index => $video){
+            $media = PortfolioMedia::whereIn(
+                'id',
+                $request->delete_media
+            )->get();
 
 
-        if($video){
+            foreach ($media as $item) {
+
+                if ($item->type == 'image' && $item->file_path) {
+
+                    Storage::disk('public')
+                        ->delete($item->file_path);
+                }
 
 
-            PortfolioMedia::create([
-
-                'portfolio_id' => $portfolio->id,
-
-                'type' => 'video',
-
-                'video_url' => $video,
-
-                'display_order' => $index
-
-            ]);
-
+                $item->delete();
+            }
         }
 
-    }
 
-}
+
+        // =========================
+        // TAMBAH FOTO
+        // =========================
+
+        if ($request->hasFile('images')) {
+
+
+            foreach ($request->file('images') as $index => $image) {
+
+
+                $path = $image->store(
+                    'portfolio',
+                    'public'
+                );
+
+
+                PortfolioMedia::create([
+
+                    'portfolio_id' => $portfolio->id,
+
+                    'type' => 'image',
+
+                    'file_path' => $path,
+
+                    'display_order' => $index
+
+                ]);
+            }
+        }
+
+
+
+        // =========================
+        // TAMBAH VIDEO
+        // =========================
+
+        if ($request->video_url) {
+
+
+            foreach ($request->video_url as $index => $video) {
+
+
+                if ($video) {
+
+
+                    PortfolioMedia::create([
+
+                        'portfolio_id' => $portfolio->id,
+
+                        'type' => 'video',
+
+                        'video_url' => $video,
+
+                        'display_order' => $index
+
+                    ]);
+                }
+            }
+        }
 
 
 
@@ -453,162 +461,65 @@ if($request->video_url){
 
 
     public function destroy(string $id)
-{
+    {
 
-    $portfolio = Portfolio::with('media')
-        ->findOrFail($id);
+        $portfolio = Portfolio::with('media')
+            ->findOrFail($id);
 
 
-    foreach($portfolio->media as $media){
+        foreach ($portfolio->media as $media) {
 
-        if($media->type == 'image' && $media->file_path){
+            if ($media->type == 'image' && $media->file_path) {
 
-            Storage::disk('public')
-                ->delete($media->file_path);
-
+                Storage::disk('public')
+                    ->delete($media->file_path);
+            }
         }
 
+
+        $portfolio->delete();
+
+
+        return redirect()
+            ->route('admin.portfolios.index')
+            ->with('success', 'Portfolio berhasil dihapus');
     }
 
 
-    $portfolio->delete();
+
+    public function searchLocation(Request $request)
+    {
+        $response = Http::withHeaders([
+            'User-Agent' => 'RumahMoeda'
+        ])->get(
+            'https://nominatim.openstreetmap.org/search',
+            [
+                'q' => $request->keyword,
+                'format' => 'json',
+                'addressdetails' => 1,
+                'limit' => 10,
+                'countrycodes' => 'id',
+                'accept-language' => 'id',
+                'dedupe' => 1
+            ]
+        );
 
 
-    return redirect()
-        ->route('admin.portfolios.index')
-        ->with('success','Portfolio berhasil dihapus');
+        return response()->json(
+            collect($response->json())->map(function ($item) {
 
-}
+                return [
 
+                    'name' => $item['display_name'],
 
+                    'lat' => $item['lat'],
 
-public function searchLocation(Request $request)
-{
-    $response = Http::withHeaders([
-        'User-Agent' => 'RumahMoeda'
-    ])->get(
-        'https://nominatim.openstreetmap.org/search',
-        [
-            'q' => $request->keyword,
-            'format' => 'json',
-            'addressdetails' => 1,
-            'limit' => 10,
-            'countrycodes' => 'id',
-            'accept-language' => 'id',
-            'dedupe' => 1
-        ]
-    );
+                    'lon' => $item['lon'],
 
+                    'address' => $item['address'] ?? []
 
-    return response()->json(
-        collect($response->json())->map(function($item){
-
-            return [
-
-                'name' => $item['display_name'],
-
-                'lat' => $item['lat'],
-
-                'lon' => $item['lon'],
-
-                'address' => $item['address'] ?? []
-
-            ];
-
-        })
-    );
-}
-
-
-
-public function search(Request $request)
-{
-
-    $query = Portfolio::with([
-        'category',
-        'partner',
-        'media',
-        'author'
-    ]);
-
-
-    if($request->search){
-
-        $search = $request->search;
-
-
-        $query->where(function($q) use($search){
-
-            $q->where('title','like',"%$search%")
-
-
-            ->orWhereHas('category',function($category) use($search){
-
-                $category->where(
-                    'name',
-                    'like',
-                    "%$search%"
-                );
-
+                ];
             })
-
-
-            ->orWhereHas('partner',function($partner) use($search){
-
-                $partner->where(
-                    'name',
-                    'like',
-                    "%$search%"
-                );
-
-            })
-
-
-            ->orWhereHas('author',function($author) use($search){
-
-                $author->where(
-                    'name',
-                    'like',
-                    "%$search%"
-                );
-
-            });
-
-        });
-
+        );
     }
-
-
-
-    if($request->sort == 'oldest'){
-
-        $query->oldest();
-
-    }elseif($request->sort == 'title_asc'){
-
-        $query->orderBy('title','asc');
-
-    }elseif($request->sort == 'title_desc'){
-
-        $query->orderBy('title','desc');
-
-    }else{
-
-        $query->latest();
-
-    }
-
-
-
-    $portfolios = $query->get();
-
-
-
-    return view(
-        'admin.portfolios.partials.table',
-        compact('portfolios')
-    );
-
-}
-
 }

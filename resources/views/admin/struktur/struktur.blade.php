@@ -22,13 +22,12 @@
 
             <!-- ===== FILTER & SEARCH ===== -->
             <section class="filter-section">
-                <form method="GET" action="{{ route('admin.organization-structures.index') }}" class="filter-left"
-                    id="filterForm">
+                <form class="filter-left" id="filterForm">
 
                     <input type="text" id="searchInput" name="search" value="{{ request('search') }}"
                         placeholder="Cari nama atau jabatan..." class="search-input">
 
-                    <select name="jabatan" class="filter-select" onchange="document.getElementById('filterForm').submit()">
+                    <select id="jabatanFilter" name="jabatan" class="filter-select">
 
                         <option value="">Semua Jabatan</option>
 
@@ -40,7 +39,7 @@
 
                     </select>
 
-                    <select name="sort" class="filter-select" onchange="document.getElementById('filterForm').submit()">
+                    <select id="sortSelect" name="sort" class="filter-select">
 
                         <option value="">Urutkan</option>
 
@@ -108,10 +107,11 @@
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody id="strukturTable">
 
                             @forelse($struktur as $index => $anggota)
-                                <tr>
+                                <tr data-name="{{ strtolower($anggota->full_name) }}"
+                                    data-position="{{ strtolower($anggota->position) }}">
                                     <td>
                                         {{ $struktur->firstItem() + $index }}
                                     </td>
@@ -180,12 +180,23 @@
 
                             @empty
 
+                                {{-- INI UNTUK LARAVEL/DB KETIKA DATA TIDAK ADA --}}
+
                                 <tr>
                                     <td colspan="7" class="text-center">
                                         Tidak ada data struktur organisasi.
                                     </td>
                                 </tr>
                             @endforelse
+
+                            {{-- UNTUK SEARCH KETIKA DATA TIDAK DITEMUKAN --}}
+
+                            <tr id="emptySearchRow" style="display:none;">
+                                <td colspan="7" class="text-center">
+                                    Data struktur organisasi tidak ditemukan.
+                                </td>
+                            </tr>
+
 
                         </tbody>
 
@@ -194,75 +205,67 @@
 
                 <!-- ================= PAGINATION ================= -->
 
-            <div class="pagination-section">
+                <div class="pagination-section">
 
-                <div class="info-data">
+                    <div class="info-data">
 
-                    Menampilkan
+                        Menampilkan
 
-                    <strong>{{ $struktur->firstItem() ?? 0 }}</strong>
+                        <strong>{{ $struktur->firstItem() ?? 0 }}</strong>
 
-                    -
+                        -
 
-                    <strong>{{ $struktur->lastItem() ?? 0 }}</strong>
-
-                    dari
-
-                    <strong>{{ $struktur->total() }}</strong>
-
-                    data
-
-                </div>
-
-                <div class="pagination-controls">
-
-                    {{-- Previous --}}
-                    @if ($struktur->onFirstPage())
-
-                        <button class="page-btn" disabled>
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </button>
-
-                    @else
-
-                        <a href="{{ $struktur->previousPageUrl() }}" class="page-btn">
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </a>
-
-                    @endif
-
-                    <span id="pageInfo">
-
-                        Halaman
-
-                        {{ $struktur->currentPage() }}
+                        <strong>{{ $struktur->lastItem() ?? 0 }}</strong>
 
                         dari
 
-                        {{ $struktur->lastPage() }}
+                        <strong>{{ $struktur->total() }}</strong>
 
-                    </span>
+                        data
 
-                    {{-- Next --}}
-                    @if ($struktur->hasMorePages())
+                    </div>
 
-                        <a href="{{ $struktur->nextPageUrl() }}" class="page-btn">
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </a>
+                    <div class="pagination-controls">
 
-                    @else
+                        {{-- Previous --}}
+                        @if ($struktur->onFirstPage())
+                            <button class="page-btn" disabled>
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                        @else
+                            <a href="{{ $struktur->previousPageUrl() }}" class="page-btn">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </a>
+                        @endif
 
-                        <button class="page-btn" disabled>
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </button>
+                        <span id="pageInfo">
 
-                    @endif
+                            Halaman
+
+                            {{ $struktur->currentPage() }}
+
+                            dari
+
+                            {{ $struktur->lastPage() }}
+
+                        </span>
+
+                        {{-- Next --}}
+                        @if ($struktur->hasMorePages())
+                            <a href="{{ $struktur->nextPageUrl() }}" class="page-btn">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+                        @else
+                            <button class="page-btn" disabled>
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        @endif
+
+                    </div>
 
                 </div>
 
-            </div>
-
-        </section>
+            </section>
 
             </section>
 
