@@ -283,35 +283,52 @@ body{
 ========================================= */
 
 .category-badge{
-
     display:inline-flex;
-
     align-items:center;
-
     justify-content:center;
 
-    padding:10px 20px;
+    min-width:140px;
+    height:46px;
 
-    background:rgba(255,255,255,.15);
+    padding:0 24px;
 
-    backdrop-filter:blur(12px);
+    border-radius:999px;
 
-    border:1px solid rgba(255,255,255,.25);
+    background:#f8f1df;
+    color:#d4a017;
 
-    border-radius:50px;
-
-    color:#fff;
-
-    font-size:14px;
-
+    font-size:16px;
     font-weight:600;
 
-    letter-spacing:.4px;
-
-    text-transform:uppercase;
-
+    text-align:center;
+}
+/* Card kategori */
+.info-item.category .info-content{
+    display:flex;
+    flex-direction:column;
 }
 
+/* Badge kategori di tengah */
+.info-item.category .category-badge{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin:12px auto 0;   /* auto kiri kanan = tengah */
+
+    width:fit-content;
+    min-width:140px;
+
+    padding:12px 24px;
+
+    border-radius:999px;
+
+    background:#f8f1df;
+    color:#d4a017;
+
+    font-size:16px;
+    font-weight:600;
+}
 /* =========================================
    INFO
 ========================================= */
@@ -327,27 +344,21 @@ body{
 }
 
 .info-grid{
-
     display:grid;
-
-    grid-template-columns:repeat(5,1fr);
-
-    gap:22px;
-
+    grid-template-columns:repeat(4, minmax(0,1fr));
+    gap:24px;
 }
 
 .info-item{
-
     background:#fff;
-
     border-radius:22px;
-
     padding:26px;
-
     box-shadow:var(--shadow);
 
-    transition:.35s;
+    min-height:220px;
 
+    display:flex;
+    flex-direction:column;
 }
 
 .info-item:hover{
@@ -407,13 +418,12 @@ body{
 }
 
 .info-content strong{
+    display:block;
 
-    color:var(--text);
-
-    font-size:18px;
-
-    line-height:1.6;
-
+    font-size:16px;
+    font-weight:400;
+    line-height:1.7;
+    color:#555;
 }
 
 .category-pill{
@@ -2103,4 +2113,146 @@ button:focus{
     aspect-ratio:16 / 9;
     border:0;
     display:block;
+}
+.location-card{
+    background:#fff;
+    border-radius:24px;
+    padding:28px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    position:sticky;
+    top:120px;
+    height:fit-content;
+}
+
+.location-card .info-icon{
+
+    width:64px;
+
+    height:64px;
+
+    border-radius:18px;
+
+    background:#f9f3e3;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin-bottom:18px;
+}
+
+.location-card .info-icon i{
+
+    font-size:26px;
+
+    color:#d4a017;
+}
+
+.location-card span{
+
+    display:block;
+
+    color:#777;
+
+    font-size:15px;
+
+    margin-bottom:10px;
+}
+
+.location-card h3{
+    font-size:17px;
+    font-weight:400;
+    color:#444;
+    line-height:1.8;
+    margin:0;
+    text-align:justify;
+    text-justify:inter-word;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+}
+.content-grid{
+    display:flex;
+    gap:40px;
+    align-items:flex-start;
+    margin-bottom:60px;
+}
+
+.content-main{
+    flex:1;
+    min-width:0;
+}
+
+.content-sidebar{
+    width:240px;
+    flex-shrink:0;
+}
+
+.location-card{
+    background:#fff;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    position:sticky;
+    top:120px;
+    height:fit-content;
+}
+
+.info-content span{
+    display:block;
+    margin-bottom:10px;
+
+    font-size:18px;
+    font-weight:700;      /* Label jadi bold */
+    color:#1f2937;
+}
+
+
+.location-card .info-content h3{
+    margin:0;
+    font-size:17px;          /* sama seperti .portfolio-description */
+    font-weight:400;         /* normal */
+    line-height:2;           /* sama seperti deskripsi */
+    color:var(--text);
+
+    text-align:justify;
+    text-justify:inter-word;
+
+    word-break:break-word;
+    overflow-wrap:anywhere;
+}
+
+.portfolio-description{
+    text-align:justify;
+    line-height:2;
+}
+
+@media(max-width:992px){
+
+    .content-grid{
+        flex-direction:column;
+    }
+
+    .content-sidebar{
+        width:100%;
+    }
+
+    .location-card{
+        position:static;
+    }
+
+}
+.location-text{
+    margin:0;
+    font-size:17px;
+    font-weight:400;
+    line-height:2;
+    color:var(--text);
+
+    text-align:justify;
+    text-justify:inter-word;
+
+    word-break:break-word;
+    overflow-wrap:anywhere;
 }
