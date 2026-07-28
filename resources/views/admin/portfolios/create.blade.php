@@ -1,6 +1,12 @@
 @extends('admin.layouts.app')
 
 @push('styles')
+
+ <link
+rel="stylesheet"
+href="https://unpkg.com/leaflet/dist/leaflet.css">
+
+
     <link rel="stylesheet" href="{{ asset('css/admin/portfolio/create.css') }}">
 @endpush
 
@@ -109,11 +115,41 @@
 
             <div class="mb-3">
 
-                <label>Lokasi</label>
+    <label class="form-label">Lokasi</label>
 
-                <input type="text" name="location" class="form-control">
+    <input
+        type="text"
+        id="location"
+        name="location"
+        class="form-control"
+        autocomplete="off"
+        value="{{ old('location', $portfolio->location ?? '') }}"
+    >
 
-            </div>
+    <div
+        id="location-result"
+        class="list-group mt-1">
+    </div>
+
+    <input
+        type="hidden"
+        id="latitude"
+        name="latitude"
+        value="{{ old('latitude', $portfolio->latitude ?? '') }}">
+
+    <input
+        type="hidden"
+        id="longitude"
+        name="longitude"
+        value="{{ old('longitude', $portfolio->longitude ?? '') }}">
+
+</div>
+
+<div
+    id="map"
+    style="height:200px"
+    class="rounded border">
+</div>
 
 
 
@@ -221,5 +257,7 @@
 @endsection
 
 @push('scripts')
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
     <script src="{{ asset('js/admin/portfolio.js') }}"></script>
 @endpush

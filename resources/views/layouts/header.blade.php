@@ -110,7 +110,7 @@
 
                 <li>
                     <a href="{{ route('faq.index') }}" class="{{ request()->routeIs('faq.*') ? 'active' : '' }}">
-                        Pertanyaan
+                        FAQ
                     </a>
                 </li>
 

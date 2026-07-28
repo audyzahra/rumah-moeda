@@ -3,237 +3,203 @@
 @section('title', 'Edit Mitra')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/admin/mitra.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/mitra.css') }}">
 @endpush
 
 @section('content')
 
-<!-- ================= HEADER ================= -->
+    <!-- ================= HEADER ================= -->
 
-<header class="topbar">
+    <header class="topbar">
 
-    <div>
+        <div>
 
-        <h1>Edit Mitra</h1>
+            <h1>Edit Mitra</h1>
 
-        <p>
-            Perbarui informasi mitra.
-        </p>
+            <p>
+                Perbarui informasi mitra.
+            </p>
+
+        </div>
+
+    </header>
+
+    <!-- ================= BREADCRUMB ================= -->
+
+    <div class="page-breadcrumb">
+
+        <a href="{{ route('admin.partners.index') }}">
+
+            Mitra
+
+        </a>
+
+        <span>></span>
+
+        <span>Edit Mitra</span>
 
     </div>
 
-</header>
+    <!-- ================= FORM ================= -->
 
-<!-- ================= BREADCRUMB ================= -->
+    <section>
 
-<div class="page-breadcrumb">
+        <div class="settings-card">
 
-    <a href="{{ route('admin.partners.index') }}">
+            <div class="card-body">
 
-        Mitra
+                @if ($errors->any())
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Data belum lengkap',
+                                html: `{!! implode('<br>', $errors->all()) !!}`,
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#d4af37'
+                            });
+                        });
+                    </script>
+                @endif
 
-    </a>
+                <form action="{{ route('admin.partners.update', $mitra) }}" method="POST" enctype="multipart/form-data">
 
-    <span>></span>
+                    @csrf
+                    @method('PUT')
 
-    <span>Edit Mitra</span>
+                    <!-- Nama & Website -->
 
-</div>
+                    <div class="form-row">
 
-<!-- ================= FORM ================= -->
+                        <div class="form-group form-group-half">
 
-<section>
+                            <label>
 
-    <div class="settings-card">
+                                Nama Mitra
 
-        <div class="card-body">
+                                <span class="required">*</span>
 
-            @if ($errors->any())
+                            </label>
 
-                <div class="alert alert-danger">
+                            <input type="text" name="name" class="form-control"
+                                value="{{ old('name', $mitra->name) }}" required>
 
-                    <ul>
+                        </div>
 
-                        @foreach ($errors->all() as $error)
+                        <div class="form-group form-group-half">
 
-                            <li>{{ $error }}</li>
+                            <label>
 
-                        @endforeach
+                                Website
 
-                    </ul>
+                            </label>
 
-                </div>
+                            <input type="url" name="website" class="form-control" placeholder="https://example.com"
+                                value="{{ old('website', $mitra->website) }}">
 
-            @endif
-
-            <form
-                action="{{ route('admin.partners.update', $mitra) }}"
-                method="POST"
-                enctype="multipart/form-data">
-
-                @csrf
-                @method('PUT')
-
-                <!-- Nama & Website -->
-
-                <div class="form-row">
-
-                    <div class="form-group form-group-half">
-
-                        <label>
-
-                            Nama Mitra
-
-                            <span class="required">*</span>
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="name"
-                            class="form-control"
-                            value="{{ old('name', $mitra->name) }}"
-                            required>
+                        </div>
 
                     </div>
 
-                    <div class="form-group form-group-half">
+                    <!-- Urutan & Logo -->
 
-                        <label>
+                    <div class="form-row">
 
-                            Website
+                        <div class="form-group form-group-half">
 
-                        </label>
+                            <label>
 
-                        <input
-                            type="url"
-                            name="website"
-                            class="form-control"
-                            placeholder="https://example.com"
-                            value="{{ old('website', $mitra->website) }}">
+                                Urutan Tampil
 
-                    </div>
+                            </label>
 
-                </div>
+                            <input type="number" name="display_order" class="form-control" min="1"
+                                value="{{ old('display_order', $mitra->display_order) }}">
 
-                <!-- Urutan & Logo -->
+                            <small>
 
-                <div class="form-row">
+                                Semakin kecil angka, semakin atas tampilnya.
 
-                    <div class="form-group form-group-half">
+                            </small>
 
-                        <label>
+                        </div>
 
-                            Urutan Tampil
+                        <div class="form-group form-group-half">
 
-                        </label>
+                            <label>
 
-                        <input
-                            type="number"
-                            name="display_order"
-                            class="form-control"
-                            min="1"
-                            value="{{ old('display_order', $mitra->display_order) }}">
+                                Upload Logo Baru
 
-                        <small>
+                            </label>
 
-                            Semakin kecil angka, semakin atas tampilnya.
+                            <input type="file" name="logo" class="form-control" accept="image/*">
 
-                        </small>
+                            <small>
+
+                                Kosongkan jika logo tidak ingin diganti.
+
+                            </small>
+
+                        </div>
 
                     </div>
 
-                    <div class="form-group form-group-half">
+                    <!-- Preview Logo -->
 
-                        <label>
+                    @if ($mitra->logo)
+                        <div class="form-group">
 
-                            Upload Logo Baru
+                            <label>
 
-                        </label>
+                                Logo Saat Ini
 
-                        <input
-                            type="file"
-                            name="logo"
-                            class="form-control"
-                            accept="image/*">
+                            </label>
 
-                        <small>
+                            <br>
 
-                            Kosongkan jika logo tidak ingin diganti.
+                            <img src="{{ asset('storage/' . $mitra->logo) }}" alt="{{ $mitra->name }}"
+                                style="max-height:90px;border-radius:10px;">
 
-                        </small>
+                        </div>
+                    @endif
 
-                    </div>
-
-                </div>
-
-                <!-- Preview Logo -->
-
-                @if($mitra->logo)
+                    <!-- Deskripsi -->
 
                     <div class="form-group">
 
                         <label>
 
-                            Logo Saat Ini
+                            Deskripsi
 
                         </label>
 
-                        <br>
-
-                        <img
-                            src="{{ asset('storage/' . $mitra->logo) }}"
-                            alt="{{ $mitra->name }}"
-                            style="max-height:90px;border-radius:10px;">
+                        <textarea name="description" rows="5" class="form-control">{{ old('description', $mitra->description) }}</textarea>
 
                     </div>
 
-                @endif
+                    <!-- BUTTON -->
+                    <div class="form-actions">
+                        <a href="{{ route('admin.partners.index') }}" class="btn-secondary">
+                            <i class="fa-solid fa-xmark"></i>
+                            Batal
+                        </a>
 
-                <!-- Deskripsi -->
+                        <button type="submit" class="btn-primary">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            Update Mitra
+                        </button>
+                    </div>
 
-                <div class="form-group">
+                </form>
 
-                    <label>
-
-                        Deskripsi
-
-                    </label>
-
-                    <textarea
-                        name="description"
-                        rows="5"
-                        class="form-control">{{ old('description', $mitra->description) }}</textarea>
-
-                </div>
-
-                <!-- BUTTON -->
-                <div class="form-actions">
-                    <a
-                        href="{{ route('admin.partners.index') }}"
-                        class="btn-secondary">
-                        <i class="fa-solid fa-xmark"></i>
-                        Batal
-                    </a>
-
-                    <button
-                        type="submit"
-                        class="btn-primary">
-                        <i class="fa-solid fa-floppy-disk"></i>
-                        Update Mitra
-                    </button>
-                </div>
-
-            </form>
+            </div>
 
         </div>
 
-    </div>
-
-</section>
+    </section>
 
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/admin/mitra.js') }}"></script>
+    <script src="{{ asset('js/admin/mitra.js') }}"></script>
 @endpush

@@ -12,6 +12,8 @@ use App\Models\PortfolioMedia;
 
 use Illuminate\Support\Str;
 
+use Illuminate\Support\Facades\Http;
+
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Storage;
@@ -175,7 +177,13 @@ class PortfolioController extends Controller
 
     'location' => $request->location,
 
-    'participants' => $request->participants ?? 0
+    'participants' => $request->participants ?? 0,
+
+    'location'  => $request->location,
+
+    'latitude'  => $request->latitude,
+
+    'longitude' => $request->longitude
 
 ]);
 
@@ -327,7 +335,13 @@ if($request->video_url){
 
     'location' => $request->location,
 
-    'participants' => $request->participants ?? 0
+    'participants' => $request->participants ?? 0,
+
+    'location'  => $request->location,
+
+    'latitude'  => $request->latitude,
+
+    'longitude' => $request->longitude
 
 ]);
 
@@ -465,4 +479,44 @@ if($request->video_url){
         ->with('success','Portfolio berhasil dihapus');
 
 }
+
+
+
+public function searchLocation(Request $request)
+{
+    $response = Http::withHeaders([
+        'User-Agent' => 'RumahMoeda'
+    ])->get(
+        'https://nominatim.openstreetmap.org/search',
+        [
+            'q' => $request->keyword,
+            'format' => 'json',
+            'addressdetails' => 1,
+            'limit' => 10,
+            'countrycodes' => 'id',
+            'accept-language' => 'id',
+            'dedupe' => 1
+        ]
+    );
+
+
+    return response()->json(
+        collect($response->json())->map(function($item){
+
+            return [
+
+                'name' => $item['display_name'],
+
+                'lat' => $item['lat'],
+
+                'lon' => $item['lon'],
+
+                'address' => $item['address'] ?? []
+
+            ];
+
+        })
+    );
+}
+
 }

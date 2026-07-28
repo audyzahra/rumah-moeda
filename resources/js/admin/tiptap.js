@@ -11,7 +11,6 @@ import Highlight from "@tiptap/extension-highlight";
 import Image from "@tiptap/extension-image";
 
 function initTiptap() {
-
     const wrappers = document.querySelectorAll(".tiptap-wrapper");
 
     if (!wrappers.length) {
@@ -19,7 +18,6 @@ function initTiptap() {
     }
 
     wrappers.forEach((wrapper) => {
-
         const editorElement = wrapper.querySelector(".tiptap-editor");
         const hiddenInput = wrapper.querySelector(".tiptap-content");
 
@@ -28,7 +26,6 @@ function initTiptap() {
         }
 
         const editor = new Editor({
-
             element: editorElement,
 
             content: hiddenInput.value || "",
@@ -40,11 +37,15 @@ function initTiptap() {
             injectCSS: false,
 
             extensions: [
-
                 StarterKit.configure({
                     heading: {
                         levels: [2, 3],
                     },
+
+                    // matikan bawaan karena kita atur sendiri
+                    link: false,
+
+                    underline: false,
                 }),
 
                 Underline,
@@ -53,13 +54,17 @@ function initTiptap() {
 
                 Image.configure({
                     inline: false,
+
                     allowBase64: true,
                 }),
 
                 Link.configure({
                     openOnClick: false,
+
                     autolink: true,
+
                     linkOnPaste: true,
+
                     defaultProtocol: "https",
                 }),
 
@@ -67,6 +72,7 @@ function initTiptap() {
                     placeholder:
                         editorElement.dataset.placeholder ||
                         "Tulis isi berita di sini...",
+
                     emptyEditorClass: "is-editor-empty",
                 }),
 
@@ -77,14 +83,10 @@ function initTiptap() {
                 }),
 
                 TextAlign.configure({
-                    types: [
-                        "heading",
-                        "paragraph",
-                    ],
+                    types: ["heading", "paragraph"],
                 }),
-
             ],
-
+            
             editorProps: {
                 attributes: {
                     class: "ProseMirror",
@@ -92,27 +94,20 @@ function initTiptap() {
             },
 
             onCreate({ editor }) {
-
                 hiddenInput.value = editor.getHTML();
 
                 updateToolbar(editor, wrapper);
-
             },
 
             onUpdate({ editor }) {
-
                 hiddenInput.value = editor.getHTML();
 
                 updateToolbar(editor, wrapper);
-
             },
 
             onSelectionUpdate({ editor }) {
-
                 updateToolbar(editor, wrapper);
-
             },
-
         });
 
         wrapper.editor = editor;
@@ -125,23 +120,18 @@ function initTiptap() {
         });
 
         editorElement.addEventListener("drop", async (e) => {
-
             e.preventDefault();
 
             const file = e.dataTransfer.files[0];
 
             await handleImageFile(file, wrapper, editor);
-
         });
 
         editorElement.addEventListener("paste", async (e) => {
-
             const items = e.clipboardData.items;
 
             for (const item of items) {
-
                 if (item.type.startsWith("image/")) {
-
                     e.preventDefault();
 
                     const file = item.getAsFile();
@@ -149,37 +139,24 @@ function initTiptap() {
                     await handleImageFile(file, wrapper, editor);
 
                     break;
-
                 }
-
             }
-
         });
-
     });
 
     document.querySelectorAll("form").forEach((form) => {
-
         form.addEventListener("submit", () => {
-
             document.querySelectorAll(".tiptap-wrapper").forEach((wrapper) => {
-
                 if (
                     wrapper.editor &&
                     wrapper.querySelector(".tiptap-content")
                 ) {
-
                     wrapper.querySelector(".tiptap-content").value =
                         wrapper.editor.getHTML();
-
                 }
-
             });
-
         });
-
     });
-
 }
 /*
 |--------------------------------------------------------------------------
@@ -188,15 +165,12 @@ function initTiptap() {
 */
 
 function updateToolbar(editor, wrapper) {
-
     wrapper.querySelectorAll("[data-action]").forEach((button) => {
-
         const action = button.dataset.action;
 
         let active = false;
 
         switch (action) {
-
             case "bold":
                 active = editor.isActive("bold");
                 break;
@@ -272,13 +246,10 @@ function updateToolbar(editor, wrapper) {
                     textAlign: "justify",
                 });
                 break;
-
         }
 
         button.classList.toggle("is-active", active);
-
     });
-
 }
 /*
 |--------------------------------------------------------------------------
@@ -287,7 +258,6 @@ function updateToolbar(editor, wrapper) {
 */
 
 async function uploadImage(file, wrapper, editor) {
-
     const uploadUrl = wrapper.dataset.uploadUrl;
 
     const formData = new FormData();
@@ -295,28 +265,22 @@ async function uploadImage(file, wrapper, editor) {
     formData.append("image", file);
 
     const response = await fetch(uploadUrl, {
-
         method: "POST",
 
         headers: {
-
-            "X-CSRF-TOKEN":
-                document.querySelector('meta[name="csrf-token"]').content,
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')
+                .content,
 
             Accept: "application/json",
-
         },
 
         body: formData,
-
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-
         throw new Error(data.message || "Upload gagal.");
-
     }
 
     editor
@@ -328,7 +292,6 @@ async function uploadImage(file, wrapper, editor) {
         .run();
 
     wrapper.querySelector(".tiptap-content").value = editor.getHTML();
-
 }
 /*
 |--------------------------------------------------------------------------
@@ -337,7 +300,6 @@ async function uploadImage(file, wrapper, editor) {
 */
 
 async function handleImageFile(file, wrapper, editor) {
-
     if (!file) {
         return;
     }
@@ -347,15 +309,10 @@ async function handleImageFile(file, wrapper, editor) {
     }
 
     try {
-
         await uploadImage(file, wrapper, editor);
-
     } catch (error) {
-
         alert(error.message);
-
     }
-
 }
 /*
 |--------------------------------------------------------------------------
@@ -364,7 +321,6 @@ async function handleImageFile(file, wrapper, editor) {
 */
 
 document.addEventListener("click", (e) => {
-
     const button = e.target.closest("[data-action]");
 
     if (!button) {
@@ -382,7 +338,6 @@ document.addEventListener("click", (e) => {
     const action = button.dataset.action;
 
     switch (action) {
-
         case "bold":
             editor.chain().focus().toggleBold().run();
             break;
@@ -404,15 +359,23 @@ document.addEventListener("click", (e) => {
             break;
 
         case "h2":
-            editor.chain().focus().toggleHeading({
-                level: 2,
-            }).run();
+            editor
+                .chain()
+                .focus()
+                .toggleHeading({
+                    level: 2,
+                })
+                .run();
             break;
 
         case "h3":
-            editor.chain().focus().toggleHeading({
-                level: 3,
-            }).run();
+            editor
+                .chain()
+                .focus()
+                .toggleHeading({
+                    level: 3,
+                })
+                .run();
             break;
 
         case "bulletList":
@@ -456,29 +419,18 @@ document.addEventListener("click", (e) => {
             break;
 
         case "link": {
+            const previousUrl = editor.getAttributes("link").href || "";
 
-            const previousUrl =
-                editor.getAttributes("link").href || "";
-
-            const url = window.prompt(
-                "Masukkan URL",
-                previousUrl
-            );
+            const url = window.prompt("Masukkan URL", previousUrl);
 
             if (url === null) {
                 break;
             }
 
             if (url.trim() === "") {
-
-                editor
-                    .chain()
-                    .focus()
-                    .unsetLink()
-                    .run();
+                editor.chain().focus().unsetLink().run();
 
                 break;
-
             }
 
             editor
@@ -491,10 +443,8 @@ document.addEventListener("click", (e) => {
                 .run();
 
             break;
-
         }
         case "image": {
-
             const input = wrapper.querySelector(".tiptap-image-input");
 
             input.value = "";
@@ -502,15 +452,12 @@ document.addEventListener("click", (e) => {
             input.click();
 
             break;
-
         }
-
     }
 
     updateToolbar(editor, wrapper);
 
     wrapper.querySelector(".tiptap-content").value = editor.getHTML();
-
 });
 
 /*
@@ -520,13 +467,10 @@ document.addEventListener("click", (e) => {
 */
 
 document.addEventListener("change", async (e) => {
-
     const input = e.target.closest(".tiptap-image-input");
 
     if (!input) {
-
         return;
-
     }
 
     const wrapper = input.closest(".tiptap-wrapper");
@@ -534,36 +478,23 @@ document.addEventListener("change", async (e) => {
     const editor = wrapper.editor;
 
     if (!editor) {
-
         return;
-
     }
 
     const file = input.files[0];
 
     if (!file) {
-
         return;
-
     }
 
     try {
-
         await uploadImage(file, wrapper, editor);
-
     } catch (error) {
-
         alert(error.message);
-
     }
-
 });
 if (document.readyState === "loading") {
-
     document.addEventListener("DOMContentLoaded", initTiptap);
-
 } else {
-
     initTiptap();
-
 }
