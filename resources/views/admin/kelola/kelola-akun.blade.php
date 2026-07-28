@@ -154,6 +154,75 @@
 
                 </table>
 
+                <!-- ================= PAGINATION ================= -->
+                        <div class="pagination-section">
+
+                            <div class="info-data">
+
+                                Menampilkan
+
+                                <strong>{{ $users->firstItem() ?? 0 }}</strong>
+
+                                -
+
+                                <strong>{{ $users->lastItem() ?? 0 }}</strong>
+
+                                dari
+
+                                <strong>{{ $users->total() }}</strong>
+
+                                data
+
+                            </div>
+
+                            <div class="pagination-controls">
+
+                                {{-- Previous --}}
+                                @if ($users->onFirstPage())
+
+                                    <button class="page-btn" disabled>
+                                        <i class="fa-solid fa-chevron-left"></i>
+                                    </button>
+
+                                @else
+
+                                    <a href="{{ $users->previousPageUrl() }}" class="page-btn">
+                                        <i class="fa-solid fa-chevron-left"></i>
+                                    </a>
+
+                                @endif
+
+                                <span id="pageInfo">
+
+                                    Halaman
+
+                                    {{ $users->currentPage() }}
+
+                                    dari
+
+                                    {{ $users->lastPage() }}
+
+                                </span>
+
+                                {{-- Next --}}
+                                @if ($users->hasMorePages())
+
+                                    <a href="{{ $users->nextPageUrl() }}" class="page-btn">
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </a>
+
+                                @else
+
+                                    <button class="page-btn" disabled>
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </button>
+
+                                @endif
+
+                            </div>
+
+                        </div>
+
             </div>
 
         </div>
