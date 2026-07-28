@@ -23,13 +23,13 @@
             </div>
         </header>
 
-        <form method="GET" class="filter-section">
+        <form class="filter-section" id="galleryFilter">
 
             <div class="filter-left">
 
                 <input type="text" id="searchInput" class="search-input" placeholder="Cari dokumentasi...">
 
-                <select name="sort" class="filter-select" onchange="this.form.submit()">
+                <select id="sortGallery" name="sort" class="filter-select">
 
                     <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>
                         Terbaru
@@ -88,7 +88,7 @@
                     </thead>
 
 
-                    <tbody>
+                    <tbody id="galleryTable">
 
                         @forelse($galleries as $gallery)
                             @php
@@ -96,7 +96,9 @@
                             @endphp
 
 
-                            <tr>
+                            <tr data-title="{{ strtolower($gallery->title) }}"
+                                data-description="{{ strtolower(strip_tags($gallery->description)) }}"
+                                data-date="{{ strtotime($gallery->activity_date) }}">
                                 <td>
                                     {{ $loop->iteration }}
                                 </td>
@@ -184,12 +186,20 @@
 
                         @empty
 
+                            {{-- UNTUK JIKA TIDAK ADA DATA DI DB --}}
                             <tr>
                                 <td colspan="8" class="empty-table">
                                     Belum ada dokumentasi
                                 </td>
                             </tr>
                         @endforelse
+
+                        {{-- UNTUK SERACHING --}}
+
+                        <tr id="emptySearchRow" style="display:none;">
+                            <td colspan="8" class="empty-table">
+                                Data galeri tidak ditemukan
+                            </td>
 
 
                     </tbody>
@@ -226,17 +236,13 @@
 
                     {{-- Previous --}}
                     @if ($galleries->onFirstPage())
-
                         <button class="page-btn" disabled>
                             <i class="fa-solid fa-chevron-left"></i>
                         </button>
-
                     @else
-
                         <a href="{{ $galleries->previousPageUrl() }}" class="page-btn">
                             <i class="fa-solid fa-chevron-left"></i>
                         </a>
-
                     @endif
 
                     <span id="pageInfo">
@@ -253,17 +259,13 @@
 
                     {{-- Next --}}
                     @if ($galleries->hasMorePages())
-
                         <a href="{{ $galleries->nextPageUrl() }}" class="page-btn">
                             <i class="fa-solid fa-chevron-right"></i>
                         </a>
-
                     @else
-
                         <button class="page-btn" disabled>
                             <i class="fa-solid fa-chevron-right"></i>
                         </button>
-
                     @endif
 
                 </div>

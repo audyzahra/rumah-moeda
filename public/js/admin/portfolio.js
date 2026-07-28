@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+    console.log("portfolio.js loaded");
+
     /*
     |--------------------------------------------------------------------------
     | DELETE PORTFOLIO
@@ -663,34 +665,75 @@ document.addEventListener("DOMContentLoaded", function () {
         marker = L.marker([latitude.value, longitude.value]).addTo(map);
     }
 
-    /*
-|--------------------------------------------------------------------------
-| AUTO SEARCH PORTFOLIO
-|--------------------------------------------------------------------------
-*/
+    /* ==========================================
+   SEARCH & SORT PORTFOLIO
+========================================== */
 
     const searchPortfolio = document.getElementById("searchPortfolio");
 
     const sortPortfolio = document.getElementById("sortPortfolio");
 
-    const portfolioFilter = document.getElementById("portfolioFilter");
+    function filterPortfolio() {
+        const keyword = searchPortfolio.value.toLowerCase().trim();
 
-    let portfolioSearchTimer;
+        const sortValue = sortPortfolio.value;
 
-    if (searchPortfolio) {
-        searchPortfolio.addEventListener("input", function () {
-            clearTimeout(portfolioSearchTimer);
+        const rows = document.querySelectorAll("#portfolioTable tr");
 
-            portfolioSearchTimer = setTimeout(() => {
-                portfolioFilter.submit();
-            }, 50);
+        rows.forEach(function (row) {
+            // Lewati empty state
+            if (row.querySelector(".empty-state")) return;
+
+            const title = row.dataset.title || "";
+
+            const category = row.dataset.category || "";
+
+            const partner = row.dataset.partner || "";
+
+            const author = row.dataset.author || "";
+
+            const matchKeyword =
+                title.includes(keyword) ||
+                category.includes(keyword) ||
+                partner.includes(keyword) ||
+                author.includes(keyword);
+
+            row.style.display = matchKeyword ? "" : "none";
+        });
+
+        // SORTING
+
+        const tbody = document.getElementById("portfolioTable");
+
+        const rowsArray = Array.from(tbody.querySelectorAll("tr"));
+
+        rowsArray.sort(function (a, b) {
+            const titleA = a.dataset.title || "";
+
+            const titleB = b.dataset.title || "";
+
+            if (sortValue === "title_asc") {
+                return titleA.localeCompare(titleB);
+            }
+
+            if (sortValue === "title_desc") {
+                return titleB.localeCompare(titleA);
+            }
+
+            return 0;
+        });
+
+        rowsArray.forEach((row) => {
+            tbody.appendChild(row);
         });
     }
 
+    if (searchPortfolio) {
+        searchPortfolio.addEventListener("keyup", filterPortfolio);
+    }
+
     if (sortPortfolio) {
-        sortPortfolio.addEventListener("change", function () {
-            portfolioFilter.submit();
-        });
+        sortPortfolio.addEventListener("change", filterPortfolio);
     }
 
     // kurawal penutup
