@@ -90,36 +90,43 @@ class PartnerController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // Validasi
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'website' => 'nullable|url',
-            'display_order' => 'nullable|integer|min:1',
-            'description' => 'nullable|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'website' => 'nullable|url',
+        'display_order' => 'required|integer|min:1',
+        'description' => 'nullable|string',
+        'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ],[
+        'name.required' => 'Nama mitra wajib diisi.',
+        'display_order.required' => 'Urutan tampil wajib diisi.',
+        'display_order.integer' => 'Urutan tampil harus berupa angka.',
+        'logo.required' => 'Logo mitra wajib diupload.',
+        'logo.image' => 'File harus berupa gambar.',
+        'logo.mimes' => 'Logo harus berformat JPG, JPEG, PNG, GIF atau SVG.',
+        'logo.max' => 'Ukuran logo maksimal 2 MB.',
+    ]);
 
-        $data = $request->all();
+    $data = $request->except('logo');
 
-        // Upload logo
-        if ($request->hasFile('logo')) {
-            $logo = $request->file('logo');
-            $filename = time() . '_' . $logo->getClientOriginalName();
-            $path = $logo->storeAs('partners', $filename, 'public');
-            $data['logo'] = $path;
-        }
+    if ($request->hasFile('logo')) {
 
-        // Simpan ke database
-        Partner::create($data);
+        $filename = time().'_'.$request->file('logo')->getClientOriginalName();
 
-        return redirect()
+        $data['logo'] = $request->file('logo')
+            ->storeAs('partners', $filename, 'public');
+
+    }
+
+    Partner::create($data);
+
+    return redirect()
         ->route('admin.partners.index')
         ->with([
             'title' => 'Berhasil! 🎉',
             'success' => 'Mitra berhasil ditambahkan.'
         ]);
-    }
+}
 
     /**
  * Show the form for editing the specified resource.
@@ -138,9 +145,11 @@ class PartnerController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'website' => 'nullable|url',
-            'display_order' => 'nullable|integer|min:1',
+            'display_order' => 'required|integer|min:1',
             'description' => 'nullable|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ],[
+            'display_order.required' => 'Urutan tampil wajib diisi.',
         ]);
 
         $data = $request->all();
