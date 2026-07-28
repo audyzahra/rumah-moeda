@@ -21,7 +21,7 @@ class PortfolioController extends Controller
             }
         ])
         ->latest('activity_date')
-        ->paginate(9);
+        ->paginate(6);
 
         $categories = PortfolioCategory::orderBy('name')->get();
 
