@@ -219,17 +219,102 @@
 
                     </div>
 
+                    {{-- ===========================================================
+    GALERI DOKUMENTASI
+=========================================================== --}}
+                    <section class="portfolio-gallery">
 
-                    {{-- ===========================
-                Tentang Mitra
-            ============================ --}}
+                        <div class="container">
+
+                            <div class="section-heading">
+
+                                <h2>
+
+                                    Galeri Dokumentasi
+
+                                </h2>
+
+                                <p>
+
+                                    Dokumentasi kegiatan selama pelaksanaan program.
+
+                                </p>
+
+                            </div>
+
+                            @if ($portfolio->media->count())
+
+                                <div class="gallery-grid">
+
+                                    @foreach ($portfolio->media->sortBy('display_order') as $media)
+                                        {{-- FOTO --}}
+                                        @if ($media->type === 'image')
+                                            <a href="{{ asset('storage/' . $media->file_path) }}" class="gallery-item">
+
+                                                <img src="{{ asset('storage/' . $media->file_path) }}"
+                                                    alt="{{ $portfolio->title }}">
+
+                                                <div class="gallery-overlay">
+                                                    <i class="fa-solid fa-magnifying-glass-plus"></i>
+                                                </div>
+
+                                            </a>
+
+                                            {{-- VIDEO YOUTUBE --}}
+                                        @elseif ($media->type === 'video')
+                                            @php
+                                                preg_match(
+                                                    '/(?:youtu\.be\/|youtube\.com\/watch\?v=|youtube\.com\/embed\/)([^?&]+)/',
+                                                    $media->video_url,
+                                                    $matches,
+                                                );
+
+                                                $youtubeId = $matches[1] ?? null;
+                                            @endphp
+
+                                            @if ($youtubeId)
+                                                <div class="gallery-item gallery-video">
+
+                                                    <iframe src="https://www.youtube.com/embed/{{ $youtubeId }}"
+                                                        title="YouTube video" frameborder="0"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                        allowfullscreen>
+                                                    </iframe>
+
+                                                </div>
+                                            @endif
+                                        @endif
+                                    @endforeach
+
+                                </div>
+                            @else
+                                <div class="gallery-empty">
+
+                                    <i class="fa-regular fa-image"></i>
+
+                                    <p>
+
+                                        Belum ada dokumentasi kegiatan.
+
+                                    </p>
+
+                                </div>
+
+                            @endif
+
+                        </div>
+
+                    </section>
+                    {{-- ==========================================
+    TENTANG MITRA
+========================================== --}}
                     <div class="content-card partner-card">
 
                         <div class="section-title">
 
                             <h2>
 
-                                Tentang Mitra
+                                Mitra Kolaborasi
 
                             </h2>
 
@@ -237,11 +322,11 @@
 
                         </div>
 
-                        <div class="partner-wrapper">
+                        <div class="partner-card-horizontal">
 
                             <div class="partner-logo">
 
-                                @if ($portfolio->partner->logo)
+                                @if ($portfolio->partner && $portfolio->partner->logo)
                                     <img src="{{ asset('storage/' . $portfolio->partner->logo) }}"
                                         alt="{{ $portfolio->partner->name }}">
                                 @else
@@ -252,24 +337,24 @@
 
                             <div class="partner-content">
 
-                                <h3>
+                                <span class="partner-label">
+                                    Partner Resmi Rumah Moeda
+                                </span>
 
-                                    {{ $portfolio->partner->name }}
+                                <h3>{{ $portfolio->partner?->name }}</h3>
 
-                                </h3>
+                                @if ($portfolio->partner?->description)
+                                    <p>
+                                        {{ $portfolio->partner->description }}
+                                    </p>
+                                @endif
 
-                                <p>
-
-                                    {{ $portfolio->partner->description }}
-
-                                </p>
-
-                                @if ($portfolio->partner->website)
+                                @if ($portfolio->partner?->website)
                                     <a href="{{ $portfolio->partner->website }}" target="_blank" class="partner-link">
 
-                                        Kunjungi Website
+                                        Website Partner
 
-                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        <i class="fa-solid fa-arrow-right"></i>
 
                                     </a>
                                 @endif
@@ -279,285 +364,160 @@
                         </div>
 
                     </div>
+                    <section class="related-portfolio">
 
-                </div>
+                        <div class="container">
 
-            </div>
+                            <div class="section-heading">
 
-        </section>
-        {{-- ===========================================================
-    GALERI DOKUMENTASI
-=========================================================== --}}
-        <section class="portfolio-gallery">
+                                <h2>
 
-            <div class="container">
+                                    Portofolio Lainnya
 
-                <div class="section-heading">
+                                </h2>
 
-                    <h2>
+                                <p>
 
-                        Galeri Dokumentasi
+                                    Jelajahi kegiatan dan kolaborasi Rumah Moeda lainnya.
 
-                    </h2>
+                                </p>
 
-                    <p>
+                            </div>
 
-                        Dokumentasi kegiatan selama pelaksanaan program.
+                            <div class="related-grid">
 
-                    </p>
+                                @forelse($relatedPortfolios as $item)
+                                    @php
+                                        $thumbnail = $item->thumbnail;
+                                    @endphp
 
-                </div>
+                                    <article class="related-card">
 
-                @if ($portfolio->media->count())
+                                        <a href="{{ route('portfolio.show', $item->slug) }}">
 
-                    <div class="gallery-grid">
+                                            <div class="related-image">
 
-                        @foreach ($portfolio->media->sortBy('display_order') as $media)
-                            @if ($media->type == 'image')
-                                <a href="{{ asset('storage/' . $media->file_path) }}" class="gallery-item">
+                                                @if ($thumbnail)
+                                                    <img src="{{ asset('storage/' . $thumbnail->file_path) }}"
+                                                        alt="{{ $item->title }}">
+                                                @else
+                                                    <img src="{{ asset('images/no-image.png') }}" alt="No Image">
+                                                @endif
 
-                                    <img src="{{ asset('storage/' . $media->file_path) }}" alt="{{ $portfolio->title }}">
+                                                <span class="related-category">
 
-                                    <div class="gallery-overlay">
+                                                    {{ $item->category->name }}
 
-                                        <i class="fa-solid fa-magnifying-glass-plus"></i>
+                                                </span>
+
+                                            </div>
+
+                                            <div class="related-content">
+
+                                                <div class="related-date">
+
+                                                    <i class="fa-regular fa-calendar"></i>
+
+                                                    {{ \Carbon\Carbon::parse($item->activity_date)->translatedFormat('d F Y') }}
+
+                                                </div>
+
+                                                <h3>
+
+                                                    {{ Str::limit($item->title, 60) }}
+
+                                                </h3>
+
+                                                <p>
+
+                                                    {{ Str::limit(strip_tags($item->description), 80) }}
+
+                                                </p>
+
+                                                <span class="related-link">
+
+                                                    Lihat Detail
+
+                                                    <i class="fa-solid fa-arrow-right"></i>
+
+                                                </span>
+
+                                            </div>
+
+                                        </a>
+
+                                    </article>
+
+                                @empty
+
+                                    <div class="empty-related">
+
+                                        Belum ada portofolio lainnya.
 
                                     </div>
+                                @endforelse
 
-                                </a>
-                            @endif
-                        @endforeach
+                            </div>
 
-                    </div>
-                @else
-                    <div class="gallery-empty">
+                        </div>
 
-                        <i class="fa-regular fa-image"></i>
+                    </section>
+                    {{-- ===========================================================
+    CTA
+=========================================================== --}}
+                    <section class="portfolio-cta">
 
-                        <p>
+                        <div class="container">
 
-                            Belum ada dokumentasi kegiatan.
+                            <div class="cta-card">
 
-                        </p>
+                                <div class="cta-content">
 
-                    </div>
+                                    <span class="cta-badge">
 
-                @endif
-
-            </div>
-
-        </section>
-        {{-- ==========================================
-    TENTANG MITRA
-========================================== --}}
-        <div class="content-card partner-card">
-
-            <div class="section-title">
-
-                <h2>
-
-                    Mitra Kolaborasi
-
-                </h2>
-
-                <span></span>
-
-            </div>
-
-            <div class="partner-profile">
-
-                <div class="partner-logo">
-
-                    @if ($portfolio->partner && $portfolio->partner->logo)
-                        <img src="{{ asset('storage/' . $portfolio->partner->logo) }}"
-                            alt="{{ $portfolio->partner->name }}">
-                    @else
-                        <img src="{{ asset('images/no-image.png') }}" alt="Partner">
-                    @endif
-
-                </div>
-
-                <h3>
-
-                    {{ $portfolio->partner?->name }}
-
-                </h3>
-
-                @if ($portfolio->partner?->description)
-                    <p>
-
-                        {{ $portfolio->partner->description }}
-
-                    </p>
-                @endif
-
-                @if ($portfolio->partner?->website)
-                    <a href="{{ $portfolio->partner->website }}" target="_blank" class="partner-button">
-
-                        Kunjungi Website
-
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-
-                    </a>
-                @endif
-
-            </div>
-
-        </div>
-        <section class="related-portfolio">
-
-            <div class="container">
-
-                <div class="section-heading">
-
-                    <h2>
-
-                        Portofolio Lainnya
-
-                    </h2>
-
-                    <p>
-
-                        Jelajahi kegiatan dan kolaborasi Rumah Moeda lainnya.
-
-                    </p>
-
-                </div>
-
-                <div class="related-grid">
-
-                    @forelse($relatedPortfolios as $item)
-                        @php
-                            $thumbnail = $item->thumbnail;
-                        @endphp
-
-                        <article class="related-card">
-
-                            <a href="{{ route('portfolio.show', $item->slug) }}">
-
-                                <div class="related-image">
-
-                                    @if ($thumbnail)
-                                        <img src="{{ asset('storage/' . $thumbnail->file_path) }}"
-                                            alt="{{ $item->title }}">
-                                    @else
-                                        <img src="{{ asset('images/no-image.png') }}" alt="No Image">
-                                    @endif
-
-                                    <span class="related-category">
-
-                                        {{ $item->category->name }}
+                                        🤝 Kolaborasi Bersama Rumah Moeda
 
                                     </span>
 
-                                </div>
+                                    <h2>
 
-                                <div class="related-content">
+                                        Tertarik Berkolaborasi Bersama Kami?
 
-                                    <div class="related-date">
-
-                                        <i class="fa-regular fa-calendar"></i>
-
-                                        {{ \Carbon\Carbon::parse($item->activity_date)->translatedFormat('d F Y') }}
-
-                                    </div>
-
-                                    <h3>
-
-                                        {{ Str::limit($item->title, 60) }}
-
-                                    </h3>
+                                    </h2>
 
                                     <p>
 
-                                        {{ Str::limit(strip_tags($item->description), 80) }}
+                                        Rumah Moeda membuka kesempatan kerja sama dengan berbagai
+                                        instansi, komunitas, sekolah, perguruan tinggi, maupun
+                                        organisasi untuk menciptakan program yang memberikan dampak
+                                        positif bagi masyarakat.
 
                                     </p>
 
-                                    <span class="related-link">
+                                </div>
 
-                                        Lihat Detail
+                                <div class="cta-action">
+
+                                    <a href="{{ route('contact') }}" class="cta-btn">
+
+                                        Hubungi Kami
 
                                         <i class="fa-solid fa-arrow-right"></i>
 
-                                    </span>
+                                    </a>
 
                                 </div>
 
-                            </a>
-
-                        </article>
-
-                    @empty
-
-                        <div class="empty-related">
-
-                            Belum ada portofolio lainnya.
+                            </div>
 
                         </div>
-                    @endforelse
+
+                    </section>
 
                 </div>
 
-            </div>
+            @endsection
 
-        </section>
-        {{-- ===========================================================
-    CTA
-=========================================================== --}}
-        <section class="portfolio-cta">
-
-            <div class="container">
-
-                <div class="cta-card">
-
-                    <div class="cta-content">
-
-                        <span class="cta-badge">
-
-                            🤝 Kolaborasi Bersama Rumah Moeda
-
-                        </span>
-
-                        <h2>
-
-                            Tertarik Berkolaborasi Bersama Kami?
-
-                        </h2>
-
-                        <p>
-
-                            Rumah Moeda membuka kesempatan kerja sama dengan berbagai
-                            instansi, komunitas, sekolah, perguruan tinggi, maupun
-                            organisasi untuk menciptakan program yang memberikan dampak
-                            positif bagi masyarakat.
-
-                        </p>
-
-                    </div>
-
-                    <div class="cta-action">
-
-                        <a href="{{ route('contact') }}" class="cta-btn">
-
-                            Hubungi Kami
-
-                            <i class="fa-solid fa-arrow-right"></i>
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-@endsection
-
-@push('scripts')
-    <script src="{{ asset('js/portfolio-detail.js') }}"></script>
-@endpush
+            @push('scripts')
+                <script src="{{ asset('js/portfolio-detail.js') }}"></script>
+            @endpush
