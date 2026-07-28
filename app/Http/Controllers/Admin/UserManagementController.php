@@ -15,7 +15,7 @@ class UserManagementController extends Controller
      */
     public function index()
     {
-        $users = User::latest()->get();
+        $users = User::latest()->paginate(5);
 
         return view('admin.kelola.kelola-akun', compact('users'));
     }
