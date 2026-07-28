@@ -519,4 +519,96 @@ public function searchLocation(Request $request)
     );
 }
 
+
+
+public function search(Request $request)
+{
+
+    $query = Portfolio::with([
+        'category',
+        'partner',
+        'media',
+        'author'
+    ]);
+
+
+    if($request->search){
+
+        $search = $request->search;
+
+
+        $query->where(function($q) use($search){
+
+            $q->where('title','like',"%$search%")
+
+
+            ->orWhereHas('category',function($category) use($search){
+
+                $category->where(
+                    'name',
+                    'like',
+                    "%$search%"
+                );
+
+            })
+
+
+            ->orWhereHas('partner',function($partner) use($search){
+
+                $partner->where(
+                    'name',
+                    'like',
+                    "%$search%"
+                );
+
+            })
+
+
+            ->orWhereHas('author',function($author) use($search){
+
+                $author->where(
+                    'name',
+                    'like',
+                    "%$search%"
+                );
+
+            });
+
+        });
+
+    }
+
+
+
+    if($request->sort == 'oldest'){
+
+        $query->oldest();
+
+    }elseif($request->sort == 'title_asc'){
+
+        $query->orderBy('title','asc');
+
+    }elseif($request->sort == 'title_desc'){
+
+        $query->orderBy('title','desc');
+
+    }else{
+
+        $query->latest();
+
+    }
+
+
+
+    $portfolios = $query->get();
+
+
+
+    return view(
+        'admin.portfolios.partials.table',
+        compact('portfolios')
+    );
+
+}
+
 }

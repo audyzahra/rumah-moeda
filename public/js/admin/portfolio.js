@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.dataset.location;
 
             const lat = this.dataset.lat;
-const lng = this.dataset.lng;
+            const lng = this.dataset.lng;
 
             const mapsButton = document.getElementById("googleMapsButton");
 
@@ -66,77 +66,49 @@ const lng = this.dataset.lng;
                 mapsButton.style.display = "none";
             }
 
-
             let detailMap = null;
-let detailMarker = null;
+            let detailMarker = null;
 
+            if (lat && lng) {
+                const latitude = parseFloat(lat);
+                const longitude = parseFloat(lng);
 
-if(lat && lng){
+                setTimeout(() => {
+                    if (detailMap) {
+                        detailMap.remove();
+                    }
 
-    const latitude = parseFloat(lat);
-    const longitude = parseFloat(lng);
+                    detailMap = L.map("detail-map").setView(
+                        [latitude, longitude],
+                        15,
+                    );
 
+                    L.tileLayer(
+                        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                        {
+                            attribution: "© OpenStreetMap",
+                        },
+                    ).addTo(detailMap);
 
-    setTimeout(() => {
+                    detailMarker = L.marker([latitude, longitude]).addTo(
+                        detailMap,
+                    );
 
+                    detailMap.invalidateSize();
+                }, 300);
 
-        if(detailMap){
+                mapsButton.href = `https://www.google.com/maps?q=${latitude},${longitude}`;
 
-            detailMap.remove();
+                mapsButton.style.display = "block";
+            } else {
+                mapsButton.style.display = "none";
 
-        }
+                if (detailMap) {
+                    detailMap.remove();
 
-
-        detailMap = L.map("detail-map").setView(
-            [latitude, longitude],
-            15
-        );
-
-
-        L.tileLayer(
-            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            {
-                attribution:"© OpenStreetMap"
+                    detailMap = null;
+                }
             }
-        ).addTo(detailMap);
-
-
-
-        detailMarker = L.marker(
-            [latitude, longitude]
-        ).addTo(detailMap);
-
-
-
-        detailMap.invalidateSize();
-
-
-    },300);
-
-
-
-    mapsButton.href =
-    `https://www.google.com/maps?q=${latitude},${longitude}`;
-
-
-    mapsButton.style.display="block";
-
-
-}else{
-
-
-    mapsButton.style.display="none";
-
-
-    if(detailMap){
-
-        detailMap.remove();
-
-        detailMap=null;
-
-    }
-
-}
 
             document.getElementById("detailParticipants").innerText =
                 this.dataset.participants + " Orang";
@@ -500,13 +472,28 @@ if(lat && lng){
         defaultLng = parseFloat(longitudeInput.value);
     }
 
-    const map = L.map("map").setView([defaultLat, defaultLng], 13);
+    const mapElement = document.getElementById("map");
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenStreetMap",
-    }).addTo(map);
+    let map = null;
+    let marker = null;
 
-    let marker = L.marker([defaultLat, defaultLng]).addTo(map);
+    // ===============================
+    // CREATE / EDIT MAP
+    // ===============================
+
+    if (mapElement) {
+        map = L.map("map").setView([defaultLat, defaultLng], 13);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "© OpenStreetMap",
+        }).addTo(map);
+
+        marker = L.marker([defaultLat, defaultLng]).addTo(map);
+    }
+
+    // ===============================
+    // LOCATION SEARCH
+    // ===============================
 
     const input = document.getElementById("location");
     const result = document.getElementById("location-result");
@@ -517,87 +504,73 @@ if(lat && lng){
     let timer;
     let controller;
 
-    input.addEventListener("input", function () {
-        clearTimeout(timer);
+    if (input) {
+        input.addEventListener("input", function () {
+            clearTimeout(timer);
 
-        let keyword = this.value.trim();
+            let keyword = this.value.trim();
 
-        if (keyword.length < 1) {
-            result.innerHTML = "";
+            if (keyword.length < 1) {
+                result.innerHTML = "";
 
+                return;
+            }
+
+            timer = setTimeout(() => {
+                searchLocation(keyword);
+            }, 200);
+        });
+    }
+
+    async function searchLocation(keyword) {
+        if (!result) {
             return;
         }
 
-        timer = setTimeout(() => {
-            searchLocation(keyword);
-        }, 200);
-    });
-
-    async function searchLocation(keyword) {
-
-
-    result.innerHTML = `
+        result.innerHTML = `
         <div class="list-group-item text-muted">
             Mencari lokasi...
         </div>
     `;
 
+        if (controller) {
+            controller.abort();
+        }
 
-    // Batalkan request sebelumnya
-    if (controller) {
-        controller.abort();
-    }
+        controller = new AbortController();
 
+        try {
+            let response = await fetch(
+                `/admin/location-search?keyword=${encodeURIComponent(keyword)}`,
+                {
+                    signal: controller.signal,
+                },
+            );
 
-    controller = new AbortController();
+            let data = await response.json();
 
+            result.innerHTML = "";
 
-    try {
+            data.forEach((place) => {
+                let address = place.address;
 
+                let detail = [
+                    address.village,
+                    address.town,
+                    address.city,
+                    address.county,
+                    address.state,
+                    address.country,
+                ]
+                    .filter((item) => item)
+                    .join(", ");
 
-        let response = await fetch(
-            `/admin/location-search?keyword=${encodeURIComponent(keyword)}`,
-            {
-                signal: controller.signal
-            }
-        );
-
-
-        let data = await response.json();
-
-
-        result.innerHTML = "";
-
-
-        data.forEach((place) => {
-
-
-            let address = place.address;
-
-
-            let detail = [
-                address.village,
-                address.town,
-                address.city,
-                address.county,
-                address.state,
-                address.country,
-            ]
-                .filter((item) => item)
-                .join(", ");
-
-
-
-            let locationName = place.display_name || place.name;
-
-
-
-            result.innerHTML += `
+                result.innerHTML += `
 
             <a href="#"
             class="list-group-item list-group-item-action location-item"
 
-            data-name="${locationName}"
+            data-name="${place.name}"
 
             data-lat="${place.lat}"
 
@@ -605,7 +578,7 @@ if(lat && lng){
 
 
                 <strong>
-                    ${place.name || place.display_name}
+                    ${place.name}
                 </strong>
 
 
@@ -620,24 +593,17 @@ if(lat && lng){
             </a>
 
             `;
-
-
-        });
-
-
-    } catch (error) {
-
-
-        // Abaikan error karena request lama dibatalkan
-        if (error.name !== "AbortError") {
-            console.log(error);
+            });
+        } catch (error) {
+            if (error.name !== "AbortError") {
+                console.log(error);
+            }
         }
-
-
     }
 
-
-}
+    // ===============================
+    // PILIH HASIL LOKASI
+    // ===============================
 
     document.addEventListener("click", function (e) {
         let item = e.target.closest(".location-item");
@@ -649,35 +615,82 @@ if(lat && lng){
         e.preventDefault();
 
         const lat = item.dataset.lat;
+
         const lon = item.dataset.lon;
 
-        const name = item.dataset.name || item.innerText;
+        const name = item.dataset.name;
 
-        console.log(item.dataset);
+        if (input) {
+            input.value = name;
+        }
 
-        input.value = name;
+        if (latitude) {
+            latitude.value = lat;
+        }
 
-        latitude.value = lat;
+        if (longitude) {
+            longitude.value = lon;
+        }
 
-        longitude.value = lon;
+        if (result) {
+            result.innerHTML = "";
+        }
 
-        result.innerHTML = "";
+        // hanya jalan jika map create/edit ada
 
-        marker.remove();
+        if (map) {
+            if (marker) {
+                marker.remove();
+            }
 
-        marker = L.marker([lat, lon]).addTo(map);
+            marker = L.marker([lat, lon]).addTo(map);
 
-        map.setView([lat, lon], 16);
+            map.setView([lat, lon], 16);
+        }
     });
 
-    // EDIT DATA
+    // ===============================
+    // LOAD DATA EDIT
+    // ===============================
 
-    if (latitude.value && longitude.value) {
+    if (map && latitude && longitude && latitude.value && longitude.value) {
         map.setView([latitude.value, longitude.value], 16);
 
-        marker.remove();
+        if (marker) {
+            marker.remove();
+        }
 
         marker = L.marker([latitude.value, longitude.value]).addTo(map);
+    }
+
+    /*
+|--------------------------------------------------------------------------
+| AUTO SEARCH PORTFOLIO
+|--------------------------------------------------------------------------
+*/
+
+    const searchPortfolio = document.getElementById("searchPortfolio");
+
+    const sortPortfolio = document.getElementById("sortPortfolio");
+
+    const portfolioFilter = document.getElementById("portfolioFilter");
+
+    let portfolioSearchTimer;
+
+    if (searchPortfolio) {
+        searchPortfolio.addEventListener("input", function () {
+            clearTimeout(portfolioSearchTimer);
+
+            portfolioSearchTimer = setTimeout(() => {
+                portfolioFilter.submit();
+            }, 50);
+        });
+    }
+
+    if (sortPortfolio) {
+        sortPortfolio.addEventListener("change", function () {
+            portfolioFilter.submit();
+        });
     }
 
     // kurawal penutup

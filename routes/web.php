@@ -541,6 +541,12 @@ Route::middleware(['auth', 'admin'])
                 // Delete
                 Route::delete('/{id}', [AdminPortfolioController::class, 'destroy'])
                     ->name('destroy');
+
+
+                    Route::get(
+    '/admin/portfolios/search',
+    [PortfolioController::class,'search']
+)->name('admin.portfolios.search');
             });
 
 

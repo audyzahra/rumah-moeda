@@ -25,14 +25,14 @@
 
         </div>
 
-        <form method="GET" action="{{ route('admin.portfolios.index') }}" class="mb-4">
+        <form id="portfolioFilter" method="GET" action="{{ route('admin.portfolios.index') }}" class="mb-4">
 
             <div class="row g-2">
 
 
                 <div class="col-md-6">
 
-                    <input type="text" name="search" class="form-control"
+                    <input type="text" id="searchPortfolio" name="search" class="form-control"
                         placeholder="Cari judul, kategori, mitra, author..." value="{{ request('search') }}">
 
                 </div>
@@ -41,7 +41,7 @@
 
                 <div class="col-md-3">
 
-                    <select name="sort" class="form-control">
+                    <select id="sortPortfolio" name="sort" class="form-control">
 
 
                         <option value="">
@@ -121,8 +121,7 @@
                 </thead>
 
 
-                <tbody>
-
+                <tbody id="portfolioTable">
 
                     @foreach ($portfolios as $portfolio)
                         <tr>
@@ -347,13 +346,6 @@
 
                         </a>
 
-
-
-
-
-
-
-
                         <div class="mb-3">
 
                             <label class="fw-bold">
@@ -416,20 +408,20 @@
                         </button>
 
                     </div>
-
-
-
                 </div>
+
 
             </div>
 
         </div>
-    @endsection
+
+    </div>
+@endsection
 
 
 
-    @push('scripts')
-        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+@push('scripts')
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-        <script src="{{ asset('js/admin/portfolio.js') }}"></script>
-    @endpush
+    <script src="{{ asset('js/admin/portfolio.js') }}"></script>
+@endpush
