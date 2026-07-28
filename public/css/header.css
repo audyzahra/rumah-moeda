@@ -198,7 +198,7 @@
     z-index:1101;
 }
 
-@media (max-width:768px){
+@media (max-width:992px){
 
     .header-container{
         display:flex;
@@ -210,10 +210,45 @@
     }
 
     .header-actions{
-        order:2;
-        margin-left:auto;
-        margin-right:20px;
+    order:2;
+    margin-left:auto;
+    margin-right:12px;
+    gap:8px;
     }
+    /* ==========================
+         RESPONSIF LOGIN REGISTER
+    ========================== */
+    /* Logo lebih kecil */
+    .logo-img{
+        height:38px;
+    }
+
+    .logo-text{
+        font-size:1rem;
+        line-height:1.2;
+    }
+
+    /* Login & Register */
+    .auth-buttons{
+        display:flex;
+        align-items:center;
+        gap:6px;
+    }
+
+    .auth-buttons .btn-login,
+    .auth-buttons .btn-register{
+        padding:6px 14px;
+        font-size:14px;
+        white-space:nowrap;
+        margin:0;
+    }
+
+    /* Dark mode */
+    .dark-toggle{
+        font-size:18px;
+    }
+
+
 
     .menu-toggle{
         display:block;
