@@ -29,7 +29,7 @@ class BeritaController extends Controller
             $news = News::with(['category', 'author'])
                 ->where('author_id', Auth::id())
                 ->latest('publish_date')
-                ->get();
+                ->paginate(5);
 
         }
 
