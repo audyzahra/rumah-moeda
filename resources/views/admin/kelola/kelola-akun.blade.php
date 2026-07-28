@@ -20,36 +20,7 @@
         </p>
 
     </div>
-
-</header>
-
-<!-- ================= CONTENT ================= -->
-<section class="tab-content">
-
-    <div class="settings-card">
-
-        <!-- ================= CARD HEADER ================= -->
-        <div class="card-header">
-
-            <div>
-
-                <h3>
-
-                    <i class="fa-solid fa-users"></i>
-
-                    Kelola Akun
-
-                </h3>
-
-                <p>
-
-                    Kelola seluruh akun pengguna website
-
-                </p>
-
-            </div>
-
-            <a href="{{ route('admin.manage-account.create') }}" class="btn-primary">
+    <a href="{{ route('admin.manage-account.create') }}" class="btn-primary">
 
                 <i class="fa-solid fa-user-plus"></i>
 
@@ -57,7 +28,12 @@
 
             </a>
 
-        </div>
+</header>
+
+<!-- ================= CONTENT ================= -->
+<section class="tab-content">
+
+    <div class="settings-card">
 
         <!-- ================= CARD BODY ================= -->
         <div class="card-body">

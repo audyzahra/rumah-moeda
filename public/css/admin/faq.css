@@ -3,6 +3,40 @@
 ========================================= */
 
 /* =========================================
+   HEADER
+========================================= */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+}
+
+.topbar h1{
+    font-size:calc(1.375rem + 1.5vw);
+    color:#222;
+    margin-bottom:3px;
+}
+
+.topbar p{
+    color:#6b7280;
+    font-size:16px;
+}
+
+@media(max-width:768px){
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .btn-tambah{
+        width:100%;
+        justify-content:center;
+        margin-bottom: 15px;
+    }
+}
+/* =========================================
    CARD
 ========================================= */
 
@@ -11,29 +45,6 @@
     border-radius: 16px;
     box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
     overflow: hidden;
-}
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px 28px;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.card-header h3 {
-    margin: 0;
-    font-size: 22px;
-    color: #1f2937;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.card-header p {
-    margin-top: 6px;
-    color: #6b7280;
-    font-size: 14px;
 }
 
 .card-body {
@@ -156,86 +167,64 @@
     font-weight: 500;
 }
 
-/* ==========================
-   Pagination
-========================== */
+/* ===== PAGINATION ===== */
 
-.pagination-wrapper {
+.pagination-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #eef2f7;
-    gap: 20px;
+    padding: 10px 12px;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
-/* Tulisan Showing */
-.pagination-summary {
-    font-size: 15px;
+.info-data {
+    font-size: 14px;
     color: #64748b;
-    white-space: nowrap;
-    flex: 1;
 }
 
-/* Pagination di kanan */
-.pagination {
+.pagination-controls {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
-    gap: 10px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    flex-shrink: 0;
+    gap: 12px;
 }
 
-.pagination .page-item {
-    list-style: none;
-}
-
-.pagination .page-link {
+.page-btn{
+    width: 36px;
+    height: 36px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fff;
+    color: #475569;
+    text-decoration: none;
     display: flex;
     justify-content: center;
     align-items: center;
-
-    width: 56px;
-    height: 56px;
-
-    padding: 0;
-
-    border: 1px solid #dbe4ee;
-    border-radius: 14px;
-
-    background: #fff;
-    color: #334155;
-
-    font-size: 22px;
-    font-weight: 500;
-    text-decoration: none;
-
-    transition: 0.25s ease;
+    cursor: pointer;
+    transition: .3s;
 }
 
-.pagination .page-link:hover {
-    background: #eff6ff;
-    border-color: #2563eb;
-    color: #2563eb;
-    transform: translateY(-2px);
-}
-
-.pagination .page-item.active .page-link {
-    background: #2563eb;
+.page-btn:hover{
+    background: #3b82f6;
+    border-color: #3b82f6;
     color: #fff;
-    border-color: #2563eb;
-    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
 }
 
-.pagination .page-item.disabled .page-link {
-    background: #f8fafc;
-    color: #94a3b8;
+.page-btn:disabled,
+.page-btn.disabled{
+    opacity: .4;
     cursor: not-allowed;
+    pointer-events: none;
+}
+
+.page-btn i{
+    pointer-events: none;
+}
+
+#pageInfo {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
 }
 
 /* ==========================
@@ -496,7 +485,7 @@ textarea.form-control {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 18px 0 24px;
+    margin: 10px 0 ;
     font-size: 14px;
 }
 
@@ -521,31 +510,8 @@ textarea.form-control {
     overflow: hidden;
 }
 
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px 28px;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.card-header h3 {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0;
-    font-size: 22px;
-    color: #1f2937;
-}
-
-.card-header p {
-    margin-top: 6px;
-    color: #6b7280;
-    font-size: 14px;
-}
-
 .card-body {
-    padding: 30px;
+    padding: 20px;
 }
 
 /* =========================================

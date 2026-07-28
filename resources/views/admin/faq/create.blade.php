@@ -44,36 +44,6 @@
 
         <div class="settings-card">
 
-            <div class="card-header">
-
-                <div>
-
-                    <h3>
-
-                        <i class="fa-solid fa-circle-question"></i>
-
-                        Tambah FAQ
-
-                    </h3>
-
-                    <p>
-
-                        Isi data FAQ di bawah ini.
-
-                    </p>
-
-                </div>
-
-                <a href="{{ route('admin.faq.index') }}" class="btn-secondary">
-
-                    <i class="fa-solid fa-arrow-left"></i>
-
-                    Kembali
-
-                </a>
-
-            </div>
-
             <div class="card-body">
 
                 @if ($errors->any())

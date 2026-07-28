@@ -44,36 +44,6 @@
 
         <div class="settings-card">
 
-            <div class="card-header">
-
-                <div>
-
-                    <h3>
-
-                        <i class="fa-solid fa-pen-to-square"></i>
-
-                        Edit FAQ
-
-                    </h3>
-
-                    <p>
-
-                        Perbarui data FAQ di bawah ini.
-
-                    </p>
-
-                </div>
-
-                <a href="{{ route('admin.faq.index') }}" class="btn-secondary">
-
-                    <i class="fa-solid fa-arrow-left"></i>
-
-                    Kembali
-
-                </a>
-
-            </div>
-
             <div class="card-body">
 
                 @if ($errors->any())

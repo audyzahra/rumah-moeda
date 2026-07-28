@@ -7,7 +7,14 @@
 }
 
 .topbar{
-    margin-bottom:25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.topbar > div{
+    flex: 1;
 }
 
 .topbar h1{
@@ -20,6 +27,15 @@
     color:#6b7280;
     font-size:15px;
 }
+.topbar .btn-primary{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 15px;
+}
+
 
 /* =========================================================
    CARD
@@ -32,32 +48,8 @@
     box-shadow:0 10px 25px rgba(0,0,0,.08);
 }
 
-.card-header{
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
-    color:#fff;
-    padding:22px 28px;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:20px;
-}
-
-.card-header h3{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin:0;
-    font-size:22px;
-}
-
-.card-header p{
-    margin-top:6px;
-    opacity:.9;
-}
-
 .card-body{
-    padding:25px;
+    padding:10px;
 }
 
 /* =========================================================
@@ -469,7 +461,7 @@
     display:flex;
     align-items:center;
     gap:10px;
-    margin:18px 0;
+    margin:10px 0;
     font-size:14px;
 }
 

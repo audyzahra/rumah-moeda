@@ -43,28 +43,6 @@
 
         <div class="settings-card">
 
-            <div class="card-header">
-
-                <div>
-
-                    <h3>
-
-                        <i class="fa-solid fa-user-plus"></i>
-
-                        Tambah Akun
-
-                    </h3>
-
-                    <p>
-
-                        Lengkapi informasi akun di bawah ini.
-
-                    </p>
-
-                </div>
-
-            </div>
-
             <div class="card-body">
 
                 {{-- VALIDATION --}}

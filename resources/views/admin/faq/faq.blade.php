@@ -19,6 +19,13 @@
             <p>Kelola pertanyaan yang sering diajukan.</p>
 
         </div>
+         <a href="{{ route('admin.faq.create') }}" class="btn-tambah">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Tambah FAQ
+
+                </a>
 
     </header>
 
@@ -28,37 +35,6 @@
 
         <div class="settings-card">
 
-            <!-- Card Header -->
-
-            <div class="card-header">
-
-                <div>
-
-                    <h3>
-
-                        <i class="fa-solid fa-circle-question"></i>
-
-                        Daftar FAQ
-
-                    </h3>
-
-                    <p>
-
-                        Kelola seluruh pertanyaan dan jawaban yang ditampilkan pada website.
-
-                    </p>
-
-                </div>
-
-                <a href="{{ route('admin.faq.create') }}" class="btn-tambah">
-
-                    <i class="fa-solid fa-plus"></i>
-
-                    Tambah FAQ
-
-                </a>
-
-            </div>
 
             <!-- Card Body -->
 
@@ -163,19 +139,79 @@
                         </tbody>
 
                     </table>
+            <!-- ================= PAGINATION ================= -->
+
+                        <div class="pagination-section">
+
+                            <div class="info-data">
+
+                                Menampilkan
+
+                                <strong>{{ $faqs->firstItem() ?? 0 }}</strong>
+
+                                -
+
+                                <strong>{{ $faqs->lastItem() ?? 0 }}</strong>
+
+                                dari
+
+                                <strong>{{ $faqs->total() }}</strong>
+
+                                data
+
+                            </div>
+
+                            <div class="pagination-controls">
+
+                                {{-- Previous --}}
+                                @if ($faqs->onFirstPage())
+
+                                    <button class="page-btn" disabled>
+                                        <i class="fa-solid fa-chevron-left"></i>
+                                    </button>
+
+                                @else
+
+                                    <a href="{{ $faqs->previousPageUrl() }}" class="page-btn">
+                                        <i class="fa-solid fa-chevron-left"></i>
+                                    </a>
+
+                                @endif
+
+                                <span id="pageInfo">
+
+                                    Halaman
+
+                                    {{ $faqs->currentPage() }}
+
+                                    dari
+
+                                    {{ $faqs->lastPage() }}
+
+                                </span>
+
+                                {{-- Next --}}
+                                @if ($faqs->hasMorePages())
+
+                                    <a href="{{ $faqs->nextPageUrl() }}" class="page-btn">
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </a>
+
+                                @else
+
+                                    <button class="page-btn" disabled>
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </button>
+
+                                @endif
+
+                            </div>
+
+                        </div>
 
                 </div>
 
             </div>
-            <!-- ================= PAGINATION ================= -->
-
-            @if ($faqs->hasPages())
-                <div class="pagination-wrapper">
-
-                    {{ $faqs->links() }}
-
-                </div>
-            @endif
 
         </div>
 
