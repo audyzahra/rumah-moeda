@@ -48,8 +48,6 @@ function initScrollAnimation() {
 
     items.forEach(item => {
 
-        item.classList.add("hidden");
-
         observer.observe(item);
 
     });

@@ -12,7 +12,7 @@
         <h1>Tambah Portfolio</h1>
 
 
-        <form action="{{ route('admin.portfolios.store') }}" method="POST">
+        <form action="{{ route('admin.portfolios.store') }}" method="POST" enctype="multipart/form-data">
 
             @csrf
 
@@ -126,6 +126,83 @@
             </div>
 
 
+            <div class="mb-3">
+
+                <label>Foto Portfolio</label>
+
+
+                <div id="imageContainer">
+
+
+                    <div class="image-item mb-3">
+
+
+                        <div class="input-group">
+
+                            <input type="file" name="images[]" class="form-control image-input" accept="image/*">
+
+
+                        </div>
+
+
+                        <div class="preview-container mt-2"></div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <button type="button" class="btn btn-primary btn-sm" id="addImage">
+
+                    <i class="fa fa-plus"></i>
+                    Tambah Foto
+
+                </button>
+
+
+            </div>
+
+
+            <div class="mb-3">
+
+                <label>Video Portfolio (YouTube)</label>
+
+
+                <div id="videoContainer">
+
+                    <div class="video-item mb-3">
+
+
+                        <div class="input-group">
+
+                            <input type="text" name="video_url[]" class="form-control video-input"
+                                placeholder="https://youtube.com/watch?v=">
+
+                        </div>
+
+
+                        <div class="video-preview mt-3"></div>
+
+
+                    </div>
+
+                </div>
+
+
+                <button type="button" class="btn btn-primary btn-sm" id="addVideo">
+
+                    <i class="fa fa-plus"></i>
+                    Tambah Video
+
+                </button>
+
+
+            </div>
+
+
 
             <button class="btn btn-success">
                 Simpan
@@ -142,3 +219,7 @@
 
     </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/admin/portfolio.js') }}"></script>
+@endpush
