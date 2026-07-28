@@ -515,13 +515,14 @@ if(lat && lng){
     const longitude = document.getElementById("longitude");
 
     let timer;
+    let controller;
 
     input.addEventListener("input", function () {
         clearTimeout(timer);
 
         let keyword = this.value.trim();
 
-        if (keyword.length < 3) {
+        if (keyword.length < 1) {
             result.innerHTML = "";
 
             return;
@@ -533,63 +534,110 @@ if(lat && lng){
     });
 
     async function searchLocation(keyword) {
-        try {
-            let response = await fetch(
-                `/admin/location-search?keyword=${encodeURIComponent(keyword)}`,
-            );
-
-            let data = await response.json();
-
-            result.innerHTML = "";
-
-            data.forEach((place) => {
-                let address = place.address;
-
-                let detail = [
-                    address.village,
-                    address.town,
-                    address.city,
-                    address.county,
-                    address.state,
-                    address.country,
-                ]
-                    .filter((item) => item)
-                    .join(", ");
-
-                let locationName = place.display_name || place.name;
-
-                result.innerHTML += `
-
-<a href="#"
-class="list-group-item list-group-item-action location-item"
-
-data-name="${locationName}"
-
-data-lat="${place.lat}"
-
-data-lon="${place.lon}">
 
 
-<strong>
-${place.name || place.display_name}
-</strong>
+    result.innerHTML = `
+        <div class="list-group-item text-muted">
+            Mencari lokasi...
+        </div>
+    `;
 
 
-<br>
+    // Batalkan request sebelumnya
+    if (controller) {
+        controller.abort();
+    }
 
 
-<small>
-${detail}</small>
+    controller = new AbortController();
 
 
-</a>
+    try {
 
-`;
-            });
-        } catch (error) {
+
+        let response = await fetch(
+            `/admin/location-search?keyword=${encodeURIComponent(keyword)}`,
+            {
+                signal: controller.signal
+            }
+        );
+
+
+        let data = await response.json();
+
+
+        result.innerHTML = "";
+
+
+        data.forEach((place) => {
+
+
+            let address = place.address;
+
+
+            let detail = [
+                address.village,
+                address.town,
+                address.city,
+                address.county,
+                address.state,
+                address.country,
+            ]
+                .filter((item) => item)
+                .join(", ");
+
+
+
+            let locationName = place.display_name || place.name;
+
+
+
+            result.innerHTML += `
+
+            <a href="#"
+            class="list-group-item list-group-item-action location-item"
+
+            data-name="${locationName}"
+
+            data-lat="${place.lat}"
+
+            data-lon="${place.lon}">
+
+
+                <strong>
+                    ${place.name || place.display_name}
+                </strong>
+
+
+                <br>
+
+
+                <small>
+                    ${detail}
+                </small>
+
+
+            </a>
+
+            `;
+
+
+        });
+
+
+    } catch (error) {
+
+
+        // Abaikan error karena request lama dibatalkan
+        if (error.name !== "AbortError") {
             console.log(error);
         }
+
+
     }
+
+
+}
 
     document.addEventListener("click", function (e) {
         let item = e.target.closest(".location-item");
