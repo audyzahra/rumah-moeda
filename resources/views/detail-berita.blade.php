@@ -90,6 +90,14 @@
         </div>
 
     </section>
+    
+<div class="lightbox" id="lightbox">
+
+    <span class="lightbox-close">&times;</span>
+
+    <img id="lightboxImage" src="" alt="Preview">
+
+</div>
 
 @endsection
 

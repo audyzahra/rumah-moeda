@@ -545,3 +545,78 @@ blockquote{
     display:block;
     box-shadow:0 8px 20px rgba(0,0,0,.08);
 }
+/* ==========================
+   IMAGE LIGHTBOX
+========================== */
+
+.artikel-content img,
+.hero-image img{
+    cursor: zoom-in;
+    transition: .3s;
+}
+
+.artikel-content img:hover,
+.hero-image img:hover{
+    transform: scale(1.02);
+}
+
+.lightbox{
+
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.9);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.3s;
+
+    z-index:9999;
+
+}
+
+.lightbox.show{
+
+    opacity:1;
+    visibility:visible;
+
+}
+
+.lightbox img{
+
+    max-width:90%;
+    max-height:90%;
+    border-radius:15px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.5);
+
+}
+
+.lightbox-close{
+
+    position:absolute;
+
+    top:20px;
+    right:30px;
+
+    font-size:45px;
+    color:#fff;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    transition:.3s;
+
+}
+
+.lightbox-close:hover{
+
+    color:#d4a62b;
+    transform:rotate(90deg);
+
+}
