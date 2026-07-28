@@ -92,3 +92,7 @@
     </section>
 
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/detail-berita.js') }}"></script>
+@endpush

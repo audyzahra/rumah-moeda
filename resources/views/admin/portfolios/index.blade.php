@@ -29,7 +29,6 @@
 
             <div class="row g-2">
 
-
                 <div class="col-md-6">
 
                     <input type="text" id="searchPortfolio" name="search" class="form-control"
@@ -38,61 +37,40 @@
                 </div>
 
 
-
                 <div class="col-md-3">
 
                     <select id="sortPortfolio" name="sort" class="form-control">
-
 
                         <option value="">
                             Terbaru
                         </option>
 
-
-                        <option value="oldest" @selected(request('sort') == 'oldest')>
+                        <option value="oldest">
                             Terlama
                         </option>
 
-
-                        <option value="title_asc" @selected(request('sort') == 'title_asc')>
+                        <option value="title_asc">
                             Judul A-Z
                         </option>
 
-
-                        <option value="title_desc" @selected(request('sort') == 'title_desc')>
+                        <option value="title_desc">
                             Judul Z-A
                         </option>
 
-
                     </select>
 
-
                 </div>
-
 
 
                 <div class="col-md-3">
 
-                    <button class="btn btn-primary">
-
-                        <i class="fa fa-search"></i>
-                        Cari
-
-                    </button>
-
-
                     <a href="{{ route('admin.portfolios.index') }}" class="btn btn-secondary">
-
                         Reset
-
                     </a>
-
 
                 </div>
 
-
             </div>
-
 
         </form>
 
@@ -123,105 +101,118 @@
 
                 <tbody id="portfolioTable">
 
-                    @foreach ($portfolios as $portfolio)
-                        <tr>
+                    @if ($portfolios->count())
+                        @foreach ($portfolios as $portfolio)
+                            <tr data-title="{{ strtolower($portfolio->title) }}"
+                                data-category="{{ strtolower($portfolio->category->name ?? '') }}"
+                                data-partner="{{ strtolower($portfolio->partner->name ?? '') }}"
+                                data-author="{{ strtolower($portfolio->author->name ?? '') }}">
 
-                            <td>{{ $loop->iteration }}</td>
+                                <td>{{ $loop->iteration }}</td>
 
-                            <td>
-                                {{ $portfolio->title }}
-                            </td>
-
-
-                            <td>
-                                {{ $portfolio->category->name ?? '-' }}
-                            </td>
-
-
-                            <td>
-                                {{ $portfolio->partner->name ?? '-' }}
-                            </td>
-
-                            <td>
-
-                                @if ($portfolio->media->count())
-                                    <span class="badge bg-success">
-                                        {{ $portfolio->media->count() }} Media
-                                    </span>
-                                @else
-                                    <span class="badge bg-secondary">
-                                        Tidak Ada
-                                    </span>
-                                @endif
-
-                            </td>
-
-                            <td>
-                                {{ $portfolio->author->name ?? '-' }}
-                            </td>
-
-                            <td>
-                                {!! Str::limit(strip_tags($portfolio->description), 80) !!}
-                            </td>
+                                <td>
+                                    {{ $portfolio->title }}
+                                </td>
 
 
-                            <td>
-                                {{ date('d M Y', strtotime($portfolio->activity_date)) }}
-                            </td>
+                                <td>
+                                    {{ $portfolio->category->name ?? '-' }}
+                                </td>
 
 
-                            <td>
+                                <td>
+                                    {{ $portfolio->partner->name ?? '-' }}
+                                </td>
+
+                                <td>
+
+                                    @if ($portfolio->media->count())
+                                        <span class="badge bg-success">
+                                            {{ $portfolio->media->count() }} Media
+                                        </span>
+                                    @else
+                                        <span class="badge bg-secondary">
+                                            Tidak Ada
+                                        </span>
+                                    @endif
+
+                                </td>
+
+                                <td>
+                                    {{ $portfolio->author->name ?? '-' }}
+                                </td>
+
+                                <td>
+                                    {!! Str::limit(strip_tags($portfolio->description), 80) !!}
+                                </td>
 
 
-                                <button class="btn btn-info btn-sm btn-detail" data-bs-toggle="modal"
-                                    data-bs-target="#detailPortfolioModal" data-title="{{ $portfolio->title }}"
-                                    data-category="{{ $portfolio->category->name ?? '-' }}"
-                                    data-partner="{{ $portfolio->partner->name ?? '-' }}"
-                                    data-date="{{ date('d M Y', strtotime($portfolio->activity_date)) }}"
-                                    data-location="{{ $portfolio->location ?? '-' }}"
-                                    data-lat="{{ $portfolio->latitude }}" data-lng="{{ $portfolio->longitude }}"
-                                    data-participants="{{ $portfolio->participants ?? 0 }}"
-                                    data-author="{{ $portfolio->author->name ?? '-' }}"
-                                    data-description='@json($portfolio->description)'
-                                    data-media='@json($portfolio->media)'>
-
-                                    <i class="fa fa-eye"></i>
-
-                                </button>
+                                <td>
+                                    {{ date('d M Y', strtotime($portfolio->activity_date)) }}
+                                </td>
 
 
-
-                                <a href="{{ route('admin.portfolios.edit', $portfolio->id) }}"
-                                    class="btn btn-warning btn-sm">
-
-                                    <i class="fa fa-edit"></i>
-
-                                </a>
+                                <td>
 
 
+                                    <button class="btn btn-info btn-sm btn-detail" data-bs-toggle="modal"
+                                        data-bs-target="#detailPortfolioModal" data-title="{{ $portfolio->title }}"
+                                        data-category="{{ $portfolio->category->name ?? '-' }}"
+                                        data-partner="{{ $portfolio->partner->name ?? '-' }}"
+                                        data-date="{{ date('d M Y', strtotime($portfolio->activity_date)) }}"
+                                        data-location="{{ $portfolio->location ?? '-' }}"
+                                        data-lat="{{ $portfolio->latitude }}" data-lng="{{ $portfolio->longitude }}"
+                                        data-participants="{{ $portfolio->participants ?? 0 }}"
+                                        data-author="{{ $portfolio->author->name ?? '-' }}"
+                                        data-description='@json($portfolio->description)'
+                                        data-media='@json($portfolio->media)'>
 
-                                <form action="{{ route('admin.portfolios.destroy', $portfolio->id) }}" method="POST"
-                                    class="d-inline delete-form">
-
-                                    @csrf
-                                    @method('DELETE')
-
-
-                                    <button class="btn btn-danger btn-sm">
-
-                                        <i class="fa fa-trash"></i>
+                                        <i class="fa fa-eye"></i>
 
                                     </button>
 
 
-                                </form>
 
+                                    <a href="{{ route('admin.portfolios.edit', $portfolio->id) }}"
+                                        class="btn btn-warning btn-sm">
+
+                                        <i class="fa fa-edit"></i>
+
+                                    </a>
+
+
+
+                                    <form action="{{ route('admin.portfolios.destroy', $portfolio->id) }}" method="POST"
+                                        class="d-inline delete-form">
+
+                                        @csrf
+                                        @method('DELETE')
+
+
+                                        <button class="btn btn-danger btn-sm">
+
+                                            <i class="fa fa-trash"></i>
+
+                                        </button>
+
+
+                                    </form>
+
+
+                                </td>
+
+
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="9" class="text-center py-4">
+
+                                Data portfolio tidak ditemukan
 
                             </td>
-
-
                         </tr>
-                    @endforeach
+                    @endif
 
 
                 </tbody>

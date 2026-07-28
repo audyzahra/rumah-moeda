@@ -19,30 +19,84 @@ document.querySelectorAll(".btn-edit").forEach((button) => {
 });
 
 // =========================
-// Search
+// Search & Sort Struktur
 // =========================
-// =========================
-// Live Search
-// =========================
+
 const searchInput = document.getElementById("searchInput");
+const jabatanFilter = document.getElementById("jabatanFilter");
+const sortSelect = document.getElementById("sortSelect");
+
+function filterStruktur() {
+    const keyword = searchInput.value.toLowerCase().trim();
+
+    const selectedJabatan = jabatanFilter.value.toLowerCase().trim();
+
+    const sortValue = sortSelect.value;
+
+    const tbody = document.getElementById("strukturTable");
+
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    // SEARCH
+
+    rows.forEach(function (row) {
+        // skip empty row
+        if (row.querySelector("td[colspan]")) {
+            return;
+        }
+
+        const name = row.dataset.name || "";
+
+        const position = row.dataset.position || "";
+
+        const matchSearch =
+            name.includes(keyword) || position.includes(keyword);
+
+        const matchJabatan =
+            selectedJabatan === "" || position === selectedJabatan;
+
+        const match = matchSearch && matchJabatan;
+
+        row.style.display = match ? "" : "none";
+    });
+
+    // SORTING
+
+    rows.sort(function (a, b) {
+        const nameA = a.dataset.name || "";
+
+        const nameB = b.dataset.name || "";
+
+        if (sortValue === "nama_asc") {
+            return nameA.localeCompare(nameB);
+        }
+
+        if (sortValue === "nama_desc") {
+            return nameB.localeCompare(nameA);
+        }
+
+        return 0;
+    });
+
+    rows.forEach(function (row) {
+        tbody.appendChild(row);
+    });
+}
 
 if (searchInput) {
-    searchInput.addEventListener("input", function () {
-        const keyword = this.value.toLowerCase().trim();
+    searchInput.addEventListener("keyup", filterStruktur);
+}
 
-        const cards = document.querySelectorAll(".struktur-card");
+if (sortSelect) {
+    sortSelect.addEventListener("change", filterStruktur);
 
-        cards.forEach((card) => {
-            const name = card.dataset.name;
-            const position = card.dataset.position;
+    if (jabatanFilter) {
+        jabatanFilter.addEventListener("change", filterStruktur);
+    }
 
-            if (name.includes(keyword) || position.includes(keyword)) {
-                card.style.display = "";
-            } else {
-                card.style.display = "none";
-            }
-        });
-    });
+    if (sortSelect) {
+        sortSelect.addEventListener("change", filterStruktur);
+    }
 }
 
 // =========================
