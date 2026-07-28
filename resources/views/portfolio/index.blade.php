@@ -372,15 +372,76 @@
 
             </section>
 
-            <div class="portfolio-pagination">
+        <!-- ================= PAGINATION ================= -->
 
-                {{ $portfolios->links() }}
+                <div class="pagination-section">
 
-            </div>
+                    <div class="info-data">
+
+                        Menampilkan
+
+                        <strong>{{ $portfolios->firstItem() ?? 0 }}</strong>
+
+                        -
+
+                        <strong>{{ $portfolios->lastItem() ?? 0 }}</strong>
+
+                        dari
+
+                        <strong>{{ $portfolios->total() }}</strong>
+
+                        data
+
+                    </div>
+
+                    <div class="pagination-controls">
+
+                        {{-- Previous --}}
+                        @if ($portfolios->onFirstPage())
+
+                            <button class="page-btn" disabled>
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+
+                        @else
+
+                            <a href="{{ $portfolios->previousPageUrl() }}" class="page-btn">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </a>
+
+                        @endif
+
+                        <span id="pageInfo">
+
+                            Halaman
+
+                            {{ $portfolios->currentPage() }}
+
+                            dari
+
+                            {{ $portfolios->lastPage() }}
+
+                        </span>
+
+                        {{-- Next --}}
+                        @if ($portfolios->hasMorePages())
+
+                            <a href="{{ $portfolios->nextPageUrl() }}" class="page-btn">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+
+                        @else
+
+                            <button class="page-btn" disabled>
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+
+                        @endif
+
+                    </div>
+
+                </div>
         </div>
-
-
-
 
         {{-- ===========================================================
                 CTA

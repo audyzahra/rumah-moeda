@@ -36,7 +36,7 @@ class GalleryController extends Controller
 
         $gallery = $query
         ->orderByDesc('activity_date')
-        ->paginate(9);
+        ->paginate(6);
 
         return view('gallery.photos', compact('gallery'));
     }
@@ -63,7 +63,7 @@ class GalleryController extends Controller
 
         $gallery = $query
         ->orderByDesc('activity_date')
-        ->paginate(9);
+        ->paginate(6);
 
         return view('gallery.videos', compact('gallery'));
     }
