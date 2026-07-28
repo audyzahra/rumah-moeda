@@ -113,8 +113,15 @@
 
                             </label>
 
-                            <input type="number" name="display_order" class="form-control" min="1"
+                            <input type="number" name="display_order"
+                                class="form-control @error('display_order') is-invalid @enderror" min="1"
                                 value="{{ old('display_order', $mitra->display_order) }}">
+
+                            @error('display_order')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
 
                             <small>
 

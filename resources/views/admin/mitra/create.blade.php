@@ -106,8 +106,9 @@
 
                             </label>
 
-                            <input type="number" name="display_order" class="form-control" min="1"
-                                value="{{ old('display_order') }}">
+                            <input type="number" name="display_order"
+                                class="form-control @error('display_order') is-invalid @enderror" min="1"
+                                value="{{ old('display_order', $nextOrder) }}">
 
                         </div>
 

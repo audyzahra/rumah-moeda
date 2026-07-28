@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Partner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class PartnerController extends Controller
 {
@@ -85,22 +86,31 @@ class PartnerController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        return view('admin.mitra.create');
-    }
+{
+    $nextOrder = (Partner::max('display_order') ?? 0) + 1;
+
+    return view('admin.mitra.create', compact('nextOrder'));
+}
 
     public function store(Request $request)
 {
-    $request->validate([
+        $request->validate([
         'name' => 'required|string|max:255',
         'website' => 'nullable|url',
-        'display_order' => 'required|integer|min:1',
+        'display_order' => [
+            'required',
+            'integer',
+            'min:1',
+            Rule::unique('partners', 'display_order'),
+        ],
         'description' => 'nullable|string',
         'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
     ],[
         'name.required' => 'Nama mitra wajib diisi.',
         'display_order.required' => 'Urutan tampil wajib diisi.',
         'display_order.integer' => 'Urutan tampil harus berupa angka.',
+        'display_order.unique' => 'Urutan tampil sudah digunakan. Silakan gunakan nomor lain atau ubah urutan mitra yang sudah ada.',
         'logo.required' => 'Logo mitra wajib diupload.',
         'logo.image' => 'File harus berupa gambar.',
         'logo.mimes' => 'Logo harus berformat JPG, JPEG, PNG, GIF atau SVG.',
@@ -145,11 +155,23 @@ class PartnerController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'website' => 'nullable|url',
-            'display_order' => 'required|integer|min:1',
+            'display_order' => [
+                'required',
+                'integer',
+                'min:1',
+                Rule::unique('partners', 'display_order')
+                    ->ignore($mitra->id),
+            ],
             'description' => 'nullable|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ],[
+            'name.required' => 'Nama mitra wajib diisi.',
             'display_order.required' => 'Urutan tampil wajib diisi.',
+            'display_order.integer' => 'Urutan tampil harus berupa angka.',
+            'display_order.unique' => 'Urutan tampil sudah digunakan. Silakan gunakan nomor lain atau ubah urutan mitra yang sudah ada.',
+            'logo.image' => 'File harus berupa gambar.',
+            'logo.mimes' => 'Logo harus berformat JPG, JPEG, PNG, GIF atau SVG.',
+            'logo.max' => 'Ukuran logo maksimal 2 MB.',
         ]);
 
         $data = $request->all();
