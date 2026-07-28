@@ -51,6 +51,93 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("detailLocation").innerText =
                 this.dataset.location;
 
+            const lat = this.dataset.lat;
+const lng = this.dataset.lng;
+
+            const mapsButton = document.getElementById("googleMapsButton");
+
+            if (lat && lng) {
+                mapsButton.href = `https://www.google.com/maps?q=${lat},${lng}`;
+
+                mapsButton.style.display = "inline-block";
+            } else {
+                mapsButton.href = "#";
+
+                mapsButton.style.display = "none";
+            }
+
+
+            let detailMap = null;
+let detailMarker = null;
+
+
+if(lat && lng){
+
+    const latitude = parseFloat(lat);
+    const longitude = parseFloat(lng);
+
+
+    setTimeout(() => {
+
+
+        if(detailMap){
+
+            detailMap.remove();
+
+        }
+
+
+        detailMap = L.map("detail-map").setView(
+            [latitude, longitude],
+            15
+        );
+
+
+        L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+                attribution:"© OpenStreetMap"
+            }
+        ).addTo(detailMap);
+
+
+
+        detailMarker = L.marker(
+            [latitude, longitude]
+        ).addTo(detailMap);
+
+
+
+        detailMap.invalidateSize();
+
+
+    },300);
+
+
+
+    mapsButton.href =
+    `https://www.google.com/maps?q=${latitude},${longitude}`;
+
+
+    mapsButton.style.display="block";
+
+
+}else{
+
+
+    mapsButton.style.display="none";
+
+
+    if(detailMap){
+
+        detailMap.remove();
+
+        detailMap=null;
+
+    }
+
+}
+
             document.getElementById("detailParticipants").innerText =
                 this.dataset.participants + " Orang";
 
@@ -390,4 +477,160 @@ document.addEventListener("DOMContentLoaded", function () {
             e.target.closest(".video-item").remove();
         }
     });
+
+    /*
+|--------------------------------------------------------------------------
+| LOCATION SEARCH MAPS
+|--------------------------------------------------------------------------
+*/
+
+    let defaultLat = -6.917464;
+    let defaultLng = 107.619123;
+
+    const latitudeInput = document.getElementById("latitude");
+    const longitudeInput = document.getElementById("longitude");
+
+    if (
+        latitudeInput &&
+        longitudeInput &&
+        latitudeInput.value &&
+        longitudeInput.value
+    ) {
+        defaultLat = parseFloat(latitudeInput.value);
+        defaultLng = parseFloat(longitudeInput.value);
+    }
+
+    const map = L.map("map").setView([defaultLat, defaultLng], 13);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap",
+    }).addTo(map);
+
+    let marker = L.marker([defaultLat, defaultLng]).addTo(map);
+
+    const input = document.getElementById("location");
+    const result = document.getElementById("location-result");
+
+    const latitude = document.getElementById("latitude");
+    const longitude = document.getElementById("longitude");
+
+    let timer;
+
+    input.addEventListener("input", function () {
+        clearTimeout(timer);
+
+        let keyword = this.value.trim();
+
+        if (keyword.length < 3) {
+            result.innerHTML = "";
+
+            return;
+        }
+
+        timer = setTimeout(() => {
+            searchLocation(keyword);
+        }, 200);
+    });
+
+    async function searchLocation(keyword) {
+        try {
+            let response = await fetch(
+                `/admin/location-search?keyword=${encodeURIComponent(keyword)}`,
+            );
+
+            let data = await response.json();
+
+            result.innerHTML = "";
+
+            data.forEach((place) => {
+                let address = place.address;
+
+                let detail = [
+                    address.village,
+                    address.town,
+                    address.city,
+                    address.county,
+                    address.state,
+                    address.country,
+                ]
+                    .filter((item) => item)
+                    .join(", ");
+
+                let locationName = place.display_name || place.name;
+
+                result.innerHTML += `
+
+<a href="#"
+class="list-group-item list-group-item-action location-item"
+
+data-name="${locationName}"
+
+data-lat="${place.lat}"
+
+data-lon="${place.lon}">
+
+
+<strong>
+${place.name || place.display_name}
+</strong>
+
+
+<br>
+
+
+<small>
+${detail}</small>
+
+
+</a>
+
+`;
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    document.addEventListener("click", function (e) {
+        let item = e.target.closest(".location-item");
+
+        if (!item) {
+            return;
+        }
+
+        e.preventDefault();
+
+        const lat = item.dataset.lat;
+        const lon = item.dataset.lon;
+
+        const name = item.dataset.name || item.innerText;
+
+        console.log(item.dataset);
+
+        input.value = name;
+
+        latitude.value = lat;
+
+        longitude.value = lon;
+
+        result.innerHTML = "";
+
+        marker.remove();
+
+        marker = L.marker([lat, lon]).addTo(map);
+
+        map.setView([lat, lon], 16);
+    });
+
+    // EDIT DATA
+
+    if (latitude.value && longitude.value) {
+        map.setView([latitude.value, longitude.value], 16);
+
+        marker.remove();
+
+        marker = L.marker([latitude.value, longitude.value]).addTo(map);
+    }
+
+    // kurawal penutup
 });

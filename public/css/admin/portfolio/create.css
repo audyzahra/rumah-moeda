@@ -169,4 +169,29 @@ input[type="number"]::-webkit-outer-spin-button {
     .btn-secondary {
         margin-left: 0;
     }
+
+
+
+    /* UNTUK LOKASI (MAPS) */
+
+
+    #location-result{
+
+    position: relative;
+    z-index:1000;
+
+}
+
+#location-result .list-group-item{
+
+    cursor:pointer;
+
+}
+
+#location-result .list-group-item:hover{
+
+    background:#f3f3f3;
+
+}
+
 }

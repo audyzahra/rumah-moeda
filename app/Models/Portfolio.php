@@ -21,6 +21,9 @@ class Portfolio extends Model
         'location',
         'participants',
         'views',
+        'location',
+        'latitude',
+        'longitude',
     ];
 
     protected $casts = [
@@ -41,7 +44,7 @@ class Portfolio extends Model
     {
         return $this->hasMany(PortfolioMedia::class);
     }
-        public function thumbnail()
+    public function thumbnail()
     {
         return $this->hasOne(PortfolioMedia::class)
             ->where('type', 'image')

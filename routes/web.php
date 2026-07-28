@@ -448,11 +448,11 @@ Route::middleware(['auth', 'admin'])
 
 
 
-        /*
-|--------------------------------------------------------------------------
-| Portfolio Categories
-|--------------------------------------------------------------------------
-*/
+                /*
+        |--------------------------------------------------------------------------
+        | Portfolio Categories
+        |--------------------------------------------------------------------------
+        */
 
         Route::prefix('portfolio-categories')
             ->name('portfolio-categories.')
@@ -489,57 +489,64 @@ Route::middleware(['auth', 'admin'])
                     ->name('destroy');
             });
 
-        // untuk generate slug kategori portfolio
+            // untuk generate slug kategori portfolio
+            Route::get(
+                '/portfolio-categories/generate-slug/{name}',
+                [PortfolioCategoryController::class, 'generateSlugPreview']
+            )
+                ->name('portfolio-categories.slug');
+                
+
+        /*
+        |--------------------------------------------------------------------------
+        | Portfolio
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('portfolios')
+            ->name('portfolios.')
+            ->group(function () {
+
+
+                // Index
+                Route::get('/', [AdminPortfolioController::class, 'index'])
+                    ->name('index');
+
+
+                // Create
+                Route::get('/create', [AdminPortfolioController::class, 'create'])
+                    ->name('create');
+
+
+                // Store
+                Route::post('/', [AdminPortfolioController::class, 'store'])
+                    ->name('store');
+
+
+                // Detail
+                Route::get('/{id}', [AdminPortfolioController::class, 'show'])
+                    ->name('show');
+
+
+                // Edit
+                Route::get('/{id}/edit', [AdminPortfolioController::class, 'edit'])
+                    ->name('edit');
+
+
+                // Update
+                Route::put('/{id}', [AdminPortfolioController::class, 'update'])
+                    ->name('update');
+
+
+                // Delete
+                Route::delete('/{id}', [AdminPortfolioController::class, 'destroy'])
+                    ->name('destroy');
+            });
+
+
+
         Route::get(
-            '/portfolio-categories/generate-slug/{name}',
-            [PortfolioCategoryController::class, 'generateSlugPreview']
-        )
-            ->name('portfolio-categories.slug');
-
-       /*
-|--------------------------------------------------------------------------
-| Portfolio
-|--------------------------------------------------------------------------
-*/
-
-Route::prefix('portfolios')
-    ->name('portfolios.')
-    ->group(function () {
-
-
-        // Index
-        Route::get('/', [AdminPortfolioController::class, 'index'])
-            ->name('index');
-
-
-        // Create
-        Route::get('/create', [AdminPortfolioController::class, 'create'])
-            ->name('create');
-
-
-        // Store
-        Route::post('/', [AdminPortfolioController::class, 'store'])
-            ->name('store');
-
-
-        // Detail
-        Route::get('/{id}', [AdminPortfolioController::class, 'show'])
-            ->name('show');
-
-
-        // Edit
-        Route::get('/{id}/edit', [AdminPortfolioController::class, 'edit'])
-            ->name('edit');
-
-
-        // Update
-        Route::put('/{id}', [AdminPortfolioController::class, 'update'])
-            ->name('update');
-
-
-        // Delete
-        Route::delete('/{id}', [AdminPortfolioController::class, 'destroy'])
-            ->name('destroy');
-
-    });
+            '/location-search',
+            [AdminPortfolioController::class, 'searchLocation']
+        )->name('portfolio.location.search');
     });

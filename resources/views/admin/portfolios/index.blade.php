@@ -2,6 +2,8 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/portfolio/index.css') }}">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 @endpush
 
 @section('content')
@@ -25,83 +27,74 @@
 
         <form method="GET" action="{{ route('admin.portfolios.index') }}" class="mb-4">
 
-    <div class="row g-2">
+            <div class="row g-2">
 
 
-        <div class="col-md-6">
+                <div class="col-md-6">
 
-            <input
-                type="text"
-                name="search"
-                class="form-control"
-                placeholder="Cari judul, kategori, mitra, author..."
-                value="{{ request('search') }}"
-            >
+                    <input type="text" name="search" class="form-control"
+                        placeholder="Cari judul, kategori, mitra, author..." value="{{ request('search') }}">
 
-        </div>
+                </div>
 
 
 
-        <div class="col-md-3">
+                <div class="col-md-3">
 
-            <select name="sort" class="form-control">
-
-
-                <option value="">
-                    Terbaru
-                </option>
+                    <select name="sort" class="form-control">
 
 
-                <option value="oldest"
-                @selected(request('sort') == 'oldest')>
-                    Terlama
-                </option>
+                        <option value="">
+                            Terbaru
+                        </option>
 
 
-                <option value="title_asc"
-                @selected(request('sort') == 'title_asc')>
-                    Judul A-Z
-                </option>
+                        <option value="oldest" @selected(request('sort') == 'oldest')>
+                            Terlama
+                        </option>
 
 
-                <option value="title_desc"
-                @selected(request('sort') == 'title_desc')>
-                    Judul Z-A
-                </option>
+                        <option value="title_asc" @selected(request('sort') == 'title_asc')>
+                            Judul A-Z
+                        </option>
 
 
-            </select>
+                        <option value="title_desc" @selected(request('sort') == 'title_desc')>
+                            Judul Z-A
+                        </option>
 
 
-        </div>
+                    </select>
+
+
+                </div>
 
 
 
-        <div class="col-md-3">
+                <div class="col-md-3">
 
-            <button class="btn btn-primary">
+                    <button class="btn btn-primary">
 
-                <i class="fa fa-search"></i>
-                Cari
+                        <i class="fa fa-search"></i>
+                        Cari
 
-            </button>
-
-
-            <a href="{{ route('admin.portfolios.index') }}"
-                class="btn btn-secondary">
-
-                Reset
-
-            </a>
+                    </button>
 
 
-        </div>
+                    <a href="{{ route('admin.portfolios.index') }}" class="btn btn-secondary">
+
+                        Reset
+
+                    </a>
 
 
-    </div>
+                </div>
 
 
-</form>
+            </div>
+
+
+        </form>
 
 
         <div class="card">
@@ -187,6 +180,7 @@
                                     data-partner="{{ $portfolio->partner->name ?? '-' }}"
                                     data-date="{{ date('d M Y', strtotime($portfolio->activity_date)) }}"
                                     data-location="{{ $portfolio->location ?? '-' }}"
+                                    data-lat="{{ $portfolio->latitude }}" data-lng="{{ $portfolio->longitude }}"
                                     data-participants="{{ $portfolio->participants ?? 0 }}"
                                     data-author="{{ $portfolio->author->name ?? '-' }}"
                                     data-description='@json($portfolio->description)'
@@ -341,82 +335,101 @@
                     </div>
 
 
-
-
                     <div class="mb-3">
 
-                        <label class="fw-bold">
-                            Jumlah Peserta
-                        </label>
-
-                        <p id="detailParticipants"></p>
-
-                    </div>
-
-                    <div class="col-md-6">
-
-                        <label class="fw-bold">
-                            Author
-                        </label>
-
-                        <p id="detailAuthor"></p>
-
-                    </div>
+                        <div id="detail-map" style="height:350px" class="rounded border">
+                        </div>
 
 
-                    <div class="mb-3">
+                        <a id="googleMapsButton" target="_blank" class="btn btn-primary w-100 mt-3">
 
-                        <label class="fw-bold">
-                            Media
-                        </label>
+                            Buka di Google Maps
+
+                        </a>
 
 
-                        <div id="detailMedia" class="row g-3">
+
+
+
+
+
+
+                        <div class="mb-3">
+
+                            <label class="fw-bold">
+                                Jumlah Peserta
+                            </label>
+
+                            <p id="detailParticipants"></p>
 
                         </div>
 
-                    </div>
+                        <div class="col-md-6">
 
+                            <label class="fw-bold">
+                                Author
+                            </label>
 
-
-
-                    <div class="mb-3">
-
-                        <label class="fw-bold">
-                            Deskripsi
-                        </label>
-
-                        <div id="detailDescription" class="border rounded p-3 bg-light">
+                            <p id="detailAuthor"></p>
 
                         </div>
 
+
+                        <div class="mb-3">
+
+                            <label class="fw-bold">
+                                Media
+                            </label>
+
+
+                            <div id="detailMedia" class="row g-3">
+
+                            </div>
+
+                        </div>
+
+
+
+
+                        <div class="mb-3">
+
+                            <label class="fw-bold">
+                                Deskripsi
+                            </label>
+
+                            <div id="detailDescription" class="border rounded p-3 bg-light">
+
+                            </div>
+
+                        </div>
+
+
                     </div>
 
 
+                    <div class="modal-footer">
+
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">
+
+                            Tutup
+
+                        </button>
+
+                    </div>
+
+
+
                 </div>
-
-
-                <div class="modal-footer">
-
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">
-
-                        Tutup
-
-                    </button>
-
-                </div>
-
-
 
             </div>
 
         </div>
-
-    </div>
-@endsection
+    @endsection
 
 
 
-@push('scripts')
-    <script src="{{ asset('js/admin/portfolio.js') }}"></script>
-@endpush
+    @push('scripts')
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+        <script src="{{ asset('js/admin/portfolio.js') }}"></script>
+    @endpush
