@@ -60,13 +60,35 @@ class GalleryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'nullable',
-            'activity_date' => 'required|date',
+    'title' => 'required|string|max:255',
+    'description' => 'nullable|string',
+    'activity_date' => 'required|date',
 
-            'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'videos.*' => 'nullable|url',
-        ]);
+        // Foto wajib minimal 1
+        'images' => 'required|array|min:1',
+        'images.*' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+
+        // Video opsional
+        'videos' => 'nullable|array',
+        'videos.*' => 'nullable|url',
+    ], [
+        'title.required' => 'Judul galeri wajib diisi.',
+        'title.max' => 'Judul maksimal 255 karakter.',
+
+        'activity_date.required' => 'Tanggal kegiatan wajib diisi.',
+        'activity_date.date' => 'Format tanggal tidak valid.',
+
+        'images.required' => 'Minimal harus menambahkan 1 foto.',
+        'images.array' => 'Format foto tidak valid.',
+        'images.min' => 'Minimal harus menambahkan 1 foto.',
+
+        'images.*.required' => 'Foto wajib dipilih.',
+        'images.*.image' => 'File harus berupa gambar.',
+        'images.*.mimes' => 'Format gambar hanya boleh JPG, JPEG, PNG atau WEBP.',
+        'images.*.max' => 'Ukuran gambar maksimal 2 MB.',
+
+        'videos.*.url' => 'Link video harus berupa URL yang valid.',
+    ]);
 
         $gallery = Gallery::create([
             'title' => $request->title,
@@ -135,8 +157,30 @@ class GalleryController extends Controller
             'description' => 'nullable',
 
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
+            'videos' => 'nullable|array',
             'videos.*' => 'nullable|url',
         ]);
+
+        // Hitung foto yang masih ada di database
+        $existingImages = $gallery->media()
+            ->where('type', 'image')
+            ->count();
+
+        // Hitung foto baru yang diupload
+        $newImages = $request->hasFile('images')
+            ? count($request->file('images'))
+            : 0;
+
+        // Minimal harus ada 1 foto
+        if (($existingImages + $newImages) < 1) {
+
+            return back()
+                ->withErrors([
+                    'images' => 'Minimal galeri harus memiliki 1 foto.'
+                ])
+                ->withInput();
+        }
 
         $gallery->update([
             'title' => $data['title'],
