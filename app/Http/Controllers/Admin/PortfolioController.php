@@ -120,7 +120,7 @@ class PortfolioController extends Controller
 
 
 
-        $portfolios = $query->paginate(10)
+        $portfolios = $query->paginate(5)
             ->withQueryString();
 
 
