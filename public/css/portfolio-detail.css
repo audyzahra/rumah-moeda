@@ -117,7 +117,7 @@ body{
 
 .portfolio-detail section{
 
-    padding:90px 0;
+    padding:50px 0 0;
 
 }
 
@@ -162,6 +162,8 @@ body{
     align-items:center;
 
     overflow:hidden;
+
+    margin-bottom: 70px;
 
 }
 
@@ -354,11 +356,10 @@ body{
     border-radius:22px;
     padding:26px;
     box-shadow:var(--shadow);
-
     min-height:220px;
-
     display:flex;
     flex-direction:column;
+    align-items: center;
 }
 
 .info-item:hover{
@@ -402,6 +403,8 @@ body{
     flex-direction:column;
 
     gap:8px;
+
+    align-items: center;
 
 }
 
@@ -535,9 +538,9 @@ body{
    CONTENT SECTION
 ========================================= */
 
-.portfolio-content-section{
+.portfolio-content-section section{
 
-    padding-top:40px;
+    padding:40px 0 0;
 
 }
 
@@ -899,12 +902,13 @@ body{
 .portfolio-gallery{
 
     background:#fff;
-
+    border-radius:20px;
+    margin-bottom: 60px;
 }
 
 .portfolio-gallery .section-heading{
 
-    margin-bottom:55px;
+    margin-bottom:30px;
 
 }
 
@@ -912,6 +916,7 @@ body{
     display:grid;
     grid-template-columns:repeat(auto-fit, minmax(320px,1fr));
     gap:24px;
+    padding-bottom: 20px;
 }
 
 .gallery-item,
@@ -1218,12 +1223,17 @@ body{
    RELATED PORTFOLIO
 ========================================= */
 
-.related-portfolio{
+/* .related-portfolio{
 
     background:var(--bg);
 
-}
+} */
 
+.related-portfolio h2{
+
+    margin-bottom: 20px;
+
+}
 .related-grid{
 
     display:grid;
@@ -2202,10 +2212,8 @@ button:focus{
 .info-content span{
     display:block;
     margin-bottom:10px;
-
     font-size:18px;
     font-weight:700;      /* Label jadi bold */
-    color:#1f2937;
 }
 
 
