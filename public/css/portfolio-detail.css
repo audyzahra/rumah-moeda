@@ -2311,6 +2311,17 @@ button:focus{
 [data-theme="dark"] .portfolio-detail .portfolio-gallery{
     background:#1e293b;
     color:#f8fafc;
+    border:1.5px solid #cda036;
+    box-shadow:0 10px 30px rgba(205,160,54,.18);
+    transition:.3s;
+}
+[data-theme="dark"] .portfolio-detail .info-item:hover,
+[data-theme="dark"] .portfolio-detail .content-card:hover,
+[data-theme="dark"] .portfolio-detail .location-card:hover,
+[data-theme="dark"] .portfolio-detail .related-card:hover,
+[data-theme="dark"] .portfolio-detail .portfolio-gallery:hover{
+    border-color:#e3b84c;
+    box-shadow:0 18px 40px rgba(205,160,54,.35);
 }
 
 /* Judul */
