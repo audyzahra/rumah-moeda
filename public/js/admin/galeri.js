@@ -188,9 +188,10 @@ if (btnEditAddVideo && editVideoContainer) {
    UNTUK HAPUS MEDIA PADA FORM
 ========================================== */
 function deleteMedia(id, button) {
+
     Swal.fire({
         title: "Apakah yakin?",
-        text: "Media yang dihapus tidak dapat dikembalikan!",
+        text: "Media akan dihapus setelah galeri diperbarui.",
         icon: "warning",
 
         showCancelButton: true,
@@ -200,34 +201,35 @@ function deleteMedia(id, button) {
 
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
+
     }).then((result) => {
-        if (result.isConfirmed) {
-            fetch(`/admin/gallery/media/${id}`, {
-                method: "DELETE",
 
-                headers: {
-                    "X-CSRF-TOKEN": document.querySelector(
-                        'meta[name="csrf-token"]',
-                    ).content,
-                },
-            })
-                .then((res) => res.json())
+        if (!result.isConfirmed) return;
 
-                .then((data) => {
-                    if (data.success) {
-                        button.closest(".media-item").remove();
+        // simpan id media yang akan dihapus
+        const container = document.getElementById("deleted-media-container");
 
-                        Swal.fire({
-                            icon: "success",
-                            title: "Berhasil",
-                            text: "Media berhasil dihapus",
-                            timer: 1500,
-                            showConfirmButton: false,
-                        });
-                    }
-                });
-        }
+        const input = document.createElement("input");
+
+        input.type = "hidden";
+        input.name = "deleted_media[]";
+        input.value = id;
+
+        container.appendChild(input);
+
+        // hilangkan dari tampilan
+        button.closest(".media-item").remove();
+
+        Swal.fire({
+            icon: "success",
+            title: "Berhasil",
+            text: "Media akan dihapus setelah galeri diperbarui.",
+            timer: 1500,
+            showConfirmButton: false
+        });
+
     });
+
 }
 
 /* ==========================================

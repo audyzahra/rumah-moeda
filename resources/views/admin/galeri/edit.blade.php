@@ -45,6 +45,7 @@
 
                     @csrf
                     @method('PUT')
+                    <div id="deleted-media-container"></div>
 
                     <div class="form-group">
                         <label>Judul</label>

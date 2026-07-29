@@ -162,24 +162,39 @@ class GalleryController extends Controller
             'videos.*' => 'nullable|url',
         ]);
 
-        // Hitung foto yang masih ada di database
-        $existingImages = $gallery->media()
-            ->where('type', 'image')
-            ->count();
+        // Jumlah foto yang ada saat ini
+$existingImages = $gallery->media()
+    ->where('type', 'image')
+    ->count();
 
-        // Hitung foto baru yang diupload
+// Jumlah foto yang ditandai untuk dihapus
+$deletedImages = 0;
+
+if ($request->filled('deleted_media')) {
+
+    $deletedImages = GalleryMedia::whereIn('id', $request->deleted_media)
+        ->where('type', 'image')
+        ->count();
+
+}
+
+        // Jumlah foto baru
         $newImages = $request->hasFile('images')
             ? count($request->file('images'))
             : 0;
 
-        // Minimal harus ada 1 foto
-        if (($existingImages + $newImages) < 1) {
+        // Total foto setelah update
+        $totalImages = $existingImages - $deletedImages + $newImages;
+
+        // Validasi minimal 1 foto
+        if ($totalImages < 1) {
 
             return back()
                 ->withErrors([
                     'images' => 'Minimal galeri harus memiliki 1 foto.'
                 ])
                 ->withInput();
+
         }
 
         $gallery->update([
@@ -187,6 +202,29 @@ class GalleryController extends Controller
             'activity_date' => $data['activity_date'],
             'description' => $data['description'] ?? null,
         ]);
+        // Hapus media yang ditandai
+        if ($request->filled('deleted_media')) {
+
+            foreach ($request->deleted_media as $id) {
+
+                $media = GalleryMedia::find($id);
+
+                if (!$media) {
+                    continue;
+                }
+
+                if (
+                    $media->type === 'image' &&
+                    $media->file_path &&
+                    Storage::disk('public')->exists($media->file_path)
+                ) {
+                    Storage::disk('public')->delete($media->file_path);
+                }
+
+                $media->delete();
+            }
+
+        }
 
         // Tambah foto baru
         if ($request->hasFile('images')) {
@@ -248,18 +286,9 @@ class GalleryController extends Controller
 
     public function destroyMedia(GalleryMedia $media)
     {
-        if (
-            $media->type === 'image' &&
-            $media->file_path &&
-            Storage::disk('public')->exists($media->file_path)
-        ) {
-            Storage::disk('public')->delete($media->file_path);
-        }
-
-        $media->delete();
-
         return response()->json([
-            'success' => true
-        ]);
+            'success' => false,
+            'message' => 'Method ini sudah tidak digunakan.'
+        ], 410);
     }
 }
