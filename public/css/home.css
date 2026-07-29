@@ -1081,3 +1081,26 @@ body {
     }
 
 }
+
+/* ==========================================
+   DARK MODE - STRUKTUR ORGANISASI HOME
+========================================== */
+
+[data-theme="dark"] .google-visualization-orgchart-node{
+    background:#fffdf5 !important;
+    border-color:#d4af37 !important;
+}
+
+[data-theme="dark"] .google-visualization-orgchart-node .org-card b{
+    color:#1a1a1a !important;
+}
+
+[data-theme="dark"] .google-visualization-orgchart-node .org-card span{
+    color:#555 !important;
+}
+
+[data-theme="dark"] .google-visualization-orgchart-lineleft,
+[data-theme="dark"] .google-visualization-orgchart-lineright,
+[data-theme="dark"] .google-visualization-orgchart-linebottom{
+    border-color:#d4af37 !important;
+}

@@ -1256,6 +1256,10 @@ body{
 
     transition:.35s;
 
+    display:flex;
+
+    flex-direction:column;
+
 }
 
 .related-card:hover{
@@ -1266,7 +1270,11 @@ body{
 
 .related-card a{
 
-    display:block;
+    display:flex;
+
+    flex-direction:column;
+
+    flex:1;
 
     color:inherit;
 
@@ -1326,6 +1334,12 @@ body{
 
 .related-content{
 
+    display:flex;
+
+    flex-direction:column;
+
+    flex:1;
+
     padding:26px;
 
 }
@@ -1374,6 +1388,14 @@ body{
 
     margin-bottom:24px;
 
+    display:-webkit-box;
+
+    -webkit-line-clamp:3;
+
+    -webkit-box-orient:vertical;
+
+    overflow:hidden;
+
 }
 
 .related-link{
@@ -1389,6 +1411,8 @@ body{
     font-weight:600;
 
     transition:.3s;
+
+    margin-top:auto;
 
 }
 
@@ -2263,4 +2287,98 @@ button:focus{
 
     word-break:break-word;
     overflow-wrap:anywhere;
+}
+
+/* ==========================================
+   DARK MODE - DETAIL PORTFOLIO SAJA
+========================================== */
+
+[data-theme="dark"] .portfolio-detail{
+    --bg:#0f172a;
+    --text:#f8fafc;
+    --text-light:#cbd5e1;
+    --border:#334155;
+    --shadow:0 12px 30px rgba(0,0,0,.45);
+
+    background:var(--bg);
+}
+
+/* Card */
+[data-theme="dark"] .portfolio-detail .info-item,
+[data-theme="dark"] .portfolio-detail .content-card,
+[data-theme="dark"] .portfolio-detail .location-card,
+[data-theme="dark"] .portfolio-detail .related-card,
+[data-theme="dark"] .portfolio-detail .portfolio-gallery{
+    background:#1e293b;
+    color:#f8fafc;
+}
+
+/* Judul */
+[data-theme="dark"] .portfolio-detail .section-title h2,
+[data-theme="dark"] .portfolio-detail .related-content h3,
+[data-theme="dark"] .portfolio-detail .partner-content h3,
+[data-theme="dark"] .portfolio-detail .info-content span,
+[data-theme="dark"] .portfolio-detail .portfolio-description h1,
+[data-theme="dark"] .portfolio-detail .portfolio-description h2,
+[data-theme="dark"] .portfolio-detail .portfolio-description h3,
+[data-theme="dark"] .portfolio-detail .portfolio-description h4,
+[data-theme="dark"] .portfolio-detail .location-text{
+    color:#f8fafc;
+}
+
+/* Isi */
+[data-theme="dark"] .portfolio-detail .portfolio-description,
+[data-theme="dark"] .portfolio-detail .portfolio-description p,
+[data-theme="dark"] .portfolio-detail .portfolio-description li,
+[data-theme="dark"] .portfolio-detail .portfolio-description td,
+[data-theme="dark"] .portfolio-detail .portfolio-description th,
+[data-theme="dark"] .portfolio-detail .related-content p,
+[data-theme="dark"] .portfolio-detail .related-date,
+[data-theme="dark"] .portfolio-detail .partner-content p,
+[data-theme="dark"] .portfolio-detail .info-content strong,
+[data-theme="dark"] .portfolio-detail .gallery-empty p{
+    color:#cbd5e1;
+}
+
+/* Blockquote */
+[data-theme="dark"] .portfolio-detail .portfolio-description blockquote{
+    background:#273449;
+    color:#f1f5f9;
+}
+
+/* Table */
+[data-theme="dark"] .portfolio-detail .portfolio-description table td,
+[data-theme="dark"] .portfolio-detail .portfolio-description table th{
+    border-color:#475569;
+}
+
+[data-theme="dark"] .portfolio-detail .portfolio-description table th{
+    background:#334155;
+}
+
+/* Icon */
+[data-theme="dark"] .portfolio-detail .info-icon{
+    background:rgba(199,154,25,.15);
+}
+
+[data-theme="dark"] .portfolio-detail .info-icon i{
+    color:#fbbf24;
+}
+
+/* Badge */
+[data-theme="dark"] .portfolio-detail .category-badge,
+[data-theme="dark"] .portfolio-detail .category-pill,
+[data-theme="dark"] .portfolio-detail .partner-label{
+    background:rgba(199,154,25,.18);
+    color:#ffd66b;
+}
+
+/* Empty gallery */
+[data-theme="dark"] .portfolio-detail .gallery-empty{
+    border-color:#475569;
+}
+
+/* CTA tetap gelap */
+[data-theme="dark"] .portfolio-detail .cta-card{
+    background:linear-gradient(135deg,#8b6914,#c79a19);
 }
