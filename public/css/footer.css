@@ -139,3 +139,38 @@
     padding-top:22px;
     margin-top:40px;
 }
+
+/* ==========================================
+   DARK MODE - FOOTER
+========================================== */
+
+[data-theme="dark"] .footer{
+    color:#fff;
+}
+
+[data-theme="dark"] .footer h3,
+[data-theme="dark"] .footer p,
+[data-theme="dark"] .footer span,
+[data-theme="dark"] .footer strong{
+    color:#fff;
+}
+
+[data-theme="dark"] .footer-location{
+    color:#fff;
+}
+
+[data-theme="dark"] .footer-info{
+    color:#fff;
+}
+
+[data-theme="dark"] .footer-info a{
+    color:#fff;
+}
+
+[data-theme="dark"] .footer-info a:hover{
+    color:#ffe082;
+}
+
+[data-theme="dark"] .footer-bottom{
+    color:#fff;
+}

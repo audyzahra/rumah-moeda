@@ -372,3 +372,22 @@
     border-width:3px !important;
 
 }
+/* ==========================================
+   DARK MODE - STRUKTUR ORGANISASI
+========================================== */
+
+[data-theme="dark"] .org-card b{
+    color:#1a1a1a !important;
+}
+
+[data-theme="dark"] .org-card span{
+    color:#444 !important;
+}
+
+[data-theme="dark"] .section-title{
+    color:#f8fafc;
+}
+
+[data-theme="dark"] .section-subtitle{
+    color:#cbd5e1;
+}
