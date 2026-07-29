@@ -1,5 +1,7 @@
 @extends('admin.layouts.app')
 
+@section('title', 'Tambah Portofolio')
+
 @push('styles')
 
  <link
@@ -261,15 +263,25 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
 
 
-            <button class="btn btn-success">
-                Simpan
-            </button>
+            <div class="modal-footer">
 
-            <a href="{{ route('admin.portfolios.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('admin.portfolios.index') }}" class="btn-batal">
 
-                Batal
+                        <i class="fa-solid fa-xmark"></i>
 
-            </a>
+                        Batal
+
+                    </a>
+
+                    <button type="submit" class="btn-simpan">
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Simpan Portofolio
+
+                    </button>
+
+                </div>
 
         </form>
 

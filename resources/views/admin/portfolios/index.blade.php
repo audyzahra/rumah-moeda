@@ -1,5 +1,7 @@
 @extends('admin.layouts.app')
 
+@section('title', 'Portofolio')
+
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/portfolio/index.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
