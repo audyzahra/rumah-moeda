@@ -725,53 +725,100 @@ body{
    PAGINATION
 ===================================================== */
 
-/* ==========================
-   Pagination
-========================== */
+/* ==========================================
+   CUSTOM PAGINATION
+========================================== */
 
-.pagination-section{
-    margin-top:20px;
-    padding:18px 22px;
-    border-top:1px solid #e5e7eb;
+.custom-pagination{
+    margin-top:30px;
+    padding:20px 24px;
 
     display:flex;
     justify-content:space-between;
     align-items:center;
     gap:20px;
     flex-wrap:wrap;
+
+    border-top:1px solid #e5e7eb;
 }
 
-.info-data{
+/* ==========================================
+   LEFT
+========================================== */
+
+.pagination-left form{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.pagination-left span{
     font-size:14px;
     color:#64748b;
-    line-height:1.5;
 }
 
-.info-data strong{
+.pagination-left select{
+    padding:8px 14px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    background:#fff;
+    font-size:14px;
+    color:#374151;
+    cursor:pointer;
+    transition:.25s ease;
+}
+
+.pagination-left select:focus{
+    outline:none;
+    border-color:#cda036;
+    box-shadow:0 0 0 3px rgba(205,160,54,.18);
+}
+
+/* ==========================================
+   CENTER
+========================================== */
+
+.pagination-center{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-wrap:wrap;
+
+    font-size:14px;
+    color:#64748b;
+}
+
+.pagination-center strong{
     color:#1f2937;
     font-weight:700;
 }
 
-.pagination-controls{
+/* ==========================================
+   RIGHT
+========================================== */
+
+.pagination-right{
     display:flex;
     align-items:center;
-    gap:14px;
+    gap:8px;
+    flex-wrap:wrap;
 }
 
-#pageInfo{
-    font-size:14px;
-    font-weight:600;
-    color:#374151;
-    white-space:nowrap;
-}
+/* ==========================================
+   BUTTON
+========================================== */
 
-.page-btn{
-    width:38px;
+.page-btn,
+.page-number{
+    min-width:38px;
     height:38px;
 
     display:flex;
     align-items:center;
     justify-content:center;
+
+    padding:0 12px;
 
     border:1px solid #d1d5db;
     border-radius:10px;
@@ -779,18 +826,22 @@ body{
     background:#fff;
     color:#475569;
     text-decoration:none;
+    font-size:14px;
+    font-weight:600;
 
     transition:all .25s ease;
 }
 
-.page-btn:hover:not(:disabled){
+.page-btn:hover:not(:disabled),
+.page-number:hover{
     background:#cda036;
     border-color:#cda036;
     color:#fff;
     transform:translateY(-2px);
 }
 
-.page-btn:active:not(:disabled){
+.page-btn:active:not(:disabled),
+.page-number:active{
     transform:scale(.95);
 }
 
@@ -800,46 +851,54 @@ body{
     pointer-events:none;
 }
 
-.page-btn i{
-    pointer-events:none;
+.page-number.active{
+    background:#cda036;
+    border-color:#cda036;
+    color:#fff;
 }
 
-/* ==========================
-   Responsive
-========================== */
+/* ==========================================
+   RESPONSIVE
+========================================== */
 
 @media (max-width:768px){
 
-    .pagination-section{
+    .custom-pagination{
         flex-direction:column;
-        align-items:flex-start;
+        align-items:center;
+        text-align:center;
     }
 
-    .pagination-controls{
+    .pagination-left,
+    .pagination-center,
+    .pagination-right{
         width:100%;
         justify-content:center;
-        flex-wrap:wrap;
     }
 
-    #pageInfo{
-        order:2;
+    .pagination-left form{
+        justify-content:center;
     }
 
 }
 
 @media (max-width:576px){
 
-    .pagination-section{
+    .custom-pagination{
         padding:16px;
+        gap:16px;
     }
 
-    .info-data{
-        width:100%;
-        text-align:center;
+    .page-btn,
+    .page-number{
+        min-width:36px;
+        height:36px;
+        font-size:13px;
     }
 
-    .pagination-controls{
-        justify-content:center;
+    .pagination-left form{
+        flex-direction:column;
+        gap:10px;
     }
 
 }
@@ -1282,4 +1341,38 @@ body{
 
 [data-theme="dark"] .portfolio-page .toolbar-search input::placeholder{
     color:#94a3b8;
+}
+
+/* ==========================================
+   DARK MODE - PAGINATION
+========================================== */
+
+[data-theme="dark"] .pagination-left span,
+[data-theme="dark"] .pagination-center,
+[data-theme="dark"] .pagination-center span,
+[data-theme="dark"] .pagination-center strong{
+    color:#ffffff;
+}
+
+[data-theme="dark"] .pagination-left form{
+    color:#ffffff;
+}
+
+[data-theme="dark"] .pagination-left select{
+    background:#ffffff;
+    color:#111827;
+}
+/* ==========================================
+   DARK MODE - BORDER CARD GALERI
+========================================== */
+
+[data-theme="dark"] .galeri-card{
+    background:#242424;
+    border:1.5px solid #cda036;
+    box-shadow:0 10px 30px rgba(205,160,54,.18);
+}
+
+[data-theme="dark"] .galeri-card:hover{
+    border-color:#e3b84c;
+    box-shadow:0 16px 40px rgba(205,160,54,.35);
 }

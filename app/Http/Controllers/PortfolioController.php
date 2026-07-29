@@ -5,25 +5,50 @@ namespace App\Http\Controllers;
 use App\Models\Partner;
 use App\Models\Portfolio;
 use App\Models\PortfolioCategory;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PortfolioController extends Controller
 {
     /**
      * Menampilkan daftar portofolio.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $portfolios = Portfolio::with([
-            'category',
-            'partner',
-            'media' => function ($query) {
-                $query->orderBy('display_order');
-            }
-        ])
-        ->latest('activity_date')
-        ->paginate(6);
+        $perPage = $request->input('per_page', 6);
 
-        $categories = PortfolioCategory::orderBy('name')->get();
+        // Guest -> semua portofolio
+        if (!Auth::check()) {
+
+            $portfolios = Portfolio::with([
+                    'category',
+                    'partner',
+                    'media' => function ($query) {
+                        $query->orderBy('display_order');
+                    }
+                ])
+                ->latest('activity_date')
+                ->paginate($perPage)
+                ->withQueryString();
+
+        }
+        // Login (Admin/User) -> hanya portofolio miliknya
+        else {
+
+            $portfolios = Portfolio::with([
+                    'category',
+                    'partner',
+                    'media' => function ($query) {
+                        $query->orderBy('display_order');
+                    }
+                ])
+                ->where('author_id', Auth::id())
+                ->latest('activity_date')
+                ->paginate($perPage)
+                ->withQueryString();
+
+        }
+         $categories = PortfolioCategory::orderBy('name')->get();
 
         $totalPortfolio = Portfolio::count();
 
@@ -40,9 +65,8 @@ class PortfolioController extends Controller
             'totalPartner',
             'totalCategory',
             'totalParticipants'
-
         ));
-    }
+    }   
 
     /**
      * Menampilkan detail portofolio.
