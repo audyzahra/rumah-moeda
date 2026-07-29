@@ -458,8 +458,8 @@ document.addEventListener("DOMContentLoaded", function () {
 |--------------------------------------------------------------------------
 */
 
-    let defaultLat = -6.917464;
-    let defaultLng = 107.619123;
+    let defaultLat = -6.5569;
+    let defaultLng = 107.4433;
 
     const latitudeInput = document.getElementById("latitude");
     const longitudeInput = document.getElementById("longitude");
@@ -505,6 +505,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let timer;
     let controller;
+    let locationCache = {};
 
     if (input) {
         input.addEventListener("input", function () {
@@ -512,7 +513,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let keyword = this.value.trim();
 
-            if (keyword.length < 1) {
+            if (keyword.length < 3) {
                 result.innerHTML = "";
 
                 return;
@@ -520,7 +521,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             timer = setTimeout(() => {
                 searchLocation(keyword);
-            }, 200);
+            }, 500);
         });
     }
 
@@ -529,10 +530,17 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        // cek cache dulu
+        if (locationCache[keyword]) {
+            renderLocation(locationCache[keyword]);
+
+            return;
+        }
+
         result.innerHTML = `
-        <div class="list-group-item text-muted">
-            Mencari lokasi...
-        </div>
+    <div class="list-group-item text-muted">
+        Mencari lokasi...
+    </div>
     `;
 
         if (controller) {
@@ -551,56 +559,64 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let data = await response.json();
 
-            result.innerHTML = "";
+            // simpan hasil ke cache
+            locationCache[keyword] = data;
 
-            data.forEach((place) => {
-                let address = place.address;
-
-                let detail = [
-                    address.village,
-                    address.town,
-                    address.city,
-                    address.county,
-                    address.state,
-                    address.country,
-                ]
-                    .filter((item) => item)
-                    .join(", ");
-
-                result.innerHTML += `
-
-            <a href="#"
-            class="list-group-item list-group-item-action location-item"
-
-            data-name="${place.name}"
-
-            data-lat="${place.lat}"
-
-            data-lon="${place.lon}">
-
-
-                <strong>
-                    ${place.name}
-                </strong>
-
-
-                <br>
-
-
-                <small>
-                    ${detail}
-                </small>
-
-
-            </a>
-
-            `;
-            });
+            renderLocation(data);
         } catch (error) {
             if (error.name !== "AbortError") {
                 console.log(error);
             }
         }
+    }
+
+    // RENDER LOKASI
+    function renderLocation(data) {
+        result.innerHTML = "";
+
+        data.forEach((place) => {
+            let address = place.address || {};
+
+            let detail = [
+                address.village,
+                address.town,
+                address.city,
+                address.county,
+                address.state,
+                address.country,
+            ]
+                .filter((item) => item)
+                .join(", ");
+
+            result.innerHTML += `
+
+        <a href="#"
+        class="list-group-item list-group-item-action location-item"
+
+        data-name="${place.name}"
+
+        data-lat="${place.lat}"
+
+        data-lon="${place.lon}">
+
+
+            <strong>
+                ${place.name}
+            </strong>
+
+
+            <br>
+
+
+            <small>
+                ${detail}
+            </small>
+
+
+        </a>
+
+        `;
+        });
     }
 
     // ===============================
