@@ -139,73 +139,111 @@
     </section>
 
 {{-- PAGINATION --}}
-        <div class="custom-pagination">
+<div class="custom-pagination">
 
-            <div class="pagination-info">
+    {{-- Show Entries --}}
+    <div class="pagination-left">
 
-                Menampilkan
+        <form method="GET" id="perPageForm">
 
-                <strong>{{ $gallery->firstItem() ?? 0 }}</strong>
+            @foreach(request()->except('per_page', 'page') as $key => $value)
+                <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+            @endforeach
 
-                -
+            <span>Tampilkan</span>
 
-                <strong>{{ $gallery->lastItem() ?? 0 }}</strong>
+            <select name="per_page" onchange="this.form.submit()">
 
-                dari
+                <option value="6" {{ request('per_page',6)==6 ? 'selected' : '' }}>6</option>
 
-                <strong>{{ $gallery->total() }}</strong>
+                <option value="12" {{ request('per_page')==12 ? 'selected' : '' }}>12</option>
 
-                data
+                <option value="24" {{ request('per_page')==24 ? 'selected' : '' }}>24</option>
 
-            </div>
+                <option value="48" {{ request('per_page')==48 ? 'selected' : '' }}>48</option>
 
-            <div class="pagination-page">
+            </select>
 
-                {{-- Previous --}}
-                @if($gallery->onFirstPage())
+            <span>video</span>
 
-                    <button class="page-btn" disabled>
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
+        </form>
 
-                @else
+    </div>
 
-                    <a href="{{ $gallery->previousPageUrl() }}" class="page-btn">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </a>
+    {{-- Info --}}
+    <div class="pagination-center">
 
-                @endif
+        <span>Menampilkan</span>
 
-                <span>
+        <strong>{{ $gallery->firstItem() ?? 0 }}</strong>
 
-                    Halaman
+        <span>-</span>
 
-                    {{ $gallery->currentPage() }}
+        <strong>{{ $gallery->lastItem() ?? 0 }}</strong>
 
-                    dari
+        <span>dari</span>
 
-                    {{ $gallery->lastPage() }}
+        <strong>{{ $gallery->total() }}</strong>
 
+        <span>data</span>
+
+    </div>
+
+    {{-- Pagination --}}
+    <div class="pagination-right">
+
+        {{-- Previous --}}
+        @if($gallery->onFirstPage())
+
+            <button class="page-btn" disabled>
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+        @else
+
+            <a href="{{ $gallery->previousPageUrl() }}" class="page-btn">
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
+
+        @endif
+
+        {{-- Nomor Halaman --}}
+        @foreach($gallery->getUrlRange(1, $gallery->lastPage()) as $page => $url)
+
+            @if($page == $gallery->currentPage())
+
+                <span class="page-number active">
+                    {{ $page }}
                 </span>
 
-                {{-- Next --}}
-                @if($gallery->hasMorePages())
+            @else
 
-                    <a href="{{ $gallery->nextPageUrl() }}" class="page-btn">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </a>
+                <a href="{{ $url }}" class="page-number">
+                    {{ $page }}
+                </a>
 
-                @else
+            @endif
 
-                    <button class="page-btn" disabled>
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
+        @endforeach
 
-                @endif
+        {{-- Next --}}
+        @if($gallery->hasMorePages())
 
-            </div>
+            <a href="{{ $gallery->nextPageUrl() }}" class="page-btn">
+                <i class="fa-solid fa-chevron-right"></i>
+            </a>
 
-        </div>
+        @else
+
+            <button class="page-btn" disabled>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+        @endif
+
+    </div>
+
+</div>
 
 @push('scripts')
     <script src="{{ asset('js/admin/galeri.js') }}"></script>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gallery;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class GalleryController extends Controller
@@ -19,7 +20,7 @@ class GalleryController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function photos()
+    public function photos(Request $request)
     {
         $query = Gallery::with([
             'media' => function ($q) {
@@ -34,9 +35,12 @@ class GalleryController extends Controller
             $query->where('author_id', Auth::id());
         }
 
+        $perPage = $request->input('per_page', 6);
+
         $gallery = $query
-        ->orderByDesc('activity_date')
-        ->paginate(6);
+            ->orderByDesc('activity_date')
+            ->paginate($perPage)
+            ->withQueryString();
 
         return view('gallery.photos', compact('gallery'));
     }
@@ -47,7 +51,7 @@ class GalleryController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function videos()
+    public function videos(Request $request)
     {
         $query = Gallery::with([
             'media' => function ($q) {
@@ -61,9 +65,12 @@ class GalleryController extends Controller
             $query->where('author_id', Auth::id());
         }
 
+        $perPage = $request->input('per_page', 6);
+
         $gallery = $query
-        ->orderByDesc('activity_date')
-        ->paginate(6);
+            ->orderByDesc('activity_date')
+            ->paginate($perPage)
+            ->withQueryString();
 
         return view('gallery.videos', compact('gallery'));
     }
