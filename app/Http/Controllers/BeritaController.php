@@ -15,21 +15,24 @@ class BeritaController extends Controller
      */
     public function index()
     {
+        $perPage = request('per_page', 5);
         // Guest -> semua berita
         if (!Auth::check()) {
 
             $news = News::with(['category', 'author'])
-                ->latest('publish_date')
-                ->paginate(5);
+            ->latest('publish_date')
+            ->paginate($perPage)
+            ->withQueryString();
 
         }
         // Login (Admin/User) -> hanya berita miliknya
         else {
 
             $news = News::with(['category', 'author'])
-                ->where('author_id', Auth::id())
-                ->latest('publish_date')
-                ->paginate(5);
+            ->where('author_id', Auth::id())
+            ->latest('publish_date')
+            ->paginate($perPage)
+            ->withQueryString();
 
         }
 

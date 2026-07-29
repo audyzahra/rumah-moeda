@@ -124,71 +124,98 @@
        {{-- PAGINATION --}}
         <div class="custom-pagination">
 
-            <div class="pagination-info">
+    {{-- Show Entries --}}
+    <div class="pagination-left">
 
-                Menampilkan
+        <form method="GET">
 
-                <strong>{{ $news->firstItem() ?? 0 }}</strong>
+            @foreach(request()->except('per_page','page') as $key => $value)
+                <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+            @endforeach
 
-                -
+            <span>Tampilkan</span>
 
-                <strong>{{ $news->lastItem() ?? 0 }}</strong>
+            <select name="per_page" onchange="this.form.submit()">
 
-                dari
+                <option value="5" {{ request('per_page',5)==5 ? 'selected' : '' }}>5</option>
 
-                <strong>{{ $news->total() }}</strong>
+                <option value="10" {{ request('per_page')==10 ? 'selected' : '' }}>10</option>
 
-                data
+                <option value="20" {{ request('per_page')==20 ? 'selected' : '' }}>20</option>
 
-            </div>
+                <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>50</option>
 
-            <div class="pagination-page">
+            </select>
 
-                {{-- Previous --}}
-                @if($news->onFirstPage())
+            <span>berita</span>
 
-                    <button class="page-btn" disabled>
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
+        </form>
 
-                @else
+    </div>
 
-                    <a href="{{ $news->previousPageUrl() }}" class="page-btn">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </a>
+    {{-- Info --}}
+    <div class="pagination-center">
 
-                @endif
+        <span>Menampilkan</span>
 
-                <span>
+        <strong>{{ $news->firstItem() ?? 0 }}</strong>
 
-                    Halaman
+        <span>-</span>
 
-                    {{ $news->currentPage() }}
+        <strong>{{ $news->lastItem() ?? 0 }}</strong>
 
-                    dari
+        <span>dari</span>
 
-                    {{ $news->lastPage() }}
+        <strong>{{ $news->total() }}</strong>
 
+        <span>data</span>
+
+    </div>
+
+    {{-- Pagination --}}
+    <div class="pagination-right">
+
+        @if ($news->onFirstPage())
+            <button class="page-btn" disabled>
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+        @else
+            <a href="{{ $news->previousPageUrl() }}" class="page-btn">
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
+        @endif
+
+        @foreach ($news->getUrlRange(1,$news->lastPage()) as $page => $url)
+
+            @if ($page == $news->currentPage())
+
+                <span class="page-number active">
+                    {{ $page }}
                 </span>
 
-                {{-- Next --}}
-                @if($news->hasMorePages())
+            @else
 
-                    <a href="{{ $news->nextPageUrl() }}" class="page-btn">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </a>
+                <a href="{{ $url }}" class="page-number">
+                    {{ $page }}
+                </a>
 
-                @else
+            @endif
 
-                    <button class="page-btn" disabled>
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
+        @endforeach
 
-                @endif
+        @if ($news->hasMorePages())
+            <a href="{{ $news->nextPageUrl() }}" class="page-btn">
+                <i class="fa-solid fa-chevron-right"></i>
+            </a>
+        @else
+            <button class="page-btn" disabled>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        @endif
 
-            </div>
+    </div>
 
-        </div>
+</div>
 
     <script>
         const modal = document.getElementById("beritaModal");

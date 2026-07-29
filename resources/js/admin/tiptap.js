@@ -86,7 +86,7 @@ function initTiptap() {
                     types: ["heading", "paragraph"],
                 }),
             ],
-            
+
             editorProps: {
                 attributes: {
                     class: "ProseMirror",
@@ -320,7 +320,7 @@ async function handleImageFile(file, wrapper, editor) {
 |--------------------------------------------------------------------------
 */
 
-document.addEventListener("click", (e) => {
+document.addEventListener("click", async (e) => {
     const button = e.target.closest("[data-action]");
 
     if (!button) {
@@ -419,17 +419,36 @@ document.addEventListener("click", (e) => {
             break;
 
         case "link": {
+
             const previousUrl = editor.getAttributes("link").href || "";
 
-            const url = window.prompt("Masukkan URL", previousUrl);
+            const result = await Swal.fire({
+                title: "Tambah Link",
+                input: "url",
+                inputLabel: "Masukkan URL",
+                inputValue: previousUrl,
+                inputPlaceholder: "https://contoh.com",
+                showCancelButton: true,
+                showDenyButton: true,
+                confirmButtonText: "Simpan",
+                denyButtonText: "Hapus Link",
+                cancelButtonText: "Batal",
+                confirmButtonColor: "#2563eb",
+                denyButtonColor: "#ef4444",
+                cancelButtonColor: "#6b7280",
+                inputValidator: (value) => {
+                    if (!value) {
+                        return "URL tidak boleh kosong";
+                    }
+                }
+            });
 
-            if (url === null) {
+            if (result.isDismissed) {
                 break;
             }
 
-            if (url.trim() === "") {
+            if (result.isDenied) {
                 editor.chain().focus().unsetLink().run();
-
                 break;
             }
 
@@ -438,7 +457,8 @@ document.addEventListener("click", (e) => {
                 .focus()
                 .extendMarkRange("link")
                 .setLink({
-                    href: url,
+                    href: result.value,
+                    target: "_blank",
                 })
                 .run();
 
