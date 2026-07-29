@@ -17,6 +17,22 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
         <h1>Tambah Portfolio</h1>
 
+        <!-- ================= BREADCRUMB ================= -->
+
+            <div class="page-breadcrumb">
+
+                <a href="{{ route('admin.portfolios.index') }}">
+
+                    Portofolio
+
+                </a>
+
+                <span>></span>
+
+                <span>Tambah Portofolio</span>
+
+            </div>
+
 
         <form action="{{ route('admin.portfolios.store') }}" method="POST" enctype="multipart/form-data">
 
@@ -25,7 +41,7 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
             <div class="mb-3">
 
-                <label>Kategori</label>
+                <label>Kategori <span class="required">*</span></label>
 
                 <select name="category_id" class="form-control">
 
@@ -41,10 +57,9 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
 
 
-
             <div class="mb-3">
 
-                <label>Mitra</label>
+                <label>Mitra <span class="required">*</span></label>
 
                 <select name="partner_id" class="form-control">
 
@@ -70,7 +85,7 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
             <div class="mb-3">
 
-                <label>Judul</label>
+                <label>Judul <span class="required">*</span></label>
 
                 <input type="text" name="title" class="form-control">
 
@@ -104,7 +119,9 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
             <div class="mb-3">
 
-                <label>Tanggal Kegiatan</label>
+                <label>Tanggal Kegiatan
+                    <span class="required">*</span>
+                </label>
 
                 <input type="date" name="activity_date" class="form-control">
 
@@ -115,7 +132,9 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
             <div class="mb-3">
 
-    <label class="form-label">Lokasi</label>
+    <label class="form-label">Lokasi
+        <span class="required">*</span>
+    </label>
 
     <input
         type="text"
@@ -164,7 +183,9 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
             <div class="mb-3">
 
-                <label>Foto Portfolio</label>
+                <label>Foto Portfolio
+                    <span class="required">*</span>
+                </label>
 
 
                 <div id="imageContainer">

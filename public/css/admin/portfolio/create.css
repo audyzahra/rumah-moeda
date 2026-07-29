@@ -2,27 +2,32 @@
    CREATE PORTFOLIO PAGE
 ================================ */
 
-.content {
-    padding: 30px;
-}
+
 
 /* Header */
 
 .content h1 {
-    font-size: 28px;
-    font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 8px;
+     font-size: calc(1.375rem + 1.5vw);
+
 }
 
-.content h1::after {
-    content: "";
-    display: block;
-    width: 55px;
-    height: 4px;
-    background: #2563eb;
-    border-radius: 10px;
-    margin-top: 10px;
+/* BREADCRUMB*/
+.page-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 24px;
+    font-size: 14px;
+}
+
+.page-breadcrumb a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.page-breadcrumb span:last-child {
+    color: #6b7280;
 }
 
 /* Form Container */

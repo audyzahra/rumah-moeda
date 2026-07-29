@@ -4,234 +4,209 @@
 
 @section('content')
 
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/admin/galeri.css') }}">
-@endpush
+    @push('styles')
+        <link rel="stylesheet" href="{{ asset('css/admin/galeri.css') }}">
+    @endpush
 
-<div class="content">
+    <div class="content">
 
-    <header class="topbar">
+        <header class="topbar">
 
-        <div>
+            <div>
 
-            <h1>Edit Galeri</h1>
+                <h1>Edit Galeri</h1>
 
-            <p>Ubah dokumentasi kegiatan</p>
-
-        </div>
-
-    </header>
-     <!-- ================= BREADCRUMB ================= -->
-
-            <div class="page-breadcrumb">
-
-                <a href="{{ route('admin.gallery.index') }}">
-
-                    Galeri
-
-                </a>
-
-                <span>></span>
-
-                <span>Edit Galeri</span>
+                <p>Ubah dokumentasi kegiatan</p>
 
             </div>
 
-    <div class="gallery-container">
+        </header>
+        <!-- ================= BREADCRUMB ================= -->
 
-        <div class="form-card">
+        <div class="page-breadcrumb">
 
-            <form
-                action="{{ route('admin.gallery.update', $gallery->id) }}"
-                method="POST"
-                enctype="multipart/form-data">
+            <a href="{{ route('admin.gallery.index') }}">
 
-                @csrf
-                @method('PUT')
+                Galeri
 
-                <div class="form-group">
-                    <label>Judul</label>
-                    <input
-                        type="text"
-                        name="title"
-                        class="form-control"
-                        value="{{ old('title', $gallery->title) }}"
-                        required>
-                </div>
+            </a>
 
-                <div class="form-group">
-                    <label>Tanggal Kegiatan</label>
-                    <input
-                        type="date"
-                        name="activity_date"
-                        class="form-control"
-                        value="{{ old('activity_date', $gallery->activity_date) }}"
-                        required>
-                </div>
+            <span>></span>
 
-                <div class="form-group">
+            <span>Edit Galeri</span>
 
-                    <label>
-                        Deskripsi
-                        <span class="required">*</span>
-                    </label>
+        </div>
 
-                    <x-tiptap
-                        name="description"
-                        :value="old('description', $gallery->description)"
-                        placeholder="Masukkan deskripsi kegiatan..."
-                        :image="false" />
+        <div class="gallery-container">
 
-                    @error('description')
-                    <small class="text-danger">
-                        {{ $message }}
-                    </small>
-                    @enderror
+            <div class="form-card">
 
-                </div>
+                <form action="{{ route('admin.gallery.update', $gallery->id) }}" method="POST" enctype="multipart/form-data">
 
-                {{-- Media yang sudah ada --}}
-                <div class="form-group">
-                    <label>Media Saat Ini</label>
+                    @csrf
+                    @method('PUT')
+                    <div id="deleted-media-container"></div>
 
-                    <div id="existingMedia">
+                    <div class="form-group">
+                        <label>Judul</label>
+                        <input type="text" name="title" class="form-control"
+                            value="{{ old('title', $gallery->title) }}" required>
+                    </div>
 
-                        @forelse($gallery->media as $media)
+                    <div class="form-group">
+                        <label>Tanggal Kegiatan</label>
+                        <input type="date" name="activity_date" class="form-control"
+                            value="{{ old('activity_date', $gallery->activity_date) }}" required>
+                    </div>
 
-                        <div class="media-item">
+                    <div class="form-group">
 
-                            @if($media->type == 'image')
+                        <label>
+                            Deskripsi
+                            <span class="required">*</span>
+                        </label>
 
-                            <img
-                                src="{{ asset('storage/'.$media->file_path) }}"
-                                class="media-preview">
+                        <x-tiptap name="description" :value="old('description', $gallery->description)" placeholder="Masukkan deskripsi kegiatan..."
+                            :image="false" />
 
-                            @else
-
-                            <iframe
-                                width="200"
-                                height="120"
-                                src="https://www.youtube.com/embed/{{ $media->youtube_id }}"
-                                frameborder="0"
-                                allowfullscreen>
-                            </iframe>
-
-                            @endif
-
-
-                            <button
-                                type="button"
-                                class="btn-delete-media"
-                                data-id="{{ $media->id }}"
-                                onclick="deleteMedia(this.dataset.id, this)">
-
-                                <i class="fa-solid fa-trash"></i>
-                                Hapus
-
-                            </button>
-
-                        </div>
-
-                        @empty
-
-                        <p class="text-muted">
-                            Belum ada media.
-                        </p>
-
-                        @endforelse
+                        @error('description')
+                            <small class="text-danger">
+                                {{ $message }}
+                            </small>
+                        @enderror
 
                     </div>
 
-                </div>
+                    {{-- Media yang sudah ada --}}
+                    <div class="form-group">
+                        <label>Media Saat Ini</label>
 
-                <div id="edit-photo-container">
+                        <div id="existingMedia">
 
-    <div class="form-group photo-item">
+                            @forelse($gallery->media as $media)
+                                <div class="media-item">
 
-        <label>Tambah Foto</label>
-
-        <div class="input-with-action">
-
-            <input
-                type="file"
-                name="images[]"
-                class="form-control"
-                accept=".jpg,.jpeg,.png,.webp">
-
-        </div>
-
-        <small class="text-muted">
-            Format: JPG, JPEG, PNG, WEBP. Maksimal 2 MB per file.
-        </small>
-
-    </div>
-
-</div>
-
-                <button
-                    type="button"
-                    id="btn-edit-add-photo"
-                    class="btn btn-secondary">
-
-                    + Tambah Foto
-
-                </button>
-
-                <div id="edit-video-container">
-
-    <div class="form-group video-item">
-
-        <label>Tambah Video YouTube</label>
-
-        <div class="input-with-action">
-
-            <input
-                type="url"
-                name="videos[]"
-                class="form-control"
-                placeholder="https://www.youtube.com/watch?v=xxxx">
-
-        </div>
-
-    </div>
-
-</div>
-
-                <button
-                    type="button"
-                    id="btn-edit-add-video"
-                    class="btn btn-secondary">
-
-                    + Tambah Link Video
-
-                </button>
+                                    @if ($media->type == 'image')
+                                        <img src="{{ asset('storage/' . $media->file_path) }}" class="media-preview">
+                                    @else
+                                        <iframe width="200" height="120"
+                                            src="https://www.youtube.com/embed/{{ $media->youtube_id }}" frameborder="0"
+                                            allowfullscreen>
+                                        </iframe>
+                                    @endif
 
 
-                <div class="modal-footer">
+                                    <button type="button" class="btn-delete-media" data-id="{{ $media->id }}"
+                                        onclick="deleteMedia(this.dataset.id, this)">
 
-                    <a href="{{ route('admin.gallery.index') }}"
-                        class="btn-batal">
-                        <i class="fa-solid fa-xmark"></i>
-                        Batal
+                                        <i class="fa-solid fa-trash"></i>
+                                        Hapus
 
-                    </a>
+                                    </button>
 
-                    <button type="submit" class="btn-simpan">
-                        <i class="fa-solid fa-floppy-disk"></i>
-                        Update Galeri
+                                </div>
+
+                            @empty
+
+                                <p class="text-muted">
+                                    Belum ada media.
+                                </p>
+                            @endforelse
+
+                        </div>
+
+                    </div>
+
+                    <div id="edit-photo-container">
+
+                        <div class="form-group photo-item">
+
+                            <label>
+                                Tambah Foto
+                            </label>
+
+                            <div class="input-with-action">
+
+                                <input type="file" name="images[]"
+                                    class="form-control @error('images') is-invalid @enderror"
+                                    accept=".jpg,.jpeg,.png,.webp">
+                            </div>
+                            @error('images')
+                                <small class="text-danger">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+
+                            <small class="text-muted">
+                                Format: JPG, JPEG, PNG, WEBP. Maksimal 2 MB per file.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <button type="button" id="btn-edit-add-photo" class="btn btn-secondary">
+
+                        + Tambah Foto
+
                     </button>
-                </div>
 
-            </form>
+                    <div id="edit-video-container">
+
+                        <div class="form-group video-item">
+
+                            <label>
+                                Tambah Video YouTube
+                                <span class="text-muted">(Opsional)</span>
+                            </label>
+
+                            <div class="input-with-action">
+
+                                <input type="url" name="videos[]" class="form-control"
+                                    placeholder="https://www.youtube.com/watch?v=xxxx">
+
+                            </div>
+                            @error('videos.*')
+                                <small class="text-danger">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+
+                        </div>
+
+                    </div>
+
+                    <button type="button" id="btn-edit-add-video" class="btn btn-secondary">
+
+                        + Tambah Link Video
+
+                    </button>
+
+
+                    <div class="modal-footer">
+
+                        <a href="{{ route('admin.gallery.index') }}" class="btn-batal">
+                            <i class="fa-solid fa-xmark"></i>
+                            Batal
+
+                        </a>
+
+                        <button type="submit" class="btn-simpan">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            Update Galeri
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
 
         </div>
 
     </div>
-
-</div>
 
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/admin/galeri.js') }}"></script>
+    <script src="{{ asset('js/admin/galeri.js') }}"></script>
 @endpush

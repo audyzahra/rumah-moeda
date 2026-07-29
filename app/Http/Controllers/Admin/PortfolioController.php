@@ -120,7 +120,7 @@ class PortfolioController extends Controller
 
 
 
-        $portfolios = $query->paginate(10)
+        $portfolios = $query->paginate(5)
             ->withQueryString();
 
 
@@ -200,8 +200,6 @@ class PortfolioController extends Controller
             'location' => $request->location,
 
             'participants' => $request->participants ?? 0,
-
-            'location'  => $request->location,
 
             'latitude'  => $request->latitude,
 
@@ -352,8 +350,6 @@ class PortfolioController extends Controller
             'location' => $request->location,
 
             'participants' => $request->participants ?? 0,
-
-            'location'  => $request->location,
 
             'latitude'  => $request->latitude,
 
