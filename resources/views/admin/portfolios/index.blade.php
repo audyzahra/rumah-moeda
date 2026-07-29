@@ -77,148 +77,151 @@
 
         <div class="card">
 
+            <div class="table-responsive">
 
-            <table class="table">
+                <table class="table">
 
-                <thead>
+                    <thead>
 
-                    <tr>
+                        <tr>
 
-                        <th>No</th>
-                        <th>Judul</th>
-                        <th>Kategori</th>
-                        <th>Mitra</th>
-                        <th>Media</th>
-                        <th>Author</th>
-                        <th>Deskripsi</th>
-                        <th>Tanggal</th>
-                        <th>Aksi</th>
+                            <th>No</th>
+                            <th>Judul</th>
+                            <th>Kategori</th>
+                            <th>Mitra</th>
+                            <th>Media</th>
+                            <th>Author</th>
+                            <th>Deskripsi</th>
+                            <th>Tanggal</th>
+                            <th>Aksi</th>
 
-                    </tr>
+                        </tr>
 
-                </thead>
-
-
-                <tbody id="portfolioTable">
-
-                    @if ($portfolios->count())
-                        @foreach ($portfolios as $portfolio)
-                            <tr data-title="{{ strtolower($portfolio->title) }}"
-                                data-category="{{ strtolower($portfolio->category->name ?? '') }}"
-                                data-partner="{{ strtolower($portfolio->partner->name ?? '') }}"
-                                data-author="{{ strtolower($portfolio->author->name ?? '') }}">
-
-                                <td>{{ $loop->iteration }}</td>
-
-                                <td>
-                                    {{ $portfolio->title }}
-                                </td>
+                    </thead>
 
 
-                                <td>
-                                    {{ $portfolio->category->name ?? '-' }}
-                                </td>
+                    <tbody id="portfolioTable">
+
+                        @if ($portfolios->count())
+                            @foreach ($portfolios as $portfolio)
+                                <tr data-title="{{ strtolower($portfolio->title) }}"
+                                    data-category="{{ strtolower($portfolio->category->name ?? '') }}"
+                                    data-partner="{{ strtolower($portfolio->partner->name ?? '') }}"
+                                    data-author="{{ strtolower($portfolio->author->name ?? '') }}">
+
+                                    <td>{{ $loop->iteration }}</td>
+
+                                    <td>
+                                        {{ $portfolio->title }}
+                                    </td>
 
 
-                                <td>
-                                    {{ $portfolio->partner->name ?? '-' }}
-                                </td>
-
-                                <td>
-
-                                    @if ($portfolio->media->count())
-                                        <span class="badge bg-success">
-                                            {{ $portfolio->media->count() }} Media
-                                        </span>
-                                    @else
-                                        <span class="badge bg-secondary">
-                                            Tidak Ada
-                                        </span>
-                                    @endif
-
-                                </td>
-
-                                <td>
-                                    {{ $portfolio->author->name ?? '-' }}
-                                </td>
-
-                                <td>
-                                    {!! Str::limit(strip_tags($portfolio->description), 80) !!}
-                                </td>
+                                    <td>
+                                        {{ $portfolio->category->name ?? '-' }}
+                                    </td>
 
 
-                                <td>
-                                    {{ date('d M Y', strtotime($portfolio->activity_date)) }}
-                                </td>
+                                    <td>
+                                        {{ $portfolio->partner->name ?? '-' }}
+                                    </td>
+
+                                    <td>
+
+                                        @if ($portfolio->media->count())
+                                            <span class="badge bg-success">
+                                                {{ $portfolio->media->count() }} Media
+                                            </span>
+                                        @else
+                                            <span class="badge bg-secondary">
+                                                Tidak Ada
+                                            </span>
+                                        @endif
+
+                                    </td>
+
+                                    <td>
+                                        {{ $portfolio->author->name ?? '-' }}
+                                    </td>
+
+                                    <td>
+                                        {!! Str::limit(strip_tags($portfolio->description), 80) !!}
+                                    </td>
 
 
-                                <td>
+                                    <td>
+                                        {{ date('d M Y', strtotime($portfolio->activity_date)) }}
+                                    </td>
 
 
-                                    <button class="btn btn-info btn-sm btn-detail" data-bs-toggle="modal"
-                                        data-bs-target="#detailPortfolioModal" data-title="{{ $portfolio->title }}"
-                                        data-category="{{ $portfolio->category->name ?? '-' }}"
-                                        data-partner="{{ $portfolio->partner->name ?? '-' }}"
-                                        data-date="{{ date('d M Y', strtotime($portfolio->activity_date)) }}"
-                                        data-location="{{ $portfolio->location ?? '-' }}"
-                                        data-lat="{{ $portfolio->latitude }}" data-lng="{{ $portfolio->longitude }}"
-                                        data-participants="{{ $portfolio->participants ?? 0 }}"
-                                        data-author="{{ $portfolio->author->name ?? '-' }}"
-                                        data-description='@json($portfolio->description)'
-                                        data-media='@json($portfolio->media)'>
-
-                                        <i class="fa fa-eye"></i>
-
-                                    </button>
+                                    <td>
 
 
+                                        <button class="btn btn-info btn-sm btn-detail" data-bs-toggle="modal"
+                                            data-bs-target="#detailPortfolioModal" data-title="{{ $portfolio->title }}"
+                                            data-category="{{ $portfolio->category->name ?? '-' }}"
+                                            data-partner="{{ $portfolio->partner->name ?? '-' }}"
+                                            data-date="{{ date('d M Y', strtotime($portfolio->activity_date)) }}"
+                                            data-location="{{ $portfolio->location ?? '-' }}"
+                                            data-lat="{{ $portfolio->latitude }}" data-lng="{{ $portfolio->longitude }}"
+                                            data-participants="{{ $portfolio->participants ?? 0 }}"
+                                            data-author="{{ $portfolio->author->name ?? '-' }}"
+                                            data-description='@json($portfolio->description)'
+                                            data-media='@json($portfolio->media)'>
 
-                                    <a href="{{ route('admin.portfolios.edit', $portfolio->id) }}"
-                                        class="btn btn-warning btn-sm">
-
-                                        <i class="fa fa-edit"></i>
-
-                                    </a>
-
-
-
-                                    <form action="{{ route('admin.portfolios.destroy', $portfolio->id) }}" method="POST"
-                                        class="d-inline delete-form">
-
-                                        @csrf
-                                        @method('DELETE')
-
-
-                                        <button class="btn btn-danger btn-sm">
-
-                                            <i class="fa fa-trash"></i>
+                                            <i class="fa fa-eye"></i>
 
                                         </button>
 
 
-                                    </form>
 
+                                        <a href="{{ route('admin.portfolios.edit', $portfolio->id) }}"
+                                            class="btn btn-warning btn-sm">
+
+                                            <i class="fa fa-edit"></i>
+
+                                        </a>
+
+
+
+                                        <form action="{{ route('admin.portfolios.destroy', $portfolio->id) }}"
+                                            method="POST" class="d-inline delete-form">
+
+                                            @csrf
+                                            @method('DELETE')
+
+
+                                            <button class="btn btn-danger btn-sm">
+
+                                                <i class="fa fa-trash"></i>
+
+                                            </button>
+
+
+                                        </form>
+
+
+                                    </td>
+
+
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="9" class="text-center py-4">
+
+                                    Data portfolio tidak ditemukan
 
                                 </td>
-
-
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="9" class="text-center py-4">
-
-                                Data portfolio tidak ditemukan
-
-                            </td>
-                        </tr>
-                    @endif
+                        @endif
 
 
-                </tbody>
+                    </tbody>
 
 
-            </table>
+                </table>
+
+            </div>
 
 
         </div>

@@ -1,197 +1,495 @@
-/* =========================================
-   PORTFOLIO INDEX PAGE
-========================================= */
+/* =====================================
+   PORTFOLIO ADMIN PAGE
+===================================== */
 
-/* Header */
+.content {
+    padding: 25px;
+}
+
+
+/* =====================================
+   HEADER
+===================================== */
 
 .content h1 {
+
     font-size: 28px;
     font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 6px;
+
+    color: #333;
+
+    margin-bottom: 5px;
+
+    padding: 0;
+
 }
+
 
 .content p {
-    color: #6b7280;
+
+    color: #777;
+
     margin-bottom: 0;
+
 }
 
-/* Add Button */
+
+
+/* Button Tambah */
 
 .btn-primary {
-    border-radius: 10px;
-    padding: 10px 18px;
-    font-weight: 500;
-}
 
-/* Card */
+    background-color: #4f46e5; /* Indigo */
 
-.card {
-    background: #fff;
-    border: none;
-    border-radius: 16px;
+    border-color: #4f46e5;
 
-    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
-
-    overflow: hidden;
-}
-
-/* Table */
-
-.table {
-    margin-bottom: 0;
-}
-
-.table thead th {
-    background: #f8fafc;
-
-    color: #374151;
-
-    font-size: 14px;
+    color: white;
 
     font-weight: 600;
 
-    padding: 15px;
+    padding: 10px 18px;
 
-    border-bottom: 1px solid #e5e7eb;
+    border-radius: 10px;
+
+    transition: .3s;
+
 }
 
+
+.btn-primary:hover {
+
+    background-color: #4338ca;
+
+    border-color: #4338ca;
+
+    color: white;
+
+}
+
+
+
+/* =====================================
+   FILTER SECTION
+===================================== */
+
+#portfolioFilter {
+    background: white;
+    padding: 18px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.05);
+}
+
+
+#portfolioFilter input,
+#portfolioFilter select {
+
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+
+}
+
+
+#portfolioFilter input:focus,
+#portfolioFilter select:focus {
+
+    border-color: #f8c3c7;
+    box-shadow: 0 0 0 .2rem rgba(248,195,199,.25);
+
+}
+
+
+/* Reset */
+
+.btn-secondary {
+
+    border-radius: 10px;
+    padding: 10px 20px;
+
+}
+
+
+
+/* =====================================
+   TABLE CARD
+===================================== */
+
+.card {
+
+    border: none;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0 5px 20px rgba(0,0,0,.06);
+
+    overflow: visible !important;
+
+    position: relative;
+    z-index: 1;
+
+}
+
+
+.table {
+
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+
+}
+
+
+
+/* HEADER TABEL */
+
+.table thead {
+    display: table-header-group !important;
+    position: relative;
+    z-index: 5;
+}
+
+
+.table thead th {
+
+    background-color: #343a40 !important;
+
+    color: white !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+}
+
+
+/* sudut header */
+
+.table thead tr th:first-child {
+
+    border-top-left-radius: 15px;
+
+}
+
+
+.table thead tr th:last-child {
+
+    border-top-right-radius: 15px;
+
+}
+
+
+
+/* BODY */
+
 .table tbody td {
+
     padding: 15px;
+
+    font-size: 14px;
+
+    color: #555;
+
+    text-align: justify;
 
     vertical-align: middle;
 
-    color: #4b5563;
+    border: none;
 
-    font-size: 14px;
 }
 
-.table tbody tr {
-    transition: 0.2s;
+
+
+
+/* =====================================
+   BADGE MEDIA
+===================================== */
+
+
+.badge {
+
+    padding: 7px 12px;
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: 600;
+
 }
 
-.table tbody tr:hover {
-    background: #f9fafb;
+
+/* Media tersedia */
+
+.bg-success {
+
+    background-color: #0dcaf0 !important;
+    color: white;
+
 }
 
-/* Description */
 
-.table td:nth-child(5) {
-    max-width: 300px;
+/* Tidak ada media */
 
-    color: #6b7280;
+.bg-secondary {
 
-    line-height: 1.5;
+    background-color: #adb5bd !important;
+    color: white;
+
 }
 
-/* Action Button */
 
-.table .btn-sm {
-    width: 34px;
+/* =====================================
+   ACTION BUTTON
+===================================== */
 
+.table td:last-child {
+
+    white-space: nowrap;
+
+}
+
+.table .btn {
+
+    width: auto;
+    min-width: 38px;
     height: 34px;
 
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
+    padding: 6px 10px;
 
     border-radius: 8px;
 
-    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 5px;
+
 }
 
-.table .btn-info {
-    background: #0dcaf0;
 
-    border: none;
+/* Detail */
+
+.btn-info {
+
+    background-color: #4dabf7;
+    border-color: #4dabf7;
+    color: white;
+
 }
 
-.table .btn-warning {
-    background: #ffc107;
 
-    border: none;
+.btn-info:hover {
+
+    background-color: #339af0;
+    color:white;
+
 }
 
-.table .btn-danger {
-    background: #dc3545;
 
-    border: none;
+
+/* Edit */
+
+.btn-warning {
+
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #333;
+
 }
 
-/* Modal */
+
+.btn-warning:hover {
+
+    background-color: #e0a800;
+
+}
+
+
+
+/* Delete */
+
+.btn-danger {
+
+    background-color: #dc3545;
+    border-color: #dc3545;
+
+}
+
+
+.btn-danger:hover {
+
+    background-color: #bb2d3b;
+
+}
+
+
+
+
+
+/* =====================================
+   MODAL DETAIL
+===================================== */
+
 
 .modal-content {
+
+    border-radius: 18px;
     border: none;
-
-    border-radius: 16px;
-
     overflow: hidden;
+
 }
+
 
 .modal-header {
-    padding: 18px 24px;
 
-    border-bottom: 1px solid #e5e7eb;
+    background: #f8c3c7;
+    border-bottom: none;
+
 }
+
 
 .modal-title {
-    font-weight: 700;
 
-    color: #1f2937;
+    font-weight: 700;
+    color: #333;
+
 }
+
+
 
 .modal-body {
-    padding: 24px;
+
+    padding: 25px;
+
 }
+
+
 
 .modal-body label {
-    color: #374151;
 
+    color: #555;
     font-size: 14px;
+
 }
+
+
 
 .modal-body p {
-    color: #4b5563;
 
     margin-top: 5px;
+    color: #333;
+
 }
 
-/* Detail Description */
+
+
+/* Map */
+
+#detail-map {
+
+    margin-top: 15px;
+    overflow: hidden;
+
+}
+
+
+
+/* Google Maps Button */
+
+#googleMapsButton {
+
+    background-color: #f8c3c7;
+    border-color: #f8c3c7;
+    color: #333;
+    border-radius: 10px;
+    font-weight: 600;
+
+}
+
+
+#googleMapsButton:hover {
+
+    background-color: #f39ca5;
+    color: white;
+
+}
+
+
+
+/* Description */
 
 #detailDescription {
+
     min-height: 120px;
-
-    background: #f8fafc !important;
-
-    color: #374151;
-
+    background: #fafafa !important;
     line-height: 1.7;
+
 }
 
-/* Modal Footer */
 
-.modal-footer {
-    padding: 15px 24px;
 
-    border-top: 1px solid #e5e7eb;
+/* =====================================
+   MEDIA DETAIL
+===================================== */
+
+
+#detailMedia img,
+#detailMedia video {
+
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+
 }
 
-/* Responsive */
 
-@media (max-width: 768px) {
+#detailMedia .media-item {
+
+    border-radius: 12px;
+    overflow: hidden;
+
+}
+
+
+
+/* =====================================
+   EMPTY DATA
+===================================== */
+
+
+.text-center.py-4 {
+
+    color: #999;
+    font-size: 15px;
+
+}
+
+
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media(max-width:768px){
+
+    .content {
+
+        padding:15px;
+
+    }
+
+
+    .table-responsive {
+
+        overflow-x:auto;
+
+        -webkit-overflow-scrolling: touch;
+
+    }
+
+
     .table {
-        font-size: 13px;
+
+        min-width: 1100px;
+
     }
 
-    .content .d-flex {
-        flex-direction: column;
-
-        gap: 15px;
-    }
-
-    .btn-primary {
-        width: 100%;
-    }
 }
