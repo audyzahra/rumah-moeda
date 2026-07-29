@@ -142,18 +142,16 @@
 
 }
 
-.galeri-card {
+.galeri-card{
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    transition:.3s;
 
-    background: #fff;
-
-    border-radius: 18px;
-
-    overflow: hidden;
-
-    box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
-
-    transition: .3s;
-
+    display:flex;
+    flex-direction:column;
+    height:100%;
 }
 
 .galeri-card:hover {
@@ -171,10 +169,12 @@
 
 }
 
-.galeri-info {
+.galeri-info{
+    padding:20px;
 
-    padding: 20px;
-
+    display:flex;
+    flex-direction:column;
+    flex:1;
 }
 
 .galeri-info h3 {
@@ -190,6 +190,7 @@
     color: #777;
 
     font-size: 14px;
+    margin-top:auto;
 
 }
 
@@ -325,6 +326,7 @@
     /* maksimal 2 baris */
     -webkit-box-orient: vertical;
     word-break: break-word;
+    flex:1;
 }
 
 /* ==========================

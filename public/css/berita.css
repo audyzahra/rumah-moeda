@@ -800,82 +800,197 @@ body{
 
 }
 
-/* ===========================
-   Pagination
-=========================== */
+/* ==========================================
+   PAGINATION
+========================================== */
 
 .custom-pagination{
-    margin-top:20px;
-    padding:18px 22px;
-    border-top:1px solid #e5e7eb;
+    max-width: 1200px;
+    margin: 50px auto 0;
+    padding: 24px 4% 0;
 
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:20px;
-    flex-wrap:wrap;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 24px;
+
+    border-top: 1px solid #e5e7eb;
+
+    box-sizing: border-box;
 }
 
-.pagination-info{
-    font-size:14px;
-    color:#64748b;
-    line-height:1.5;
-}
+/* LEFT */
 
-.pagination-info strong{
-    color:#1f2937;
-    font-weight:700;
-}
-
-.pagination-page{
+.pagination-left form{
     display:flex;
     align-items:center;
-    gap:14px;
-}
-
-.pagination-page span{
-    font-size:14px;
-    font-weight:600;
-    color:#374151;
+    gap:12px;
     white-space:nowrap;
 }
 
-.page-btn{
-    width:38px;
-    height:38px;
+.pagination-left span{
+    font-size:16px;
+    color:#666;
+}
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+.pagination-left select{
+    width:72px;
+    height:44px;
+    padding:0 10px;
 
-    border:1px solid #d1d5db;
-    border-radius:10px;
+    border:1px solid #d8d8d8;
+    border-radius:12px;
 
     background:#fff;
-    color:#475569;
+
+    font-size:15px;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.pagination-left select:hover,
+.pagination-left select:focus{
+    border-color:#D4AF37;
+    outline:none;
+}
+
+/* CENTER */
+
+.pagination-center{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+    font-size:16px;
+    color:#666;
+}
+.pagination-center span{
+    display:inline-block;
+}
+
+.pagination-center strong{
+    display:inline-block;
+    font-weight:700;
+    color:#222;
+}
+
+.pagination-center strong{
+    font-weight:700;
+    color:#222;
+}
+
+/* RIGHT */
+
+.pagination-right{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:10px;
+}
+
+/* BUTTON */
+
+.page-btn,
+.page-number{
+
+    width:44px;
+    height:44px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
     text-decoration:none;
 
-    transition:all .25s ease;
+    border:1px solid #ddd;
+    border-radius:12px;
+
+    background:#fff;
+    color:#666;
+
+    transition:.25s;
 }
 
-.page-btn:hover:not(:disabled){
-    background:#cda036;
-    border-color:#cda036;
+.page-btn:hover:not(:disabled),
+.page-number:hover{
+
+    background:#D4AF37;
+    border-color:#D4AF37;
     color:#fff;
-    transform:translateY(-2px);
+
 }
 
-.page-btn:active:not(:disabled){
-    transform:scale(.95);
+.page-number.active{
+
+    background:#D4AF37;
+    border-color:#D4AF37;
+    color:#fff;
+    font-weight:600;
+
 }
 
 .page-btn:disabled{
+
     opacity:.45;
     cursor:not-allowed;
-    pointer-events:none;
+
 }
 
-.page-btn i{
-    pointer-events:none;
+/* RESPONSIVE */
+
+@media (max-width:768px){
+
+    .custom-pagination{
+
+        grid-template-columns:1fr;
+        gap:18px;
+
+        text-align:center;
+
+    }
+
+    .pagination-left form,
+    .pagination-center,
+    .pagination-right{
+
+        justify-content:center;
+
+    }
+
+}
+/* ==========================================
+   DARK MODE - PAGINATION
+========================================== */
+
+[data-theme="dark"] .pagination-left span,
+[data-theme="dark"] .pagination-center,
+[data-theme="dark"] .pagination-center span,
+[data-theme="dark"] .pagination-center strong{
+    color:#ffffff;
 }
 
+[data-theme="dark"] .pagination-left form{
+    color:#ffffff;
+}
+
+[data-theme="dark"] .pagination-left select{
+    background:#ffffff;
+    color:#111827;
+}
+/* ==========================================
+   DARK MODE - BORDER CARD GALERI
+========================================== */
+
+[data-theme="dark"] .galeri-card{
+    background:#242424;
+    border:1.5px solid #cda036;
+    box-shadow:0 10px 30px rgba(205,160,54,.18);
+}
+
+[data-theme="dark"] .galeri-card:hover{
+    border-color:#e3b84c;
+    box-shadow:0 16px 40px rgba(205,160,54,.35);
+}
