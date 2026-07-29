@@ -61,30 +61,38 @@ function initScrollAnimation() {
 
 function initGalleryLightbox() {
 
-    const images = document.querySelectorAll(".gallery-grid img");
+    const items = document.querySelectorAll(".gallery-item");
 
-    if (!images.length) return;
+    if (!items.length) return;
 
     const overlay = document.createElement("div");
 
-    overlay.className = "portfolio-lightbox";
+    overlay.className = "gallery-lightbox";
 
     overlay.innerHTML = `
-        <span class="lightbox-close">&times;</span>
+        <button class="gallery-close" type="button">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
         <img class="lightbox-image" src="" alt="">
     `;
 
     document.body.appendChild(overlay);
 
     const lightboxImage = overlay.querySelector(".lightbox-image");
+    const closeButton = overlay.querySelector(".gallery-close");
 
-    const closeButton = overlay.querySelector(".lightbox-close");
+    items.forEach(item => {
 
-    images.forEach(image => {
+        item.addEventListener("click", function (e) {
 
-        image.addEventListener("click", () => {
+            e.preventDefault(); // supaya tidak membuka file jpg
 
-            lightboxImage.src = image.src;
+            const img = item.querySelector("img");
+
+            if (!img) return;
+
+            lightboxImage.src = img.src;
 
             overlay.classList.add("active");
 
@@ -104,9 +112,9 @@ function initGalleryLightbox() {
 
     closeButton.addEventListener("click", closeLightbox);
 
-    overlay.addEventListener("click", (event) => {
+    overlay.addEventListener("click", function (e) {
 
-        if (event.target === overlay) {
+        if (e.target === overlay) {
 
             closeLightbox();
 
@@ -114,9 +122,9 @@ function initGalleryLightbox() {
 
     });
 
-    document.addEventListener("keydown", (event) => {
+    document.addEventListener("keydown", function (e) {
 
-        if (event.key === "Escape") {
+        if (e.key === "Escape") {
 
             closeLightbox();
 

@@ -1098,3 +1098,179 @@ body{
     overflow:hidden;
 
 }
+
+/* ==========================================
+   DARK MODE - PORTFOLIO PAGE SAJA
+========================================== */
+
+[data-theme="dark"] .portfolio-page{
+    --background:#0f172a;
+    --white:#1e293b;
+    --text:#f8fafc;
+    --text-light:#cbd5e1;
+    --border:#334155;
+    --shadow:0 10px 30px rgba(0,0,0,.45);
+
+    background:var(--background);
+}
+
+/* Hero */
+[data-theme="dark"] .portfolio-page .hero-left h1{
+    color:#fbbf24;
+}
+
+[data-theme="dark"] .portfolio-page .hero-left p,
+[data-theme="dark"] .portfolio-page .portfolio-breadcrumb a{
+    color:#cbd5e1;
+}
+
+/* Wrapper */
+[data-theme="dark"] .portfolio-page .portfolio-content,
+[data-theme="dark"] .portfolio-page .hero-right{
+    background:#1e293b;
+    border-color:#334155;
+}
+
+/* Statistik */
+[data-theme="dark"] .portfolio-page .stat-box{
+    background:#1e293b;
+    border-color:#334155;
+}
+
+[data-theme="dark"] .portfolio-page .stat-box:hover{
+    background:#293548;
+}
+
+[data-theme="dark"] .portfolio-page .stat-box h2{
+    color:#fbbf24;
+}
+
+[data-theme="dark"] .portfolio-page .stat-box h4{
+    color:#f8fafc;
+}
+
+[data-theme="dark"] .portfolio-page .stat-box p{
+    color:#cbd5e1;
+}
+
+[data-theme="dark"] .portfolio-page .stat-icon{
+    background:rgba(199,154,25,.15);
+    color:#fbbf24;
+}
+
+/* Search & Filter */
+[data-theme="dark"] .portfolio-page .toolbar-search,
+[data-theme="dark"] .portfolio-page .toolbar-select{
+    background:#273449;
+    border-color:#475569;
+}
+
+[data-theme="dark"] .portfolio-page .toolbar-search input,
+[data-theme="dark"] .portfolio-page .toolbar-select select{
+    color:#f8fafc;
+}
+
+[data-theme="dark"] .portfolio-page .toolbar-search input::placeholder{
+    color:#94a3b8;
+}
+
+/* Card */
+[data-theme="dark"] .portfolio-page .portfolio-card{
+    background:#1e293b;
+    border-color:#334155;
+}
+
+[data-theme="dark"] .portfolio-page .portfolio-card:hover{
+    box-shadow:0 18px 40px rgba(0,0,0,.55);
+}
+
+[data-theme="dark"] .portfolio-page .card-content h3{
+    color:#f8fafc;
+}
+
+[data-theme="dark"] .portfolio-page .card-content p,
+[data-theme="dark"] .portfolio-page .card-date,
+[data-theme="dark"] .portfolio-page .card-location{
+    color:#cbd5e1;
+}
+
+/* Tombol */
+[data-theme="dark"] .portfolio-page .detail-btn{
+    background:#273449;
+    border-color:#c79a19;
+    color:#fbbf24;
+}
+
+[data-theme="dark"] .portfolio-page .detail-btn:hover{
+    background:#c79a19;
+    color:#fff;
+}
+
+/* Pagination */
+[data-theme="dark"] .pagination-section{
+    border-top-color:#334155;
+}
+
+[data-theme="dark"] .info-data,
+[data-theme="dark"] #pageInfo{
+    color:#cbd5e1;
+}
+
+[data-theme="dark"] .info-data strong{
+    color:#f8fafc;
+}
+
+[data-theme="dark"] .page-btn{
+    background:#273449;
+    border-color:#475569;
+    color:#f8fafc;
+}
+
+[data-theme="dark"] .page-btn:hover:not(:disabled){
+    background:#c79a19;
+    border-color:#c79a19;
+    color:#fff;
+}
+
+/* Empty State */
+[data-theme="dark"] .portfolio-page .empty-portfolio{
+    background:#1e293b;
+    border-color:#475569;
+}
+
+[data-theme="dark"] .portfolio-page .empty-portfolio h3{
+    color:#f8fafc;
+}
+
+[data-theme="dark"] .portfolio-page .empty-portfolio p{
+    color:#cbd5e1;
+}
+
+[data-theme="dark"] .portfolio-page .empty-icon{
+    background:rgba(199,154,25,.15);
+}
+
+[data-theme="dark"] .portfolio-page .empty-icon i{
+    color:#fbbf24;
+}
+/* ==========================================
+   DARK MODE - SELECT & OPTION
+========================================== */
+
+[data-theme="dark"] .portfolio-page .toolbar-select select{
+    background:#273449;
+    color:#f8fafc;
+}
+
+[data-theme="dark"] .portfolio-page .toolbar-select select option{
+    background:#1e293b;
+    color:#f8fafc;
+}
+
+[data-theme="dark"] .portfolio-page .toolbar-search input{
+    color:#f8fafc;
+}
+
+[data-theme="dark"] .portfolio-page .toolbar-search input::placeholder{
+    color:#94a3b8;
+}
