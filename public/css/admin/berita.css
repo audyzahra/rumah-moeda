@@ -884,6 +884,30 @@
 
 }
 
+/* ==========================
+   Gambar di isi berita
+========================== */
+
+.detail-text img{
+    display: block;
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    margin: 28px auto;      /* jarak atas bawah */
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.12);
+}
+
+/* Kalau ada 2 gambar atau lebih */
+.detail-text img + img{
+    margin-top: 40px;
+}
+
+/* Paragraf */
+.detail-text p{
+    margin-bottom: 18px;
+}
+
 /* ===== IMAGE PREVIEW ===== */
 
 .image-preview{

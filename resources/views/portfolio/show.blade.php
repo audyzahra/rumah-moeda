@@ -237,12 +237,6 @@
 
                             </h2>
 
-                            <p>
-
-                                Dokumentasi kegiatan selama pelaksanaan program.
-
-                            </p>
-
                         </div>
 
                         @if ($portfolio->media->count())
@@ -378,12 +372,6 @@
                                 Portofolio Lainnya
 
                             </h2>
-
-                            <p>
-
-                                Jelajahi kegiatan dan kolaborasi Rumah Moeda lainnya.
-
-                            </p>
 
                         </div>
 
