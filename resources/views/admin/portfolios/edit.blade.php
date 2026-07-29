@@ -1,5 +1,7 @@
 @extends('admin.layouts.app')
 
+@section('title', 'Edit Portofolio')
+
 @push('styles')
 <link
 rel="stylesheet"
@@ -15,6 +17,21 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
         <h1>Edit Portfolio</h1>
 
+        <!-- ================= BREADCRUMB ================= -->
+
+            <div class="page-breadcrumb">
+
+                <a href="{{ route('admin.portfolios.index') }}">
+
+                    Portofolio
+
+                </a>
+
+                <span>></span>
+
+                <span>Edit Portofolio</span>
+
+            </div>
 
         <form action="{{ route('admin.portfolios.update', $portfolio->id) }}" method="POST" enctype="multipart/form-data">
 
@@ -24,7 +41,7 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
             <div class="mb-3">
 
-                <label>Kategori</label>
+                <label>Kategori <span class="required">*</span></label>
 
                 <select name="category_id" class="form-control">
 
@@ -44,7 +61,7 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
             <div class="mb-3">
 
-                <label>Mitra</label>
+                <label>Mitra <span class="required">*</span></label>
 
                 <select name="partner_id" class="form-control">
 
@@ -72,7 +89,7 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
             <div class="mb-3">
 
-                <label>Judul</label>
+                <label>Judul <span class="required">*</span></label>
 
                 <input name="title" value="{{ $portfolio->title }}" class="form-control">
 
@@ -105,7 +122,7 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
             <div class="mb-3">
 
-                <label>Tanggal Kegiatan</label>
+                <label>Tanggal Kegiatan <span class="required">*</span></label>
 
                 <input type="date" name="activity_date" value="{{ $portfolio->activity_date->format('Y-m-d') }}"
                     class="form-control">
@@ -118,7 +135,7 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
             <div class="mb-3">
 
     <label class="form-label">
-        Lokasi
+        Lokasi <span class="required">*</span>
     </label>
 
 
@@ -317,16 +334,25 @@ Tambah Video
             <div id="deleteMediaContainer"></div>
 
 
+                <div class="modal-footer">
 
-            <button class="btn btn-success">
-                Simpan
-            </button>
+                    <a href="{{ route('admin.portfolios.index') }}" class="btn-batal">
 
-            <a href="{{ route('admin.portfolios.index') }}" class="btn btn-secondary">
+                        <i class="fa-solid fa-xmark"></i>
 
-                Batal
+                        Batal
 
-            </a>
+                    </a>
+
+                    <button type="submit" class="btn-simpan">
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Update Portofolio
+
+                    </button>
+
+                </div>
 
 
         </form>

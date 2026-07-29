@@ -586,11 +586,15 @@ body{
 
 /* Card Berita */
 [data-theme="dark"] .berita-card{
-    background: #242424;
-    border: 1px solid rgba(255,255,255,.08);
-    box-shadow: 0 12px 30px rgba(0,0,0,.45);
+    background:#242424;
+    border:1.5px solid #cda036;
+    box-shadow:0 10px 30px rgba(205,160,54,.18);
+    transition:.3s;
 }
-
+[data-theme="dark"] .berita-card:hover{
+    border-color:#e3b84c;
+    box-shadow:0 18px 40px rgba(205,160,54,.35);
+}
 [data-theme="dark"] .berita-content h2{
     color: #ffffff;
 }

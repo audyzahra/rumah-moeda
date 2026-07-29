@@ -391,3 +391,33 @@
 [data-theme="dark"] .section-subtitle{
     color:#cbd5e1;
 }
+/* ==========================================
+   DARK MODE - TENTANG KAMI
+   (Background tetap, hanya border emas)
+========================================== */
+
+/* Card Pendiri */
+[data-theme="dark"] .pendiri-card{
+    border:1.5px solid #cda036;
+    box-shadow:0 10px 30px rgba(205,160,54,.18);
+    transition:.3s;
+}
+
+[data-theme="dark"] .pendiri-card:hover{
+    border-color:#e3b84c;
+    box-shadow:0 18px 40px rgba(205,160,54,.35);
+}
+
+/* Card Visi & Misi */
+[data-theme="dark"] .visi-box,
+[data-theme="dark"] .misi-box{
+    border:1.5px solid #cda036;
+    box-shadow:0 10px 30px rgba(205,160,54,.18);
+    transition:.3s;
+}
+
+[data-theme="dark"] .visi-box:hover,
+[data-theme="dark"] .misi-box:hover{
+    border-color:#e3b84c;
+    box-shadow:0 18px 40px rgba(205,160,54,.35);
+}
