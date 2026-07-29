@@ -201,8 +201,6 @@ class PortfolioController extends Controller
 
             'participants' => $request->participants ?? 0,
 
-            'location'  => $request->location,
-
             'latitude'  => $request->latitude,
 
             'longitude' => $request->longitude
@@ -352,8 +350,6 @@ class PortfolioController extends Controller
             'location' => $request->location,
 
             'participants' => $request->participants ?? 0,
-
-            'location'  => $request->location,
 
             'latitude'  => $request->latitude,
 
