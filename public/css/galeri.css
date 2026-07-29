@@ -2126,3 +2126,36 @@ MENU GALERI
     transform: rotate(90deg);
 
 }
+/* ==========================================
+   DARK MODE - PAGINATION
+========================================== */
+
+[data-theme="dark"] .pagination-left span,
+[data-theme="dark"] .pagination-center,
+[data-theme="dark"] .pagination-center span,
+[data-theme="dark"] .pagination-center strong{
+    color:#ffffff;
+}
+
+[data-theme="dark"] .pagination-left form{
+    color:#ffffff;
+}
+
+[data-theme="dark"] .pagination-left select{
+    background:#ffffff;
+    color:#111827;
+}
+/* ==========================================
+   DARK MODE - BORDER CARD GALERI
+========================================== */
+
+[data-theme="dark"] .galeri-card{
+    background:#242424;
+    border:1.5px solid #cda036;
+    box-shadow:0 10px 30px rgba(205,160,54,.18);
+}
+
+[data-theme="dark"] .galeri-card:hover{
+    border-color:#e3b84c;
+    box-shadow:0 16px 40px rgba(205,160,54,.35);
+}

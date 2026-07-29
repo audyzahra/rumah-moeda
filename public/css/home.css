@@ -896,10 +896,9 @@ body {
 [data-theme="dark"] .leader-card,
 [data-theme="dark"] .team-card,
 [data-theme="dark"] .artikel-card{
-    background: #242424;
-    border: 1px solid rgba(255,255,255,.08);
-    box-shadow: 0 10px 30px rgba(0,0,0,.45);
-    transition: .3s;
+    border:1.5px solid #cda036;
+    box-shadow:0 10px 30px rgba(205,160,54,.18);
+    transition:.3s;
 }
 
 /* Hover */
@@ -908,9 +907,8 @@ body {
 [data-theme="dark"] .artikel-card:hover,
 [data-theme="dark"] .visi-box:hover,
 [data-theme="dark"] .misi-box:hover{
-    background: #2d2d2d;
-    border-color: rgba(212,166,43,.45);
-    box-shadow: 0 18px 40px rgba(0,0,0,.55);
+    border-color:#e3b84c;
+    box-shadow:0 18px 40px rgba(205,160,54,.35);
 }
 
 /* ================= RESPONSIVE DESIGN ================= */
