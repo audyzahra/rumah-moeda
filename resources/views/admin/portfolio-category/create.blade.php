@@ -35,7 +35,7 @@
 
         </div>
 
-        {{-- FORM TAMBAH--}}
+        {{-- FORM TAMBAH --}}
         <div class="portfolio-category-form">
 
 
@@ -50,6 +50,7 @@
 
                     <label>
                         Nama Kategori
+                        <span class="required">*</span>
                     </label>
 
                     <input type="text" id="name" name="name" value="{{ old('name') }}"
@@ -85,8 +86,7 @@
 
                 <div class="form-actions">
 
-                    <a href="{{ route('admin.portfolio-categories.index') }}"
-                        class="btn-secondary">
+                    <a href="{{ route('admin.portfolio-categories.index') }}" class="btn-secondary">
                         <i class="fa-solid fa-xmark"></i>
                         Batal
                     </a>
@@ -111,7 +111,18 @@
 
     </div>
 @endsection
-
+@if (session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Input Ditolak',
+                text: @json(session('error')),
+                confirmButtonColor: '#dc2626',
+            });
+        });
+    </script>
+@endif
 @push('scripts')
     <script src="{{ asset('js/admin/portfolio_category.js') }}"></script>
 @endpush
