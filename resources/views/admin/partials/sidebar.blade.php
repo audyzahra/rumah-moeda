@@ -5,7 +5,7 @@
 
         <div class="logo-area">
             <img src="{{ asset('assets/logorumahmoeda.png') }}" alt="Logo">
-            <h2>Admin</h2>
+            <h2>Rumah Moeda</h2>
         </div>
 
         <button class="sidebar-close" onclick="closeSidebar()">

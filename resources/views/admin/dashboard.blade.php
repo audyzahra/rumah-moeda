@@ -17,7 +17,9 @@
         </div>
 
         <div class="profile">
-
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i>
+            </a>
         </div>
     </header>
 
