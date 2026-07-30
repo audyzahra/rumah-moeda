@@ -207,6 +207,19 @@
 
 @endsection
 
+@if(session('error'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'error',
+        title: 'Input Ditolak',
+        text: @json(session('error')),
+        confirmButtonColor: '#dc2626',
+    });
+});
+</script>
+@endif
+
 @push('scripts')
     <script src="{{ asset('js/admin/galeri.js') }}"></script>
 @endpush
