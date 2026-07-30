@@ -15,29 +15,44 @@ class NewsController extends Controller
     /**
      * Menampilkan daftar berita milik user
      */
-    public function index()
-    {
-        $news = News::with(['category', 'author'])
-            ->where('author_id', Auth::id())
-            ->orderByDesc('publish_date')
-            ->paginate(5);
+    public function index(Request $request)
+{
+    $perPage = $request->get('per_page', 5);
 
-        $categories = Category::orderBy('name')->get();
+    $query = News::with(['category', 'author'])
+        ->where('author_id', Auth::id());
 
-        $totalNews = $news->count();
-        $totalPublished = $news->count();
-        $totalDraft = 0;
-        $totalCategory = $categories->count();
-
-        return view('user.news.index', compact(
-            'news',
-            'categories',
-            'totalNews',
-            'totalPublished',
-            'totalDraft',
-            'totalCategory'
-        ));
+    // Search judul
+    if ($request->filled('search')) {
+        $query->where('title', 'like', '%' . $request->search . '%');
     }
+
+    // Filter kategori
+    if ($request->filled('category')) {
+        $query->where('category_id', $request->category);
+    }
+
+    $news = $query
+        ->latest('publish_date')
+        ->paginate($perPage)
+        ->withQueryString();
+
+    $categories = Category::orderBy('name')->get();
+
+    $totalNews = $news->total();
+    $totalPublished = $news->total();
+    $totalDraft = 0;
+    $totalCategory = $categories->count();
+
+    return view('user.news.index', compact(
+        'news',
+        'categories',
+        'totalNews',
+        'totalPublished',
+        'totalDraft',
+        'totalCategory'
+    ));
+}
 
     /**
      * Halaman tambah berita
