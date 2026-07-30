@@ -51,8 +51,10 @@ class GalleryController extends Controller
 
         }
 
+        $perPage = $request->get('per_page', 5);
+
         $galleries = $query
-            ->paginate(5)
+            ->paginate($perPage)
             ->withQueryString();
 
         return view('user.gallery.index', compact('galleries'));

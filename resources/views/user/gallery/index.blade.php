@@ -23,16 +23,22 @@
         </header>
 
         {{-- ================= FILTER ================= --}}
-        <form method="GET" class="filter-section">
+        <form method="GET" id="filterForm" class="filter-section">
 
             <div class="filter-left">
 
-                <input type="text" id="searchInput" class="search-input" placeholder="Cari dokumentasi...">
+                <input
+                    type="text"
+                    id="searchInput"
+                    name="search"
+                    class="search-input"
+                    placeholder="Cari dokumentasi..."
+                    value="{{ request('search') }}">
 
                 <select
-    id="sortGallery"
-    name="sort"
-    class="filter-select">
+                    id="sortGallery"
+                    name="sort"
+                    class="filter-select">
 
                     <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>
                         Terbaru
@@ -84,7 +90,6 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Thumbnail</th>
                             <th>Judul</th>
                             <th>Tanggal Kegiatan</th>
                             <th>Deskripsi</th>
@@ -110,21 +115,7 @@
                                     {{ ($galleries->currentPage() - 1) * $galleries->perPage() + $loop->iteration }}
                                 </td>
 
-                                <td>
-
-                                    @if ($thumbnail)
-                                        @if ($thumbnail->type == 'image')
-                                            <img src="{{ asset('storage/' . $thumbnail->file_path) }}"
-                                                class="table-thumbnail" alt="{{ $gallery->title }}">
-                                        @else
-                                            <img src="https://img.youtube.com/vi/{{ $thumbnail->youtube_id }}/hqdefault.jpg"
-                                                class="table-thumbnail" alt="{{ $gallery->title }}">
-                                        @endif
-                                    @else
-                                        <span>-</span>
-                                    @endif
-
-                                </td>
+                                
 
                                 <td>
                                     <strong>{{ $gallery->title }}</strong>
@@ -207,73 +198,96 @@
 
             <!-- ================= PAGINATION ================= -->
 
-            <div class="pagination-section">
+            <div class="custom-pagination">
 
-                <div class="info-data">
+    <div class="pagination-left">
 
-                    Menampilkan
+        <form method="GET">
 
-                    <strong>{{ $galleries->firstItem() ?? 0 }}</strong>
+            @foreach(request()->except('per_page','page') as $key => $value)
+                <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+            @endforeach
 
-                    -
+            <span>Tampilkan</span>
 
-                    <strong>{{ $galleries->lastItem() ?? 0 }}</strong>
+            <select name="per_page" onchange="this.form.submit()">
+                <option value="5" {{ request('per_page',5)==5?'selected':'' }}>5</option>
+                <option value="10" {{ request('per_page')==10?'selected':'' }}>10</option>
+                <option value="20" {{ request('per_page')==20?'selected':'' }}>20</option>
+                <option value="50" {{ request('per_page')==50?'selected':'' }}>50</option>
+            </select>
 
-                    dari
+            <span>galeri</span>
 
-                    <strong>{{ $galleries->total() }}</strong>
+        </form>
 
-                    data
+    </div>
 
-                </div>
+    <div class="pagination-center">
 
-                <div class="pagination-controls">
+        <span>Menampilkan</span>
 
-                    {{-- Previous --}}
-                    @if ($galleries->onFirstPage())
+        <strong>{{ $galleries->firstItem() ?? 0 }}</strong>
 
-                        <button class="page-btn" disabled>
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </button>
+        <span>-</span>
 
-                    @else
+        <strong>{{ $galleries->lastItem() ?? 0 }}</strong>
 
-                        <a href="{{ $galleries->previousPageUrl() }}" class="page-btn">
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </a>
+        <span>dari</span>
 
-                    @endif
+        <strong>{{ $galleries->total() }}</strong>
 
-                    <span id="pageInfo">
+        <span>data</span>
 
-                        Halaman
+    </div>
 
-                        {{ $galleries->currentPage() }}
+    <div class="pagination-right">
 
-                        dari
+        @if($galleries->onFirstPage())
 
-                        {{ $galleries->lastPage() }}
+            <button class="page-btn" disabled>
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
 
-                    </span>
+        @else
 
-                    {{-- Next --}}
-                    @if ($galleries->hasMorePages())
+            <a href="{{ $galleries->appends(request()->query())->previousPageUrl() }}" class="page-btn">
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
 
-                        <a href="{{ $galleries->nextPageUrl() }}" class="page-btn">
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </a>
+        @endif
 
-                    @else
+        @foreach($galleries->appends(request()->query())->getUrlRange(1,$galleries->lastPage()) as $page => $url)
 
-                        <button class="page-btn" disabled>
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </button>
+            @if($page==$galleries->currentPage())
 
-                    @endif
+                <span class="page-number active">{{ $page }}</span>
 
-                </div>
+            @else
 
-            </div>
+                <a href="{{ $url }}" class="page-number">{{ $page }}</a>
+
+            @endif
+
+        @endforeach
+
+        @if($galleries->hasMorePages())
+
+            <a href="{{ $galleries->appends(request()->query())->nextPageUrl() }}" class="page-btn">
+                <i class="fa-solid fa-chevron-right"></i>
+            </a>
+
+        @else
+
+            <button class="page-btn" disabled>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+        @endif
+
+    </div>
+
+</div>
 
         </section>
         {{-- ================= DETAIL MODAL ================= --}}
