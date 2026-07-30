@@ -47,16 +47,22 @@ class AspirasiController extends Controller
     */
 
     public function markAsRead(ContactMessage $message)
-    {
-        $message->update([
-            'is_read' => 1
-        ]);
+{
+    $message->update([
+        'is_read' => 1
+    ]);
 
-        return back()->with([
+    if (request()->ajax()) {
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    return back()->with([
         'title'   => 'Berhasil! ✅',
         'success' => 'Aspirasi berhasil ditandai sudah dibaca.'
     ]);
-    }
+}
 
     /*
     |--------------------------------------------------------------------------

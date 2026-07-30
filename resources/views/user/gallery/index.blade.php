@@ -29,7 +29,10 @@
 
                 <input type="text" id="searchInput" class="search-input" placeholder="Cari dokumentasi...">
 
-                <select name="sort" class="filter-select" onchange="this.form.submit()">
+                <select
+    id="sortGallery"
+    name="sort"
+    class="filter-select">
 
                     <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>
                         Terbaru
@@ -76,7 +79,7 @@
 
             <div class="table-wrapper">
 
-                <table class="gallery-table">
+                <table class="gallery-table" id="galleryTable">
 
                     <thead>
                         <tr>
@@ -91,16 +94,17 @@
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody id="galleryTable">
 
                         @forelse($galleries as $gallery)
                             @php
                                 $thumbnail = $gallery->media->first();
                             @endphp
 
-                            <tr data-title="{{ strtolower($gallery->title) }}"
-                                data-description="{{ strtolower($gallery->description) }}"
-                                data-date="{{ strtolower(\Carbon\Carbon::parse($gallery->activity_date)->format('d M Y')) }}">
+                            <tr
+                            data-title="{{ strtolower($gallery->title) }}"
+                            data-description="{{ strtolower(strip_tags($gallery->description)) }}"
+                            data-date="{{ strtotime($gallery->activity_date) }}">
 
                                 <td>
                                     {{ ($galleries->currentPage() - 1) * $galleries->perPage() + $loop->iteration }}
