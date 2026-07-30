@@ -41,9 +41,8 @@
 
                 <div class="photo-detail-container">
 
-                    <img src="{{ asset('storage/' . $hero->file_path) }}" alt="{{ $gallery->title }}"
+                    <img src="{{ $hero ? Storage::url($hero->file_path) : defaultImage() }}" alt="{{ $gallery->title }}"
                         class="hero-image preview-image">
-
                 </div>
 
             </section>
@@ -61,9 +60,8 @@
                         @foreach ($gallery->media->skip(1) as $media)
                             <div class="photo-card">
 
-                                <img src="{{ asset('storage/' . $media->file_path) }}" alt="{{ $gallery->title }}"
-                                    loading="lazy" class="preview-image">
-
+                                <img src="{{ $media ? Storage::url($media->file_path) : defaultImage() }}"
+                                    alt="{{ $gallery->title }}" loading="lazy" class="preview-image">
                             </div>
                         @endforeach
 
