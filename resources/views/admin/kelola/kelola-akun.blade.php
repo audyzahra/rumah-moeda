@@ -8,228 +8,224 @@
 
 @section('content')
 
-<!-- ================= HEADER ================= -->
-<header class="topbar">
+    <!-- ================= HEADER ================= -->
+    <header class="topbar">
 
-    <div>
+        <div>
 
-        <h1>Kelola Akun</h1>
+            <h1>Kelola Akun</h1>
 
-        <p>
-            Kelola seluruh akun pengguna website
-        </p>
+            <p>
+                Kelola seluruh akun pengguna website
+            </p>
 
-    </div>
-    <a href="{{ route('admin.manage-account.create') }}" class="btn-primary">
+        </div>
+        <a href="{{ route('admin.manage-account.create') }}" class="btn-primary">
 
-                <i class="fa-solid fa-user-plus"></i>
+            <i class="fa-solid fa-user-plus"></i>
 
-                Tambah Akun
+            Tambah Akun
 
-            </a>
+        </a>
 
-</header>
+    </header>
 
-<!-- ================= CONTENT ================= -->
-<section class="tab-content">
+    <!-- ================= CONTENT ================= -->
+    <section class="tab-content">
 
-    <div class="settings-card">
+        <div class="settings-card">
 
-        <!-- ================= CARD BODY ================= -->
-        <div class="card-body">
+            <!-- ================= CARD BODY ================= -->
+            <div class="card-body">
 
-            <div class="table-responsive">
+                <div class="table-responsive">
 
-                <table class="table-admin">
+                    <table class="table-admin">
 
-                    <thead>
-
-                        <tr>
-
-                            <th>No</th>
-
-                            <th>Nama</th>
-
-                            <th>Email</th>
-
-                            <th>Role</th>
-
-                            <th>Tanggal Dibuat</th>
-
-                            <th width="160">
-                                Aksi
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        @forelse($users as $user)
+                        <thead>
 
                             <tr>
 
-                                <td>{{ $loop->iteration }}</td>
+                                <th>No</th>
 
-                                <td>{{ $user->name }}</td>
+                                <th>Nama</th>
 
-                                <td>{{ $user->email }}</td>
+                                <th>Email</th>
 
-                                <td>
+                                <th>Role</th>
 
-                                    <span class="badge-admin">
+                                <th>Status</th>
 
-                                        {{ ucfirst($user->role) }}
+                                <th>Tanggal Dibuat</th>
 
-                                    </span>
+                                <th width="160">
+                                    Aksi
+                                </th>
 
-                                </td>
+                            </tr>
 
-                                <td>
+                        </thead>
 
-                                    {{ $user->created_at->format('d M Y') }}
+                        <tbody>
 
-                                </td>
+                            @forelse($users as $user)
+                                <tr>
 
-                                <td>
+                                    <td>{{ $loop->iteration }}</td>
 
-                                    <div class="action-buttons">
+                                    <td>{{ $user->name }}</td>
 
-                                        <!-- ================= EDIT ================= -->
-                                        <a href="{{ route('admin.manage-account.edit', $user) }}"
-                                            class="btn-icon btn-edit"
-                                            title="Edit">
+                                    <td>{{ $user->email }}</td>
 
-                                            <i class="fa-solid fa-pen"></i>
+                                    <td>
 
-                                        </a>
+                                        <span class="badge-admin">
 
-                                        <!-- ================= DELETE ================= -->
-                                        @if(auth()->id() != $user->id)
+                                            {{ ucfirst($user->role) }}
 
-                                            <form
-                                                action="{{ route('admin.manage-account.destroy', $user) }}"
-                                                method="POST"
-                                                class="delete-form"
-                                                style="display:inline;">
+                                        </span>
 
-                                                @csrf
-                                                @method('DELETE')
+                                    </td>
+                                    <td>
 
-                                                <button
-                                                    type="submit"
-                                                    class="btn-icon btn-delete"
-                                                    title="Hapus">
-
-                                                    <i class="fa-solid fa-trash"></i>
-
-                                                </button>
-
-                                            </form>
-
+                                        @if ($user->status)
+                                            <span class="badge-status badge-active">
+                                                Aktif
+                                            </span>
+                                        @else
+                                            <span class="badge-status badge-inactive">
+                                                Tidak Aktif
+                                            </span>
                                         @endif
 
-                                    </div>
+                                    </td>
 
-                                </td>
+                                    <td>
 
-                            </tr>
+                                        {{ $user->created_at->format('d M Y') }}
 
-                        @empty
+                                    </td>
 
-                            <tr>
+                                    <td>
 
-                                <td colspan="6" class="text-center py-5">
+                                        <div class="action-buttons">
 
-                                    Belum ada akun.
+                                            <!-- ================= EDIT ================= -->
+                                            <a href="{{ route('admin.manage-account.edit', $user) }}"
+                                                class="btn-icon btn-edit" title="Edit">
 
-                                </td>
+                                                <i class="fa-solid fa-pen"></i>
 
-                            </tr>
+                                            </a>
 
-                        @endforelse
+                                            <!-- ================= DELETE ================= -->
+                                            @if (auth()->id() != $user->id)
+                                                <form action="{{ route('admin.manage-account.destroy', $user) }}"
+                                                    method="POST" class="delete-form" style="display:inline;">
 
-                    </tbody>
+                                                    @csrf
+                                                    @method('DELETE')
 
-                </table>
+                                                    <button type="submit" class="btn-icon btn-delete" title="Hapus">
 
-                <!-- ================= PAGINATION ================= -->
-                        <div class="pagination-section">
+                                                        <i class="fa-solid fa-trash"></i>
 
-                            <div class="info-data">
+                                                    </button>
 
-                                Menampilkan
+                                                </form>
+                                            @endif
 
-                                <strong>{{ $users->firstItem() ?? 0 }}</strong>
+                                        </div>
 
-                                -
+                                    </td>
 
-                                <strong>{{ $users->lastItem() ?? 0 }}</strong>
+                                </tr>
+
+                            @empty
+
+                                <tr>
+
+                                    <td colspan="7" class="text-center py-5">
+
+                                        Belum ada akun.
+
+                                    </td>
+
+                                </tr>
+                            @endforelse
+
+                        </tbody>
+
+                    </table>
+
+                    <!-- ================= PAGINATION ================= -->
+                    <div class="pagination-section">
+
+                        <div class="info-data">
+
+                            Menampilkan
+
+                            <strong>{{ $users->firstItem() ?? 0 }}</strong>
+
+                            -
+
+                            <strong>{{ $users->lastItem() ?? 0 }}</strong>
+
+                            dari
+
+                            <strong>{{ $users->total() }}</strong>
+
+                            data
+
+                        </div>
+
+                        <div class="pagination-controls">
+
+                            {{-- Previous --}}
+                            @if ($users->onFirstPage())
+                                <button class="page-btn" disabled>
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </button>
+                            @else
+                                <a href="{{ $users->previousPageUrl() }}" class="page-btn">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </a>
+                            @endif
+
+                            <span id="pageInfo">
+
+                                Halaman
+
+                                {{ $users->currentPage() }}
 
                                 dari
 
-                                <strong>{{ $users->total() }}</strong>
+                                {{ $users->lastPage() }}
 
-                                data
+                            </span>
 
-                            </div>
-
-                            <div class="pagination-controls">
-
-                                {{-- Previous --}}
-                                @if ($users->onFirstPage())
-
-                                    <button class="page-btn" disabled>
-                                        <i class="fa-solid fa-chevron-left"></i>
-                                    </button>
-
-                                @else
-
-                                    <a href="{{ $users->previousPageUrl() }}" class="page-btn">
-                                        <i class="fa-solid fa-chevron-left"></i>
-                                    </a>
-
-                                @endif
-
-                                <span id="pageInfo">
-
-                                    Halaman
-
-                                    {{ $users->currentPage() }}
-
-                                    dari
-
-                                    {{ $users->lastPage() }}
-
-                                </span>
-
-                                {{-- Next --}}
-                                @if ($users->hasMorePages())
-
-                                    <a href="{{ $users->nextPageUrl() }}" class="page-btn">
-                                        <i class="fa-solid fa-chevron-right"></i>
-                                    </a>
-
-                                @else
-
-                                    <button class="page-btn" disabled>
-                                        <i class="fa-solid fa-chevron-right"></i>
-                                    </button>
-
-                                @endif
-
-                            </div>
+                            {{-- Next --}}
+                            @if ($users->hasMorePages())
+                                <a href="{{ $users->nextPageUrl() }}" class="page-btn">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </a>
+                            @else
+                                <button class="page-btn" disabled>
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            @endif
 
                         </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
-
-</section>
+    </section>
 
 @endsection
 
@@ -243,9 +239,8 @@
 
     <!-- ================= SUCCESS ALERT ================= -->
     @if (session('success'))
-
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
 
                 Swal.fire({
                     icon: 'success',
@@ -259,14 +254,12 @@
 
             });
         </script>
-
     @endif
 
     <!-- ================= ERROR ALERT ================= -->
     @if (session('error'))
-
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
 
                 Swal.fire({
                     icon: 'error',
@@ -277,7 +270,6 @@
 
             });
         </script>
-
     @endif
 
 @endpush

@@ -26,9 +26,22 @@ public function store(LoginRequest $request): RedirectResponse
 {
     $request->authenticate();
 
+    // Cek apakah akun aktif
+    if (! auth()->user()->status) {
+
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return back()->withErrors([
+            'email' => 'Akun Anda telah dinonaktifkan. Silakan hubungi administrator.',
+        ]);
+    }
+
     $request->session()->regenerate();
 
-    if (auth()->user()->role == 'admin') {
+    if (auth()->user()->role === 'admin') {
         return redirect()->route('admin.dashboard');
     }
 
