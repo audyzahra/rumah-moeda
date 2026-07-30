@@ -4,23 +4,23 @@
 
 @section('content')
 
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/admin/portfolio-category/edit.css') }}">
-@endpush
+    @push('styles')
+        <link rel="stylesheet" href="{{ asset('css/admin/portfolio-category/edit.css') }}">
+    @endpush
 
 
-<div class="content">
+    <div class="content">
 
-    <header class="topbar">
+        <header class="topbar">
 
-        <div>
-            <h1>Edit Kategori Portofolio</h1>
-            <p>Ubah informasi kategori portofolio</p>
-        </div>
+            <div>
+                <h1>Edit Kategori Portofolio</h1>
+                <p>Ubah informasi kategori portofolio</p>
+            </div>
 
-    </header>
+        </header>
 
-    <!-- ================= BREADCRUMB ================= -->
+        <!-- ================= BREADCRUMB ================= -->
 
         <div class="page-breadcrumb">
 
@@ -37,61 +37,51 @@
         </div>
 
         {{-- FORM EDIT --}}
-    <div class="portfolio-category-table">
+        <div class="portfolio-category-table">
 
-        <form action="{{ route('admin.portfolio-categories.update', $category->id) }}"
-              method="POST"
-              class="portfolio-form">
+            <form action="{{ route('admin.portfolio-categories.update', $category->id) }}" method="POST"
+                class="portfolio-form">
 
-            @csrf
-            @method('PUT')
+                @csrf
+                @method('PUT')
 
-            <div class="form-group">
+                <div class="form-group">
 
-                <label>
-                    Nama Kategori
-                </label>
+                    <label>
+                        Nama Kategori
+                        <span class="required">*</span>
+                    </label>
 
-                <input type="text"
-                    id="name"
-                    name="name"
-                    value="{{ old('name', $category->name) }}"
-                    class="@error('name') is-invalid @enderror"
-                    placeholder="Masukkan nama kategori">
+                    <input type="text" id="name" name="name" value="{{ old('name', $category->name) }}"
+                        class="@error('name') is-invalid @enderror" placeholder="Masukkan nama kategori">
 
-                @error('name')
+                    @error('name')
+                        <small class="text-danger">
+                            {{ $message }}
+                        </small>
+                    @enderror
 
-                    <small class="text-danger">
-                        {{ $message }}
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Slug
+                    </label>
+
+                    <input type="text" id="slug" value="{{ $category->slug }}" readonly>
+
+
+                    <small class="form-info">
+                        Slug dibuat otomatis dari nama kategori
                     </small>
 
-                @enderror
 
-            </div>
+                </div>
 
-            <div class="form-group">
+                <div class="form-actions">
 
-                <label>
-                    Slug
-                </label>
-
-                <input type="text"
-                    id="slug"
-                    value="{{ $category->slug }}"
-                    readonly>
-
-
-                <small class="form-info">
-                    Slug dibuat otomatis dari nama kategori
-                </small>
-
-
-            </div>
-
-            <div class="form-actions">
-
-                    <a href="{{ route('admin.portfolio-categories.index') }}"
-                        class="btn-secondary">
+                    <a href="{{ route('admin.portfolio-categories.index') }}" class="btn-secondary">
                         <i class="fa-solid fa-xmark"></i>
                         Batal
                     </a>
@@ -104,17 +94,28 @@
                     </button>
 
                 </div>
-                
-        </form>
+
+            </form>
+
+        </div>
+
 
     </div>
 
 
-</div>
-
-
 @endsection
-
+@if (session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Input Ditolak',
+                text: @json(session('error')),
+                confirmButtonColor: '#dc2626',
+            });
+        });
+    </script>
+@endif
 @push('scripts')
-<script src="{{ asset('js/admin/portfolio_category.js') }}"></script>
+    <script src="{{ asset('js/admin/portfolio_category.js') }}"></script>
 @endpush

@@ -45,7 +45,8 @@
 
                 @csrf
                 @method('PUT')
-
+                <div id="deleted-media-container"></div>
+                
                 {{-- ================= JUDUL ================= --}}
                 <div class="form-group">
 
@@ -127,10 +128,22 @@
                     <div class="preview-grid">
 
                         @foreach ($gallery->media as $media)
-                            <div class="preview-item">
+                            <div class="media-item user-media-item">
 
                                 @if ($media->type == 'image')
-                                    <img src="{{ asset('storage/' . $media->file_path) }}" class="preview-image">
+                                    <img
+                                        src="{{ asset('storage/' . $media->file_path) }}"
+                                        class="preview-image">
+                                        <button
+                                            type="button"
+                                            class="btn-delete-media"
+                                            onclick="deleteMedia({{ $media->id }}, this)">
+
+                                            <i class="fa-solid fa-trash"></i>
+
+                                            Hapus
+
+                                        </button>
                                 @elseif($media->type == 'video')
                                     @php
 
@@ -156,6 +169,16 @@
                                             allowfullscreen>
                                         </iframe>
                                     @endif
+                                    <button
+                                        type="button"
+                                        class="btn-delete-media"
+                                        onclick="deleteMedia({{ $media->id }}, this)">
+
+                                        <i class="fa-solid fa-trash"></i>
+
+                                        Hapus
+
+                                    </button>
                                 @endif
 
                             </div>
@@ -408,5 +431,43 @@ document.getElementById('btnTambahFoto').addEventListener('click', function(){
     }
 
 });
+function deleteMedia(id, button) {
+
+    Swal.fire({
+        title: "Hapus media?",
+        text: "Media akan dihapus setelah galeri diperbarui.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Ya, hapus",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#dc3545",
+        cancelButtonColor: "#6c757d"
+    }).then((result) => {
+
+        if (!result.isConfirmed) return;
+
+        const container = document.getElementById("deleted-media-container");
+
+        const input = document.createElement("input");
+
+        input.type = "hidden";
+        input.name = "deleted_media[]";
+        input.value = id;
+
+        container.appendChild(input);
+
+        button.closest(".media-item").remove();
+
+        Swal.fire({
+            icon: "success",
+            title: "Berhasil",
+            text: "Media akan dihapus setelah galeri diperbarui.",
+            timer: 1500,
+            showConfirmButton: false
+        });
+
+    });
+
+}
     </script>
 @endpush

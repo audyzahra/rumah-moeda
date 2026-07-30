@@ -5,7 +5,7 @@
 
         <div class="logo-area">
             <img src="{{ asset('assets/logorumahmoeda.png') }}" alt="Logo">
-            <h2>User</h2>
+            <h2>Rumah Moeda</h2>
         </div>
 
         <button class="sidebar-close" onclick="closeSidebar()">
@@ -23,20 +23,28 @@
                 <span>Beranda</span>
             </a>
         </li>
-
+        
         <!-- Aspirasi -->
-        <li class="{{ request()->routeIs('user.messages.*') ? 'active' : '' }}">
+        {{-- <li class="{{ request()->routeIs('user.messages.*') ? 'active' : '' }}">
             <a href="{{ route('user.messages.index') }}">
                 <i class="fa-solid fa-envelope"></i>
                 <span>Aspirasi</span>
             </a>
-        </li>
+        </li> --}}
 
         <!-- Berita -->
         <li class="{{ request()->routeIs('user.news.*') ? 'active' : '' }}">
             <a href="{{ route('user.news.index') }}">
                 <i class="fa-solid fa-newspaper"></i>
                 <span>Berita</span>
+            </a>
+        </li>
+
+        <!-- Portofolio -->
+        <li class="active">
+            <a href="portofolio.html">
+                <i class="fa-solid fa-briefcase"></i>
+                <span>Portofolio</span>
             </a>
         </li>
 

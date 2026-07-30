@@ -942,10 +942,13 @@ textarea.form-control {
 }
 
 .media-preview {
-    width: 100%;
+    width: 150px;
     height: 120px;
     object-fit: cover;
     border-radius: 8px;
+
+    display: block;
+    margin: 0 auto;
 }
 
 .delete-media {
@@ -1203,3 +1206,35 @@ textarea.form-control {
     }
 }
 
+/* ==========================
+   USER EDIT GALLERY
+========================== */
+
+.user-media-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.user-media-item img,
+.user-media-item iframe {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.user-media-item .btn-delete-media {
+    margin-top: auto;
+
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}

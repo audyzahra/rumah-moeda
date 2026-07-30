@@ -33,6 +33,8 @@ use App\Http\Controllers\User\NewsController as UserNewsController;
 use App\Http\Controllers\User\GalleryController as UserGalleryController;
 use App\Http\Controllers\User\MessageController as UserMessageController;
 
+use App\Services\SecurityInputService;
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -559,4 +561,11 @@ Route::middleware(['auth', 'admin'])
             '/location-search',
             [AdminPortfolioController::class, 'searchLocation']
         )->name('portfolio.location.search');
+    });
+    Route::get('/test-security', function () {
+
+        $security = new SecurityInputService();
+
+        return $security->cleanText('Rumah Moeda');
+
     });

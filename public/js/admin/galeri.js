@@ -431,20 +431,29 @@ function filterGallery() {
     });
 
     rows.sort(function (a, b) {
-        const titleA = a.dataset.title || "";
+    const titleA = a.dataset.title || "";
+    const titleB = b.dataset.title || "";
 
-        const titleB = b.dataset.title || "";
+    const dateA = Number(a.dataset.date);
+    const dateB = Number(b.dataset.date);
 
-        if (sortValue === "title_asc") {
+    switch (sortValue) {
+        case "latest":
+            return dateB - dateA;
+
+        case "oldest":
+            return dateA - dateB;
+
+        case "title_asc":
             return titleA.localeCompare(titleB);
-        }
 
-        if (sortValue === "title_desc") {
+        case "title_desc":
             return titleB.localeCompare(titleA);
-        }
 
-        return 0;
-    });
+        default:
+            return 0;
+    }
+});
 
     rows.forEach(function (row) {
         tbody.appendChild(row);
