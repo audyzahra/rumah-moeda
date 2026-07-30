@@ -554,14 +554,8 @@ Route::middleware(['auth', 'admin'])
                     [PortfolioController::class, 'search']
                 )->name('admin.portfolios.search');
             });
-
-
-
-        Route::get(
-            '/location-search',
-            [AdminPortfolioController::class, 'searchLocation']
-        )->name('portfolio.location.search');
     });
+    
     Route::get('/test-security', function () {
 
         $security = new SecurityInputService();

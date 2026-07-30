@@ -4,381 +4,346 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/portfolio/index.css') }}">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 @endpush
 
 @section('content')
 
-<div class="portfolio-page">
+    <div class="portfolio-page">
 
-    <!-- ================= HEADER ================= -->
-    <div class="portfolio-header">
+        <!-- ================= HEADER ================= -->
+        <div class="portfolio-header">
 
-        <div class="portfolio-header-info">
+            <div class="portfolio-header-info">
 
-            <h1 class="portfolio-title">
-                Portfolio
-            </h1>
+                <h1 class="portfolio-title">
+                    Portfolio
+                </h1>
 
-            <p class="portfolio-subtitle">
-                Daftar kerja sama dan kegiatan perusahaan
-            </p>
+                <p class="portfolio-subtitle">
+                    Daftar kerja sama dan kegiatan perusahaan
+                </p>
+
+            </div>
+
+            <a href="{{ route('admin.portfolios.create') }}" class="portfolio-btn-add">
+
+                <i class="fa-solid fa-plus"></i>
+
+                <span>Tambah Portfolio</span>
+
+            </a>
 
         </div>
 
-        <a href="{{ route('admin.portfolios.create') }}"
-            class="portfolio-btn-add">
-
-            <i class="fa-solid fa-plus"></i>
-
-            <span>Tambah Portfolio</span>
-
-        </a>
-
-    </div>
 
 
+        <!-- ================= FILTER ================= -->
 
-    <!-- ================= FILTER ================= -->
+        <form id="portfolioFilter" method="GET" action="{{ route('admin.portfolios.index') }}" class="portfolio-filter">
 
-    <form id="portfolioFilter"
-        method="GET"
-        action="{{ route('admin.portfolios.index') }}"
-        class="portfolio-filter">
+            <div class="row g-3">
 
-        <div class="row g-3">
+                <div class="col-md-6">
 
-            <div class="col-md-6">
+                    <input type="text" id="searchPortfolio" name="search" class="form-control"
+                        placeholder="Cari judul, kategori, mitra, author..." value="{{ request('search') }}">
 
-                <input
-                    type="text"
-                    id="searchPortfolio"
-                    name="search"
-                    class="form-control"
-                    placeholder="Cari judul, kategori, mitra, author..."
-                    value="{{ request('search') }}">
-
-            </div>
+                </div>
 
 
-            <div class="col-md-3">
+                <div class="col-md-3">
 
-                <select
-                    id="sortPortfolio"
-                    name="sort"
-                    class="form-control">
+                    <select id="sortPortfolio" name="sort" class="form-control">
 
-                    <option value="">
-                        Terbaru
-                    </option>
+                        <option value="">
+                            Terbaru
+                        </option>
 
-                    <option value="oldest"
-                        {{ request('sort') == 'oldest' ? 'selected' : '' }}>
-                        Terlama
-                    </option>
+                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>
+                            Terlama
+                        </option>
 
-                    <option value="title_asc"
-                        {{ request('sort') == 'title_asc' ? 'selected' : '' }}>
-                        Judul A-Z
-                    </option>
+                        <option value="title_asc" {{ request('sort') == 'title_asc' ? 'selected' : '' }}>
+                            Judul A-Z
+                        </option>
 
-                    <option value="title_desc"
-                        {{ request('sort') == 'title_desc' ? 'selected' : '' }}>
-                        Judul Z-A
-                    </option>
+                        <option value="title_desc" {{ request('sort') == 'title_desc' ? 'selected' : '' }}>
+                            Judul Z-A
+                        </option>
 
-                </select>
+                    </select>
+
+                </div>
+
+
+                <div class="col-md-3 d-grid">
+
+                    <a href="{{ route('admin.portfolios.index') }}" class="portfolio-btn-reset">
+
+                        Reset
+
+                    </a>
+
+                </div>
 
             </div>
 
+        </form>
 
-            <div class="col-md-3 d-grid">
 
-                <a href="{{ route('admin.portfolios.index') }}"
-                    class="portfolio-btn-reset">
 
-                    Reset
+        <!-- ================= TABLE ================= -->
 
-                </a>
+        <div class="portfolio-card">
 
-            </div>
+            <div class="portfolio-table-wrapper">
 
-        </div>
+                <table class="portfolio-table">
 
-    </form>
+                    <thead>
 
+                        <tr>
 
+                            <th>No</th>
+                            <th>Judul</th>
+                            <th>Kategori</th>
+                            <th>Mitra</th>
+                            <th>Media</th>
+                            <th>Author</th>
+                            <th>Deskripsi</th>
+                            <th>Tanggal</th>
+                            <th>Lokasi</th>
+                            <th>Aksi</th>
 
-    <!-- ================= TABLE ================= -->
+                        </tr>
 
-    <div class="portfolio-card">
+                    </thead>
 
-        <div class="portfolio-table-wrapper">
+                    <tbody id="portfolioTable">
 
-            <table class="portfolio-table">
+                        @if ($portfolios->count())
 
-                <thead>
+                            @foreach ($portfolios as $portfolio)
+                                <tr data-title="{{ strtolower($portfolio->title) }}"
+                                    data-category="{{ strtolower($portfolio->category->name ?? '') }}"
+                                    data-partner="{{ strtolower($portfolio->partner->name ?? '') }}"
+                                    data-author="{{ strtolower($portfolio->author->name ?? '') }}">
 
-                    <tr>
+                                    <td>
 
-                        <th>No</th>
-                        <th>Judul</th>
-                        <th>Kategori</th>
-                        <th>Mitra</th>
-                        <th>Media</th>
-                        <th>Author</th>
-                        <th>Deskripsi</th>
-                        <th>Tanggal</th>
-                        <th>Aksi</th>
+                                        {{ $loop->iteration }}
 
-                    </tr>
+                                    </td>
 
-                </thead>
 
-                <tbody id="portfolioTable">
+                                    <td>
 
-                    @if ($portfolios->count())
+                                        {{ $portfolio->title }}
 
-                        @foreach ($portfolios as $portfolio)
+                                    </td>
 
-                            <tr
-                                data-title="{{ strtolower($portfolio->title) }}"
-                                data-category="{{ strtolower($portfolio->category->name ?? '') }}"
-                                data-partner="{{ strtolower($portfolio->partner->name ?? '') }}"
-                                data-author="{{ strtolower($portfolio->author->name ?? '') }}">
 
-                                <td>
+                                    <td>
 
-                                    {{ $loop->iteration }}
+                                        {{ $portfolio->category->name ?? '-' }}
 
-                                </td>
+                                    </td>
 
 
-                                <td>
+                                    <td>
 
-                                    {{ $portfolio->title }}
+                                        {{ $portfolio->partner->name ?? '-' }}
 
-                                </td>
+                                    </td>
 
 
-                                <td>
+                                    <td>
 
-                                    {{ $portfolio->category->name ?? '-' }}
+                                        @if ($portfolio->media->count())
+                                            <span class="portfolio-badge portfolio-badge-success">
 
-                                </td>
+                                                {{ $portfolio->media->count() }} Media
 
+                                            </span>
+                                        @else
+                                            <span class="portfolio-badge portfolio-badge-secondary">
 
-                                <td>
+                                                Tidak Ada
 
-                                    {{ $portfolio->partner->name ?? '-' }}
+                                            </span>
+                                        @endif
 
-                                </td>
+                                    </td>
 
 
-                                <td>
+                                    <td>
 
-                                    @if ($portfolio->media->count())
+                                        {{ $portfolio->author->name ?? '-' }}
 
-                                        <span class="portfolio-badge portfolio-badge-success">
+                                    </td>
 
-                                            {{ $portfolio->media->count() }} Media
 
-                                        </span>
+                                    <td>
 
-                                    @else
+                                        {!! Str::limit(strip_tags($portfolio->description), 80) !!}
 
-                                        <span class="portfolio-badge portfolio-badge-secondary">
+                                    </td>
 
-                                            Tidak Ada
 
-                                        </span>
+                                    <td>
 
-                                    @endif
+                                        {{ date('d M Y', strtotime($portfolio->activity_date)) }}
 
-                                </td>
+                                    </td>
 
+                                    <td>
 
-                                <td>
+                                        {{ $portfolio->location ?? '-' }}
 
-                                    {{ $portfolio->author->name ?? '-' }}
+                                    </td>
 
-                                </td>
 
+                                    <td>
 
-                                <td>
+                                        <div class="portfolio-action-buttons">
 
-                                    {!! Str::limit(strip_tags($portfolio->description), 80) !!}
+                                            <!-- DETAIL -->
 
-                                </td>
+                                            <button type="button" class="portfolio-btn-detail btn-detail"
+                                                data-bs-toggle="modal" data-bs-target="#detailPortfolioModal"
+                                                data-title="{{ $portfolio->title }}"
+                                                data-category="{{ $portfolio->category->name ?? '-' }}"
+                                                data-partner="{{ $portfolio->partner->name ?? '-' }}"
+                                                data-date="{{ date('d M Y', strtotime($portfolio->activity_date)) }}"
+                                                data-location="{{ $portfolio->location ?? '-' }}"
+                                                data-lat="{{ $portfolio->latitude }}"
+                                                data-lng="{{ $portfolio->longitude }}"
+                                                data-participants="{{ $portfolio->participants ?? 0 }}"
+                                                data-author="{{ $portfolio->author->name ?? '-' }}"
+                                                data-description='@json($portfolio->description)'
+                                                data-media='@json($portfolio->media)'>
 
-
-                                <td>
-
-                                    {{ date('d M Y', strtotime($portfolio->activity_date)) }}
-
-                                </td>
-
-
-                                <td>
-
-                                    <div class="portfolio-action-buttons">
-
-                                        <!-- DETAIL -->
-
-                                        <button
-                                            type="button"
-                                            class="portfolio-btn-detail btn-detail"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#detailPortfolioModal"
-                                            data-title="{{ $portfolio->title }}"
-                                            data-category="{{ $portfolio->category->name ?? '-' }}"
-                                            data-partner="{{ $portfolio->partner->name ?? '-' }}"
-                                            data-date="{{ date('d M Y', strtotime($portfolio->activity_date)) }}"
-                                            data-location="{{ $portfolio->location ?? '-' }}"
-                                            data-lat="{{ $portfolio->latitude }}"
-                                            data-lng="{{ $portfolio->longitude }}"
-                                            data-participants="{{ $portfolio->participants ?? 0 }}"
-                                            data-author="{{ $portfolio->author->name ?? '-' }}"
-                                            data-description='@json($portfolio->description)'
-                                            data-media='@json($portfolio->media)'>
-
-                                            <i class="fa-solid fa-eye"></i>
-
-                                        </button>
-
-
-                                        <!-- EDIT -->
-
-                                        <a
-                                            href="{{ route('admin.portfolios.edit', $portfolio->id) }}"
-                                            class="portfolio-btn-edit">
-
-                                            <i class="fa-solid fa-pen-to-square"></i>
-
-                                        </a>
-
-
-                                        <!-- DELETE -->
-
-                                        <form
-                                            action="{{ route('admin.portfolios.destroy', $portfolio->id) }}"
-                                            method="POST"
-                                            class="d-inline delete-form">
-
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <button
-                                                type="submit"
-                                                class="portfolio-btn-delete">
-
-                                                <i class="fa-solid fa-trash"></i>
+                                                <i class="fa-solid fa-eye"></i>
 
                                             </button>
 
-                                        </form>
 
-                                    </div>
+                                            <!-- EDIT -->
+
+                                            <a href="{{ route('admin.portfolios.edit', $portfolio->id) }}"
+                                                class="portfolio-btn-edit">
+
+                                                <i class="fa-solid fa-pen-to-square"></i>
+
+                                            </a>
+
+
+                                            <!-- DELETE -->
+
+                                            <form action="{{ route('admin.portfolios.destroy', $portfolio->id) }}"
+                                                method="POST" class="d-inline delete-form">
+
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit" class="portfolio-btn-delete">
+
+                                                    <i class="fa-solid fa-trash"></i>
+
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+
+                                <td colspan="10" class="portfolio-empty">
+
+                                    Data portfolio tidak ditemukan
 
                                 </td>
 
                             </tr>
 
-                        @endforeach
-
-                    @else
-
-                        <tr>
-
-                            <td colspan="9" class="portfolio-empty">
-
-                                Data portfolio tidak ditemukan
-
-                            </td>
-
-                        </tr>
-
-                    @endif
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-        <!-- ================= PAGINATION ================= -->
-
-                <div class="pagination-section">
-
-                    <div class="info-data">
-
-                        Menampilkan
-
-                        <strong>{{ $portfolios->firstItem() ?? 0 }}</strong>
-
-                        -
-
-                        <strong>{{ $portfolios->lastItem() ?? 0 }}</strong>
-
-                        dari
-
-                        <strong>{{ $portfolios->total() }}</strong>
-
-                        data
-
-                    </div>
-
-                    <div class="pagination-controls">
-
-                        {{-- Previous --}}
-                        @if ($portfolios->onFirstPage())
-
-                            <button class="page-btn" disabled>
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </button>
-
-                        @else
-
-                            <a href="{{ $portfolios->previousPageUrl() }}" class="page-btn">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </a>
-
                         @endif
 
-                        <span id="pageInfo">
+                    </tbody>
 
-                            Halaman
+                </table>
 
-                            {{ $portfolios->currentPage() }}
+            </div>
 
-                            dari
+            <!-- ================= PAGINATION ================= -->
 
-                            {{ $portfolios->lastPage() }}
+            <div class="pagination-section">
 
-                        </span>
+                <div class="info-data">
 
-                        {{-- Next --}}
-                        @if ($portfolios->hasMorePages())
+                    Menampilkan
 
-                            <a href="{{ $portfolios->nextPageUrl() }}" class="page-btn">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </a>
+                    <strong>{{ $portfolios->firstItem() ?? 0 }}</strong>
 
-                        @else
+                    -
 
-                            <button class="page-btn" disabled>
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </button>
+                    <strong>{{ $portfolios->lastItem() ?? 0 }}</strong>
 
-                        @endif
+                    dari
 
-                    </div>
+                    <strong>{{ $portfolios->total() }}</strong>
+
+                    data
 
                 </div>
 
-    </div>
+                <div class="pagination-controls">
 
-</div>
+                    {{-- Previous --}}
+                    @if ($portfolios->onFirstPage())
+                        <button class="page-btn" disabled>
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                    @else
+                        <a href="{{ $portfolios->previousPageUrl() }}" class="page-btn">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
+                    @endif
+
+                    <span id="pageInfo">
+
+                        Halaman
+
+                        {{ $portfolios->currentPage() }}
+
+                        dari
+
+                        {{ $portfolios->lastPage() }}
+
+                    </span>
+
+                    {{-- Next --}}
+                    @if ($portfolios->hasMorePages())
+                        <a href="{{ $portfolios->nextPageUrl() }}" class="page-btn">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                    @else
+                        <button class="page-btn" disabled>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    @endif
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
     <!-- ================= DETAIL PORTFOLIO MODAL ================= -->
 
     <div class="modal fade" id="detailPortfolioModal" tabindex="-1" aria-hidden="true">
@@ -397,11 +362,7 @@
 
                     </h5>
 
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 
                     </button>
 
@@ -507,37 +468,41 @@
                     </div>
 
 
+                    {{-- latitude dan longtitud --}}
 
-                    <!-- MAP -->
 
-                    <div class="portfolio-detail-group">
+                    <div class="row">
 
-                        <label class="portfolio-label">
+                        <div class="col-md-6">
 
-                            Lokasi Peta
+                            <div class="portfolio-detail-group">
 
-                        </label>
+                                <label class="portfolio-label">
+                                    Latitude
+                                </label>
 
-                        <div
-                            id="detail-map"
-                            class="portfolio-map">
+                                <p id="detailLatitude" class="portfolio-value"></p>
+
+                            </div>
 
                         </div>
 
-                        <a
-                            id="googleMapsButton"
-                            target="_blank"
-                            class="portfolio-btn-map">
 
-                            <i class="fa-solid fa-location-dot"></i>
+                        <div class="col-md-6">
 
-                            Buka di Google Maps
+                            <div class="portfolio-detail-group">
 
-                        </a>
+                                <label class="portfolio-label">
+                                    Longitude
+                                </label>
+
+                                <p id="detailLongitude" class="portfolio-value"></p>
+
+                            </div>
+
+                        </div>
 
                     </div>
-
-
 
                     <!-- Peserta & Author -->
 
@@ -589,9 +554,7 @@
 
                         </label>
 
-                        <div
-                            id="detailMedia"
-                            class="portfolio-media">
+                        <div id="detailMedia" class="portfolio-media">
 
                         </div>
 
@@ -609,9 +572,7 @@
 
                         </label>
 
-                        <div
-                            id="detailDescription"
-                            class="portfolio-description">
+                        <div id="detailDescription" class="portfolio-description">
 
                         </div>
 
@@ -625,10 +586,7 @@
 
                 <div class="modal-footer portfolio-modal-footer">
 
-                    <button
-                        type="button"
-                        class="portfolio-btn-close"
-                        data-bs-dismiss="modal">
+                    <button type="button" class="portfolio-btn-close" data-bs-dismiss="modal">
 
                         <i class="fa-solid fa-xmark"></i>
 
@@ -649,9 +607,5 @@
 
 
 @push('scripts')
-
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
     <script src="{{ asset('js/admin/portfolio.js') }}"></script>
-
 @endpush
