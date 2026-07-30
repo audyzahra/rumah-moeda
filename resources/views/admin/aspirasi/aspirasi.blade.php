@@ -180,33 +180,20 @@
                                 <div class="action-buttons">
 
                                     {{-- Detail --}}
-                                    <button class="btn-detail" data-id="{{ $message->id }}"
-                                        data-name="{{ $message->full_name }}" data-email="{{ $message->email }}"
-                                        data-phone="{{ $message->phone }}" data-message="{{ $message->message }}"
-                                        data-status="{{ $message->is_read }}"
-                                        data-created="{{ $message->created_at->format('d M Y H:i') }}"
-                                        onclick="showDetail(this)">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </button>
+                                    <button
+    class="btn-detail"
+    data-id="{{ $message->id }}"
+    data-name="{{ $message->full_name }}"
+    data-email="{{ $message->email }}"
+    data-phone="{{ $message->phone }}"
+    data-message="{{ $message->message }}"
+    data-status="{{ $message->is_read ? 1 : 0 }}"
+    data-created="{{ $message->created_at->format('d M Y H:i') }}"
+    onclick="showDetail(this)">
+    <i class="fa-solid fa-eye"></i>
+</button>
 
-                                    {{-- Tandai Dibaca --}}
-                                    @if (!$message->is_read)
-                                        <form action="{{ route('admin.messages.read', $message) }}" method="POST"
-                                            style="display:inline;">
-
-                                            @csrf
-
-                                            @method('PUT')
-
-                                            <button class="btn-status">
-
-                                                <i class="fa-solid fa-check"></i>
-
-                                            </button>
-
-                                        </form>
-                                    @endif
-
+                                    
                                     {{-- Hapus --}}
                                     <button class="btn-hapus" onclick="deleteAspirasi({{ $message->id }})">
 

@@ -3,18 +3,17 @@
 
         {{-- Logo --}}
         <div class="logo-section">
-            <a href="{{ route('home') }}">
+            
                 @if (!empty($setting->website_logo))
                     <img src="{{ Storage::url($setting->website_logo) }}" class="logo-img"
                         alt="{{ $setting->website_name }}">
                 @else
                     <img src="{{ asset('assets/logo-default.png') }}" class="logo-img" alt="Logo">
                 @endif
-            </a>
 
-            <span class="logo-text">
-                {{ $setting->website_name }}
-            </span>
+            <a href="{{ route('home') }}" class="logo-text">
+    {{ $setting->website_name }}
+</a>
         </div>
 
         <!-- Hamburger -->
@@ -139,16 +138,6 @@
 
             @auth
 
-                {{-- Dashboard --}}
-                @if (auth()->user()->role == 'admin')
-                    <a href="{{ route('admin.dashboard') }}" class="btn-login-reg">
-                        Dashboard
-                    </a>
-                @else
-                    <a href="{{ route('user.dashboard') }}" class="btn-login-reg" id="dashboardBtn">
-                        Dashboard
-                    </a>
-                @endif
 
                 {{-- Dark Mode --}}
                 <button id="darkmode-toggle" class="dark-toggle">

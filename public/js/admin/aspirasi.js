@@ -174,6 +174,50 @@ function showDetail(button) {
 `;
 
     openModal(detailModal);
+    // ==========================
+    // OTOMATIS TANDAI DIBACA
+    // ==========================
+    if (data.status == "0") {
+    
+    console.log("Status:", data.status);
+console.log("ID:", data.id);
+console.log("Masuk fetch");
+    fetch(`/admin/messages/${data.id}/read`, {
+        method: "PUT",
+        headers: {
+    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+    "X-Requested-With": "XMLHttpRequest",
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+    })
+    .then(response => {
+    if (!response.ok) {
+        throw new Error("Gagal mengubah status");
+    }
+    return response.json();
+})
+    .then(() => {
+
+        button.dataset.status = "1";
+
+        // ubah status di modal
+        detailBody.querySelector(".detail-item:nth-child(4) .detail-value").textContent = "Dibaca";
+
+        // ubah status di tabel
+        const row = button.closest("tr");
+
+        row.dataset.status = "1";
+
+        const badge = row.querySelector(".status-badge");
+
+        badge.classList.remove("baru");
+        badge.classList.add("dibaca");
+        badge.textContent = "Dibaca";
+
+        });
+
+    }
 }
 
 /* ==========================================

@@ -210,6 +210,39 @@ class GalleryController extends Controller
 
         ]);
 
+        $existingImages = $gallery->media()
+    ->where('type', 'image')
+    ->count();
+
+$deletedImages = 0;
+
+if ($request->filled('deleted_media')) {
+
+    $deletedImages = GalleryMedia::whereIn(
+        'id',
+        $request->deleted_media
+    )
+    ->where('type', 'image')
+    ->count();
+
+}
+
+$newImages = $request->hasFile('photos')
+    ? count($request->file('photos'))
+    : 0;
+
+$totalImages = $existingImages - $deletedImages + $newImages;
+
+if ($totalImages < 1) {
+
+    return back()
+        ->withErrors([
+            'photos' => 'Minimal galeri harus memiliki 1 foto.'
+        ])
+        ->withInput();
+
+}
+
         $gallery->update([
 
             'title'=>$request->title,
@@ -220,6 +253,37 @@ class GalleryController extends Controller
 
         ]);
 
+        /*
+|--------------------------------------------------------------------------
+| Hapus Media Lama
+|--------------------------------------------------------------------------
+*/
+
+if ($request->filled('deleted_media')) {
+
+    foreach ($request->deleted_media as $id) {
+
+        $media = GalleryMedia::find($id);
+
+        if (!$media) {
+            continue;
+        }
+
+        if (
+            $media->type == 'image' &&
+            $media->file_path &&
+            Storage::disk('public')->exists($media->file_path)
+        ) {
+
+            Storage::disk('public')->delete($media->file_path);
+
+        }
+
+        $media->delete();
+
+    }
+
+}
         /*
         |--------------------------------------------------------------------------
         | Tambah Foto Baru
