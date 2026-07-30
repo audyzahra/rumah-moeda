@@ -34,7 +34,7 @@
 
                 <span>></span>
 
-                <span>Tambah Galeri</span>
+                <span>Edit Galeri</span>
 
             </div>
 
