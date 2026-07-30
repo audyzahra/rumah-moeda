@@ -42,12 +42,16 @@
                 <select name="category_id" class="form-control">
 
                     @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">
+                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
                             {{ $category->name }}
                         </option>
                     @endforeach
 
                 </select>
+
+                @error('category_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
 
             </div>
 
@@ -59,20 +63,19 @@
 
                 <select name="partner_id" class="form-control">
 
-
-                    <option value="">
-                        Tanpa Mitra
-                    </option>
-
+                    <option value="">Tanpa Mitra</option>
 
                     @foreach ($partners as $partner)
-                        <option value="{{ $partner->id }}">
+                        <option value="{{ $partner->id }}" {{ old('partner_id') == $partner->id ? 'selected' : '' }}>
                             {{ $partner->name }}
                         </option>
                     @endforeach
 
-
                 </select>
+
+                @error('partner_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
 
             </div>
 
@@ -83,7 +86,11 @@
 
                 <label>Judul <span class="required">*</span></label>
 
-                <input type="text" name="title" class="form-control">
+                <input type="text" name="title" class="form-control" value="{{ old('title') }}">
+
+                @error('title')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
 
             </div>
 
@@ -94,7 +101,6 @@
 
                 <label>
                     Deskripsi
-                    <span class="required">*</span>
                 </label>
 
 
@@ -119,7 +125,11 @@
                     <span class="required">*</span>
                 </label>
 
-                <input type="date" name="activity_date" class="form-control">
+                <input type="date" name="activity_date" class="form-control" value="{{ old('activity_date') }}">
+
+                @error('activity_date')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
 
             </div>
 
@@ -135,7 +145,9 @@
 
                 <input type="text" name="location" class="form-control" placeholder="Masukkan lokasi kegiatan"
                     value="{{ old('location') }}">
-
+                @error('location')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
 
 
@@ -147,6 +159,9 @@
 
                 <input type="text" name="latitude" class="form-control" placeholder="Contoh: -6.3273"
                     value="{{ old('latitude') }}">
+                @error('latitude')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
 
             </div>
 
@@ -159,14 +174,20 @@
 
                 <input type="text" name="longitude" class="form-control" placeholder="Contoh: 108.3247"
                     value="{{ old('longitude') }}">
-
+                @error('longitude')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
 
             <div class="mb-3">
 
                 <label>Jumlah Peserta</label>
 
-                <input type="number" name="participants" class="form-control">
+                <input type="number" name="participants" class="form-control" value="{{ old('participants') }}">
+
+                @error('participants')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
 
             </div>
 
@@ -187,7 +208,9 @@
                         <div class="input-group">
 
                             <input type="file" name="images[]" class="form-control image-input" accept="image/*">
-
+                            @error('images.*')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
 
                         </div>
 
@@ -227,7 +250,9 @@
 
                             <input type="text" name="video_url[]" class="form-control video-input"
                                 placeholder="https://youtube.com/watch?v=">
-
+                            @error('video_url.*')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
 
 
@@ -276,7 +301,18 @@
 
     </div>
 @endsection
-
+@if(session('error'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'error',
+        title: 'Input Ditolak',
+        text: @json(session('error')),
+        confirmButtonColor: '#dc2626',
+    });
+});
+</script>
+@endif
 @push('scripts')
     <script src="{{ asset('js/admin/portfolio.js') }}"></script>
 @endpush
