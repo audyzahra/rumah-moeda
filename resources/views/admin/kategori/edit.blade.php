@@ -102,6 +102,18 @@
 </div>
 
 @endsection
+@if(session('error'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'error',
+        title: 'Input Ditolak',
+        text: @json(session('error')),
+        confirmButtonColor: '#dc2626',
+    });
+});
+</script>
+@endif
 @push('scripts')
 
 <script>
@@ -133,4 +145,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
 </script>
 
-@endpush    
+@endpush

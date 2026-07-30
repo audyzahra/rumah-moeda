@@ -33,6 +33,8 @@ use App\Http\Controllers\User\NewsController as UserNewsController;
 use App\Http\Controllers\User\GalleryController as UserGalleryController;
 use App\Http\Controllers\User\MessageController as UserMessageController;
 
+use App\Services\SecurityInputService;
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -271,6 +273,10 @@ Route::middleware(['auth', 'admin'])
         Route::get('organization-structures/export', [OrganizationStructureController::class, 'export'])
             ->name('organization-structures.export');
 
+        Route::get(
+            'organization-structures/template', [OrganizationStructureController::class, 'downloadTemplate'])
+            ->name('organization-structures.template');
+
         Route::resource('organization-structures', OrganizationStructureController::class);
 
         /*
@@ -448,7 +454,7 @@ Route::middleware(['auth', 'admin'])
 
 
 
-                /*
+        /*
         |--------------------------------------------------------------------------
         | Portfolio Categories
         |--------------------------------------------------------------------------
@@ -489,13 +495,13 @@ Route::middleware(['auth', 'admin'])
                     ->name('destroy');
             });
 
-            // untuk generate slug kategori portfolio
-            Route::get(
-                '/portfolio-categories/generate-slug/{name}',
-                [PortfolioCategoryController::class, 'generateSlugPreview']
-            )
-                ->name('portfolio-categories.slug');
-                
+        // untuk generate slug kategori portfolio
+        Route::get(
+            '/portfolio-categories/generate-slug/{name}',
+            [PortfolioCategoryController::class, 'generateSlugPreview']
+        )
+            ->name('portfolio-categories.slug');
+
 
         /*
         |--------------------------------------------------------------------------
@@ -543,10 +549,10 @@ Route::middleware(['auth', 'admin'])
                     ->name('destroy');
 
 
-                    Route::get(
-    '/admin/portfolios/search',
-    [PortfolioController::class,'search']
-)->name('admin.portfolios.search');
+                Route::get(
+                    '/admin/portfolios/search',
+                    [PortfolioController::class, 'search']
+                )->name('admin.portfolios.search');
             });
 
 
@@ -555,4 +561,11 @@ Route::middleware(['auth', 'admin'])
             '/location-search',
             [AdminPortfolioController::class, 'searchLocation']
         )->name('portfolio.location.search');
+    });
+    Route::get('/test-security', function () {
+
+        $security = new SecurityInputService();
+
+        return $security->cleanText('Rumah Moeda');
+
     });

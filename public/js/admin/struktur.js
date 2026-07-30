@@ -100,28 +100,67 @@ if (sortSelect) {
 }
 
 // =========================
-// Parent / Child
+// PARENT CHILD VALIDATION
 // =========================
+
 document.addEventListener("DOMContentLoaded", function () {
+
+
     const typeSelect = document.getElementById("typeSelect");
+
     const parentWrapper = document.getElementById("parentWrapper");
 
-    if (!typeSelect || !parentWrapper) return;
+    const parentSelect = document.getElementById("parentSelect");
 
-    const parentSelect = parentWrapper.querySelector("select");
 
-    function toggleParent() {
-        if (typeSelect.value === "child") {
+    if(!typeSelect || !parentWrapper || !parentSelect) return;
+
+
+
+    function toggleParent(){
+
+
+        if(typeSelect.value === "child"){
+
+
             parentWrapper.style.display = "block";
-        } else {
+
+
+            parentSelect.setAttribute(
+                "required",
+                true
+            );
+
+
+        }else{
+
+
             parentWrapper.style.display = "none";
+
+
+            parentSelect.removeAttribute(
+                "required"
+            );
+
+
             parentSelect.value = "";
+
         }
+
+
     }
 
-    typeSelect.addEventListener("change", toggleParent);
+
+
+    typeSelect.addEventListener(
+        "change",
+        toggleParent
+    );
+
 
     toggleParent();
+
+
 });
 
 // =========================
@@ -211,3 +250,283 @@ document.querySelectorAll(".delete-form").forEach((form) => {
         });
     });
 });
+
+// =========================
+// VALIDASI FOTO STRUKTUR
+// =========================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("strukturForm");
+    const photoInput = document.getElementById("photoInput");
+
+
+    if (!form || !photoInput) return;
+
+
+    form.addEventListener("submit", function (e) {
+
+
+        if (photoInput.files.length === 0) {
+
+
+            e.preventDefault();
+
+
+            Swal.fire({
+
+                title: "Foto wajib diisi",
+
+                text: "Minimal harus menambahkan 1 foto sebelum struktur disimpan.",
+
+                icon: "warning",
+
+                confirmButtonText: "Mengerti",
+
+                confirmButtonColor: "#D4AF37",
+
+            });
+
+
+            return false;
+
+        }
+
+
+    });
+
+
+});
+
+
+
+// =========================
+// VALIDASI FORM TAMBAH STRUKTUR
+// =========================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("strukturForm");
+
+    if (!form) return;
+
+
+    const fullName = document.querySelector(
+        'input[name="full_name"]'
+    );
+
+    const position = document.querySelector(
+        'input[name="position"]'
+    );
+
+    const typeSelect = document.getElementById(
+        "typeSelect"
+    );
+
+    const parentSelect = document.getElementById(
+        "parentSelect"
+    );
+
+
+    form.addEventListener("submit", function(e){
+
+
+        // =====================
+        // CEK NAMA
+        // =====================
+
+        if(fullName.value.trim() === ""){
+
+            e.preventDefault();
+
+            fullName.focus();
+
+            fullName.scrollIntoView({
+                behavior:"smooth",
+                block:"center"
+            });
+
+            return false;
+        }
+
+
+
+        // =====================
+        // CEK JABATAN
+        // =====================
+
+        if(position.value.trim() === ""){
+
+            e.preventDefault();
+
+            position.focus();
+
+            position.scrollIntoView({
+                behavior:"smooth",
+                block:"center"
+            });
+
+            return false;
+        }
+
+
+
+        // =====================
+        // CEK CHILD PARENT
+        // =====================
+
+        if(
+            typeSelect.value === "child" &&
+            parentSelect.value === ""
+        ){
+
+            e.preventDefault();
+
+
+            parentSelect.focus();
+
+
+            parentSelect.scrollIntoView({
+                behavior:"smooth",
+                block:"center"
+            });
+
+
+            return false;
+        }
+
+    });
+
+
+});
+
+
+
+// =========================
+// VALIDASI FORM EDIT STRUKTUR
+// =========================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+const form = document.getElementById("strukturForm");
+
+
+if(!form) return;
+
+
+
+const fullName = document.querySelector(
+    'input[name="full_name"]'
+);
+
+
+const position = document.querySelector(
+    'input[name="position"]'
+);
+
+
+const typeSelect = document.getElementById(
+    "typeSelect"
+);
+
+
+const parentSelect = document.getElementById(
+    "parentSelect"
+);
+
+
+
+
+form.addEventListener("submit",function(e){
+
+
+
+// =====================
+// NAMA
+// =====================
+
+if(fullName.value.trim()===""){
+
+
+e.preventDefault();
+
+fullName.focus();
+
+fullName.scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+});
+
+
+return false;
+
+}
+
+
+
+
+// =====================
+// JABATAN
+// =====================
+
+
+if(position.value.trim()===""){
+
+
+e.preventDefault();
+
+
+position.focus();
+
+
+position.scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+});
+
+
+return false;
+
+
+}
+
+
+
+
+// =====================
+// CHILD WAJIB PARENT
+// =====================
+
+
+if(
+typeSelect.value==="child" &&
+parentSelect.value===""
+
+){
+
+
+e.preventDefault();
+
+
+parentSelect.focus();
+
+
+parentSelect.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+
+return false;
+
+
+}
+
+
+
+});
+
+
+});
+

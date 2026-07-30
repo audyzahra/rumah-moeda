@@ -14,7 +14,8 @@ use App\Models\ContactMessage;
     'name',
     'email',
     'password',
-    'role'
+    'role',
+    'status'
 ])]
 
 #[Hidden([

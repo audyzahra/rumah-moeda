@@ -40,6 +40,7 @@ class UserManagementController extends Controller
             'email'                 => 'required|email|max:255|unique:users,email',
             'password'              => 'required|string|min:8|confirmed',
             'role'                  => 'required|in:admin,user',
+            'status'                => 'required|boolean',
         ]);
 
         User::create([
@@ -47,6 +48,7 @@ class UserManagementController extends Controller
             'email'     => $validated['email'],
             'password'  => Hash::make($validated['password']),
             'role'      => $validated['role'],
+            'status'    => $validated['status'],
         ]);
 
         return redirect()
@@ -71,12 +73,15 @@ class UserManagementController extends Controller
 
             'role' => 'required|in:admin,user',
 
+            'status' => 'required|boolean',
+
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 
         $user->name = $validated['name'];
         $user->email = $validated['email'];
         $user->role = $validated['role'];
+        $user->status = $validated['status'];
 
         if ($request->filled('password')) {
             $user->password = Hash::make($validated['password']);

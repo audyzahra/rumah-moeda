@@ -36,21 +36,24 @@
 
             <div class="card">
 
-                <form action="{{ route('admin.organization-structures.update', $organization->id) }}" method="POST"
-                    enctype="multipart/form-data">
+                <form id="strukturForm"
+    action="{{ route('admin.organization-structures.update', $organization->id) }}"
+    method="POST"
+    enctype="multipart/form-data">
+
                     @csrf
                     @method('PUT')
 
                     <div class="row">
 
                         <div class="col-md-6 mb-3">
-                            <label>Nama Lengkap</label>
+                            <label>Nama Lengkap <span class="required">*</span> </label>
                             <input type="text" name="full_name" class="form-control"
                                 value="{{ old('full_name', $organization->full_name) }}">
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label>Jabatan</label>
+                            <label>Jabatan <span class="required">*</span> </label>
                             <input type="text" name="position" class="form-control"
                                 value="{{ old('position', $organization->position) }}">
                         </div>
@@ -61,7 +64,7 @@
 
                         <div class="col-md-6 mb-3">
 
-                            <label>Posisi Struktur</label>
+                            <label>Posisi Struktur <span class="required">*</span> </label>
 
                             <select id="typeSelect" class="form-control">
 
@@ -78,7 +81,7 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label>Upload Foto</label>
+                            <label>Upload Foto <span class="required">*</span> </label>
                             <input type="file" name="photo" class="form-control">
                         </div>
 
@@ -89,9 +92,9 @@
                         <div class="col-md-6 mb-3" id="parentWrapper"
                             style="{{ old('parent_id', $organization->parent_id) ? '' : 'display:none;' }}">
 
-                            <label>Parent</label>
+                            <label>Parent <span class="required">*</span> </label>
 
-                            <select name="parent_id" class="form-control">
+                            <select   id="parentSelect" name="parent_id" class="form-control">
                                 <option value="">-- Parent Utama --</option>
 
                                 @foreach ($parents as $parent)

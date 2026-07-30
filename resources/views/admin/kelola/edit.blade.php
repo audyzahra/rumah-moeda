@@ -52,9 +52,7 @@
                         <ul>
 
                             @foreach ($errors->all() as $error)
-
                                 <li>{{ $error }}</li>
-
                             @endforeach
 
                         </ul>
@@ -82,13 +80,8 @@
 
                             </label>
 
-                            <input
-                                type="text"
-                                name="name"
-                                class="form-control"
-                                placeholder="Masukkan nama lengkap"
-                                value="{{ old('name', $user->name) }}"
-                                required>
+                            <input type="text" name="name" class="form-control" placeholder="Masukkan nama lengkap"
+                                value="{{ old('name', $user->name) }}" required>
 
                         </div>
 
@@ -102,13 +95,8 @@
 
                             </label>
 
-                            <input
-                                type="email"
-                                name="email"
-                                class="form-control"
-                                placeholder="Masukkan alamat email"
-                                value="{{ old('email', $user->email) }}"
-                                required>
+                            <input type="email" name="email" class="form-control" placeholder="Masukkan alamat email"
+                                value="{{ old('email', $user->email) }}" required>
 
                         </div>
 
@@ -128,16 +116,10 @@
 
                             <div class="password-wrapper">
 
-                                <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    class="form-control"
+                                <input type="password" id="password" name="password" class="form-control"
                                     placeholder="Kosongkan jika tidak diubah">
 
-                                <i
-                                    class="fa-solid fa-eye toggle-password"
-                                    data-target="password">
+                                <i class="fa-solid fa-eye toggle-password" data-target="password">
 
                                 </i>
 
@@ -155,16 +137,10 @@
 
                             <div class="password-wrapper">
 
-                                <input
-                                    type="password"
-                                    id="password_confirmation"
-                                    name="password_confirmation"
-                                    class="form-control"
-                                    placeholder="Ulangi password baru">
+                                <input type="password" id="password_confirmation" name="password_confirmation"
+                                    class="form-control" placeholder="Ulangi password baru">
 
-                                <i
-                                    class="fa-solid fa-eye toggle-password"
-                                    data-target="password_confirmation">
+                                <i class="fa-solid fa-eye toggle-password" data-target="password_confirmation">
 
                                 </i>
 
@@ -186,10 +162,7 @@
 
                         </label>
 
-                        <select
-                            name="role"
-                            class="form-control"
-                            required>
+                        <select name="role" class="form-control" required>
 
                             <option value="" disabled>
 
@@ -197,19 +170,44 @@
 
                             </option>
 
-                            <option
-                                value="admin"
-                                {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>
+                            <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>
 
                                 Admin
 
                             </option>
 
-                            <option
-                                value="user"
-                                {{ old('role', $user->role) == 'user' ? 'selected' : '' }}>
+                            <option value="user" {{ old('role', $user->role) == 'user' ? 'selected' : '' }}>
 
                                 User
+
+                            </option>
+
+                        </select>
+
+                    </div>
+                    <!-- STATUS -->
+
+                    <div class="form-group">
+
+                        <label>
+
+                            Status
+
+                            <span class="required">*</span>
+
+                        </label>
+
+                        <select name="status" class="form-control" required>
+
+                            <option value="1" {{ old('status', $user->status) == 1 ? 'selected' : '' }}>
+
+                                Aktif
+
+                            </option>
+
+                            <option value="0" {{ old('status', $user->status) == 0 ? 'selected' : '' }}>
+
+                                Tidak Aktif
 
                             </option>
 
@@ -221,16 +219,13 @@
 
                     <div class="form-actions">
 
-                        <a href="{{ route('admin.manage-account.index') }}"
-                            class="btn-secondary">
+                        <a href="{{ route('admin.manage-account.index') }}" class="btn-secondary">
 
                             Batal
 
                         </a>
 
-                        <button
-                            type="submit"
-                            class="btn-primary">
+                        <button type="submit" class="btn-primary">
 
                             <i class="fa-solid fa-floppy-disk"></i>
 

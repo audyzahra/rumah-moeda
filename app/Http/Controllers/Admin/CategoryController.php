@@ -5,9 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Services\SecurityInputService;
+use App\Services\Security\DangerousInputException;
 
 class CategoryController extends Controller
 {
+    protected SecurityInputService $security;
+
+    public function __construct(SecurityInputService $security)
+    {
+        $this->security = $security;
+    }
     /**
      * Menampilkan daftar kategori
      */
@@ -48,8 +56,19 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255|unique:categories,name',
         ]);
 
+        try {
+
+            $name = $this->security->cleanText($request->name);
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
+
         Category::create([
-            'name' => $request->name,
+            'name' => $name,
         ]);
 
         return redirect()
@@ -92,8 +111,19 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
         ]);
 
+        try {
+
+            $name = $this->security->cleanText($request->name);
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
+
         $category->update([
-            'name' => $request->name,
+            'name' => $name,
         ]);
 
         return redirect()

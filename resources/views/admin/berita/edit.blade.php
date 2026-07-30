@@ -19,21 +19,21 @@
             </div>
 
         </div>
-         <!-- ================= BREADCRUMB ================= -->
+        <!-- ================= BREADCRUMB ================= -->
 
-            <div class="page-breadcrumb">
+        <div class="page-breadcrumb">
 
-                <a href="{{ route('admin.news.index') }}">
+            <a href="{{ route('admin.news.index') }}">
 
-                    Berita
+                Berita
 
-                </a>
+            </a>
 
-                <span>></span>
+            <span>></span>
 
-                <span>Edit Berita</span>
+            <span>Edit Berita</span>
 
-            </div>
+        </div>
 
         {{-- FORM --}}
         <div class="modal-content">
@@ -71,8 +71,8 @@
                             <option value="">Pilih Kategori</option>
 
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}"
-                                    {{ $news->category_id == $category->id ? 'selected' : '' }}>
+                                <option value="{{ $category->id }}" <option value="{{ $category->id }}"
+                                    {{ old('category_id', $news->category_id) == $category->id ? 'selected' : '' }}>
 
                                     {{ $category->name }}
 
@@ -141,7 +141,7 @@
                         </label>
 
                         <input type="datetime-local" id="publish_date" name="publish_date" class="form-control"
-                            value="{{ \Carbon\Carbon::parse($news->publish_date)->format('Y-m-d\TH:i') }}">
+                            value="{{ old('publish_date', \Carbon\Carbon::parse($news->publish_date)->format('Y-m-d\TH:i')) }}"
 
                     </div>
 
@@ -174,6 +174,18 @@
     </div>
 
 @endsection
+@if(session('error'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'error',
+        title: 'Input Ditolak',
+        text: @json(session('error')),
+        confirmButtonColor: '#dc2626',
+    });
+});
+</script>
+@endif
 
 @push('scripts')
     <script src="{{ asset('js/admin/berita.js') }}"></script>
