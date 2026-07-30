@@ -88,26 +88,75 @@ class OrganizationStructureController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'parent_id' => 'nullable|exists:organization_structures,id',
+
+            'parent_id' => [
+                'nullable',
+                'exists:organization_structures,id',
+                function ($attribute, $value, $fail) use ($request) {
+
+                    if (
+                        $request->type === 'child' &&
+                        empty($value)
+                    ) {
+
+                        $fail('Parent wajib dipilih jika posisi Child.');
+                    }
+                }
+            ],
+
             'full_name' => 'required|max:100',
+
             'position' => 'required|max:100',
-            'photo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'description' => 'nullable|string'
+
+            // jangan required
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
+            'description' => 'nullable|string',
+
+        ], [
+
+            'full_name.required' => 'Nama lengkap wajib diisi.',
+
+            'position.required' => 'Jabatan wajib diisi.',
+
+            'photo.image' => 'File harus berupa gambar.',
+
+            'photo.mimes' => 'Format gambar hanya JPG, JPEG, PNG atau WEBP.',
+
+            'photo.max' => 'Ukuran foto maksimal 2 MB.',
+
         ]);
 
-        $photo = $request->file('photo')
-            ->store('struktur', 'public');
+
+        $photo = null;
+
+
+        if ($request->hasFile('photo')) {
+
+            $photo = $request->file('photo')
+                ->store('struktur', 'public');
+        }
+
 
         OrganizationStructure::create([
-            'parent_id'   => $request->parent_id,
+
+            'parent_id' => $request->parent_id,
+
             'full_name' => $request->full_name,
+
             'position' => $request->position,
+
             'photo' => $photo,
+
             'description' => $request->description
+
         ]);
 
+
         return redirect()
+
             ->route('admin.organization-structures.index')
+
             ->with('success', 'Data berhasil ditambahkan');
     }
 
@@ -170,40 +219,40 @@ class OrganizationStructureController extends Controller
 
         if ($request->filled('parent_id')) {
 
-    $parent = OrganizationStructure::find($request->parent_id);
+            $parent = OrganizationStructure::find($request->parent_id);
 
-    $visited = [];
+            $visited = [];
 
-    while ($parent) {
+            while ($parent) {
 
-        // cegah infinite loop
-        if (in_array($parent->id, $visited)) {
-            break;
+                // cegah infinite loop
+                if (in_array($parent->id, $visited)) {
+                    break;
+                }
+
+                $visited[] = $parent->id;
+
+
+                // parent tidak boleh menjadi dirinya sendiri
+                if ($parent->id == $struktur->id) {
+
+                    return back()
+                        ->withInput()
+                        ->withErrors([
+                            'parent_id' => 'Parent yang dipilih menyebabkan struktur menjadi loop.'
+                        ]);
+                }
+
+
+                $parent = $parent->parent;
+            }
         }
-
-        $visited[] = $parent->id;
-
-
-        // parent tidak boleh menjadi dirinya sendiri
-        if ($parent->id == $struktur->id) {
-
-            return back()
-                ->withInput()
-                ->withErrors([
-                    'parent_id' => 'Parent yang dipilih menyebabkan struktur menjadi loop.'
-                ]);
-        }
-
-
-        $parent = $parent->parent;
-    }
-}
 
         $struktur->update($data);
 
         return redirect()
-    ->route('admin.organization-structures.index')
-    ->with('success', 'Data berhasil diubah');
+            ->route('admin.organization-structures.index')
+            ->with('success', 'Data berhasil diubah');
     }
 
     public function destroy($id)
