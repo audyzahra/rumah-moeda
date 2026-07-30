@@ -77,6 +77,15 @@
 
                 </button>
 
+                <a href="{{ route('admin.organization-structures.template') }}"
+                    class="btn btn-primary">
+
+                    <i class="fas fa-file-excel"></i>
+
+                    Download Template
+
+                </a>
+
                 <button type="button" class="btn-refresh" onclick="location.reload()">
 
                     <i class="fa-solid fa-rotate-right"></i>

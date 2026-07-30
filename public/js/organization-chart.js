@@ -69,9 +69,9 @@ function drawOrganizationChart(){
 
                     <div class="org-card">
 
-                        <img src="${item.photo 
-                            ? '/storage/'+item.photo 
-                            : '/assets/default-user.png'
+                        <img src="${item.photo
+                            ? '/storage/'+item.photo
+                            : 'assets/images/default-user.png'
                         }">
 
 
@@ -91,7 +91,7 @@ function drawOrganizationChart(){
             },
 
 
-            item.parent_id 
+            item.parent_id
                 ? item.parent_id.toString()
                 : ''
 

@@ -271,6 +271,10 @@ Route::middleware(['auth', 'admin'])
         Route::get('organization-structures/export', [OrganizationStructureController::class, 'export'])
             ->name('organization-structures.export');
 
+        Route::get(
+            'organization-structures/template', [OrganizationStructureController::class, 'downloadTemplate'])
+            ->name('organization-structures.template');
+
         Route::resource('organization-structures', OrganizationStructureController::class);
 
         /*
@@ -448,7 +452,7 @@ Route::middleware(['auth', 'admin'])
 
 
 
-                /*
+        /*
         |--------------------------------------------------------------------------
         | Portfolio Categories
         |--------------------------------------------------------------------------
@@ -489,13 +493,13 @@ Route::middleware(['auth', 'admin'])
                     ->name('destroy');
             });
 
-            // untuk generate slug kategori portfolio
-            Route::get(
-                '/portfolio-categories/generate-slug/{name}',
-                [PortfolioCategoryController::class, 'generateSlugPreview']
-            )
-                ->name('portfolio-categories.slug');
-                
+        // untuk generate slug kategori portfolio
+        Route::get(
+            '/portfolio-categories/generate-slug/{name}',
+            [PortfolioCategoryController::class, 'generateSlugPreview']
+        )
+            ->name('portfolio-categories.slug');
+
 
         /*
         |--------------------------------------------------------------------------
@@ -543,10 +547,10 @@ Route::middleware(['auth', 'admin'])
                     ->name('destroy');
 
 
-                    Route::get(
-    '/admin/portfolios/search',
-    [PortfolioController::class,'search']
-)->name('admin.portfolios.search');
+                Route::get(
+                    '/admin/portfolios/search',
+                    [PortfolioController::class, 'search']
+                )->name('admin.portfolios.search');
             });
 
 
