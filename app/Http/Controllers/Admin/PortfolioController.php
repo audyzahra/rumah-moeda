@@ -12,8 +12,6 @@ use App\Models\PortfolioMedia;
 
 use Illuminate\Support\Str;
 
-use Illuminate\Support\Facades\Http;
-
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Storage;
@@ -174,7 +172,10 @@ class PortfolioController extends Controller
             'participants' => 'nullable|integer',
 
             'images.*' => 'nullable|image|max:2048',
-            'video_url.*' => 'nullable|url'
+            'video_url.*' => 'nullable|url',
+
+            'latitude' => 'nullable',
+            'longitude' => 'nullable',
 
         ]);
 
@@ -201,9 +202,10 @@ class PortfolioController extends Controller
 
             'participants' => $request->participants ?? 0,
 
-            'latitude'  => $request->latitude,
+            'latitude' => $request->latitude,
 
-            'longitude' => $request->longitude
+            'longitude' => $request->longitude,
+
 
         ]);
 
@@ -351,9 +353,9 @@ class PortfolioController extends Controller
 
             'participants' => $request->participants ?? 0,
 
-            'latitude'  => $request->latitude,
+            'latitude' => $request->latitude,
 
-            'longitude' => $request->longitude
+            'longitude' => $request->longitude,
 
         ]);
 
@@ -479,43 +481,5 @@ class PortfolioController extends Controller
         return redirect()
             ->route('admin.portfolios.index')
             ->with('success', 'Portfolio berhasil dihapus');
-    }
-
-
-
-    public function searchLocation(Request $request)
-    {
-        $response = Http::withHeaders([
-            'User-Agent' => 'RumahMoeda'
-        ])->get(
-            'https://nominatim.openstreetmap.org/search',
-            [
-                'q' => $request->keyword,
-                'format' => 'json',
-                'addressdetails' => 1,
-                'limit' => 10,
-                'countrycodes' => 'id',
-                'accept-language' => 'id',
-                'dedupe' => 1
-            ]
-        );
-
-
-        return response()->json(
-            collect($response->json())->map(function ($item) {
-
-                return [
-
-                    'name' => $item['display_name'],
-
-                    'lat' => $item['lat'],
-
-                    'lon' => $item['lon'],
-
-                    'address' => $item['address'] ?? []
-
-                ];
-            })
-        );
     }
 }

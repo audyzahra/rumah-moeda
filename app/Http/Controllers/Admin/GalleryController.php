@@ -8,9 +8,17 @@ use App\Models\GalleryMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Services\SecurityInputService;
+use App\Services\Security\DangerousInputException;
 
 class GalleryController extends Controller
 {
+    protected SecurityInputService $security;
+
+    public function __construct(SecurityInputService $security)
+    {
+        $this->security = $security;
+    }
     public function index(Request $request)
     {
         $query = Gallery::with(['author', 'media']);
@@ -89,10 +97,24 @@ class GalleryController extends Controller
 
         'videos.*.url' => 'Link video harus berupa URL yang valid.',
     ]);
+        try {
 
+            $title = $this->security->cleanText($request->title);
+
+            $description = $request->filled('description')
+            ? $this->security->cleanHtml($request->description)
+            : null;
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
+        }
         $gallery = Gallery::create([
-            'title' => $request->title,
-            'description' => $request->description,
+            'title' => $title,
+            'description' => $description,
             'activity_date' => $request->activity_date,
             'author_id' => Auth::id(),
         ]);
@@ -161,22 +183,37 @@ class GalleryController extends Controller
             'videos' => 'nullable|array',
             'videos.*' => 'nullable|url',
         ]);
+        try {
+
+            $title = $this->security->cleanText($data['title']);
+
+            $description = !empty($data['description'])
+                ? $this->security->cleanHtml($data['description'])
+                : null;
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
+        }
 
         // Jumlah foto yang ada saat ini
-$existingImages = $gallery->media()
-    ->where('type', 'image')
-    ->count();
+        $existingImages = $gallery->media()
+            ->where('type', 'image')
+            ->count();
 
-// Jumlah foto yang ditandai untuk dihapus
-$deletedImages = 0;
+        // Jumlah foto yang ditandai untuk dihapus
+        $deletedImages = 0;
 
-if ($request->filled('deleted_media')) {
+        if ($request->filled('deleted_media')) {
 
-    $deletedImages = GalleryMedia::whereIn('id', $request->deleted_media)
-        ->where('type', 'image')
-        ->count();
+            $deletedImages = GalleryMedia::whereIn('id', $request->deleted_media)
+                ->where('type', 'image')
+                ->count();
 
-}
+        }
 
         // Jumlah foto baru
         $newImages = $request->hasFile('images')
@@ -198,7 +235,7 @@ if ($request->filled('deleted_media')) {
         }
 
         $gallery->update([
-            'title' => $data['title'],
+            'title' => $title,
             'activity_date' => $data['activity_date'],
             'description' => $data['description'] ?? null,
         ]);

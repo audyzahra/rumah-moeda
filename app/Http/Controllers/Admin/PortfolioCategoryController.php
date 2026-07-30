@@ -6,10 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\PortfolioCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Services\SecurityInputService;
+use App\Services\Security\DangerousInputException;
 
 class PortfolioCategoryController extends Controller
 {
+    protected SecurityInputService $security;
 
+    public function __construct(SecurityInputService $security)
+    {
+        $this->security = $security;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -35,52 +42,46 @@ class PortfolioCategoryController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $request->validate([
+    {
+        $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'max:255',
 
-        'name' => [
-            'required',
-            'string',
-            'max:255'
-        ]
+                function ($attribute, $value, $fail) {
 
-    ]);
+                    $slug = $this->generateSlug($value);
 
-
-    $slug = Str::slug($request->name);
-
-
-    $request->validate([
-
-        'name' => [
-            function ($attribute, $value, $fail) use ($slug) {
-
-                if (PortfolioCategory::where('slug', $slug)->exists()) {
-
-                    $fail('Kategori tersebut sudah tersedia.');
+                    if (PortfolioCategory::where('slug', $slug)->exists()) {
+                        $fail('Kategori tersebut sudah tersedia.');
+                    }
 
                 }
+            ]
+        ]);
 
-            }
-        ]
+        try {
 
-    ]);
+            $name = $this->security->cleanText($request->name);
 
-    $slug = $this->generateSlug($request->name);
+        } catch (DangerousInputException $e) {
 
-    PortfolioCategory::create([
-    'name' => $request->name,
-    'slug' => $this->generateSlug($request->name),
-]);
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
 
+        }
 
-    return redirect()
-        ->route('admin.portfolio-categories.index')
-        ->with('success', 'Kategori portofolio berhasil ditambahkan');
-}
+        PortfolioCategory::create([
+            'name' => $name,
+            'slug' => $this->generateSlug($name),
+        ]);
 
-
-
+        return redirect()
+            ->route('admin.portfolio-categories.index')
+            ->with('success', 'Kategori portofolio berhasil ditambahkan');
+    }
     /**
      * Display the specified resource.
      */
@@ -107,29 +108,48 @@ class PortfolioCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
         $category = PortfolioCategory::findOrFail($id);
 
-
-
         $request->validate([
-
             'name' => [
                 'required',
                 'string',
-                'max:255'
-            ]
+                'max:255',
 
+                function ($attribute, $value, $fail) use ($category) {
+
+                    $slug = $this->generateSlug($value);
+
+                    if (
+                        PortfolioCategory::where('slug', $slug)
+                            ->where('id', '!=', $category->id)
+                            ->exists()
+                    ) {
+
+                        $fail('Kategori tersebut sudah tersedia.');
+
+                    }
+
+                }
+            ]
         ]);
 
+        try {
 
+            $name = $this->security->cleanText($request->name);
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
+        }
 
         $category->update([
-    'name' => $request->name,
-    'slug' => $this->generateSlug($request->name),
-]);
-
-
+            'name' => $name,
+            'slug' => $this->generateSlug($name),
+        ]);
 
         return redirect()
             ->route('admin.portfolio-categories.index')

@@ -10,10 +10,17 @@ use App\Exports\OrganizationStructureExport;
 use App\Imports\OrganizationStructureImport;
 use App\Exports\OrganizationStructureTemplateExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Services\SecurityInputService;
+use App\Services\Security\DangerousInputException;
 
 class OrganizationStructureController extends Controller
 {
+    protected SecurityInputService $security;
 
+    public function __construct(SecurityInputService $security)
+    {
+        $this->security = $security;
+    }
     public function index(Request $request)
     {
         $query = OrganizationStructure::query();
@@ -114,7 +121,9 @@ class OrganizationStructureController extends Controller
 
             'description' => 'nullable|string',
 
-        ], [
+        ],
+
+        [
 
             'full_name.required' => 'Nama lengkap wajib diisi.',
 
@@ -127,6 +136,23 @@ class OrganizationStructureController extends Controller
             'photo.max' => 'Ukuran foto maksimal 2 MB.',
 
         ]);
+        try {
+
+            $fullName = $this->security->cleanText($request->full_name);
+
+            $position = $this->security->cleanText($request->position);
+
+            $description = $request->filled('description')
+                ? $this->security->cleanHtml($request->description)
+                : null;
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
+        }
 
 
         $photo = null;
@@ -143,9 +169,9 @@ class OrganizationStructureController extends Controller
 
             'parent_id' => $request->parent_id,
 
-            'full_name' => $request->full_name,
+            'full_name' => $fullName,
 
-            'position' => $request->position,
+            'position' => $position,
 
             'photo' => $photo,
 
@@ -199,11 +225,28 @@ class OrganizationStructureController extends Controller
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'description' => 'nullable|string'
         ]);
+        try {
+
+            $fullName = $this->security->cleanText($request->full_name);
+
+            $position = $this->security->cleanText($request->position);
+
+            $description = $request->filled('description')
+                ? $this->security->cleanHtml($request->description)
+                : null;
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
+        }
 
         $data = [
             'parent_id'   => $request->parent_id,
-            'full_name' => $request->full_name,
-            'position' => $request->position,
+            'full_name' => $fullName,
+            'position' => $position,
             'description' => $request->description,
         ];
 

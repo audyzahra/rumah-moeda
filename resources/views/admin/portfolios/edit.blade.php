@@ -3,10 +3,6 @@
 @section('title', 'Edit Portofolio')
 
 @push('styles')
-<link
-rel="stylesheet"
-href="https://unpkg.com/leaflet/dist/leaflet.css">
-
     <link rel="stylesheet" href="{{ asset('css/admin/portfolio/edit.css') }}">
 @endpush
 
@@ -19,19 +15,19 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
         <!-- ================= BREADCRUMB ================= -->
 
-            <div class="page-breadcrumb">
+        <div class="page-breadcrumb">
 
-                <a href="{{ route('admin.portfolios.index') }}">
+            <a href="{{ route('admin.portfolios.index') }}">
 
-                    Portofolio
+                Portofolio
 
-                </a>
+            </a>
 
-                <span>></span>
+            <span>></span>
 
-                <span>Edit Portofolio</span>
+            <span>Edit Portofolio</span>
 
-            </div>
+        </div>
 
         <form action="{{ route('admin.portfolios.update', $portfolio->id) }}" method="POST" enctype="multipart/form-data">
 
@@ -134,50 +130,39 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
 
             <div class="mb-3">
 
-    <label class="form-label">
-        Lokasi <span class="required">*</span>
-    </label>
+                <label class="form-label">
+                    Lokasi
+                    <span class="required">*</span>
+                </label>
+
+                <input type="text" name="location" class="form-control" placeholder="Masukkan lokasi kegiatan"
+                    value="{{ old('location', $portfolio->location) }}">
+
+            </div>
 
 
-    <input
-        type="text"
-        id="location"
-        name="location"
-        class="form-control"
-        autocomplete="off"
-        value="{{ old('location', $portfolio->location) }}"
-    >
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Latitude
+                </label>
+
+                <input type="text" name="latitude" class="form-control" placeholder="Contoh: -6.3273"
+                    value="{{ old('latitude', $portfolio->latitude) }}">
+
+            </div>
 
 
-    <div
-        id="location-result"
-        class="list-group mt-1">
-    </div>
+            <div class="mb-3">
 
+                <label class="form-label">
+                    Longitude
+                </label>
 
-    <input
-        type="hidden"
-        id="latitude"
-        name="latitude"
-        value="{{ old('latitude', $portfolio->latitude) }}"
-    >
+                <input type="text" name="longitude" class="form-control" placeholder="Contoh: 108.3247"
+                    value="{{ old('longitude', $portfolio->longitude) }}">
 
-
-    <input
-        type="hidden"
-        id="longitude"
-        name="longitude"
-        value="{{ old('longitude', $portfolio->longitude) }}"
-    >
-
-</div>
-
-
-<div
-    id="map"
-    style="height:300px"
-    class="rounded border">
-</div>
+            </div>
 
 
             <div class="mb-3">
@@ -275,15 +260,12 @@ href="https://unpkg.com/leaflet/dist/leaflet.css">
                 </div>
 
 
-                <button
-type="button"
-class="btn btn-primary btn-sm"
-id="addImage">
+                <button type="button" class="btn btn-primary btn-sm" id="addImage">
 
-<i class="fa fa-plus"></i>
-Tambah Foto
+                    <i class="fa fa-plus"></i>
+                    Tambah Foto
 
-</button>
+                </button>
 
             </div>
 
@@ -318,15 +300,12 @@ Tambah Foto
 
                 </div>
 
-                <button
-type="button"
-class="btn btn-primary btn-sm"
-id="addVideo">
+                <button type="button" class="btn btn-primary btn-sm" id="addVideo">
 
-<i class="fa fa-plus"></i>
-Tambah Video
+                    <i class="fa fa-plus"></i>
+                    Tambah Video
 
-</button>
+                </button>
 
 
             </div>
@@ -334,25 +313,25 @@ Tambah Video
             <div id="deleteMediaContainer"></div>
 
 
-                <div class="modal-footer">
+            <div class="modal-footer">
 
-                    <a href="{{ route('admin.portfolios.index') }}" class="btn-batal">
+                <a href="{{ route('admin.portfolios.index') }}" class="btn-batal">
 
-                        <i class="fa-solid fa-xmark"></i>
+                    <i class="fa-solid fa-xmark"></i>
 
-                        Batal
+                    Batal
 
-                    </a>
+                </a>
 
-                    <button type="submit" class="btn-simpan">
+                <button type="submit" class="btn-simpan">
 
-                        <i class="fa-solid fa-floppy-disk"></i>
+                    <i class="fa-solid fa-floppy-disk"></i>
 
-                        Update Portofolio
+                    Update Portofolio
 
-                    </button>
+                </button>
 
-                </div>
+            </div>
 
 
         </form>
@@ -362,7 +341,5 @@ Tambah Video
 @endsection
 
 @push('scripts')
- <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
     <script src="{{ asset('js/admin/portfolio.js') }}"></script>
 @endpush

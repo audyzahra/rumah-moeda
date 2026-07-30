@@ -16,7 +16,7 @@
                 @if ($setting && $setting->hero_image)
                     <img src="{{ Storage::url($setting->hero_image) }}" alt="{{ $setting->website_name }}">
                 @else
-                    <img src="{{ asset('assets/hero/default.jpg') }}" alt="Hero">
+                    <img src="{{ defaultImage('hero') }}" alt="Hero">
                 @endif
 
             </div>
@@ -113,7 +113,7 @@
                         @if ($article->thumbnail)
                             <img src="{{ Storage::url($article->thumbnail) }}" alt="{{ $article->title }}">
                         @else
-                            <img src="{{ asset('assets/no-image.png') }}" alt="No Image">
+                            <img src="{{ defaultImage() }}" alt="Foto Default">
                         @endif
                     </div>
 
@@ -164,47 +164,69 @@
                 <div class="gallery-video">
 
                     @if ($videos->isNotEmpty())
+
                         @php
                             preg_match(
                                 '/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&\n?#]+)/',
                                 $videos->first()->video_url,
                                 $matches,
                             );
+
                             $youtubeId = $matches[1] ?? '';
                         @endphp
 
-                        <a href="javascript:void(0)" onclick="openVideo('{{ $videos->first()->youtube_id }}')">
+                        @if (!empty($youtubeId))
+                            <a href="javascript:void(0)" onclick="openVideo('{{ $youtubeId }}')">
 
-                            <img src="https://img.youtube.com/vi/{{ $videos->first()->youtube_id }}/maxresdefault.jpg">
+                                <img src="https://img.youtube.com/vi/{{ $youtubeId }}/maxresdefault.jpg"
+                                    alt="Video Dokumentasi">
 
-                            <div class="overlay">
-                                <i class="fa-solid fa-circle-play"></i>
-                            </div>
+                                <div class="overlay">
+                                    <i class="fa-solid fa-circle-play"></i>
+                                </div>
 
-                        </a>
+                            </a>
+                        @else
+                            <img src="{{ defaultImage('video') }}" alt="Video Default">
+                        @endif
+                    @else
+                        <img src="{{ defaultImage('video') }}" alt="Video Default">
+
                     @endif
 
                 </div>
 
+
                 {{-- Foto --}}
                 <div class="gallery-photo-grid">
 
-                    @foreach ($photos as $photo)
-                        <div class="photo-item" data-image="{{ asset('storage/' . $photo->file_path) }}"
-                            onclick="openImage(this)">
+                    @if ($photos->isNotEmpty())
 
-                            <img src="{{ asset('storage/' . $photo->file_path) }}" alt="Foto">
+                        @foreach ($photos as $photo)
+                            <div class="photo-item" data-image="{{ asset('storage/' . $photo->file_path) }}"
+                                onclick="openImage(this)">
 
-                            <div class="overlay">
-                                <i class="fa-solid fa-expand"></i>
+                                <img src="{{ asset('storage/' . $photo->file_path) }}" alt="Foto Dokumentasi">
+
+                                <div class="overlay">
+                                    <i class="fa-solid fa-expand"></i>
+                                </div>
+
                             </div>
+                        @endforeach
+                    @else
+                        <div class="photo-item">
+
+                            <img src="{{ defaultImage() }}" alt="Foto Default">
 
                         </div>
-                    @endforeach
+
+                    @endif
 
                 </div>
 
             </div>
+
         </div>
 
     </section>
@@ -238,28 +260,21 @@
                 <div class="mitra-track">
 
                     {{-- Loop Pertama --}}
-
                     @foreach ($partners as $partner)
+                        @php
+                            $logo = $partner->logo ? Storage::url($partner->logo) : defaultImage('logo');
+                        @endphp
+
                         @if ($partner->website)
                             <a href="{{ $partner->website }}" target="_blank" class="mitra-item">
 
-                                @if ($partner->logo)
-                                    <img src="{{ Storage::url($partner->logo) }}" alt="{{ $partner->name }}"
-                                        title="{{ $partner->name }}">
-                                @else
-                                    <img src="{{ asset('assets/no-image.png') }}" alt="{{ $partner->name }}">
-                                @endif
+                                <img src="{{ $logo }}" alt="{{ $partner->name }}" title="{{ $partner->name }}">
 
                             </a>
                         @else
                             <div class="mitra-item">
 
-                                @if ($partner->logo)
-                                    <img src="{{ Storage::url($partner->logo) }}" alt="{{ $partner->name }}"
-                                        title="{{ $partner->name }}">
-                                @else
-                                    <img src="{{ asset('assets/no-image.png') }}" alt="{{ $partner->name }}">
-                                @endif
+                                <img src="{{ $logo }}" alt="{{ $partner->name }}" title="{{ $partner->name }}">
 
                             </div>
                         @endif
@@ -267,20 +282,21 @@
 
 
                     {{-- Duplicate supaya animasi tidak putus --}}
-
                     @foreach ($partners as $partner)
+                        @php
+                            $logo = $partner->logo ? Storage::url($partner->logo) : defaultImage('logo');
+                        @endphp
+
                         @if ($partner->website)
                             <a href="{{ $partner->website }}" target="_blank" class="mitra-item">
 
-                                <img src="{{ Storage::url($partner->logo) }}" alt="{{ $partner->name }}"
-                                    title="{{ $partner->name }}">
+                                <img src="{{ $logo }}" alt="{{ $partner->name }}" title="{{ $partner->name }}">
 
                             </a>
                         @else
                             <div class="mitra-item">
 
-                                <img src="{{ Storage::url($partner->logo) }}" alt="{{ $partner->name }}"
-                                    title="{{ $partner->name }}">
+                                <img src="{{ $logo }}" alt="{{ $partner->name }}" title="{{ $partner->name }}">
 
                             </div>
                         @endif

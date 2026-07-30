@@ -124,9 +124,7 @@
 
                     <div class="mb-3">
 
-                        <label>
-                            Deskripsi <span class="required">*</span>
-                        </label>
+                        <label>Deskripsi</label>
 
                         <x-tiptap  id="descriptionEditor" name="description" :value="old('description')" placeholder="Masukkan deskripsi..."
                             :image="false" />
@@ -165,6 +163,22 @@
 
 @endsection
 
+@if(session('error'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'error',
+        title: 'Input Ditolak',
+        text: @json(session('error')),
+        confirmButtonColor: '#dc2626',
+    });
+});
+</script>
+@endif
+
+@push('scripts')
+    <script src="{{ asset('js/admin/struktur.js') }}"></script>
+@endpush
 @push('scripts')
     <script src="{{ asset('js/admin/struktur.js') }}"></script>
 @endpush
