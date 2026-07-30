@@ -12,13 +12,12 @@ class OrganizationStructureImport implements ToCollection, WithHeadingRow
 
     public function headingRow(): int
     {
-        return 4;
+        return 7;
     }
 
 
     public function collection(Collection $rows)
 {
-
     // Tahap 1: Simpan semua data tanpa parent
     foreach ($rows as $row) {
 
@@ -60,7 +59,7 @@ class OrganizationStructureImport implements ToCollection, WithHeadingRow
 
 
         $child = OrganizationStructure::where('full_name', $row['nama'])
-            ->where('position', $row['jabatan'])
+            ->where('position', trim($row['jabatan']))
             ->first();
 
 
@@ -71,13 +70,13 @@ class OrganizationStructureImport implements ToCollection, WithHeadingRow
 
         if (
             !empty($row['atasan']) &&
-            $row['atasan'] != '-'
+            trim($row['atasan']) != '-'
         ) {
 
 
             $parent = OrganizationStructure::where(
                 'full_name',
-                $row['atasan']
+                trim($row['atasan'])
             )->first();
 
 

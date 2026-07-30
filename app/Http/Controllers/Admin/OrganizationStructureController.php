@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\OrganizationStructureExport;
 use App\Imports\OrganizationStructureImport;
+use App\Exports\OrganizationStructureTemplateExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class OrganizationStructureController extends Controller
@@ -293,5 +294,19 @@ class OrganizationStructureController extends Controller
         return redirect()
             ->route('admin.organization-structures.index')
             ->with('success', 'Data berhasil diimport.');
+    }
+
+
+
+    public function downloadTemplate()
+    {
+
+        return Excel::download(
+
+            new OrganizationStructureTemplateExport(),
+
+            'template_struktur_organisasi.xlsx'
+
+        );
     }
 }
