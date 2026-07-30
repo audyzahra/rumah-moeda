@@ -6,10 +6,7 @@
     'uploadRoute' => route('admin.editor.upload'),
 ])
 
-<div
-    class="tiptap-wrapper"
-    data-upload-url="{{ $uploadRoute }}"
->
+<div class="tiptap-wrapper" data-upload-url="{{ $uploadRoute }}">
 
     {{-- Toolbar --}}
     <div class="tiptap-toolbar">
@@ -60,12 +57,8 @@
             <i class="fa-solid fa-link"></i>
         </button>
 
-        @if($image)
-            <button
-                type="button"
-                data-action="image"
-                title="Upload Image"
-            >
+        @if ($image)
+            <button type="button" data-action="image" title="Upload Image">
                 <i class="fa-solid fa-image"></i>
             </button>
         @endif
@@ -83,27 +76,15 @@
     </div>
 
     {{-- Editor --}}
-    <div
-        class="tiptap-editor"
-        data-placeholder="{{ $placeholder }}"
-    ></div>
+    <div class="tiptap-editor" data-placeholder="{{ $placeholder }}"></div>
 
     {{-- Hidden Content --}}
-    <input
-        type="hidden"
-        name="{{ $name }}"
-        value="{{ $value }}"
-        class="tiptap-content"
-    >
+    <input type="hidden" name="{{ $name }}" class="tiptap-content" data-content='@json($value)'
+        value="">
 
-    @if($image)
+    @if ($image)
         {{-- Hidden Upload --}}
-        <input
-            type="file"
-            class="tiptap-image-input"
-            accept="image/png,image/jpeg,image/jpg,image/webp"
-            hidden
-        >
+        <input type="file" class="tiptap-image-input" accept="image/png,image/jpeg,image/jpg,image/webp" hidden>
     @endif
 
 </div>

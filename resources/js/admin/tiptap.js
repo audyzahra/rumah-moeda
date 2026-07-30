@@ -24,11 +24,13 @@ function initTiptap() {
         if (!editorElement || !hiddenInput) {
             return;
         }
-
+        const initialContent = hiddenInput.dataset.content
+            ? JSON.parse(hiddenInput.dataset.content)
+            : "";
         const editor = new Editor({
             element: editorElement,
 
-            content: hiddenInput.value || "",
+            content: initialContent,
 
             autofocus: false,
 
@@ -128,19 +130,41 @@ function initTiptap() {
         });
 
         editorElement.addEventListener("paste", async (e) => {
+
+            // Cek apakah user paste HTML
+            const html = e.clipboardData.getData("text/html");
+
+            if (html && html.trim() !== "") {
+
+                e.preventDefault();
+
+                await Swal.fire({
+                    icon: "error",
+                    title: "Input Ditolak",
+                    text: "Menempelkan kode HTML tidak diperbolehkan. Gunakan fitur editor yang tersedia.",
+                    confirmButtonColor: "#dc2626",
+                });
+
+                return;
+            }
+
+            // Upload gambar
             const items = e.clipboardData.items;
 
             for (const item of items) {
+
                 if (item.type.startsWith("image/")) {
+
                     e.preventDefault();
 
                     const file = item.getAsFile();
 
                     await handleImageFile(file, wrapper, editor);
 
-                    break;
+                    return;
                 }
             }
+
         });
     });
 

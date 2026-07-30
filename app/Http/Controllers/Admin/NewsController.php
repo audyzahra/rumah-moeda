@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\News;
 use App\Models\Category;
+use App\Models\News;
+use App\Services\Security\DangerousInputException;
+use App\Services\SecurityInputService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -12,6 +14,13 @@ use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
+    protected SecurityInputService $security;
+
+    public function __construct(SecurityInputService $security)
+    {
+        $this->security = $security;
+    }
+
     /**
      * Menampilkan halaman berita
      */
@@ -19,7 +28,7 @@ class NewsController extends Controller
     {
         $news = News::with(['category', 'author'])
             ->orderByDesc('publish_date')
-            ->paginate(5);;
+            ->paginate(5);
 
         $categories = Category::orderBy('name')->get();
 
@@ -76,30 +85,41 @@ class NewsController extends Controller
             'thumbnail'     => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        try {
+
+            $title = $this->security->cleanText($request->title);
+            $content = $this->security->cleanHtml($request->content);
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
+
         $thumbnail = null;
 
         if ($request->hasFile('thumbnail')) {
-
             $thumbnail = $request->file('thumbnail')
                 ->store('news', 'public');
         }
 
         News::create([
-            'title'         => $request->title,
+            'title'         => $title,
             'thumbnail'     => $thumbnail,
-            'content'       => $request->content,
+            'content'       => $content,
             'category_id'   => $request->category_id,
-            'slug'          => Str::slug($request->title),
+            'slug'          => Str::slug($title),
             'publish_date'  => $request->publish_date,
             'author_id'     => Auth::id(),
         ]);
 
         return redirect()
-        ->route('admin.news.index')
-        ->with([
-            'title' => 'Berhasil! 🎉',
-            'success' => 'Berita berhasil ditambahkan.'
-        ]);
+            ->route('admin.news.index')
+            ->with([
+                'title'   => 'Berhasil! 🎉',
+                'success' => 'Berita berhasil ditambahkan.'
+            ]);
     }
 
     /**
@@ -117,11 +137,22 @@ class NewsController extends Controller
             'thumbnail'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        try {
+
+            $title = $this->security->cleanText($request->title);
+            $content = $this->security->cleanHtml($request->content);
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
+
         $thumbnail = $beritum->thumbnail;
 
         if ($request->hasFile('thumbnail')) {
 
-            // Hapus thumbnail lama
             if (
                 $thumbnail &&
                 Storage::disk('public')->exists($thumbnail)
@@ -129,26 +160,25 @@ class NewsController extends Controller
                 Storage::disk('public')->delete($thumbnail);
             }
 
-            // Upload thumbnail baru
             $thumbnail = $request->file('thumbnail')
                 ->store('news', 'public');
         }
 
         $beritum->update([
-            'title'         => $request->title,
+            'title'         => $title,
             'thumbnail'     => $thumbnail,
-            'content'       => $request->content,
+            'content'       => $content,
             'category_id'   => $request->category_id,
-            'slug'          => Str::slug($request->title),
+            'slug'          => Str::slug($title),
             'publish_date'  => $request->publish_date,
         ]);
 
         return redirect()
-        ->route('admin.news.index')
-        ->with([
-            'title' => 'Berhasil! 🎉',
-            'success' => 'Berita berhasil diperbarui.'
-        ]);
+            ->route('admin.news.index')
+            ->with([
+                'title'   => 'Berhasil! 🎉',
+                'success' => 'Berita berhasil diperbarui.'
+            ]);
     }
 
     /**
@@ -158,7 +188,6 @@ class NewsController extends Controller
     {
         $news = News::findOrFail($id);
 
-        // Hapus thumbnail dari storage
         if (
             $news->thumbnail &&
             Storage::disk('public')->exists($news->thumbnail)
@@ -171,8 +200,8 @@ class NewsController extends Controller
         return redirect()
             ->route('admin.news.index')
             ->with([
-            'title' => 'Berhasil Dihapus 🗑️',
-            'success' => 'Berita berhasil dihapus.'
-        ]);
+                'title'   => 'Berhasil Dihapus 🗑️',
+                'success' => 'Berita berhasil dihapus.'
+            ]);
     }
 }
