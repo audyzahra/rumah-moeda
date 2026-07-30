@@ -61,6 +61,19 @@
                         });
                     </script>
                 @endif
+                @if (session('error'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Input Ditolak',
+                                text: @json(session('error')),
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#dc2626'
+                            });
+                        });
+                    </script>
+                @endif
 
                 <form action="{{ route('admin.partners.store') }}" method="POST" enctype="multipart/form-data">
 
@@ -90,7 +103,7 @@
 
                             </label>
 
-                            <input type="url" name="website" class="form-control" value="{{ old('website') }}"
+                            <input type="text" name="website" class="form-control" value="{{ old('website') }}"
                                 placeholder="https://example.com">
 
                         </div>

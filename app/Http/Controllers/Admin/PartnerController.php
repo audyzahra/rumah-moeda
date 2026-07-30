@@ -8,8 +8,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
+use App\Services\SecurityInputService;
+use App\Services\Security\DangerousInputException;
+
 class PartnerController extends Controller
 {
+    protected SecurityInputService $security;
+
+    public function __construct(SecurityInputService $security)
+    {
+        $this->security = $security;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -108,6 +117,7 @@ class PartnerController extends Controller
 
     ],[
         'name.required' => 'Nama mitra wajib diisi.',
+        'website.url' => 'Website harus berupa URL yang valid.',
         'display_order.required' => 'Urutan tampil wajib diisi.',
         'display_order.integer' => 'Urutan tampil harus berupa angka.',
         'display_order.unique' => 'Urutan tampil sudah digunakan. Silakan gunakan nomor lain atau ubah urutan mitra yang sudah ada.',
@@ -116,7 +126,29 @@ class PartnerController extends Controller
         'logo.mimes' => 'Logo harus berformat JPG, JPEG, PNG, GIF atau SVG.',
         'logo.max' => 'Ukuran logo maksimal 2 MB.',
     ]);
+    try {
 
+        $name = $this->security->cleanText($request->name);
+
+        $website = !empty($request->website)
+            ? $this->security->cleanText($request->website)
+            : null;
+
+        $description = !empty($request->description)
+            ? $this->security->cleanHtml($request->description)
+            : null;
+
+    } catch (DangerousInputException $e) {
+
+        return back()
+            ->withInput()
+            ->with('error', $e->getMessage());
+
+    }
+
+    $data['name'] = $name;
+    $data['website'] = $website;
+    $data['description'] = $description;
     $data = $request->except('logo');
 
     if ($request->hasFile('logo')) {
@@ -166,6 +198,7 @@ class PartnerController extends Controller
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ],[
             'name.required' => 'Nama mitra wajib diisi.',
+            'website.url' => 'Website harus berupa URL yang valid.',
             'display_order.required' => 'Urutan tampil wajib diisi.',
             'display_order.integer' => 'Urutan tampil harus berupa angka.',
             'display_order.unique' => 'Urutan tampil sudah digunakan. Silakan gunakan nomor lain atau ubah urutan mitra yang sudah ada.',
@@ -173,8 +206,31 @@ class PartnerController extends Controller
             'logo.mimes' => 'Logo harus berformat JPG, JPEG, PNG, GIF atau SVG.',
             'logo.max' => 'Ukuran logo maksimal 2 MB.',
         ]);
+        try {
+
+            $name = $this->security->cleanText($request->name);
+
+            $website = !empty($request->website)
+                ? $this->security->cleanText($request->website)
+                : null;
+
+            $description = !empty($request->description)
+                ? $this->security->cleanHtml($request->description)
+                : null;
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
+        }
 
         $data = $request->all();
+
+        $data['name'] = $name;
+        $data['website'] = $website;
+        $data['description'] = $description;
 
         // Upload logo
         if ($request->hasFile('logo')) {
