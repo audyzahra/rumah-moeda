@@ -82,7 +82,7 @@
 
                     <i class="fas fa-file-excel"></i>
 
-                    Download Template
+                    Template
 
                 </a>
 
