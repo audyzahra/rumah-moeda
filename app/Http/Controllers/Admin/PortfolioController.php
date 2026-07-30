@@ -11,14 +11,20 @@ use App\Models\Partner;
 use App\Models\PortfolioMedia;
 
 use Illuminate\Support\Str;
-
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\Storage;
+
+use App\Services\SecurityInputService;
+use App\Services\Security\DangerousInputException;
 
 class PortfolioController extends Controller
 {
+    protected SecurityInputService $security;
 
+    public function __construct(SecurityInputService $security)
+    {
+        $this->security = $security;
+    }
 
     public function index(Request $request)
     {
@@ -160,27 +166,74 @@ class PortfolioController extends Controller
     {
 
 
-        $request->validate([
+        $data = $request->validate([
 
-            'category_id' => 'required',
-            'partner_id' => 'nullable',
-            'title' => 'required',
-            'description' => 'required',
-            'activity_date' => 'required',
+            'category_id' => 'required|exists:portfolio_categories,id',
+            'partner_id' => 'nullable|exists:partners,id',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'activity_date' => 'required|date',
             'author_id' => 'nullable|exists:users,id',
-            'location' => 'nullable',
-            'participants' => 'nullable|integer',
-
-            'images.*' => 'nullable|image|max:2048',
+            'location' => 'required|string|max:255',
+            'participants' => 'nullable|integer|min:0',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
+            'images' => 'required|array|min:1',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
             'video_url.*' => 'nullable|url',
 
-            'latitude' => 'nullable',
-            'longitude' => 'nullable',
+        ],
+         [
+            'category_id.required' => 'Kategori wajib dipilih.',
+            'category_id.exists' => 'Kategori tidak valid.',
 
-        ]);
+            'partner_id.exists' => 'Mitra tidak valid.',
 
+            'title.required' => 'Judul wajib diisi.',
+            'title.max' => 'Judul maksimal 255 karakter.',
 
+            'description.required' => 'Deskripsi wajib diisi.',
 
+            'activity_date.required' => 'Tanggal kegiatan wajib diisi.',
+            'activity_date.date' => 'Format tanggal tidak valid.',
+
+            'location.required' => 'Lokasi wajib diisi.',
+            'location.max' => 'Lokasi maksimal 255 karakter.',
+
+            'participants.integer' => 'Jumlah peserta harus berupa angka.',
+            'participants.min' => 'Jumlah peserta tidak boleh kurang dari 0.',
+
+            'latitude.numeric' => 'Latitude harus berupa angka.',
+            'latitude.between' => 'Latitude harus berada antara -90 sampai 90.',
+
+            'longitude.numeric' => 'Longitude harus berupa angka.',
+            'longitude.between' => 'Longitude harus berada antara -180 sampai 180.',
+
+            'images.*.image' => 'File harus berupa gambar.',
+            'images.*.mimes' => 'Format gambar harus JPG, JPEG, PNG, atau WEBP.',
+            'images.*.max' => 'Ukuran gambar maksimal 2 MB.',
+
+            'video_url.*.url' => 'URL video YouTube tidak valid.',
+        ]
+    );
+
+        try {
+
+            $title = $this->security->cleanText($data['title']);
+
+            $location = !empty($data['location'])
+                ? $this->security->cleanText($data['location'])
+                : null;
+
+            $description = $this->security->cleanHtml($data['description']);
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
+        }
 
         $portfolio = Portfolio::create([
 
@@ -190,15 +243,15 @@ class PortfolioController extends Controller
 
             'partner_id' => $request->partner_id,
 
-            'title' => $request->title,
+            'title' => $title,
 
-            'slug' => Str::slug($request->title),
+            'slug' => Str::slug($title),
 
-            'description' => $request->description,
+            'description' => $description,
 
             'activity_date' => $request->activity_date,
 
-            'location' => $request->location,
+            'location' => $location,
 
             'participants' => $request->participants ?? 0,
 
@@ -259,10 +312,6 @@ class PortfolioController extends Controller
             ->with('success', 'Portfolio berhasil ditambahkan');
     }
 
-
-
-
-
     public function show(string $id)
     {
 
@@ -277,10 +326,6 @@ class PortfolioController extends Controller
 
         return response()->json($portfolio);
     }
-
-
-
-
 
     public function edit(string $id)
     {
@@ -306,34 +351,91 @@ class PortfolioController extends Controller
         );
     }
 
-
-
-
-
     public function update(Request $request, string $id)
     {
 
 
-        $request->validate([
-            'category_id' => 'required',
-            'partner_id' => 'nullable',
-            'title' => 'required',
-            'description' => 'required',
-            'activity_date' => 'required',
-            'location' => 'nullable',
-            'participants' => 'nullable|integer',
-
-            'images.*' => 'nullable|image|max:2048',
+        $data = $request->validate([
+            'category_id' => 'required|exists:portfolio_categories,id',
+            'partner_id' => 'nullable|exists:partners,id',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'activity_date' => 'required|date',
+            'location' => 'required|string|max:255',
+            'participants' => 'nullable|integer|min:0',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'video_url.*' => 'nullable|url',
-            'delete_media.*' => 'nullable|exists:portfolio_media,id'
+            'delete_media.*' => 'nullable|exists:portfolio_media,id',
 
-        ]);
+        ],
+        [
+            'category_id.required' => 'Kategori wajib dipilih.',
+            'title.required' => 'Judul wajib diisi.',
+            'description.required' => 'Deskripsi wajib diisi.',
+            'activity_date.required' => 'Tanggal kegiatan wajib diisi.',
+            'location.required' => 'Lokasi wajib diisi.',
 
+            'latitude.numeric' => 'Latitude harus berupa angka.',
+            'latitude.between' => 'Latitude harus berada antara -90 sampai 90.',
 
+            'longitude.numeric' => 'Longitude harus berupa angka.',
+            'longitude.between' => 'Longitude harus berada antara -180 sampai 180.',
 
+            'images.required' => 'Minimal upload 1 foto.',
+            'images.array' => 'Minimal upload 1 foto.',
+            'images.min' => 'Minimal upload 1 foto.',
+            'images.*.image' => 'File harus berupa gambar.',
+            'images.*.mimes' => 'Format gambar harus JPG, JPEG, PNG, atau WEBP.',
+            'images.*.max' => 'Ukuran gambar maksimal 2 MB.',
+
+            'video_url.*.url' => 'URL video YouTube tidak valid.',
+            ]
+        );
+        try {
+
+            $title = $this->security->cleanText($data['title']);
+
+            $location = !empty($data['location'])
+                ? $this->security->cleanText($data['location'])
+                : null;
+
+            $description = $this->security->cleanHtml($data['description']);
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
+        }
 
         $portfolio = Portfolio::findOrFail($id);
 
+        $currentImages = $portfolio->media()
+            ->where('type', 'image')
+            ->count();
+
+        $deletedImages = PortfolioMedia::whereIn(
+            'id',
+            $request->delete_media ?? []
+        )
+        ->where('type', 'image')
+        ->count();
+
+        $newImages = count($request->file('images') ?? []);
+
+        $remainingImages = $currentImages - $deletedImages + $newImages;
+
+        if ($remainingImages < 1) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'images' => 'Portfolio harus memiliki minimal 1 foto.'
+                ]);
+        }
 
         $portfolio->update([
 
@@ -341,15 +443,15 @@ class PortfolioController extends Controller
 
             'partner_id' => $request->partner_id,
 
-            'title' => $request->title,
+            'title' => $title,
 
-            'slug' => Str::slug($request->title),
+            'slug' => Str::slug($title),
 
-            'description' => $request->description,
+            'description' => $description,
 
             'activity_date' => $request->activity_date,
 
-            'location' => $request->location,
+            'location' => $location,
 
             'participants' => $request->participants ?? 0,
 
