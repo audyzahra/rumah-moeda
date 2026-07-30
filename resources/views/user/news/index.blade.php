@@ -53,27 +53,45 @@
 
         {{-- ===================== FILTER ===================== --}}
 
-        <div class="filter-container">
+        <form method="GET" id="filterForm" class="filter-container">
 
-            <input type="text" id="searchInput" placeholder="Cari Judul Berita..." class="search-input">
+    <input
+        type="text"
+        name="search"
+        id="searchInput"
+        class="search-input"
+        placeholder="Cari Judul Berita..."
+        value="{{ request('search') }}"
+    >
 
-            <select id="categoryFilter" class="filter-select">
+    <select
+        name="category"
+        id="categoryFilter"
+        class="filter-select"
+    >
 
-                <option value="">
-                    Semua Kategori
-                </option>
+        <option value="">Semua Kategori</option>
 
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">
+        @foreach ($categories as $category)
 
-                        {{ $category->name }}
+            <option
+                value="{{ $category->id }}"
+                {{ request('category') == $category->id ? 'selected' : '' }}
+            >
+                {{ $category->name }}
+            </option>
 
-                    </option>
-                @endforeach
+        @endforeach
 
-            </select>
+    </select>
 
-        </div>
+    <input
+        type="hidden"
+        name="per_page"
+        value="{{ request('per_page', 5) }}"
+    >
+
+</form>
 
 
         {{-- ===================== TABEL BERITA ===================== --}}
@@ -84,7 +102,6 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Thumbnail</th>
                         <th>Judul</th>
                         <th>Kategori</th>
                         <th>Penulis</th>
@@ -101,17 +118,7 @@
 
                             <td>{{ $index + 1 }}</td>
 
-                            <td>
-                                @if ($item->thumbnail)
-                                    <img src="{{ Storage::url($item->thumbnail) }}"
-                                        alt="{{ $item->title }}"
-                                        class="table-thumbnail">
-                                @else
-                                    <img src="{{ asset('assets/no-image.png') }}"
-                                        alt="No Image"
-                                        class="table-thumbnail">
-                                @endif
-                            </td>
+                            
 
                             <td>
                                 <div class="news-title">
@@ -172,7 +179,7 @@
                     @empty
 
                         <tr>
-                            <td colspan="7" class="empty-state">
+                            <td colspan="6" class="empty-state">
                                 <i class="fa-solid fa-newspaper"></i>
                                 <h3>Belum ada berita</h3>
                                 <p>Silakan tambahkan berita pertama.</p>
@@ -187,73 +194,110 @@
 
             <!-- ================= PAGINATION ================= -->
 
-                <div class="pagination-section">
+                <!-- ================= PAGINATION ================= -->
 
-                    <div class="info-data">
+            <div class="custom-pagination">
 
-                        Menampilkan
+                {{-- Show Entries --}}
+                <div class="pagination-left">
 
-                        <strong>{{ $news->firstItem() ?? 0 }}</strong>
+                    <form method="GET">
 
-                        -
+    <input type="hidden" name="search" value="{{ request('search') }}">
+    <input type="hidden" name="category" value="{{ request('category') }}">
 
-                        <strong>{{ $news->lastItem() ?? 0 }}</strong>
+                        @foreach(request()->except('per_page','page') as $key => $value)
+                            <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                        @endforeach
 
-                        dari
+                        <span>Tampilkan</span>
 
-                        <strong>{{ $news->total() }}</strong>
+                        <select name="per_page" onchange="this.form.submit()">
 
-                        data
+                            <option value="5" {{ request('per_page',5)==5 ? 'selected' : '' }}>5</option>
+                            <option value="10" {{ request('per_page')==10 ? 'selected' : '' }}>10</option>
+                            <option value="20" {{ request('per_page')==20 ? 'selected' : '' }}>20</option>
+                            <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>50</option>
 
-                    </div>
+                        </select>
 
-                    <div class="pagination-controls">
+                        <span>berita</span>
 
-                        {{-- Previous --}}
-                        @if ($news->onFirstPage())
-
-                            <button class="page-btn" disabled>
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </button>
-
-                        @else
-
-                            <a href="{{ $news->previousPageUrl() }}" class="page-btn">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </a>
-
-                        @endif
-
-                        <span id="pageInfo">
-
-                            Halaman
-
-                            {{ $news->currentPage() }}
-
-                            dari
-
-                            {{ $news->lastPage() }}
-
-                        </span>
-
-                        {{-- Next --}}
-                        @if ($news->hasMorePages())
-
-                            <a href="{{ $news->nextPageUrl() }}" class="page-btn">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </a>
-
-                        @else
-
-                            <button class="page-btn" disabled>
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </button>
-
-                        @endif
-
-                    </div>
+                    </form>
 
                 </div>
+
+                {{-- Info --}}
+                <div class="pagination-center">
+
+                    <span>Menampilkan</span>
+
+                    <strong>{{ $news->firstItem() ?? 0 }}</strong>
+
+                    <span>-</span>
+
+                    <strong>{{ $news->lastItem() ?? 0 }}</strong>
+
+                    <span>dari</span>
+
+                    <strong>{{ $news->total() }}</strong>
+
+                    <span>data</span>
+
+                </div>
+
+                {{-- Pagination --}}
+                <div class="pagination-right">
+
+                    @if ($news->onFirstPage())
+
+                        <button class="page-btn" disabled>
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+
+                    @else
+
+                        <a href="{{ $news->appends(request()->query())->previousPageUrl() }}" class="page-btn">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
+
+                    @endif
+
+                    @foreach ($news->appends(request()->query())->getUrlRange(1, $news->lastPage()) as $page => $url)
+
+                        @if ($page == $news->currentPage())
+
+                            <span class="page-number active">
+                                {{ $page }}
+                            </span>
+
+                        @else
+
+                            <a href="{{ $url }}" class="page-number">
+                                {{ $page }}
+                            </a>
+
+                        @endif
+
+                    @endforeach
+
+                    @if ($news->hasMorePages())
+
+                        <a href="{{ $news->appends(request()->query())->nextPageUrl() }}" class="page-btn">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+
+                    @else
+
+                        <button class="page-btn" disabled>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+
+                    @endif
+
+                </div>
+
+            </div>
 
         </div>
 

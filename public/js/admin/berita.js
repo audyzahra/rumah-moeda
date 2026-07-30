@@ -358,45 +358,36 @@ function deleteBerita(id) {
 }
 
 /* ==========================================
-   SEARCH & FILTER BERITA
+   SEARCH & FILTER (LARAVEL)
 ========================================== */
 
-function filterBerita() {
+const filterForm = document.getElementById("filterForm");
 
-    const keyword = searchInput.value.toLowerCase().trim();
-    const selectedCategory = categoryFilter.value;
+if (searchInput && filterForm) {
 
-    const rows = document.querySelectorAll(".berita-table tbody tr");
+    let timer;
 
-    rows.forEach(function (row) {
+    searchInput.addEventListener("keyup", function () {
 
-        // Lewati baris empty state
-        if (row.querySelector(".empty-state")) return;
+        clearTimeout(timer);
 
-        const title = row.dataset.title || "";
-        const category = row.dataset.category || "";
+        timer = setTimeout(function () {
 
-        const matchTitle = title.includes(keyword);
+            filterForm.submit();
 
-        const matchCategory =
-            selectedCategory === "" ||
-            category === selectedCategory;
-
-        row.style.display = (matchTitle && matchCategory) ? "" : "none";
+        }, 500);
 
     });
 
 }
 
-if (searchInput) {
+if (categoryFilter && filterForm) {
 
-    searchInput.addEventListener("keyup", filterBerita);
+    categoryFilter.addEventListener("change", function () {
 
-}
+        filterForm.submit();
 
-if (categoryFilter) {
-
-    categoryFilter.addEventListener("change", filterBerita);
+    });
 
 }
 
