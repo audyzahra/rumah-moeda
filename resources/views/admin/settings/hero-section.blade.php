@@ -8,84 +8,77 @@
 
 @section('content')
 
-<section class="tab-content">
+    <section class="tab-content">
 
-    <div class="settings-card">
+        <div class="settings-card">
 
-        <div class="card-header">
+            <div class="card-header">
 
-            <h3>
-                <i class="fa-solid fa-image"></i>
-                Hero Section
-            </h3>
+                <h3>
+                    <i class="fa-solid fa-image"></i>
+                    Hero Section
+                </h3>
 
-            <p>
-                Kelola gambar utama halaman Home
-            </p>
+                <p>
+                    Kelola gambar utama halaman Home
+                </p>
 
-        </div>
+            </div>
 
-        <div class="card-body">
+            <div class="card-body">
 
-            <form action="{{ route('admin.hero.update') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.hero.update') }}" method="POST" enctype="multipart/form-data">
 
-                @csrf
-                <div class="hero-wrapper">
-                    <div class="form-group">
-                        <label>
-                            Hero Saat Ini
-                        </label>
+                    @csrf
+                    <div class="hero-wrapper">
+                        <div class="form-group">
+                            <label>
+                                Hero Saat Ini
+                            </label>
 
                             <div class="hero-current">
-                                @if (!empty($setting->hero_image))
-                                    <img src="{{ Storage::url($setting->hero_image) }}" alt="Hero Image">
-                                @else
-                                    <p>Belum ada gambar hero.</p>
-                                @endif
+                                <img src="{{ !empty($setting->hero_image) ? Storage::url($setting->hero_image) : defaultImage('hero') }}"
+                                    alt="Hero Image">
                             </div>
-                    </div>
+                        </div>
 
-                    <div class="form-group">
-                        <label>
-                            Upload Hero Baru
-                            <span class="required">*</span>
-                        </label>
+                        <div class="form-group">
+                            <label>
+                                Upload Hero Baru
+                                <span class="required">*</span>
+                            </label>
 
-                        <div class="hero-upload">
-                            <input
-                                type="file"
-                                id="heroImage"
-                                name="hero_image"
-                                accept="image/*"
-                                onchange="previewHero(event)">
+                            <div class="hero-upload">
+                                <input type="file" id="heroImage" name="hero_image" accept="image/*"
+                                    onchange="previewHero(event)">
 
-                            <div class="hero-preview" id="heroPreview">
-                                <p>Klik untuk memilih gambar</p>
-                                <i class="fa-solid fa-cloud-upload-alt"></i>
-                                <small>
-                                    Format: JPG, JPEG, PNG
-                                    <br>
-                                    Maksimal 5 MB
-                                    <br>
-                                    Disarankan ukuran 1920 × 1080 px
-                                </small>
+                                <div class="hero-preview" id="heroPreview">
+                                    <p>Klik untuk memilih gambar</p>
+                                    <i class="fa-solid fa-cloud-upload-alt"></i>
+                                    <small>
+                                        Format: JPG, JPEG, PNG
+                                        <br>
+                                        Maksimal 5 MB
+                                        <br>
+                                        Disarankan ukuran 1920 × 1080 px
+                                    </small>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                        <div class="form-actions">
-                            <button type="submit" class="btn-simpan">
-                                <i class="fa-solid fa-save"></i>
-                                Simpan Hero
-                            </button>
-                        </div>              
-            </form>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-simpan">
+                            <i class="fa-solid fa-save"></i>
+                            Simpan Hero
+                        </button>
+                    </div>
+                </form>
+
+            </div>
 
         </div>
 
-    </div>
-
-</section>
+    </section>
 
 @endsection
 @push('scripts')

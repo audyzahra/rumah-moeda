@@ -50,10 +50,13 @@
                 data-date="{{ \Carbon\Carbon::parse($item->activity_date)->timestamp }}">
 
                 {{-- Thumbnail --}}
-                @if ($item->media->isNotEmpty())
-                    <img loading="lazy" src="{{ asset('storage/' . $item->media->first()->file_path) }}"
-                        alt="{{ $item->title }}">
-                @endif
+                @php
+                    $media = $item->media->first();
+
+                    $image = $media ? Storage::url($media->file_path) : defaultImage();
+                @endphp
+
+                <img loading="lazy" src="{{ $image }}" alt="{{ $item->title }}">
 
                 <div class="galeri-info">
 

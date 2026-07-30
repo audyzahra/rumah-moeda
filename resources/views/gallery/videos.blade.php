@@ -24,77 +24,64 @@
 
     <div class="galeri-toolbar">
 
-    <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass"></i>
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
 
-        <input
-            type="text"
-            id="searchVideo"
-            placeholder="Cari dokumentasi..."
-        >
+            <input type="text" id="searchVideo" placeholder="Cari dokumentasi...">
+        </div>
+
+        <div class="sort-box">
+            <select id="sortVideo">
+                <option value="terbaru">Terbaru</option>
+                <option value="terlama">Terlama</option>
+                <option value="az">Judul A-Z</option>
+                <option value="za">Judul Z-A</option>
+            </select>
+        </div>
+
     </div>
-
-    <div class="sort-box">
-        <select id="sortVideo">
-            <option value="terbaru">Terbaru</option>
-            <option value="terlama">Terlama</option>
-            <option value="az">Judul A-Z</option>
-            <option value="za">Judul Z-A</option>
-        </select>
-    </div>
-
-</div>
     <section class="galeri-container">
 
         @forelse($gallery as $item)
-
-            <a
-    href="{{ route('gallery.videos.detail', $item) }}"
-    class="galeri-card"
-    data-title="{{ strtolower($item->title) }}"
-    data-description="{{ strtolower(strip_tags($item->description)) }}"
-    data-date="{{ \Carbon\Carbon::parse($item->activity_date)->timestamp }}"
->
+            <a href="{{ route('gallery.videos.detail', $item) }}" class="galeri-card"
+                data-title="{{ strtolower($item->title) }}"
+                data-description="{{ strtolower(strip_tags($item->description)) }}"
+                data-date="{{ \Carbon\Carbon::parse($item->activity_date)->timestamp }}">
 
                 {{-- Thumbnail Video --}}
-                @if ($item->media->isNotEmpty())
-                    <div class="video-thumbnail">
+                @php
+                    $media = $item->media->first();
 
-                        @if ($item->media->first()->youtube_id)
-                            <div class="video-thumbnail">
+                    if ($media && $media->youtube_id) {
+                        $thumbnail = "https://img.youtube.com/vi/{$media->youtube_id}/hqdefault.jpg";
+                    } else {
+                        $thumbnail = defaultImage('video');
+                    }
+                @endphp
 
-                                <img src="https://img.youtube.com/vi/{{ $item->media->first()->youtube_id }}/hqdefault.jpg"
-                                    alt="{{ $item->title }}">
+                <div class="video-thumbnail">
 
-                                <div class="play-icon">
-                                    <i class="fa-solid fa-circle-play"></i>
-                                </div>
+                    <img src="{{ $thumbnail }}" alt="{{ $item->title }}" loading="lazy">
 
-                            </div>
-                        @endif
+                    <div class="play-icon">
 
-                        <div class="play-icon">
-
-                            <i class="fa-solid fa-circle-play"></i>
-
-                        </div>
+                        <i class="fa-solid fa-circle-play"></i>
 
                     </div>
-                @endif
+
+                </div>
+
 
                 <div class="galeri-info">
 
                     <h3>
-
                         {{ $item->title }}
-
                     </h3>
 
                     <p>
-
                         {{ \Illuminate\Support\Str::limit(strip_tags($item->description), 100) }}
-
                     </p>
+
 
                     <div class="galeri-meta">
 
@@ -105,6 +92,7 @@
                             {{ $item->media->count() }} Video
 
                         </span>
+
 
                         <span>
 
@@ -126,126 +114,113 @@
 
                 <i class="fa-solid fa-video-slash"></i>
 
-                <h3>Belum ada galeri video.</h3>
+                <h3>
+                    Belum ada galeri video.
+                </h3>
 
                 <p>
                     Dokumentasi video kegiatan belum tersedia.
                 </p>
 
             </div>
-
         @endforelse
 
     </section>
 
-{{-- PAGINATION --}}
-<div class="custom-pagination">
+    {{-- PAGINATION --}}
+    <div class="custom-pagination">
 
-    {{-- Show Entries --}}
-    <div class="pagination-left">
+        {{-- Show Entries --}}
+        <div class="pagination-left">
 
-        <form method="GET" id="perPageForm">
+            <form method="GET" id="perPageForm">
 
-            @foreach(request()->except('per_page', 'page') as $key => $value)
-                <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-            @endforeach
+                @foreach (request()->except('per_page', 'page') as $key => $value)
+                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                @endforeach
 
-            <span>Tampilkan</span>
+                <span>Tampilkan</span>
 
-            <select name="per_page" onchange="this.form.submit()">
+                <select name="per_page" onchange="this.form.submit()">
 
-                <option value="6" {{ request('per_page',6)==6 ? 'selected' : '' }}>6</option>
+                    <option value="6" {{ request('per_page', 6) == 6 ? 'selected' : '' }}>6</option>
 
-                <option value="12" {{ request('per_page')==12 ? 'selected' : '' }}>12</option>
+                    <option value="12" {{ request('per_page') == 12 ? 'selected' : '' }}>12</option>
 
-                <option value="24" {{ request('per_page')==24 ? 'selected' : '' }}>24</option>
+                    <option value="24" {{ request('per_page') == 24 ? 'selected' : '' }}>24</option>
 
-                <option value="48" {{ request('per_page')==48 ? 'selected' : '' }}>48</option>
+                    <option value="48" {{ request('per_page') == 48 ? 'selected' : '' }}>48</option>
 
-            </select>
+                </select>
 
-            <span>video</span>
+                <span>video</span>
 
-        </form>
+            </form>
 
-    </div>
+        </div>
 
-    {{-- Info --}}
-    <div class="pagination-center">
+        {{-- Info --}}
+        <div class="pagination-center">
 
-        <span>Menampilkan</span>
+            <span>Menampilkan</span>
 
-        <strong>{{ $gallery->firstItem() ?? 0 }}</strong>
+            <strong>{{ $gallery->firstItem() ?? 0 }}</strong>
 
-        <span>-</span>
+            <span>-</span>
 
-        <strong>{{ $gallery->lastItem() ?? 0 }}</strong>
+            <strong>{{ $gallery->lastItem() ?? 0 }}</strong>
 
-        <span>dari</span>
+            <span>dari</span>
 
-        <strong>{{ $gallery->total() }}</strong>
+            <strong>{{ $gallery->total() }}</strong>
 
-        <span>data</span>
+            <span>data</span>
 
-    </div>
+        </div>
 
-    {{-- Pagination --}}
-    <div class="pagination-right">
+        {{-- Pagination --}}
+        <div class="pagination-right">
 
-        {{-- Previous --}}
-        @if($gallery->onFirstPage())
-
-            <button class="page-btn" disabled>
-                <i class="fa-solid fa-chevron-left"></i>
-            </button>
-
-        @else
-
-            <a href="{{ $gallery->previousPageUrl() }}" class="page-btn">
-                <i class="fa-solid fa-chevron-left"></i>
-            </a>
-
-        @endif
-
-        {{-- Nomor Halaman --}}
-        @foreach($gallery->getUrlRange(1, $gallery->lastPage()) as $page => $url)
-
-            @if($page == $gallery->currentPage())
-
-                <span class="page-number active">
-                    {{ $page }}
-                </span>
-
+            {{-- Previous --}}
+            @if ($gallery->onFirstPage())
+                <button class="page-btn" disabled>
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
             @else
-
-                <a href="{{ $url }}" class="page-number">
-                    {{ $page }}
+                <a href="{{ $gallery->previousPageUrl() }}" class="page-btn">
+                    <i class="fa-solid fa-chevron-left"></i>
                 </a>
-
             @endif
 
-        @endforeach
+            {{-- Nomor Halaman --}}
+            @foreach ($gallery->getUrlRange(1, $gallery->lastPage()) as $page => $url)
+                @if ($page == $gallery->currentPage())
+                    <span class="page-number active">
+                        {{ $page }}
+                    </span>
+                @else
+                    <a href="{{ $url }}" class="page-number">
+                        {{ $page }}
+                    </a>
+                @endif
+            @endforeach
 
-        {{-- Next --}}
-        @if($gallery->hasMorePages())
+            {{-- Next --}}
+            @if ($gallery->hasMorePages())
+                <a href="{{ $gallery->nextPageUrl() }}" class="page-btn">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            @else
+                <button class="page-btn" disabled>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            @endif
 
-            <a href="{{ $gallery->nextPageUrl() }}" class="page-btn">
-                <i class="fa-solid fa-chevron-right"></i>
-            </a>
-
-        @else
-
-            <button class="page-btn" disabled>
-                <i class="fa-solid fa-chevron-right"></i>
-            </button>
-
-        @endif
+        </div>
 
     </div>
 
-</div>
-
-@push('scripts')
-    <script src="{{ asset('js/admin/galeri.js') }}"></script>
-@endpush
+    @push('scripts')
+        <script src="{{ asset('js/admin/galeri.js') }}"></script>
+    @endpush
 @endsection
