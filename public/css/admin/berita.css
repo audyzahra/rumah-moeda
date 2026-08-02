@@ -1666,121 +1666,435 @@ input[type="file"]:hover{
 
 /* ================= PAGINATION ================= */
 
-.custom-pagination{
+.custom-pagination {
     margin-top: 25px;
-    padding:20px 20px 15px; /* atas kanan/kiri bawah */
+    padding: 20px 20px 15px;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     flex-wrap: wrap;
     gap: 20px;
 
     border-top: 1px solid #e5e7eb;
 }
 
-/* LEFT */
 
-.pagination-left form{
-    display:flex;
-    align-items:center;
-    gap:10px;
+/* ==========================================
+   LEFT - SHOW ENTRIES
+========================================== */
+
+.pagination-left {
+    display: flex;
+    align-items: center;
 }
 
-.pagination-left span{
-    font-size:14px;
-    color:#6b7280;
+.pagination-left form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
-.pagination-left select{
-    width:65px;
-    height:38px;
-
-    border:1px solid #d1d5db;
-    border-radius:8px;
-
-    padding:0 8px;
-
-    background:#fff;
-    cursor:pointer;
+.pagination-left span {
+    font-size: 14px;
+    color: #6b7280;
+    white-space: nowrap;
 }
 
-/* CENTER */
+.pagination-left select {
+    width: 65px;
+    height: 38px;
 
-.pagination-center{
-    display:flex;
-    align-items:center;
-    gap:6px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
 
-    color:#6b7280;
-    font-size:14px;
+    padding: 0 8px;
+
+    background: #fff;
+
+    color: #374151;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: .2s;
 }
 
-.pagination-center strong{
-    color:#111827;
+.pagination-left select:hover {
+    border-color: #2563eb;
 }
 
-/* RIGHT */
+.pagination-left select:focus {
+    outline: none;
 
-.pagination-right{
-    display:flex;
-    align-items:center;
-    gap:8px;
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.12);
 }
+
+
+/* ==========================================
+   CENTER - INFO
+========================================== */
+
+.pagination-center {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    flex-wrap: wrap;
+
+    color: #6b7280;
+
+    font-size: 14px;
+
+    text-align: center;
+}
+
+.pagination-center strong {
+    color: #111827;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   RIGHT - PAGE NAVIGATION
+========================================== */
+
+.pagination-right {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
+
+
+/* ==========================================
+   PAGE BUTTON & NUMBER
+========================================== */
 
 .page-btn,
-.page-number{
+.page-number {
 
-    width:38px;
-    height:38px;
+    width: 38px;
+    height: 38px;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    min-width: 38px;
 
-    text-decoration:none;
+    display: flex;
 
-    border:1px solid #d1d5db;
-    border-radius:8px;
+    justify-content: center;
+    align-items: center;
 
-    background:#fff;
-    color:#374151;
+    text-decoration: none;
 
-    transition:.2s;
+    border: 1px solid #d1d5db;
+
+    border-radius: 8px;
+
+    background: #fff;
+
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: all .2s ease;
 }
+
+
+/* ==========================================
+   HOVER
+========================================== */
 
 .page-btn:hover:not(:disabled),
-.page-number:hover{
-    background:#2563eb;
-    border-color:#2563eb;
-    color:#fff;
+.page-number:hover {
+
+    background: #2563eb;
+
+    border-color: #2563eb;
+
+    color: #fff;
+
+    transform: translateY(-1px);
 }
 
-.page-number.active{
-    background:#2563eb;
-    border-color:#2563eb;
-    color:#fff;
-    font-weight:600;
+
+/* ==========================================
+   ACTIVE PAGE
+========================================== */
+
+.page-number.active {
+
+    background: #2563eb;
+
+    border-color: #2563eb;
+
+    color: #fff;
+
+    font-weight: 600;
+
 }
 
-.page-btn:disabled{
-    opacity:.5;
-    cursor:not-allowed;
+
+/* ==========================================
+   ACTIVE / CLICK
+========================================== */
+
+.page-btn:active:not(:disabled),
+.page-number:active {
+
+    transform: scale(.95);
+
 }
 
-/* RESPONSIVE */
 
-@media(max-width:768px){
+/* ==========================================
+   DISABLED
+========================================== */
 
-    .custom-pagination{
-        flex-direction:column;
-        align-items:center;
+.page-btn:disabled {
+
+    opacity: .5;
+
+    cursor: not-allowed;
+
+    pointer-events: none;
+
+}
+
+
+/* ==========================================
+   ICON
+========================================== */
+
+.page-btn i {
+    pointer-events: none;
+}
+
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width: 900px) {
+
+    .custom-pagination {
+
+        justify-content: center;
+
+        gap: 18px;
+
     }
 
     .pagination-left,
     .pagination-center,
-    .pagination-right{
-        justify-content:center;
+    .pagination-right {
+
+        justify-content: center;
+
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 768px) {
+
+    .custom-pagination {
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        text-align: center;
+
+        gap: 16px;
+
+        padding: 18px 16px 16px;
+
+    }
+
+
+    .pagination-left,
+    .pagination-center,
+    .pagination-right {
+
+        width: 100%;
+
+        justify-content: center;
+
+    }
+
+
+    .pagination-left form {
+
+        justify-content: center;
+
+        width: 100%;
+
+    }
+
+
+    .pagination-center {
+
+        line-height: 1.5;
+
+    }
+
+
+    .pagination-right {
+
+        gap: 6px;
+
+    }
+
+}
+
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width: 576px) {
+
+    .custom-pagination {
+
+        padding: 16px 12px;
+
+        gap: 14px;
+
+    }
+
+
+    .pagination-left form {
+
+        flex-direction: row;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+        gap: 8px;
+
+    }
+
+
+    .pagination-left span {
+
+        font-size: 13px;
+
+    }
+
+
+    .pagination-left select {
+
+        width: 60px;
+
+        height: 36px;
+
+        font-size: 13px;
+
+    }
+
+
+    .pagination-center {
+
+        font-size: 13px;
+
+        gap: 5px;
+
+    }
+
+
+    .pagination-right {
+
+        justify-content: center;
+
+        gap: 5px;
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .page-btn,
+    .page-number {
+
+        width: 36px;
+
+        height: 36px;
+
+        min-width: 36px;
+
+        font-size: 13px;
+
+    }
+
+}
+
+
+/* ==========================================
+   EXTRA SMALL MOBILE
+========================================== */
+
+@media (max-width: 400px) {
+
+    .custom-pagination {
+
+        padding: 14px 10px;
+
+        gap: 12px;
+
+    }
+
+
+    .pagination-center {
+
+        font-size: 12px;
+
+    }
+
+
+    .pagination-right {
+
+        gap: 4px;
+
+    }
+
+
+    .page-btn,
+    .page-number {
+
+        width: 33px;
+
+        height: 33px;
+
+        min-width: 33px;
+
+        font-size: 12px;
+
+        border-radius: 7px;
+
     }
 
 }

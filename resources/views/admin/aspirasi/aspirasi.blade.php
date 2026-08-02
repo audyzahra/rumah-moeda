@@ -70,22 +70,42 @@
     <!-- ================= FILTER ================= -->
 
         <div class="filter-section">
+
             <div class="filter-left">
+
                 <input
                     type="text"
                     id="searchInput"
                     class="search-input"
-                    placeholder="Cari nama atau email...">
+                    placeholder="Cari nama atau email..."
+                    value="{{ request('search') }}">
 
                 <select
                     id="filterStatus"
                     class="filter-select">
 
-                    <option value="">Semua Status</option>
-                    <option value="0">Belum Dibaca</option>
-                    <option value="1">Sudah Dibaca</option>
+                    <option
+                        value=""
+                        {{ request('status') === null || request('status') === '' ? 'selected' : '' }}>
+                        Semua Status
+                    </option>
+
+                    <option
+                        value="0"
+                        {{ request('status') === '0' ? 'selected' : '' }}>
+                        Belum Dibaca
+                    </option>
+
+                    <option
+                        value="1"
+                        {{ request('status') === '1' ? 'selected' : '' }}>
+                        Sudah Dibaca
+                    </option>
+
                 </select>
+
             </div>
+
         </div>
 
     <!-- ================= TABLE ================= -->
@@ -226,69 +246,180 @@
 
         </div>
 
-        <!-- ================= PAGINATION ================= -->
+<!-- ================= PAGINATION ================= -->
 
-        <div class="pagination-section">
+        <div class="custom-pagination">
 
-            <div class="info-data">
+            {{-- ==========================================
+                SHOW ENTRIES
+            ========================================== --}}
+            <div class="pagination-left">
 
-                Menampilkan
+                <form method="GET" id="perPageForm">
 
-                <strong>{{ $messages->firstItem() ?? 0 }}</strong>
+                    {{-- Pertahankan search dan status --}}
+                    @foreach (request()->except('per_page', 'page') as $key => $value)
 
-                -
+                        <input
+                            type="hidden"
+                            name="{{ $key }}"
+                            value="{{ $value }}">
 
-                <strong>{{ $messages->lastItem() ?? 0 }}</strong>
+                    @endforeach
 
-                dari
 
-                <strong>{{ $messages->total() }}</strong>
+                    <span>Tampilkan</span>
 
-                data
+
+                    <select
+                        name="per_page"
+                        onchange="this.form.submit()">
+
+                        <option
+                            value="5"
+                            {{ request('per_page', 5) == 5 ? 'selected' : '' }}>
+                            5
+                        </option>
+
+                        <option
+                            value="10"
+                            {{ request('per_page') == 10 ? 'selected' : '' }}>
+                            10
+                        </option>
+
+                        <option
+                            value="20"
+                            {{ request('per_page') == 20 ? 'selected' : '' }}>
+                            20
+                        </option>
+
+                        <option
+                            value="50"
+                            {{ request('per_page') == 50 ? 'selected' : '' }}>
+                            50
+                        </option>
+
+                    </select>
+
+
+                    <span>Aspirasi</span>
+
+                </form>
 
             </div>
 
-            <div class="pagination-controls">
 
-                {{-- Tombol Previous --}}
-                @if($messages->onFirstPage())
+            {{-- ==========================================
+                INFO DATA
+            ========================================== --}}
+            <div class="pagination-center">
 
-                    <button class="page-btn" disabled>
+                <span>Menampilkan</span>
+
+                <strong>
+                    {{ $messages->firstItem() ?? 0 }}
+                </strong>
+
+                <span>-</span>
+
+                <strong>
+                    {{ $messages->lastItem() ?? 0 }}
+                </strong>
+
+                <span>dari</span>
+
+                <strong>
+                    {{ $messages->total() }}
+                </strong>
+
+                <span>data</span>
+
+            </div>
+
+
+            {{-- ==========================================
+                PAGINATION
+            ========================================== --}}
+            <div class="pagination-right">
+
+
+                {{-- PREVIOUS --}}
+                @if ($messages->onFirstPage())
+
+                    <button
+                        class="page-btn"
+                        disabled>
+
                         <i class="fa-solid fa-chevron-left"></i>
+
                     </button>
 
                 @else
 
-                    <a href="{{ $messages->previousPageUrl() }}" class="page-btn">
+                    <a
+                        href="{{ $messages->previousPageUrl() }}"
+                        class="page-btn">
+
                         <i class="fa-solid fa-chevron-left"></i>
+
                     </a>
 
                 @endif
 
-                <span id="pageInfo">
 
-                    Halaman {{ $messages->currentPage() }}
+                {{-- NOMOR HALAMAN --}}
+                @foreach (
+                    $messages->getUrlRange(
+                        1,
+                        $messages->lastPage()
+                    )
+                    as $page => $url
+                )
 
-                    dari
+                    @if ($page == $messages->currentPage())
 
-                    {{ $messages->lastPage() }}
+                        <span class="page-number active">
+                            {{ $page }}
+                        </span>
 
-                </span>
+                    @else
 
-                {{-- Tombol Next --}}
-                @if($messages->hasMorePages())
+                        <a
+                            href="{{ $url }}"
+                            class="page-number">
 
-                    <a href="{{ $messages->nextPageUrl() }}" class="page-btn">
+                            {{ $page }}
+
+                        </a>
+
+                    @endif
+
+                @endforeach
+
+
+                {{-- NEXT --}}
+                @if ($messages->hasMorePages())
+
+                    <a
+                        href="{{ $messages->nextPageUrl() }}"
+                        class="page-btn">
+
                         <i class="fa-solid fa-chevron-right"></i>
+
                     </a>
 
                 @else
 
-                    <button class="page-btn" disabled>
+                    <button
+                        class="page-btn"
+                        disabled>
+
                         <i class="fa-solid fa-chevron-right"></i>
+
                     </button>
 
                 @endif
+
 
             </div>
 

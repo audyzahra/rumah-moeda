@@ -27,7 +27,7 @@
         {{-- ================= TOOLBAR ================= --}}
         <div class="kategori-toolbar">
 
-            <form action="{{ route('admin.categories.index') }}" method="GET" class="search-form">
+            <form action="{{ route('admin.categories.index') }}" method="GET" class="search-form" id="filterForm">
 
                 <input
                     type="text"
@@ -36,7 +36,6 @@
                     class="search-input"
                     placeholder="Cari kategori..."
                     value="{{ request('search') }}">
-
             </form>
 
             <a href="{{ route('admin.categories.create') }}" class="btn-primary">
@@ -165,71 +164,143 @@
             </table>
 
             {{--===PAGINATOIN=== --}}
-            <div class="pagination-section">
+            <div class="custom-pagination">
 
-                    <div class="info-data">
+                {{-- ==========================================
+                    SHOW ENTRIES
+                ========================================== --}}
+                <div class="pagination-left">
 
-                        Menampilkan
+                    <form method="GET" id="perPageForm">
 
-                        <strong>{{ $categories->firstItem() ?? 0 }}</strong>
+                        {{-- Pertahankan query search & sort --}}
+                        @foreach(request()->except('per_page', 'page') as $key => $value)
 
-                        -
+                            <input
+                                type="hidden"
+                                name="{{ $key }}"
+                                value="{{ $value }}">
 
-                        <strong>{{ $categories->lastItem() ?? 0 }}</strong>
+                        @endforeach
 
-                        dari
+                        <span>Tampilkan</span>
 
-                        <strong>{{ $categories->total() }}</strong>
+                        <select
+                            name="per_page"
+                            id="perPageSelect"
+                            onchange="this.form.submit()">
 
-                        data
+                            <option value="5" {{ request('per_page',5)==5 ? 'selected' : '' }}>
+                                5
+                            </option>
 
-                    </div>
+                            <option value="10" {{ request('per_page')==10 ? 'selected' : '' }}>
+                                10
+                            </option>
 
-                    <div class="pagination-controls">
+                            <option value="20" {{ request('per_page')==20 ? 'selected' : '' }}>
+                                20
+                            </option>
 
-                        {{-- Previous --}}
-                        @if ($categories->onFirstPage())
+                            <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>
+                                50
+                            </option>
 
-                            <button class="page-btn" disabled>
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </button>
+                        </select>
+
+                        <span>Kategori</span>
+
+                    </form>
+
+                </div>
+
+
+                {{-- ==========================================
+                    INFO DATA
+                ========================================== --}}
+                <div class="pagination-center">
+
+                    <span>Menampilkan</span>
+
+                    <strong>{{ $categories->firstItem() ?? 0 }}</strong>
+
+                    <span>-</span>
+
+                    <strong>{{ $categories->lastItem() ?? 0 }}</strong>
+
+                    <span>dari</span>
+
+                    <strong>{{ $categories->total() }}</strong>
+
+                    <span>data</span>
+
+                </div>
+
+
+                {{-- ==========================================
+                    PAGINATION
+                ========================================== --}}
+                <div class="pagination-right">
+
+                    {{-- Previous --}}
+                    @if($categories->onFirstPage())
+
+                        <button class="page-btn" disabled>
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+
+                    @else
+
+                        <a href="{{ $categories->previousPageUrl() }}" class="page-btn">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
+
+                    @endif
+
+
+                    {{-- Nomor Halaman --}}
+                    @php
+                        $start = max($categories->currentPage() - 1, 1);
+                        $end = min($start + 1, $categories->lastPage());
+
+                        if ($end - $start < 1) {
+                            $start = max($end - 1, 1);
+                        }
+                    @endphp
+
+                    @for($page = $start; $page <= $end; $page++)
+
+                        @if($page == $categories->currentPage())
+
+                            <span class="page-number active">
+                                {{ $page }}
+                            </span>
 
                         @else
 
-                            <a href="{{ $categories->previousPageUrl() }}" class="page-btn">
-                                <i class="fa-solid fa-chevron-left"></i>
+                            <a href="{{ $categories->url($page) }}" class="page-number">
+                                {{ $page }}
                             </a>
 
                         @endif
 
-                        <span id="pageInfo">
+                    @endfor
 
-                            Halaman
 
-                            {{ $categories->currentPage() }}
+                    {{-- Next --}}
+                    @if($categories->hasMorePages())
 
-                            dari
+                        <a href="{{ $categories->nextPageUrl() }}" class="page-btn">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
 
-                            {{ $categories->lastPage() }}
+                    @else
 
-                        </span>
+                        <button class="page-btn" disabled>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
 
-                        {{-- Next --}}
-                        @if ($categories->hasMorePages())
-
-                            <a href="{{ $categories->nextPageUrl() }}" class="page-btn">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </a>
-
-                        @else
-
-                            <button class="page-btn" disabled>
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </button>
-
-                        @endif
-
-                    </div>
+                    @endif
 
                 </div>
 

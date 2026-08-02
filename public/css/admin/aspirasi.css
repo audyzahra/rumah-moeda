@@ -292,7 +292,8 @@
 .action-buttons {
     display: flex;
     gap: 6px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    padding: 0 30px;
 }
 
 .btn-detail,
@@ -337,63 +338,388 @@
     background: #fecaca;
 }
 
-/* ===== PAGINATION ===== */
-.pagination-section {
+/* =====================================================
+   PAGINATION ASPIRASI
+===================================================== */
+
+/* ==========================================
+   CUSTOM PAGINATION
+========================================== */
+
+.custom-pagination {
+    margin-top: 0;
+    padding: 18px 20px;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 12px 10px 12px;
+
+    gap: 20px;
     flex-wrap: wrap;
-    gap: 15px;
+
+    border-top: 1px solid #e5e7eb;
 }
 
-.info-data {
+
+/* ==========================================
+   LEFT
+========================================== */
+
+.pagination-left {
+    display: flex;
+    align-items: center;
+}
+
+.pagination-left form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.pagination-left span {
+    font-size: 14px;
+    color: #64748b;
+    white-space: nowrap;
+}
+
+.pagination-left select {
+    padding: 8px 14px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    background: #fff;
+
+    font-size: 14px;
+    color: #374151;
+
+    cursor: pointer;
+
+    transition: all .25s ease;
+}
+
+.pagination-left select:hover {
+    border-color: #3b82f6;
+}
+
+.pagination-left select:focus {
+    outline: none;
+
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+
+/* ==========================================
+   CENTER
+========================================== */
+
+.pagination-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    flex-wrap: wrap;
+
     font-size: 14px;
     color: #64748b;
 }
 
-.pagination-controls {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.pagination-center strong {
+    color: #1f2937;
+    font-weight: 700;
 }
 
-.page-btn{
-    width: 36px;
+
+/* ==========================================
+   RIGHT
+========================================== */
+
+.pagination-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
+
+
+/* ==========================================
+   PAGE BUTTON
+========================================== */
+
+.page-btn,
+.page-number {
+    min-width: 36px;
     height: 36px;
+
+    padding: 0 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     border: 2px solid #e2e8f0;
     border-radius: 8px;
+
     background: #fff;
+
     color: #475569;
+
     text-decoration: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+    font-size: 14px;
+    font-weight: 600;
+
     cursor: pointer;
-    transition: .3s;
+
+    transition: all .25s ease;
 }
 
-.page-btn:hover{
+
+/* ==========================================
+   HOVER
+========================================== */
+
+.page-btn:hover:not(:disabled),
+.page-number:hover {
     background: #3b82f6;
     border-color: #3b82f6;
+
+    color: #fff;
+
+    transform: translateY(-2px);
+}
+
+
+/* ==========================================
+   ACTIVE
+========================================== */
+
+.page-number.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+
     color: #fff;
 }
 
+
+/* ==========================================
+   ACTIVE / CLICK
+========================================== */
+
+.page-btn:active:not(:disabled),
+.page-number:active {
+    transform: scale(.95);
+}
+
+
+/* ==========================================
+   DISABLED
+========================================== */
+
 .page-btn:disabled,
-.page-btn.disabled{
+.page-btn.disabled {
     opacity: .4;
+
     cursor: not-allowed;
+
     pointer-events: none;
 }
 
-.page-btn i{
+
+/* ==========================================
+   ICON
+========================================== */
+
+.page-btn i {
     pointer-events: none;
 }
 
-#pageInfo {
-    font-weight: 600;
-    color: #1e293b;
-    font-size: 14px;
+
+/* ==========================================
+   MOBILE / TABLET
+========================================== */
+
+@media (max-width: 768px) {
+
+    .custom-pagination {
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        text-align: center;
+
+        gap: 18px;
+
+        padding: 18px 16px;
+    }
+
+
+    .pagination-left,
+    .pagination-center,
+    .pagination-right {
+        width: 100%;
+
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+    }
+
+
+    .pagination-left form {
+        justify-content: center;
+
+        width: 100%;
+    }
+
+
+    .pagination-center {
+        line-height: 1.6;
+    }
+
+
+    .pagination-right {
+        justify-content: center;
+
+        gap: 6px;
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 576px) {
+
+    .custom-pagination {
+        padding: 16px 12px;
+
+        gap: 15px;
+    }
+
+
+    /* SHOW ENTRIES */
+
+    .pagination-left form {
+        width: 100%;
+
+        flex-direction: row;
+
+        justify-content: center;
+
+        gap: 8px;
+    }
+
+
+    .pagination-left span {
+        font-size: 13px;
+    }
+
+
+    .pagination-left select {
+        min-width: 65px;
+
+        padding: 7px 10px;
+
+        font-size: 13px;
+    }
+
+
+    /* INFO */
+
+    .pagination-center {
+        width: 100%;
+
+        font-size: 13px;
+
+        gap: 5px;
+
+        justify-content: center;
+    }
+
+
+    /* PAGINATION */
+
+    .pagination-right {
+        width: 100%;
+
+        justify-content: center;
+
+        gap: 5px;
+    }
+
+
+    .page-btn,
+    .page-number {
+        min-width: 34px;
+
+        height: 34px;
+
+        padding: 0 8px;
+
+        border-radius: 7px;
+
+        font-size: 13px;
+    }
+
+}
+
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width: 400px) {
+
+    .custom-pagination {
+        padding: 14px 10px;
+
+        gap: 13px;
+    }
+
+
+    .pagination-left form {
+        flex-wrap: wrap;
+
+        row-gap: 6px;
+    }
+
+
+    .pagination-center {
+        font-size: 12px;
+    }
+
+
+    .pagination-right {
+        gap: 4px;
+    }
+
+
+    .page-btn,
+    .page-number {
+        min-width: 32px;
+
+        height: 32px;
+
+        padding: 0 7px;
+
+        font-size: 12px;
+    }
+
 }
 
 /* ===== MODAL ===== */

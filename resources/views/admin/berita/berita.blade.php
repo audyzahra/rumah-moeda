@@ -57,27 +57,42 @@
 
     {{-- ===================== FILTER ===================== --}}
 
-    <div class="filter-container">
+    <div class="filter-section">
 
-        <input type="text" id="searchInput" placeholder="Cari Judul Berita..." class="search-input">
+        <div class="filter-left">
 
-        <select id="categoryFilter" class="filter-select">
+            <input
+                type="text"
+                id="searchInput"
+                class="search-input"
+                placeholder="Cari Judul Berita..."
+                value="{{ request('search') }}">
 
-            <option value="">Semua Kategori</option>
+            <select
+                id="categoryFilter"
+                class="filter-select">
 
-            @foreach ($categories as $category)
-                <option value="{{ $category->id }}">
-
-                    {{ $category->name }}
-
+                <option
+                    value=""
+                    {{ request('category') === null || request('category') === '' ? 'selected' : '' }}>
+                    Semua Kategori
                 </option>
-            @endforeach
 
-        </select>
+                @foreach ($categories as $category)
+
+                    <option
+                        value="{{ $category->id }}"
+                        {{ request('category') == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+
+                @endforeach
+
+            </select>
+
+        </div>
 
     </div>
-
-
 
     {{-- ===================== TABEL BERITA ===================== --}}
 
@@ -88,7 +103,6 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Thumbnail</th>
                     <th>Judul</th>
                     <th>Kategori</th>
                     <th>Penulis</th>
@@ -97,20 +111,12 @@
                 </tr>
             </thead>
 
-            <tbody>
+            <tbody id="newsTableBody">
 
                 @forelse($news as $index => $item)
                     <tr data-title="{{ strtolower($item->title) }}" data-category="{{ $item->category_id }}">
-                            <td>
-                                {{ $news->firstItem() + $index }}
-                            </td>
                         <td>
-                            @if ($item->thumbnail)
-                                <img src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}"
-                                    class="table-thumbnail">
-                            @else
-                                <img src="{{ asset('assets/no-image.png') }}" alt="No Image" class="table-thumbnail">
-                            @endif
+                            {{ $news->firstItem() + $index }}
                         </td>
 
                         <td>
@@ -168,7 +174,7 @@
                 @empty
 
                     <tr>
-                        <td colspan="7" class="empty-state">
+                        <td colspan="6" class="empty-state">
                             <i class="fa-solid fa-newspaper"></i>
                             <h3>Belum ada berita</h3>
                             <p>Silakan tambahkan berita pertama.</p>
@@ -181,74 +187,178 @@
         </table>
         <!-- ================= PAGINATION ================= -->
 
-        <div class="pagination-section">
+        <div class="custom-pagination">
 
-            <div class="info-data">
+            {{-- ==========================================
+                SHOW ENTRIES
+            ========================================== --}}
+            <div class="pagination-left">
 
-                Menampilkan
+                <form method="GET" id="perPageForm">
 
-                <strong>{{ $news->firstItem() ?? 0 }}</strong>
+                    {{-- Pertahankan search & category --}}
+                    @foreach (request()->except('per_page', 'page') as $key => $value)
 
-                -
+                        <input
+                            type="hidden"
+                            name="{{ $key }}"
+                            value="{{ $value }}">
 
-                <strong>{{ $news->lastItem() ?? 0 }}</strong>
+                    @endforeach
 
-                dari
+                    <span>Tampilkan</span>
 
-                <strong>{{ $news->total() }}</strong>
+                    <select
+                        name="per_page"
+                        id="perPageSelect">
 
-                data
+                        <option
+                            value="5"
+                            {{ request('per_page', 5) == 5 ? 'selected' : '' }}>
+                            5
+                        </option>
 
-            </div>
+                        <option
+                            value="10"
+                            {{ request('per_page') == 10 ? 'selected' : '' }}>
+                            10
+                        </option>
 
-            <div class="pagination-controls">
+                        <option
+                            value="20"
+                            {{ request('per_page') == 20 ? 'selected' : '' }}>
+                            20
+                        </option>
 
-                {{-- Previous --}}
-                @if ($news->onFirstPage())
+                        <option
+                            value="50"
+                            {{ request('per_page') == 50 ? 'selected' : '' }}>
+                            50
+                        </option>
 
-                    <button class="page-btn" disabled>
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
+                    </select>
 
-                @else
+                    <span>Berita</span>
 
-                    <a href="{{ $news->previousPageUrl() }}" class="page-btn">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </a>
-
-                @endif
-
-                <span id="pageInfo">
-
-                    Halaman
-
-                    {{ $news->currentPage() }}
-
-                    dari
-
-                    {{ $news->lastPage() }}
-
-                </span>
-
-                {{-- Next --}}
-                @if ($news->hasMorePages())
-
-                    <a href="{{ $news->nextPageUrl() }}" class="page-btn">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </a>
-
-                @else
-
-                    <button class="page-btn" disabled>
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-
-                @endif
+                </form>
 
             </div>
 
+
+            {{-- ==========================================
+                INFO DATA
+            ========================================== --}}
+            <div class="pagination-center">
+
+                <span>Menampilkan</span>
+
+                <strong>
+                    {{ $news->firstItem() ?? 0 }}
+                </strong>
+
+                <span>-</span>
+
+                <strong>
+                    {{ $news->lastItem() ?? 0 }}
+                </strong>
+
+                <span>dari</span>
+
+                <strong>
+                    {{ $news->total() }}
+                </strong>
+
+                <span>data</span>
+
+            </div>
+
+
+            {{-- ==========================================
+                PAGINATION
+            ========================================== --}}
+            <div class="pagination-right">
+
+                    {{-- Previous --}}
+                    @if ($news->onFirstPage())
+
+                        <button
+                            class="page-btn"
+                            disabled>
+
+                            <i class="fa-solid fa-chevron-left"></i>
+
+                        </button>
+
+                    @else
+
+                        <a
+                            href="{{ $news->previousPageUrl() }}"
+                            class="page-btn">
+
+                            <i class="fa-solid fa-chevron-left"></i>
+
+                        </a>
+
+                    @endif
+
+
+                    {{-- Nomor Halaman --}}
+                    @php
+                        $start = max($news->currentPage() - 1, 1);
+                        $end = min($start + 1, $news->lastPage());
+
+                        // kalau sudah mentok di akhir
+                        if ($end - $start < 1) {
+                            $start = max($end - 1, 1);
+                        }
+                    @endphp
+
+                    @for($page = $start; $page <= $end; $page++)
+
+                        @if($page == $news->currentPage())
+
+                            <span class="page-number active">
+                                {{ $page }}
+                            </span>
+
+                        @else
+
+                            <a href="{{ $news->url($page) }}" class="page-number">
+                                {{ $page }}
+                            </a>
+
+                        @endif
+
+                    @endfor
+
+
+                    {{-- Next --}}
+                    @if ($news->hasMorePages())
+
+                        <a
+                            href="{{ $news->nextPageUrl() }}"
+                            class="page-btn">
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </a>
+
+                    @else
+
+                        <button
+                            class="page-btn"
+                            disabled>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </button>
+
+                    @endif
+
+                </div>
+
+            </div>
         </div>
-
     </div>
     
     {{-- ===========================

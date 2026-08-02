@@ -1,23 +1,27 @@
-document.addEventListener('DOMContentLoaded', function () {
+/* ==========================================
+   SEARCH
+========================================== */
 
-    const searchInput = document.getElementById('searchInput');
-    const rows = document.querySelectorAll('.kategori-table tbody tr');
+const searchInput = document.getElementById("searchInput");
+const filterForm = document.getElementById("filterForm");
 
-    searchInput.addEventListener('keyup', function () {
+if (searchInput && filterForm) {
 
-        const keyword = this.value.toLowerCase();
+    let timer;
 
-        rows.forEach(row => {
+    searchInput.addEventListener("input", function () {
 
-            const nama = row.cells[1]?.textContent.toLowerCase() || '';
+        clearTimeout(timer);
 
-            row.style.display = nama.includes(keyword) ? '' : 'none';
+        timer = setTimeout(function () {
 
-        });
+            filterForm.submit();
+
+        }, 150);
 
     });
 
-});
+}
 
 
 // ===========================

@@ -21,22 +21,59 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
+        $perPage = $request->get('per_page', 5);
+
         $query = Category::withCount('news');
 
+        // ===========================
+        // SEARCH
+        // ===========================
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+
+            $search = trim($request->search);
+
+            $query->where('name', 'like', "%{$search}%");
+
+        }
+
+        // ===========================
+        // SORT
+        // ===========================
+        if ($request->filled('sort')) {
+
+            switch ($request->sort) {
+
+                case 'nama_asc':
+                    $query->orderBy('name');
+                    break;
+
+                case 'nama_desc':
+                    $query->orderByDesc('name');
+                    break;
+
+                case 'terbaru':
+                    $query->latest();
+                    break;
+
+                case 'terlama':
+                    $query->oldest();
+                    break;
+            }
+
+        } else {
+
+            $query->latest();
+
         }
 
         $categories = $query
-            ->orderBy('name', 'ASC')
-            ->paginate(5);
+            ->paginate($perPage)
+            ->withQueryString();
 
-        $totalCategory = Category::count();
-
-        return view('admin.kategori.index', compact(
-            'categories',
-            'totalCategory'
-        ));
+        return view(
+            'admin.kategori.index',
+            compact('categories')
+        );
     }
 
     /**

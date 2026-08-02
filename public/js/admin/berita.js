@@ -2,8 +2,9 @@
 // BERITA.JS
 // Admin Rumah Moeda
 // =============================================
+
 /* ==========================================
-   BASE URL (ADMIN / USER)
+   BASE URL
 ========================================== */
 
 const isAdmin = window.location.pathname.startsWith("/admin");
@@ -13,6 +14,7 @@ const beritaBaseUrl = isAdmin
     : "/dashboard/news";
 
 "use strict";
+
 
 /* ==========================================
    ELEMENT
@@ -25,13 +27,14 @@ const beritaForm = document.getElementById("beritaForm");
 
 const preview = document.getElementById("preview");
 
-
-
 const searchInput = document.getElementById("searchInput");
-
 const categoryFilter = document.getElementById("categoryFilter");
 
 let currentNews = null;
+
+let searchTimer = null;
+
+let currentRequest = null;
 
 
 /* ==========================================
@@ -45,6 +48,7 @@ function openModal(modal) {
     modal.classList.add("show");
 
 }
+
 
 function closeModal(modal) {
 
@@ -65,12 +69,12 @@ function closeFormModal() {
 
 }
 
+
 function closeDetailModal() {
 
     closeModal(detailModal);
 
 }
-
 
 
 /* ==========================================
@@ -91,8 +95,6 @@ window.addEventListener("click", function (e) {
 
     }
 
-
-
 });
 
 
@@ -107,8 +109,6 @@ document.addEventListener("keydown", function (e) {
         closeFormModal();
 
         closeDetailModal();
-
-
 
     }
 
@@ -141,7 +141,7 @@ function previewImage(event) {
 
         preview.style.display = "block";
 
-    }
+    };
 
     reader.readAsDataURL(file);
 
@@ -154,17 +154,31 @@ function previewImage(event) {
 
 function resetBeritaForm() {
 
+    if (!beritaForm) return;
+
     beritaForm.reset();
 
     currentNews = null;
 
-    preview.src = "";
+    if (preview) {
 
-    preview.style.display = "none";
+        preview.src = "";
 
-    document.getElementById("berita_id").value = "";
+        preview.style.display = "none";
 
-    const method = document.getElementById("formMethod");
+    }
+
+    const beritaId =
+        document.getElementById("berita_id");
+
+    if (beritaId) {
+
+        beritaId.value = "";
+
+    }
+
+    const method =
+        document.getElementById("formMethod");
 
     if (method) {
 
@@ -174,7 +188,17 @@ function resetBeritaForm() {
 
     beritaForm.action = beritaBaseUrl;
 
-    document.getElementById("formModalTitle").innerHTML = "Tambah Berita";
+    const formModalTitle =
+        document.getElementById(
+            "formModalTitle"
+        );
+
+    if (formModalTitle) {
+
+        formModalTitle.innerHTML =
+            "Tambah Berita";
+
+    }
 
 }
 
@@ -185,16 +209,35 @@ function resetBeritaForm() {
 
 function openEditModal(news) {
 
+    if (!beritaForm) return;
+
     resetBeritaForm();
 
     currentNews = news;
 
-    beritaForm.action = beritaBaseUrl + "/" + news.id;
+    beritaForm.action =
+        beritaBaseUrl + "/" + news.id;
 
-    document.getElementById("formModalTitle").innerHTML = "Edit Berita";
 
-    // Tambahkan method PUT
-    const method = document.createElement("input");
+    const formModalTitle =
+        document.getElementById(
+            "formModalTitle"
+        );
+
+    if (formModalTitle) {
+
+        formModalTitle.innerHTML =
+            "Edit Berita";
+
+    }
+
+
+    /* ==========================================
+       METHOD PUT
+    ========================================== */
+
+    const method =
+        document.createElement("input");
 
     method.type = "hidden";
 
@@ -206,33 +249,82 @@ function openEditModal(news) {
 
     beritaForm.appendChild(method);
 
-    // Isi Form
-    document.getElementById("title").value =
-        news.title ?? "";
 
-    document.getElementById("content").value =
-        news.content ?? "";
+    /* ==========================================
+       ISI FORM
+    ========================================== */
 
-    document.getElementById("category_id").value =
-        news.category_id ?? "";
+    const titleInput =
+        document.getElementById("title");
 
-    if (news.publish_date) {
+    if (titleInput) {
 
-        document.getElementById("publish_date").value =
-            news.publish_date.substring(0, 16);
+        titleInput.value =
+            news.title ?? "";
 
     }
 
-    // Thumbnail Lama
-    if (news.thumbnail) {
 
-        preview.src = news.thumbnail.startsWith("http")
-            ? news.thumbnail
-            : "/" + news.thumbnail;
+    const contentInput =
+        document.getElementById("content");
 
-        preview.style.display = "block";
+    if (contentInput) {
+
+        contentInput.value =
+            news.content ?? "";
 
     }
+
+
+    const categoryInput =
+        document.getElementById("category_id");
+
+    if (categoryInput) {
+
+        categoryInput.value =
+            news.category_id ?? "";
+
+    }
+
+
+    const publishDateInput =
+        document.getElementById(
+            "publish_date"
+        );
+
+    if (
+        publishDateInput &&
+        news.publish_date
+    ) {
+
+        publishDateInput.value =
+            news.publish_date.substring(
+                0,
+                16
+            );
+
+    }
+
+
+    /* ==========================================
+       THUMBNAIL LAMA
+    ========================================== */
+
+    if (
+        news.thumbnail &&
+        preview
+    ) {
+
+        preview.src =
+            news.thumbnail.startsWith("http")
+                ? news.thumbnail
+                : "/" + news.thumbnail;
+
+        preview.style.display =
+            "block";
+
+    }
+
 
     openModal(formModal);
 
@@ -240,16 +332,8 @@ function openEditModal(news) {
 
 
 /* ==========================================
-   ALIAS
+   ALIAS EDIT
 ========================================== */
-
-/*
-Blade sekarang memakai
-
-onclick="editBerita(...)"
-
-jadi kita arahkan ke openEditModal()
-*/
 
 function editBerita(news) {
 
@@ -264,23 +348,31 @@ function editBerita(news) {
 
 if (beritaForm) {
 
-    beritaForm.addEventListener("submit", function () {
+    beritaForm.addEventListener(
+        "submit",
+        function () {
 
-        const button =
-            beritaForm.querySelector("button[type='submit']");
+            const button =
+                beritaForm.querySelector(
+                    "button[type='submit']"
+                );
 
-        if (button) {
+            if (button) {
 
-            button.disabled = true;
+                button.disabled =
+                    true;
 
-            button.innerHTML =
-                '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+                button.innerHTML =
+                    '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+
+            }
 
         }
-
-    });
+    );
 
 }
+
+
 /* ==========================================
    DETAIL BERITA
 ========================================== */
@@ -289,31 +381,110 @@ function showDetail(news) {
 
     currentNews = news;
 
-    // Thumbnail
-    document.getElementById("detailThumbnail").src =
-        news.thumbnail
-            ? news.thumbnail
-            : "/assets/no-image.png";
 
-    // Judul
-    document.getElementById("detailTitle").textContent =
-        news.title ?? "-";
+    /* ==========================================
+       THUMBNAIL
+    ========================================== */
 
-    // Kategori
-    document.getElementById("detailCategory").textContent =
-        news.category ?? "-";
+    const detailThumbnail =
+        document.getElementById(
+            "detailThumbnail"
+        );
 
-    // Author
-    document.getElementById("detailAuthor").textContent =
-        news.author ?? "-";
+    if (detailThumbnail) {
 
-    // Tanggal
-    document.getElementById("detailDate").textContent =
-        news.publish_date ?? "-";
+        detailThumbnail.src =
+            news.thumbnail
+                ? news.thumbnail
+                : "/assets/no-image.png";
 
-    // Isi
-    document.getElementById("detailContent").innerHTML =
-        news.content ?? "-";
+    }
+
+
+    /* ==========================================
+       JUDUL
+    ========================================== */
+
+    const detailTitle =
+        document.getElementById(
+            "detailTitle"
+        );
+
+    if (detailTitle) {
+
+        detailTitle.textContent =
+            news.title ?? "-";
+
+    }
+
+
+    /* ==========================================
+       KATEGORI
+    ========================================== */
+
+    const detailCategory =
+        document.getElementById(
+            "detailCategory"
+        );
+
+    if (detailCategory) {
+
+        detailCategory.textContent =
+            news.category ?? "-";
+
+    }
+
+
+    /* ==========================================
+       AUTHOR
+    ========================================== */
+
+    const detailAuthor =
+        document.getElementById(
+            "detailAuthor"
+        );
+
+    if (detailAuthor) {
+
+        detailAuthor.textContent =
+            news.author ?? "-";
+
+    }
+
+
+    /* ==========================================
+       TANGGAL
+    ========================================== */
+
+    const detailDate =
+        document.getElementById(
+            "detailDate"
+        );
+
+    if (detailDate) {
+
+        detailDate.textContent =
+            news.publish_date ?? "-";
+
+    }
+
+
+    /* ==========================================
+       CONTENT
+    ========================================== */
+
+    const detailContent =
+        document.getElementById(
+            "detailContent"
+        );
+
+    if (detailContent) {
+
+        detailContent.innerHTML =
+            news.content ?? "-";
+
+    }
+
 
     openModal(detailModal);
 
@@ -327,88 +498,580 @@ function showDetail(news) {
 function deleteBerita(id) {
 
     Swal.fire({
-        title: 'Hapus Berita?',
-        text: 'Berita yang dihapus tidak dapat dikembalikan.',
-        icon: 'warning',
+
+        title: "Hapus Berita?",
+
+        text:
+            "Berita yang dihapus tidak dapat dikembalikan.",
+
+        icon: "warning",
+
         showCancelButton: true,
-        confirmButtonColor: '#dc2626',
-        cancelButtonColor: '#6b7280',
-        confirmButtonText: 'Ya, Hapus',
-        cancelButtonText: 'Batal',
+
+        confirmButtonColor: "#dc2626",
+
+        cancelButtonColor: "#6b7280",
+
+        confirmButtonText: "Ya, Hapus",
+
+        cancelButtonText: "Batal",
+
         reverseButtons: true
-    }).then((result) => {
 
-        if (result.isConfirmed) {
+    }).then(function (result) {
 
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = `${beritaBaseUrl}/${id}`;
+        if (!result.isConfirmed) {
 
-            form.innerHTML = `
-                <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').content}">
-                <input type="hidden" name="_method" value="DELETE">
-            `;
+            return;
 
-            document.body.appendChild(form);
-            form.submit();
         }
 
+
+        const csrfToken =
+            document.querySelector(
+                'meta[name="csrf-token"]'
+            );
+
+        if (!csrfToken) {
+
+            console.error(
+                "CSRF token tidak ditemukan."
+            );
+
+            return;
+
+        }
+
+
+        const form =
+            document.createElement("form");
+
+
+        form.method = "POST";
+
+        form.action =
+            `${beritaBaseUrl}/${id}`;
+
+
+        form.innerHTML = `
+
+            <input
+                type="hidden"
+                name="_token"
+                value="${csrfToken.content}">
+
+            <input
+                type="hidden"
+                name="_method"
+                value="DELETE">
+
+        `;
+
+
+        document.body.appendChild(form);
+
+        form.submit();
+
     });
 
 }
+
 
 /* ==========================================
-   SEARCH & FILTER (LARAVEL)
+   LIVE SEARCH
 ========================================== */
 
-const filterForm = document.getElementById("filterForm");
+if (searchInput) {
 
-if (searchInput && filterForm) {
+    searchInput.addEventListener(
+        "input",
+        function () {
 
-    let timer;
+            clearTimeout(searchTimer);
 
-    searchInput.addEventListener("keyup", function () {
 
-        clearTimeout(timer);
+            const keyword =
+                searchInput.value.trim();
 
-        timer = setTimeout(function () {
 
-            filterForm.submit();
+            /*
+            |--------------------------------------------------------------------------
+            | Kalau kosong, langsung tampilkan semua
+            |--------------------------------------------------------------------------
+            */
 
-        }, 500);
+            if (keyword === "") {
+
+                applyServerFilter();
+
+                return;
+
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Debounce 150ms
+            |--------------------------------------------------------------------------
+            */
+
+            searchTimer = setTimeout(
+                function () {
+
+                    applyServerFilter();
+
+                },
+                150
+            );
+
+        }
+    );
+
+}
+
+
+/* ==========================================
+   CATEGORY FILTER
+========================================== */
+
+if (categoryFilter) {
+
+    categoryFilter.addEventListener(
+        "change",
+        function () {
+
+            applyServerFilter();
+
+        }
+    );
+
+}
+
+
+/* ==========================================
+   APPLY SERVER FILTER
+========================================== */
+
+function applyServerFilter() {
+
+    const keyword =
+        searchInput
+            ? searchInput.value.trim()
+            : "";
+
+
+    const category =
+        categoryFilter
+            ? categoryFilter.value
+            : "";
+
+
+    const url =
+        new URL(
+            window.location.href
+        );
+
+
+    /* ==========================================
+       SEARCH
+    ========================================== */
+
+    if (keyword !== "") {
+
+        url.searchParams.set(
+            "search",
+            keyword
+        );
+
+    } else {
+
+        url.searchParams.delete(
+            "search"
+        );
+
+    }
+
+
+    /* ==========================================
+       CATEGORY
+    ========================================== */
+
+    if (category !== "") {
+
+        url.searchParams.set(
+            "category",
+            category
+        );
+
+    } else {
+
+        url.searchParams.delete(
+            "category"
+        );
+
+    }
+
+
+    /* ==========================================
+       RESET PAGE
+    ========================================== */
+
+    url.searchParams.delete(
+        "page"
+    );
+
+
+    loadNewsPage(url);
+
+}
+
+
+/* ==========================================
+   AJAX PAGINATION CLICK
+========================================== */
+
+document.addEventListener(
+    "click",
+    function (e) {
+
+        const pageLink =
+            e.target.closest(
+                ".custom-pagination a"
+            );
+
+
+        if (!pageLink) {
+
+            return;
+
+        }
+
+
+        e.preventDefault();
+
+
+        const url =
+            new URL(
+                pageLink.href
+            );
+
+
+        loadNewsPage(url);
+
+    }
+);
+
+
+/* ==========================================
+   PER PAGE
+========================================== */
+
+document.addEventListener(
+    "change",
+    function (e) {
+
+        if (
+            e.target.id !==
+            "perPageSelect"
+        ) {
+
+            return;
+
+        }
+
+
+        const url =
+            new URL(
+                window.location.href
+            );
+
+
+        url.searchParams.set(
+            "per_page",
+            e.target.value
+        );
+
+
+        url.searchParams.delete(
+            "page"
+        );
+
+
+        loadNewsPage(url);
+
+    }
+);
+
+
+/* ==========================================
+   LOAD NEWS PAGE AJAX
+========================================== */
+
+function loadNewsPage(url) {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pertahankan search
+    |--------------------------------------------------------------------------
+    */
+
+    const keyword =
+        searchInput
+            ? searchInput.value.trim()
+            : "";
+
+
+    if (keyword !== "") {
+
+        url.searchParams.set(
+            "search",
+            keyword
+        );
+
+    } else {
+
+        url.searchParams.delete(
+            "search"
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pertahankan kategori
+    |--------------------------------------------------------------------------
+    */
+
+    const category =
+        categoryFilter
+            ? categoryFilter.value
+            : "";
+
+
+    if (category !== "") {
+
+        url.searchParams.set(
+            "category",
+            category
+        );
+
+    } else {
+
+        url.searchParams.delete(
+            "category"
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Batalkan request sebelumnya
+    |--------------------------------------------------------------------------
+    */
+
+    if (currentRequest) {
+
+        currentRequest.abort();
+
+    }
+
+
+    currentRequest =
+        new AbortController();
+
+
+    fetch(
+        url.toString(),
+        {
+
+            method: "GET",
+
+            signal:
+                currentRequest.signal,
+
+            headers: {
+
+                "X-Requested-With":
+                    "XMLHttpRequest",
+
+                "Accept":
+                    "text/html"
+
+            }
+
+        }
+    )
+
+    .then(function (response) {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Gagal memuat data berita."
+            );
+
+        }
+
+        return response.text();
+
+    })
+
+    .then(function (html) {
+
+        const parser =
+            new DOMParser();
+
+
+        const doc =
+            parser.parseFromString(
+                html,
+                "text/html"
+            );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE TABLE
+        |--------------------------------------------------------------------------
+        */
+
+        const newTableBody =
+            doc.querySelector(
+                "#newsTableBody"
+            );
+
+
+        const currentTableBody =
+            document.querySelector(
+                "#newsTableBody"
+            );
+
+
+        if (
+            newTableBody &&
+            currentTableBody
+        ) {
+
+            currentTableBody.innerHTML =
+                newTableBody.innerHTML;
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE PAGINATION
+        |--------------------------------------------------------------------------
+        */
+
+        const newPagination =
+            doc.querySelector(
+                ".custom-pagination"
+            );
+
+
+        const currentPagination =
+            document.querySelector(
+                ".custom-pagination"
+            );
+
+
+        if (
+            newPagination &&
+            currentPagination
+        ) {
+
+            currentPagination.innerHTML =
+                newPagination.innerHTML;
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE URL
+        |--------------------------------------------------------------------------
+        */
+
+        window.history.replaceState(
+            {},
+            "",
+            url.toString()
+        );
+
+
+        currentRequest = null;
+
+    })
+
+    .catch(function (error) {
+
+        if (
+            error.name ===
+            "AbortError"
+        ) {
+
+            return;
+
+        }
+
+
+        console.error(
+            "Pagination/Search error:",
+            error
+        );
+
+
+        currentRequest = null;
 
     });
 
 }
 
-if (categoryFilter && filterForm) {
-
-    categoryFilter.addEventListener("change", function () {
-
-        filterForm.submit();
-
-    });
-
-}
 
 /* ==========================================
    AUTO HIDE NOTIFICATION
 ========================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    const notification = document.getElementById("notification");
+        const notification =
+            document.getElementById(
+                "notification"
+            );
 
-    if (!notification) return;
 
-    setTimeout(() => {
+        if (!notification) {
 
-        notification.classList.remove("show");
+            return;
 
-        setTimeout(() => {
-            notification.remove();
-        }, 350);
+        }
 
-    }, 3000);
 
-});
+        setTimeout(
+            function () {
+
+                notification.classList.remove(
+                    "show"
+                );
+
+
+                setTimeout(
+                    function () {
+
+                        notification.remove();
+
+                    },
+                    350
+                );
+
+            },
+            3000
+        );
+
+    }
+);
