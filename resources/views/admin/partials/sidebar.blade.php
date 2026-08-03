@@ -33,7 +33,7 @@
 
                 <span>Aspirasi</span>
 
-                <span id="badgeAspirasi" class="badge {{ $jumlahNotifSidebar == 0 ? 'badge-zero' : '' }}">
+                <span id="sidebar-unread-count" class="badge {{ $jumlahNotifSidebar == 0 ? 'badge-zero' : '' }}">
 
                     {{ $jumlahNotifSidebar }}
 

@@ -16,11 +16,6 @@ class AspirasiController extends Controller
 
     public function index(Request $request)
     {
-        // Tandai notifikasi sidebar sudah dilihat
-        ContactMessage::where('notif_sidebar', 0)
-            ->update([
-                'notif_sidebar' => 1
-            ]);
 
         /*
         |--------------------------------------------------------------------------
@@ -176,5 +171,31 @@ class AspirasiController extends Controller
             'success',
             'Data berhasil dihapus.'
         );
+    }
+    /*
+    |--------------------------------------------------------------------------
+    | REALTIME STATISTICS
+    |--------------------------------------------------------------------------
+    */
+
+    public function statistics()
+    {
+        return response()->json([
+            'total'   => ContactMessage::count(),
+            'unread'  => ContactMessage::where('is_read', 0)->count(),
+            'read'    => ContactMessage::where('is_read', 1)->count(),
+        ]);
+    }
+    /*
+    |--------------------------------------------------------------------------
+    | SIDEBAR NOTIFICATION
+    |--------------------------------------------------------------------------
+    */
+
+    public function sidebarNotification()
+    {
+        return response()->json([
+            'count' => ContactMessage::where('is_read', 0)->count()
+        ]);
     }
 }

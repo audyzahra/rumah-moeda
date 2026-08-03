@@ -234,11 +234,10 @@ function showDetail(button) {
             </div>
 
             <div class="detail-value">
-                ${
-                    data.status == "1"
-                        ? "Dibaca"
-                        : "Belum Dibaca"
-                }
+                ${data.status == "1"
+            ? "Dibaca"
+            : "Belum Dibaca"
+        }
             </div>
 
         </div>
@@ -318,76 +317,79 @@ function showDetail(button) {
 
         })
 
-        .then(function (response) {
+            .then(function (response) {
 
-            if (!response.ok) {
+                if (!response.ok) {
 
-                throw new Error(
-                    "Gagal mengubah status."
-                );
-
-            }
-
-            return response.json();
-
-        })
-
-        .then(function () {
-
-            button.dataset.status = "1";
-
-
-            /* ==================================
-               UPDATE STATUS MODAL
-            ================================== */
-
-            const modalStatus =
-                detailBody.querySelector(
-                    ".detail-item:nth-child(4) .detail-value"
-                );
-
-            if (modalStatus) {
-
-                modalStatus.textContent = "Dibaca";
-
-            }
-
-
-            /* ==================================
-               UPDATE STATUS TABLE
-            ================================== */
-
-            const row = button.closest("tr");
-
-            if (row) {
-
-                row.dataset.status = "1";
-
-                const badge =
-                    row.querySelector(".status-badge");
-
-                if (badge) {
-
-                    badge.classList.remove("baru");
-
-                    badge.classList.add("dibaca");
-
-                    badge.textContent = "Dibaca";
+                    throw new Error(
+                        "Gagal mengubah status."
+                    );
 
                 }
 
-            }
+                return response.json();
 
-        })
+            })
 
-        .catch(function (error) {
+            .then(function () {
 
-            console.error(
-                "Error mark as read:",
-                error
-            );
+                button.dataset.status = "1";
 
-        });
+
+                /* ==================================
+                   UPDATE STATUS MODAL
+                ================================== */
+
+                const modalStatus =
+                    detailBody.querySelector(
+                        ".detail-item:nth-child(4) .detail-value"
+                    );
+
+                if (modalStatus) {
+
+                    modalStatus.textContent = "Dibaca";
+
+                }
+
+
+                /* ==================================
+                   UPDATE STATUS TABLE
+                ================================== */
+
+                const row = button.closest("tr");
+
+                if (row) {
+
+                    row.dataset.status = "1";
+
+                    const badge =
+                        row.querySelector(".status-badge");
+
+                    if (badge) {
+
+                        badge.classList.remove("baru");
+
+                        badge.classList.add("dibaca");
+
+                        badge.textContent = "Dibaca";
+
+                    }
+
+                }
+                loadStatistics();
+                if (typeof loadSidebarNotification === "function") {
+                    loadSidebarNotification();
+                }
+            })
+
+            .catch(function (error) {
+
+                console.error(
+                    "Error mark as read:",
+                    error
+                );
+
+            });
 
     }
 
@@ -467,46 +469,46 @@ function deleteAspirasi(id) {
 
     })
 
-    .then(function (result) {
+        .then(function (result) {
 
-        if (!result.isConfirmed) {
-            return;
-        }
-
-
-        const csrfToken = document.querySelector(
-            'meta[name="csrf-token"]'
-        );
-
-        if (!csrfToken) {
-
-            Swal.fire({
-
-                icon: "error",
-
-                title: "Error",
-
-                text:
-                    "CSRF token tidak ditemukan."
-
-            });
-
-            return;
-
-        }
+            if (!result.isConfirmed) {
+                return;
+            }
 
 
-        const form =
-            document.createElement("form");
+            const csrfToken = document.querySelector(
+                'meta[name="csrf-token"]'
+            );
+
+            if (!csrfToken) {
+
+                Swal.fire({
+
+                    icon: "error",
+
+                    title: "Error",
+
+                    text:
+                        "CSRF token tidak ditemukan."
+
+                });
+
+                return;
+
+            }
 
 
-        form.method = "POST";
-
-        form.action =
-            `/admin/messages/${id}`;
+            const form =
+                document.createElement("form");
 
 
-        form.innerHTML = `
+            form.method = "POST";
+
+            form.action =
+                `/admin/messages/${id}`;
+
+
+            form.innerHTML = `
 
             <input
                 type="hidden"
@@ -521,11 +523,11 @@ function deleteAspirasi(id) {
         `;
 
 
-        document.body.appendChild(form);
+            document.body.appendChild(form);
 
-        form.submit();
+            form.submit();
 
-    });
+        });
 
 }
 
@@ -582,46 +584,46 @@ function bulkDelete() {
 
     })
 
-    .then(function (result) {
+        .then(function (result) {
 
-        if (!result.isConfirmed) {
-            return;
-        }
-
-
-        const csrfToken = document.querySelector(
-            'meta[name="csrf-token"]'
-        );
-
-        if (!csrfToken) {
-
-            Swal.fire({
-
-                icon: "error",
-
-                title: "Error",
-
-                text:
-                    "CSRF token tidak ditemukan."
-
-            });
-
-            return;
-
-        }
+            if (!result.isConfirmed) {
+                return;
+            }
 
 
-        const form =
-            document.createElement("form");
+            const csrfToken = document.querySelector(
+                'meta[name="csrf-token"]'
+            );
+
+            if (!csrfToken) {
+
+                Swal.fire({
+
+                    icon: "error",
+
+                    title: "Error",
+
+                    text:
+                        "CSRF token tidak ditemukan."
+
+                });
+
+                return;
+
+            }
 
 
-        form.method = "POST";
-
-        form.action =
-            aspirasiBaseUrl;
+            const form =
+                document.createElement("form");
 
 
-        form.innerHTML = `
+            form.method = "POST";
+
+            form.action =
+                aspirasiBaseUrl;
+
+
+            form.innerHTML = `
 
             <input
                 type="hidden"
@@ -636,9 +638,9 @@ function bulkDelete() {
         `;
 
 
-        ids.forEach(function (id) {
+            ids.forEach(function (id) {
 
-            form.innerHTML += `
+                form.innerHTML += `
 
                 <input
                     type="hidden"
@@ -647,14 +649,14 @@ function bulkDelete() {
 
             `;
 
+            });
+
+
+            document.body.appendChild(form);
+
+            form.submit();
+
         });
-
-
-        document.body.appendChild(form);
-
-        form.submit();
-
-    });
 
 }
 
@@ -824,124 +826,234 @@ function applyServerFilter() {
 
     )
 
-    .then(function (response) {
+        .then(function (response) {
 
-        if (!response.ok) {
+            if (!response.ok) {
 
-            throw new Error(
-                "Gagal mengambil data."
+                throw new Error(
+                    "Gagal mengambil data."
+                );
+
+            }
+
+            return response.text();
+
+        })
+
+        .then(function (html) {
+
+            const parser =
+                new DOMParser();
+
+
+            const doc =
+                parser.parseFromString(
+                    html,
+                    "text/html"
+                );
+
+
+            /* ==========================================
+               UPDATE TABLE BODY
+            ========================================== */
+
+            const newBody =
+                doc.querySelector(
+                    "#aspirasiBody"
+                );
+
+
+            const currentBody =
+                document.querySelector(
+                    "#aspirasiBody"
+                );
+
+
+            if (
+                newBody &&
+                currentBody
+            ) {
+
+                currentBody.innerHTML =
+                    newBody.innerHTML;
+
+            }
+
+
+            /* ==========================================
+               UPDATE PAGINATION
+            ========================================== */
+
+            const newPagination =
+                doc.querySelector(
+                    ".custom-section"
+                );
+
+
+            const currentPagination =
+                document.querySelector(
+                    ".custom-section"
+                );
+
+
+            if (
+                newPagination &&
+                currentPagination
+            ) {
+
+                currentPagination.innerHTML =
+                    newPagination.innerHTML;
+
+            }
+
+
+            /* ==========================================
+               UPDATE URL
+            ========================================== */
+
+            window.history.replaceState(
+
+                {},
+
+                "",
+
+                url.toString()
+
             );
 
-        }
 
-        return response.text();
+            /* ==========================================
+               RESET CHECKBOX
+            ========================================== */
 
-    })
+            if (checkAll) {
 
-    .then(function (html) {
+                checkAll.checked = false;
 
-        const parser =
-            new DOMParser();
+            }
 
 
-        const doc =
-            parser.parseFromString(
-                html,
-                "text/html"
+            updateBulkDeleteButton();
+
+        })
+
+        .catch(function (error) {
+
+            console.error(
+                "Search error:",
+                error
             );
 
-
-        /* ==========================================
-           UPDATE TABLE BODY
-        ========================================== */
-
-        const newBody =
-            doc.querySelector(
-                "#aspirasiBody"
-            );
-
-
-        const currentBody =
-            document.querySelector(
-                "#aspirasiBody"
-            );
-
-
-        if (
-            newBody &&
-            currentBody
-        ) {
-
-            currentBody.innerHTML =
-                newBody.innerHTML;
-
-        }
-
-
-        /* ==========================================
-           UPDATE PAGINATION
-        ========================================== */
-
-        const newPagination =
-            doc.querySelector(
-                ".custom-section"
-            );
-
-
-        const currentPagination =
-            document.querySelector(
-                ".custom-section"
-            );
-
-
-        if (
-            newPagination &&
-            currentPagination
-        ) {
-
-            currentPagination.innerHTML =
-                newPagination.innerHTML;
-
-        }
-
-
-        /* ==========================================
-           UPDATE URL
-        ========================================== */
-
-        window.history.replaceState(
-
-            {},
-
-            "",
-
-            url.toString()
-
-        );
-
-
-        /* ==========================================
-           RESET CHECKBOX
-        ========================================== */
-
-        if (checkAll) {
-
-            checkAll.checked = false;
-
-        }
-
-
-        updateBulkDeleteButton();
-
-    })
-
-    .catch(function (error) {
-
-        console.error(
-            "Search error:",
-            error
-        );
-
-    });
+        });
 
 }
+/* ==========================================
+   REALTIME TABLE
+========================================== */
+
+function refreshTable() {
+
+    const url = new URL(window.location.href);
+
+    fetch(url.toString(), {
+
+        method: "GET",
+
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            "Accept": "text/html"
+        }
+
+    })
+
+        .then(response => {
+
+            if (!response.ok) {
+                throw new Error("Gagal mengambil data.");
+            }
+
+            return response.text();
+
+        })
+
+        .then(html => {
+
+            const parser = new DOMParser();
+
+            const doc = parser.parseFromString(html, "text/html");
+
+            // Update tabel
+            const newBody = doc.querySelector("#aspirasiBody");
+            const currentBody = document.querySelector("#aspirasiBody");
+
+            if (newBody && currentBody) {
+                currentBody.innerHTML = newBody.innerHTML;
+            }
+
+            // Update pagination
+            const newPagination = doc.querySelector(".custom-pagination");
+            const currentPagination = document.querySelector(".custom-pagination");
+
+            if (newPagination && currentPagination) {
+                currentPagination.innerHTML = newPagination.innerHTML;
+            }
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+        });
+
+}
+/* ==========================================
+   REALTIME STATISTICS
+========================================== */
+
+function loadStatistics() {
+
+    fetch(window.statisticsUrl, {
+
+        headers: {
+            "X-Requested-With": "XMLHttpRequest"
+        }
+
+    })
+        .then(response => response.json())
+        .then(data => {
+
+            // Card Statistik
+            const total = document.getElementById("total-aspirasi");
+            const unread = document.getElementById("belum-dibaca");
+            const read = document.getElementById("sudah-dibaca");
+
+            if (total) total.textContent = data.total;
+            if (unread) unread.textContent = data.unread;
+            if (read) read.textContent = data.read;
+            if (lastUnreadCount === null) {
+
+                lastUnreadCount = data.unread;
+
+            } else if (lastUnreadCount !== data.unread) {
+
+                lastUnreadCount = data.unread;
+
+                refreshTable();
+
+            }
+
+        })
+        .catch(error => console.error(error));
+
+}
+let lastUnreadCount = null;
+loadStatistics();
+
+setInterval(() => {
+
+    if (document.visibilityState === "visible") {
+        loadStatistics();
+    }
+
+}, 5000);

@@ -65,13 +65,13 @@ function highlightActiveMenu() {
 // ===== UPDATE BADGE =====
 function updateBadge(page, count) {
     const badgeMap = {
-        'aspirasi': 'badgeAspirasi',
-        'berita': 'badgeBerita',
-        'dokumentasi': 'badgeDokumentasi',
-        'struktur': 'badgeStruktur',
-        'mitra': 'badgeMitra',
-        'faq': 'badgeFaq'
-    };
+    aspirasi: 'sidebar-unread-count',
+    berita: 'badgeBerita',
+    dokumentasi: 'badgeDokumentasi',
+    struktur: 'badgeStruktur',
+    mitra: 'badgeMitra',
+    faq: 'badgeFaq'
+};
 
     const badgeId = badgeMap[page];
     if (badgeId) {
@@ -113,8 +113,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         }
-    });
 
+    });
+    loadSidebarNotification();
+
+    setInterval(loadSidebarNotification, 5000);
     // ===== TUTUP SIDEBAR SAAT RESIZE KE DESKTOP =====
     let resizeTimer;
     window.addEventListener('resize', function () {
@@ -225,39 +228,50 @@ document.addEventListener('DOMContentLoaded', function () {
 // REALTIME SIDEBAR NOTIFICATION
 // ========================================
 
-function loadSidebarNotification(){
+function loadSidebarNotification() {
 
-    fetch(window.sidebarNotificationUrl)
+    if (!window.sidebarNotificationUrl) return;
 
-        .then(response => response.json())
+    fetch(window.sidebarNotificationUrl + "?t=" + Date.now(), {
+        cache: "no-store",
+        headers: {
+            "X-Requested-With": "XMLHttpRequest"
+        }
+    })
 
-        .then(data => {
+    .then(response => {
 
-            const badge = document.getElementById("badgeAspirasi");
+        if (!response.ok) {
+            throw new Error("Request gagal");
+        }
 
-            if(!badge) return;
+        return response.json();
 
-            badge.textContent = data.count;
+    })
 
-            if(data.count > 0){
+    .then(data => {
 
-                badge.classList.remove("badge-zero");
+        const badge = document.getElementById("sidebar-unread-count");
 
-            }else{
+        if (!badge) return;
 
-                badge.classList.add("badge-zero");
+        badge.textContent = data.count;
 
-            }
+        if (data.count > 0) {
 
-        })
+            badge.classList.remove("badge-zero");
 
-        .catch(error => console.log(error));
+        } else {
+
+            badge.classList.add("badge-zero");
+
+        }
+
+    })
+
+    .catch(error => console.error(error));
 
 }
-
-loadSidebarNotification();
-
-setInterval(loadSidebarNotification,5000);
 
 // ==============================
 // DROPDOWN MENU PORTOFOLIO

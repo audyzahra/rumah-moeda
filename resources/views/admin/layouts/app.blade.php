@@ -19,7 +19,9 @@
     <!-- Sidebar -->
     <link rel="stylesheet" href="{{ asset('css/admin/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin/layout.css') }}">
-
+    <script>
+        window.sidebarNotificationUrl = "{{ route('admin.sidebar.notification') }}";
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 
