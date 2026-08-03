@@ -110,7 +110,7 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'verified'])
+Route::middleware(['auth', 'verified', 'user'])
     ->prefix('dashboard')
     ->name('user.')
     ->group(function () {
@@ -555,7 +555,7 @@ Route::middleware(['auth', 'admin'])
                 )->name('admin.portfolios.search');
             });
     });
-    
+
     Route::get('/test-security', function () {
 
         $security = new SecurityInputService();
