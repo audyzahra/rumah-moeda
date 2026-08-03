@@ -38,7 +38,27 @@ class PortfolioController extends Controller
 
         // Search
         if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%');
+
+            $keyword = $request->search;
+
+            $query->where(function ($q) use ($keyword) {
+
+                $q->where('title', 'like', "%{$keyword}%")
+
+                    ->orWhereHas('category', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    })
+
+                    ->orWhereHas('partner', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    })
+
+                    ->orWhereHas('author', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    });
+
+            });
+
         }
 
         // Filter kategori
@@ -71,6 +91,14 @@ class PortfolioController extends Controller
 
         $categories = PortfolioCategory::orderBy('name')->get();
         $partners = Partner::orderBy('name')->get();
+        
+        if ($request->ajax()) {
+                return view('user.portfolios.index', compact(
+                    'portfolios',
+                    'categories',
+                    'partners'
+                ));
+            }
 
         return view('user.portfolios.index', compact(
             'portfolios',

@@ -16,7 +16,7 @@
             <div class="portfolio-header-info">
 
                 <h1 class="portfolio-title">
-                    Portfolio
+                    Portofolio
                 </h1>
 
                 <p class="portfolio-subtitle">
@@ -29,7 +29,7 @@
 
                 <i class="fa-solid fa-plus"></i>
 
-                <span>Tambah Portfolio</span>
+                <span>Tambah Portofolio</span>
 
             </a>
 
@@ -291,7 +291,7 @@
                 {{-- Show Entries --}}
                 <div class="pagination-left">
 
-                    <form method="GET">
+                    <form method="GET" id="perPageForm">
 
                         <input type="hidden" name="search" value="{{ request('search') }}">
                         <input type="hidden" name="sort" value="{{ request('sort') }}">
@@ -302,7 +302,9 @@
 
                         <span>Tampilkan</span>
 
-                        <select name="per_page" onchange="this.form.submit()">
+                        <select
+                            id="perPageSelect"
+                            name="per_page">
 
                             <option value="5" {{ request('per_page',5)==5 ? 'selected' : '' }}>5</option>
                             <option value="10" {{ request('per_page')==10 ? 'selected' : '' }}>10</option>
@@ -347,33 +349,40 @@
 
                     @else
 
-                        <a href="{{ $portfolios->appends(request()->query())->previousPageUrl() }}" class="page-btn">
+                        <a href="{{ $portfolios->previousPageUrl() }}">
                             <i class="fa-solid fa-chevron-left"></i>
                         </a>
 
                     @endif
 
-                    @foreach ($portfolios->appends(request()->query())->getUrlRange(1, $portfolios->lastPage()) as $page => $url)
+                    @php
+                        $start = max($portfolios->currentPage() - 1, 1);
+                        $end = min($start + 1, $portfolios->lastPage());
 
-                        @if ($page == $portfolios->currentPage())
+                        if ($end - $start < 1) {
+                            $start = max($end - 1, 1);
+                        }
+                    @endphp
 
-                            <span class="page-number active">
-                                {{ $page }}
-                            </span>
+                    @for($page = $start; $page <= $end; $page++)
+
+                        @if($page == $portfolios->currentPage())
+
+                            <span class="page-number active">{{ $page }}</span>
 
                         @else
 
-                            <a href="{{ $url }}" class="page-number">
+                            <a href="{{ $portfolios->url($page) }}" class="page-number">
                                 {{ $page }}
                             </a>
 
                         @endif
 
-                    @endforeach
+                    @endfor
 
                     @if ($portfolios->hasMorePages())
 
-                        <a href="{{ $portfolios->appends(request()->query())->nextPageUrl() }}" class="page-btn">
+                        <a href="{{ $portfolios->nextPageUrl() }}">
                             <i class="fa-solid fa-chevron-right"></i>
                         </a>
 
