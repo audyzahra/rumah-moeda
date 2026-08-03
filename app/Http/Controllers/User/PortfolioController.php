@@ -16,7 +16,7 @@ use App\Services\Security\DangerousInputException;
 
 class PortfolioController extends Controller
 {
-        protected SecurityInputService $security;
+    protected SecurityInputService $security;
 
     public function __construct(SecurityInputService $security)
     {
@@ -94,56 +94,47 @@ class PortfolioController extends Controller
     {
 
 
-        $data = $request->validate([
+        $data = $request->validate(
+            [
 
-            'category_id' => 'required|exists:portfolio_categories,id',
-            'partner_id' => 'nullable|exists:partners,id',
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'activity_date' => 'required|date',
-            'author_id' => 'nullable|exists:users,id',
-            'location' => 'required|string|max:255',
-            'participants' => 'nullable|integer|min:0',
-            'latitude' => 'nullable|numeric|between:-90,90',
-            'longitude' => 'nullable|numeric|between:-180,180',
-            'images' => 'required|array|min:1',
-            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
-            'video_url.*' => 'nullable|url',
+                'category_id' => 'required|exists:portfolio_categories,id',
+                'partner_id' => 'nullable|exists:partners,id',
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'activity_date' => 'required|date',
+                'author_id' => 'nullable|exists:users,id',
+                'location' => 'required|string|max:255',
+                'participants' => 'nullable|integer|min:0',
+                'latitude' => 'nullable|numeric|between:-90,90',
+                'longitude' => 'nullable|numeric|between:-180,180',
+                'images' => 'required|array|min:1',
+                'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+                'video_url.*' => 'nullable|url',
 
-        ],
-         [
-            'category_id.required' => 'Kategori wajib dipilih.',
-            'category_id.exists' => 'Kategori tidak valid.',
+            ],
+            [
+                'category_id.required' => 'Kategori wajib dipilih.',
+                'title.required' => 'Judul wajib diisi.',
+                'description.required' => 'Deskripsi wajib diisi.',
+                'activity_date.required' => 'Tanggal kegiatan wajib diisi.',
+                'location.required' => 'Lokasi wajib diisi.',
 
-            'partner_id.exists' => 'Mitra tidak valid.',
+                'latitude.numeric' => 'Latitude harus berupa angka.',
+                'latitude.between' => 'Latitude harus berada antara -90 sampai 90.',
 
-            'title.required' => 'Judul wajib diisi.',
-            'title.max' => 'Judul maksimal 255 karakter.',
+                'longitude.numeric' => 'Longitude harus berupa angka.',
+                'longitude.between' => 'Longitude harus berada antara -180 sampai 180.',
 
-            'description.required' => 'Deskripsi wajib diisi.',
+                'images.required' => 'Minimal upload 1 foto.',
+                'images.array' => 'Minimal upload 1 foto.',
+                'images.min' => 'Minimal upload 1 foto.',
+                'images.*.image' => 'File harus berupa gambar.',
+                'images.*.mimes' => 'Format gambar harus JPG, JPEG, PNG, atau WEBP.',
+                'images.*.max' => 'Ukuran gambar maksimal 2 MB.',
 
-            'activity_date.required' => 'Tanggal kegiatan wajib diisi.',
-            'activity_date.date' => 'Format tanggal tidak valid.',
-
-            'location.required' => 'Lokasi wajib diisi.',
-            'location.max' => 'Lokasi maksimal 255 karakter.',
-
-            'participants.integer' => 'Jumlah peserta harus berupa angka.',
-            'participants.min' => 'Jumlah peserta tidak boleh kurang dari 0.',
-
-            'latitude.numeric' => 'Latitude harus berupa angka.',
-            'latitude.between' => 'Latitude harus berada antara -90 sampai 90.',
-
-            'longitude.numeric' => 'Longitude harus berupa angka.',
-            'longitude.between' => 'Longitude harus berada antara -180 sampai 180.',
-
-            'images.*.image' => 'File harus berupa gambar.',
-            'images.*.mimes' => 'Format gambar harus JPG, JPEG, PNG, atau WEBP.',
-            'images.*.max' => 'Ukuran gambar maksimal 2 MB.',
-
-            'video_url.*.url' => 'URL video YouTube tidak valid.',
-        ]
-    );
+                'video_url.*.url' => 'URL video YouTube tidak valid.',
+            ]
+        );
 
         try {
 
@@ -154,13 +145,11 @@ class PortfolioController extends Controller
                 : null;
 
             $description = $this->security->cleanHtml($data['description']);
-
         } catch (DangerousInputException $e) {
 
             return back()
                 ->withInput()
                 ->with('error', $e->getMessage());
-
         }
 
         $portfolio = Portfolio::create([
@@ -236,11 +225,11 @@ class PortfolioController extends Controller
         }
 
         return redirect()
-    ->route('user.portfolios.index')
-    ->with([
-        'title' => 'Berhasil! 🎉',
-        'success' => 'Portofolio berhasil ditambahkan.'
-    ]);
+            ->route('user.portfolios.index')
+            ->with([
+                'title' => 'Berhasil! 🎉',
+                'success' => 'Portofolio berhasil ditambahkan.'
+            ]);
     }
 
     public function show(string $id)
@@ -265,10 +254,10 @@ class PortfolioController extends Controller
     {
 
 
-        $portfolio = Portfolio::with('media','author')
-        ->where('author_id', Auth::id())
-        ->where('id', $id)
-        ->findOrFail($id);
+        $portfolio = Portfolio::with('media', 'author')
+            ->where('author_id', Auth::id())
+            ->where('id', $id)
+            ->findOrFail($id);
 
         $categories = PortfolioCategory::all();
 
@@ -291,43 +280,44 @@ class PortfolioController extends Controller
     {
 
 
-        $data = $request->validate([
-            'category_id' => 'required|exists:portfolio_categories,id',
-            'partner_id' => 'nullable|exists:partners,id',
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'activity_date' => 'required|date',
-            'location' => 'required|string|max:255',
-            'participants' => 'nullable|integer|min:0',
-            'latitude' => 'nullable|numeric|between:-90,90',
-            'longitude' => 'nullable|numeric|between:-180,180',
-            'images' => 'nullable|array',
-            'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'video_url.*' => 'nullable|url',
-            'delete_media.*' => 'nullable|exists:portfolio_media,id',
+        $data = $request->validate(
+            [
+                'category_id' => 'required|exists:portfolio_categories,id',
+                'partner_id' => 'nullable|exists:partners,id',
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'activity_date' => 'required|date',
+                'location' => 'required|string|max:255',
+                'participants' => 'nullable|integer|min:0',
+                'latitude' => 'nullable|numeric|between:-90,90',
+                'longitude' => 'nullable|numeric|between:-180,180',
+                'images' => 'nullable|array',
+                'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+                'video_url.*' => 'nullable|url',
+                'delete_media.*' => 'nullable|exists:portfolio_media,id',
 
-        ],
-        [
-            'category_id.required' => 'Kategori wajib dipilih.',
-            'title.required' => 'Judul wajib diisi.',
-            'description.required' => 'Deskripsi wajib diisi.',
-            'activity_date.required' => 'Tanggal kegiatan wajib diisi.',
-            'location.required' => 'Lokasi wajib diisi.',
+            ],
+            [
+                'category_id.required' => 'Kategori wajib dipilih.',
+                'title.required' => 'Judul wajib diisi.',
+                'description.required' => 'Deskripsi wajib diisi.',
+                'activity_date.required' => 'Tanggal kegiatan wajib diisi.',
+                'location.required' => 'Lokasi wajib diisi.',
 
-            'latitude.numeric' => 'Latitude harus berupa angka.',
-            'latitude.between' => 'Latitude harus berada antara -90 sampai 90.',
+                'latitude.numeric' => 'Latitude harus berupa angka.',
+                'latitude.between' => 'Latitude harus berada antara -90 sampai 90.',
 
-            'longitude.numeric' => 'Longitude harus berupa angka.',
-            'longitude.between' => 'Longitude harus berada antara -180 sampai 180.',
+                'longitude.numeric' => 'Longitude harus berupa angka.',
+                'longitude.between' => 'Longitude harus berada antara -180 sampai 180.',
 
-            'images.required' => 'Minimal upload 1 foto.',
-            'images.array' => 'Minimal upload 1 foto.',
-            'images.min' => 'Minimal upload 1 foto.',
-            'images.*.image' => 'File harus berupa gambar.',
-            'images.*.mimes' => 'Format gambar harus JPG, JPEG, PNG, atau WEBP.',
-            'images.*.max' => 'Ukuran gambar maksimal 2 MB.',
+                'images.required' => 'Minimal upload 1 foto.',
+                'images.array' => 'Minimal upload 1 foto.',
+                'images.min' => 'Minimal upload 1 foto.',
+                'images.*.image' => 'File harus berupa gambar.',
+                'images.*.mimes' => 'Format gambar harus JPG, JPEG, PNG, atau WEBP.',
+                'images.*.max' => 'Ukuran gambar maksimal 2 MB.',
 
-            'video_url.*.url' => 'URL video YouTube tidak valid.',
+                'video_url.*.url' => 'URL video YouTube tidak valid.',
             ]
         );
         try {
@@ -339,18 +329,16 @@ class PortfolioController extends Controller
                 : null;
 
             $description = $this->security->cleanHtml($data['description']);
-
         } catch (DangerousInputException $e) {
 
             return back()
                 ->withInput()
                 ->with('error', $e->getMessage());
-
         }
 
-       $portfolio = Portfolio::where('author_id', Auth::id())
-    ->where('id', $id)
-    ->firstOrFail();
+        $portfolio = Portfolio::where('author_id', Auth::id())
+            ->where('id', $id)
+            ->firstOrFail();
 
         $currentImages = $portfolio->media()
             ->where('type', 'image')
@@ -360,8 +348,8 @@ class PortfolioController extends Controller
             'id',
             $request->delete_media ?? []
         )
-        ->where('type', 'image')
-        ->count();
+            ->where('type', 'image')
+            ->count();
 
         $newImages = count($request->file('images') ?? []);
 
@@ -498,9 +486,9 @@ class PortfolioController extends Controller
     {
 
         $portfolio = Portfolio::with('media')
-    ->where('author_id', Auth::id())
-    ->where('id', $id)
-    ->findOrFail($id);
+            ->where('author_id', Auth::id())
+            ->where('id', $id)
+            ->findOrFail($id);
 
 
         foreach ($portfolio->media as $media) {

@@ -361,18 +361,39 @@
 
     </div>
 @endsection
-@if(session('error'))
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    Swal.fire({
-        icon: 'error',
-        title: 'Input Ditolak',
-        text: @json(session('error')),
-        confirmButtonColor: '#dc2626',
-    });
-});
-</script>
+
+
+@if ($errors->any())
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const errors = @json($errors->all());
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Data belum lengkap',
+                html: errors.map(e => `• ${e}`).join('<br>'),
+                confirmButtonText: 'OK'
+            });
+
+        });
+    </script>
 @endif
+
+@if (session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Input Ditolak',
+                text: @json(session('error')),
+            });
+
+        });
+    </script>
+@endif
+
 @push('scripts')
     <script src="{{ asset('js/admin/portfolio.js') }}"></script>
 @endpush
