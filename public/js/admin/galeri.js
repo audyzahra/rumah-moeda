@@ -410,35 +410,193 @@ document.addEventListener("click", function (e) {
    SEARCH & SORT GALERI ADMIN (LARAVEL)
 ========================================== */
 
-document.addEventListener("DOMContentLoaded", function () {
+/* ==========================================
+   LIVE SEARCH
+========================================== */
 
-    const form = document.getElementById("galleryFilter");
-    const search = document.getElementById("searchInput");
-    const sort = document.getElementById("sortGallery");
+const sortGallery = document.getElementById("sortGallery");
 
-    if (!form) return;
+let searchTimer = null;
+let currentRequest = null;
 
-    let timer;
+if (searchInput) {
 
-    search.addEventListener("input", function () {
+    searchInput.addEventListener("input", function () {
 
-        clearTimeout(timer);
+        clearTimeout(searchTimer);
 
-        timer = setTimeout(function () {
+        const keyword = searchInput.value.trim();
 
-            form.submit();
+        if (keyword === "") {
+            applyServerFilter();
+            return;
+        }
+
+        searchTimer = setTimeout(function () {
+
+            applyServerFilter();
 
         }, 150);
 
     });
 
-    sort.addEventListener("change", function () {
+}
 
-        form.submit();
+/* ==========================================
+   SORT
+========================================== */
+
+if (sortGallery) {
+
+    sortGallery.addEventListener("change", function () {
+
+        applyServerFilter();
 
     });
 
+}
+
+/* ==========================================
+   APPLY SERVER FILTER
+========================================== */
+
+function applyServerFilter() {
+
+    const keyword = searchInput ? searchInput.value.trim() : "";
+    const sort = sortGallery ? sortGallery.value : "";
+
+    const url = new URL(window.location.href);
+
+    if (keyword !== "") {
+        url.searchParams.set("search", keyword);
+    } else {
+        url.searchParams.delete("search");
+    }
+
+    if (sort !== "") {
+        url.searchParams.set("sort", sort);
+    } else {
+        url.searchParams.delete("sort");
+    }
+
+    url.searchParams.delete("page");
+
+    loadGalleryPage(url);
+
+}
+
+/* ==========================================
+   AJAX PAGINATION
+========================================== */
+
+document.addEventListener("click", function (e) {
+
+    const pageLink = e.target.closest(".custom-pagination a");
+
+    if (!pageLink) return;
+
+    e.preventDefault();
+
+    loadGalleryPage(new URL(pageLink.href));
+
 });
+
+/* ==========================================
+   PER PAGE
+========================================== */
+
+document.addEventListener("change", function (e) {
+
+    if (e.target.id !== "perPageSelect") return;
+
+    const url = new URL(window.location.href);
+
+    url.searchParams.set("per_page", e.target.value);
+    url.searchParams.delete("page");
+
+    loadGalleryPage(url);
+
+});
+
+/* ==========================================
+   LOAD GALLERY AJAX
+========================================== */
+
+function loadGalleryPage(url) {
+
+    const keyword = searchInput ? searchInput.value.trim() : "";
+    const sort = sortGallery ? sortGallery.value : "";
+
+    if (keyword !== "") {
+        url.searchParams.set("search", keyword);
+    } else {
+        url.searchParams.delete("search");
+    }
+
+    if (sort !== "") {
+        url.searchParams.set("sort", sort);
+    } else {
+        url.searchParams.delete("sort");
+    }
+
+    if (currentRequest) {
+        currentRequest.abort();
+    }
+
+    currentRequest = new AbortController();
+
+    fetch(url.toString(), {
+        method: "GET",
+        signal: currentRequest.signal,
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            "Accept": "text/html"
+        }
+    })
+    .then(response => {
+
+        if (!response.ok) {
+            throw new Error("Gagal memuat data galeri.");
+        }
+
+        return response.text();
+
+    })
+    .then(html => {
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+
+        const newTable = doc.querySelector("#galleryTable");
+        const currentTable = document.querySelector("#galleryTable");
+
+        if (newTable && currentTable) {
+            currentTable.innerHTML = newTable.innerHTML;
+        }
+
+        const newPagination = doc.querySelector(".custom-pagination");
+        const currentPagination = document.querySelector(".custom-pagination");
+
+        if (newPagination && currentPagination) {
+            currentPagination.innerHTML = newPagination.innerHTML;
+        }
+
+        window.history.replaceState({}, "", url.toString());
+
+        currentRequest = null;
+
+    })
+    .catch(error => {
+
+        if (error.name === "AbortError") return;
+
+        console.error(error);
+
+        currentRequest = null;
+
+    });
+
+}
 
 // helper js untuk yt
 function getYoutubeId(url) {

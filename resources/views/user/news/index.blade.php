@@ -53,45 +53,36 @@
 
         {{-- ===================== FILTER ===================== --}}
 
-        <form method="GET" id="filterForm" class="filter-container">
+        <div class="filter-section">
 
-    <input
-        type="text"
-        name="search"
-        id="searchInput"
-        class="search-input"
-        placeholder="Cari Judul Berita..."
-        value="{{ request('search') }}"
-    >
+            <div class="filter-left">
 
-    <select
-        name="category"
-        id="categoryFilter"
-        class="filter-select"
-    >
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="Cari Judul Berita..."
+                    value="{{ request('search') }}">
 
-        <option value="">Semua Kategori</option>
+                <select
+                    id="categoryFilter"
+                    class="filter-select">
 
-        @foreach ($categories as $category)
+                    <option value="">Semua Kategori</option>
 
-            <option
-                value="{{ $category->id }}"
-                {{ request('category') == $category->id ? 'selected' : '' }}
-            >
-                {{ $category->name }}
-            </option>
+                    @foreach ($categories as $category)
+                        <option
+                            value="{{ $category->id }}"
+                            {{ request('category') == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
 
-        @endforeach
+                </select>
 
-    </select>
+            </div>
 
-    <input
-        type="hidden"
-        name="per_page"
-        value="{{ request('per_page', 5) }}"
-    >
-
-</form>
+        </div>
 
 
         {{-- ===================== TABEL BERITA ===================== --}}
@@ -110,13 +101,13 @@
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="newsTableBody">
 
                     @forelse($news as $index => $item)
                         <tr data-title="{{ strtolower($item->title) }}"
                             data-category="{{ $item->category_id }}">
 
-                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $news->firstItem() + $index }}</td>
 
                             
 
@@ -201,10 +192,10 @@
                 {{-- Show Entries --}}
                 <div class="pagination-left">
 
-                    <form method="GET">
+                   <form method="GET" id="perPageForm">
 
-    <input type="hidden" name="search" value="{{ request('search') }}">
-    <input type="hidden" name="category" value="{{ request('category') }}">
+                        <input type="hidden" name="search" value="{{ request('search') }}">
+                        <input type="hidden" name="category" value="{{ request('category') }}">
 
                         @foreach(request()->except('per_page','page') as $key => $value)
                             <input type="hidden" name="{{ $key }}" value="{{ $value }}">
@@ -212,7 +203,9 @@
 
                         <span>Tampilkan</span>
 
-                        <select name="per_page" onchange="this.form.submit()">
+                        <select
+                            name="per_page"
+                            id="perPageSelect">
 
                             <option value="5" {{ request('per_page',5)==5 ? 'selected' : '' }}>5</option>
                             <option value="10" {{ request('per_page')==10 ? 'selected' : '' }}>10</option>
@@ -263,9 +256,18 @@
 
                     @endif
 
-                    @foreach ($news->appends(request()->query())->getUrlRange(1, $news->lastPage()) as $page => $url)
+                    @php
+                        $start = max($news->currentPage() - 1, 1);
+                        $end = min($start + 1, $news->lastPage());
 
-                        @if ($page == $news->currentPage())
+                        if ($end - $start < 1) {
+                            $start = max($end - 1, 1);
+                        }
+                    @endphp
+
+                    @for($page = $start; $page <= $end; $page++)
+
+                        @if($page == $news->currentPage())
 
                             <span class="page-number active">
                                 {{ $page }}
@@ -273,13 +275,13 @@
 
                         @else
 
-                            <a href="{{ $url }}" class="page-number">
+                            <a href="{{ $news->url($page) }}" class="page-number">
                                 {{ $page }}
                             </a>
 
                         @endif
 
-                    @endforeach
+                    @endfor
 
                     @if ($news->hasMorePages())
 

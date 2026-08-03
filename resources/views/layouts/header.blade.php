@@ -136,22 +136,6 @@
         {{-- Header Action --}}
         <div class="header-actions">
 
-            @guest
-
-                <div class="auth-buttons">
-
-                    <a href="{{ route('login') }}" class="btn-login">
-                        Login
-                    </a>
-
-                    <a href="{{ route('register') }}" class="btn-register">
-                        Register
-                    </a>
-
-                </div>
-
-            @endguest
-
 
             @auth
 

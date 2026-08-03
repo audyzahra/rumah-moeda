@@ -23,7 +23,13 @@
         </header>
 
         {{-- ================= FILTER ================= --}}
-        <form method="GET" id="filterForm" class="filter-section">
+        <form method="GET" class="filter-section" id="galleryFilter">
+
+            <input
+                type="hidden"
+                name="per_page"
+                id="perPageHidden"
+                value="{{ request('per_page', 5) }}">
 
             <div class="filter-left">
 
@@ -112,7 +118,7 @@
                             data-date="{{ strtotime($gallery->activity_date) }}">
 
                                 <td>
-                                    {{ ($galleries->currentPage() - 1) * $galleries->perPage() + $loop->iteration }}
+                                    {{ $galleries->firstItem() + $loop->index }}
                                 </td>
 
                                 
@@ -202,7 +208,7 @@
 
     <div class="pagination-left">
 
-        <form method="GET">
+        <form method="GET" id="perPageForm">
 
             @foreach(request()->except('per_page','page') as $key => $value)
                 <input type="hidden" name="{{ $key }}" value="{{ $value }}">
@@ -210,7 +216,10 @@
 
             <span>Tampilkan</span>
 
-            <select name="per_page" onchange="this.form.submit()">
+            <select
+                name="per_page"
+                id="perPageSelect"
+                onchange="this.form.submit()">
                 <option value="5" {{ request('per_page',5)==5?'selected':'' }}>5</option>
                 <option value="10" {{ request('per_page')==10?'selected':'' }}>10</option>
                 <option value="20" {{ request('per_page')==20?'selected':'' }}>20</option>
@@ -251,29 +260,40 @@
 
         @else
 
-            <a href="{{ $galleries->appends(request()->query())->previousPageUrl() }}" class="page-btn">
+            <a href="{{ $galleries->previousPageUrl() }}" class="page-btn">
                 <i class="fa-solid fa-chevron-left"></i>
             </a>
 
         @endif
 
-        @foreach($galleries->appends(request()->query())->getUrlRange(1,$galleries->lastPage()) as $page => $url)
+        @php
+    $start = max($galleries->currentPage() - 1, 1);
+    $end = min($start + 1, $galleries->lastPage());
 
-            @if($page==$galleries->currentPage())
+    if ($end - $start < 1) {
+        $start = max($end - 1, 1);
+    }
+@endphp
 
-                <span class="page-number active">{{ $page }}</span>
+@for($page = $start; $page <= $end; $page++)
 
-            @else
+    @if($page == $galleries->currentPage())
 
-                <a href="{{ $url }}" class="page-number">{{ $page }}</a>
+        <span class="page-number active">{{ $page }}</span>
 
-            @endif
+    @else
 
-        @endforeach
+        <a href="{{ $galleries->url($page) }}" class="page-number">
+            {{ $page }}
+        </a>
+
+    @endif
+
+@endfor
 
         @if($galleries->hasMorePages())
 
-            <a href="{{ $galleries->appends(request()->query())->nextPageUrl() }}" class="page-btn">
+            <a href="{{ $galleries->nextPageUrl() }}" class="page-btn">
                 <i class="fa-solid fa-chevron-right"></i>
             </a>
 
