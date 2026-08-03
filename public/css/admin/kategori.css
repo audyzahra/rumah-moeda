@@ -379,62 +379,298 @@
     color:#9CA3AF;
 }
 
-/* ===== PAGINATION ===== */
+/* ==========================
+   PAGINATION
+========================== */
 
-.pagination-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 12px;
-    flex-wrap: wrap;
-    gap: 15px;
+.custom-pagination{
+    margin-top:25px;
+    padding:20px 20px 15px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
+
+    border-top:1px solid #e5e7eb;
 }
 
-.info-data {
-    font-size: 14px;
-    color: #64748b;
+/* ==========================================
+   LEFT - SHOW ENTRIES
+========================================== */
+
+.pagination-left{
+    display:flex;
+    align-items:center;
 }
 
-.pagination-controls {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.pagination-left form{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
 }
 
-.page-btn{
-    width: 36px;
-    height: 36px;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
-    background: #fff;
-    color: #475569;
-    text-decoration: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: .3s;
+.pagination-left span{
+    font-size:14px;
+    color:#64748b;
+    white-space:nowrap;
 }
 
-.page-btn:hover{
-    background: #3b82f6;
-    border-color: #3b82f6;
-    color: #fff;
+.pagination-left select{
+    width:65px;
+    height:38px;
+
+    border:2px solid #e2e8f0;
+    border-radius:8px;
+
+    background:#fff;
+    color:#475569;
+
+    font-size:14px;
+
+    padding:0 8px;
+
+    cursor:pointer;
+    transition:.25s;
 }
 
-.page-btn:disabled,
-.page-btn.disabled{
-    opacity: .4;
-    cursor: not-allowed;
-    pointer-events: none;
+.pagination-left select:hover{
+    border-color:#3b82f6;
+}
+
+.pagination-left select:focus{
+    outline:none;
+    border-color:#3b82f6;
+    box-shadow:0 0 0 3px rgba(59,130,246,.12);
+}
+
+/* ==========================================
+   CENTER - INFO DATA
+========================================== */
+
+.pagination-center{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+
+    flex-wrap:wrap;
+
+    font-size:14px;
+    color:#64748b;
+
+    text-align:center;
+}
+
+.pagination-center strong{
+    color:#1e293b;
+    font-weight:700;
+}
+
+/* ==========================================
+   RIGHT - PAGINATION
+========================================== */
+
+.pagination-right{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+/* ==========================================
+   PAGE BUTTON
+========================================== */
+
+.page-btn,
+.page-number{
+    width:36px;
+    height:36px;
+    min-width:36px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border:2px solid #e2e8f0;
+    border-radius:8px;
+
+    background:#fff;
+    color:#475569;
+
+    text-decoration:none;
+    font-size:14px;
+    font-weight:500;
+
+    transition:.25s;
+}
+
+/* Hover */
+
+.page-btn:hover:not(:disabled),
+.page-number:hover{
+    background:#3b82f6;
+    border-color:#3b82f6;
+    color:#fff;
+    transform:translateY(-2px);
+}
+
+/* Active */
+
+.page-number.active{
+    background:#3b82f6;
+    border-color:#3b82f6;
+    color:#fff;
+    font-weight:600;
+}
+
+/* Click */
+
+.page-btn:active:not(:disabled),
+.page-number:active{
+    transform:scale(.95);
+}
+
+/* Disabled */
+
+.page-btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+    pointer-events:none;
 }
 
 .page-btn i{
-    pointer-events: none;
+    pointer-events:none;
 }
 
-#pageInfo {
-    font-weight: 600;
-    color: #1e293b;
-    font-size: 14px;
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width:900px){
+
+    .custom-pagination{
+        justify-content:center;
+        gap:18px;
+    }
+
+    .pagination-left,
+    .pagination-center,
+    .pagination-right{
+        width:100%;
+        justify-content:center;
+    }
+
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width:768px){
+
+    .custom-pagination{
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        text-align:center;
+
+        padding:18px 16px;
+        gap:16px;
+    }
+
+    .pagination-left form{
+        width:100%;
+        justify-content:center;
+    }
+
+    .pagination-center{
+        line-height:1.5;
+    }
+
+    .pagination-right{
+        justify-content:center;
+        gap:6px;
+    }
+
+}
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width:576px){
+
+    .custom-pagination{
+        padding:16px 12px;
+        gap:14px;
+    }
+
+    .pagination-left form{
+        justify-content:center;
+        flex-wrap:wrap;
+        gap:8px;
+    }
+
+    .pagination-left span{
+        font-size:13px;
+    }
+
+    .pagination-left select{
+        width:60px;
+        height:36px;
+        font-size:13px;
+    }
+
+    .pagination-center{
+        font-size:13px;
+        gap:5px;
+    }
+
+    .pagination-right{
+        gap:5px;
+        flex-wrap:wrap;
+    }
+
+    .page-btn,
+    .page-number{
+        width:35px;
+        height:35px;
+        min-width:35px;
+        font-size:13px;
+    }
+
+}
+
+/* ==========================================
+   EXTRA SMALL
+========================================== */
+
+@media (max-width:400px){
+
+    .custom-pagination{
+        padding:14px 10px;
+        gap:12px;
+    }
+
+    .pagination-center{
+        font-size:12px;
+    }
+
+    .pagination-right{
+        gap:4px;
+    }
+
+    .page-btn,
+    .page-number{
+        width:32px;
+        height:32px;
+        min-width:32px;
+        font-size:12px;
+        border-radius:7px;
+    }
+
 }

@@ -24,27 +24,117 @@ class NewsController extends Controller
     /**
      * Menampilkan halaman berita
      */
-    public function index()
+    public function index(Request $request)
     {
-        $news = News::with(['category', 'author'])
-            ->orderByDesc('publish_date')
-            ->paginate(5);
+        /*
+        | QUERY BERITA
+        */
 
-        $categories = Category::orderBy('name')->get();
+        $query = News::with(['category', 'author']);
+
+
+        /*
+        | SEARCH JUDUL
+        */
+
+        if ($request->filled('search')) {
+
+            $search = trim($request->search);
+
+            $query->where(
+                'title',
+                'like',
+                '%' . $search . '%'
+            );
+        }
+
+
+        /*
+        | FILTER KATEGORI
+        */
+
+        if ($request->filled('category')) {
+
+            $query->where(
+                'category_id',
+                $request->category
+            );
+        }
+
+
+        /*
+        | PER PAGE
+        */
+
+        $perPage = (int) $request->get(
+            'per_page',
+            5
+        );
+
+        $allowedPerPage = [
+            5,
+            10,
+            20,
+            50
+        ];
+
+        if (!in_array($perPage, $allowedPerPage)) {
+
+            $perPage = 5;
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | PAGINATION
+        |--------------------------------------------------------------------------
+        */
+
+        $news = $query
+            ->orderByDesc('publish_date')
+            ->paginate($perPage)
+            ->withQueryString();
+
+        /*
+        |--------------------------------------------------------------------------
+        | CATEGORY
+        |--------------------------------------------------------------------------
+        */
+
+        $categories = Category::orderBy('name')
+            ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | STATISTIK
+        |--------------------------------------------------------------------------
+        */
 
         $totalNews = $news->count();
+
         $totalPublished = $news->count();
+
         $totalDraft = 0;
+
         $totalCategory = $categories->count();
 
-        return view('admin.berita.berita', compact(
-            'news',
-            'categories',
-            'totalNews',
-            'totalPublished',
-            'totalDraft',
-            'totalCategory'
-        ));
+        /*
+        |--------------------------------------------------------------------------
+        | VIEW
+        |--------------------------------------------------------------------------
+        */
+
+        return view(
+            'admin.berita.berita',
+            compact(
+                'news',
+                'categories',
+                'totalNews',
+                'totalPublished',
+                'totalDraft',
+                'totalCategory'
+            )
+        );
     }
 
     /**

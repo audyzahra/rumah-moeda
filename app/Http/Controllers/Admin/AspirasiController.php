@@ -14,20 +14,92 @@ class AspirasiController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function index()
+    public function index(Request $request)
     {
+        // Tandai notifikasi sidebar sudah dilihat
         ContactMessage::where('notif_sidebar', 0)
             ->update([
                 'notif_sidebar' => 1
             ]);
 
-        $messages = ContactMessage::latest()->paginate(5);
+        /*
+        |--------------------------------------------------------------------------
+        | QUERY ASPIRASI
+        |--------------------------------------------------------------------------
+        */
+
+        $query = ContactMessage::query();
+
+        /*
+        |--------------------------------------------------------------------------
+        | SEARCH NAMA / EMAIL
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('search')) {
+
+            $search = trim($request->search);
+
+            $query->where(function ($q) use ($search) {
+
+                $q->where('full_name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+
+            });
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTER STATUS
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('status')) {
+
+            $query->where(
+                'is_read',
+                $request->status
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | PAGINATION
+        |--------------------------------------------------------------------------
+        */
+
+        $perPage = request('per_page', 5);
+
+        $allowedPerPage = [5, 10, 20, 50];
+
+        if (!in_array((int) $perPage, $allowedPerPage)) {
+            $perPage = 5;
+        }
+
+        $messages = $query
+            ->latest()
+            ->paginate($perPage)
+            ->withQueryString();
+
+        /*
+        |--------------------------------------------------------------------------
+        | STATISTIK
+        |--------------------------------------------------------------------------
+        | Statistik tetap menghitung seluruh data,
+        | bukan hanya hasil pencarian.
+        */
 
         $totalMessages = ContactMessage::count();
 
-        $unreadMessages = ContactMessage::where('is_read', 0)->count();
+        $unreadMessages = ContactMessage::where(
+            'is_read',
+            0
+        )->count();
 
-        $readMessages = ContactMessage::where('is_read', 1)->count();
+        $readMessages = ContactMessage::where(
+            'is_read',
+            1
+        )->count();
 
         return view(
             'admin.aspirasi.aspirasi',
@@ -40,6 +112,7 @@ class AspirasiController extends Controller
         );
     }
 
+
     /*
     |--------------------------------------------------------------------------
     | MARK AS READ
@@ -47,22 +120,25 @@ class AspirasiController extends Controller
     */
 
     public function markAsRead(ContactMessage $message)
-{
-    $message->update([
-        'is_read' => 1
-    ]);
+    {
+        $message->update([
+            'is_read' => 1
+        ]);
 
-    if (request()->ajax()) {
-        return response()->json([
-            'success' => true
+        if (request()->ajax()) {
+
+            return response()->json([
+                'success' => true
+            ]);
+
+        }
+
+        return back()->with([
+            'title' => 'Berhasil! ✅',
+            'success' => 'Aspirasi berhasil ditandai sudah dibaca.'
         ]);
     }
 
-    return back()->with([
-        'title'   => 'Berhasil! ✅',
-        'success' => 'Aspirasi berhasil ditandai sudah dibaca.'
-    ]);
-}
 
     /*
     |--------------------------------------------------------------------------
@@ -74,11 +150,14 @@ class AspirasiController extends Controller
     {
         $message->delete();
 
-        return redirect()->route('admin.messages.index')->with([
-        'title' => 'Berhasil Dihapus 🗑️',
-        'success' => 'Aspirasi berhasil dihapus.'
-    ]);
+        return redirect()
+            ->route('admin.messages.index')
+            ->with([
+                'title' => 'Berhasil Dihapus 🗑️',
+                'success' => 'Aspirasi berhasil dihapus.'
+            ]);
     }
+
 
     /*
     |--------------------------------------------------------------------------
