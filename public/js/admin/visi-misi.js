@@ -10,9 +10,8 @@ function addMisi() {
         <textarea
             class="form-control misi-text"
             name="missions[]"
-            rows="3"
-            placeholder="Masukkan misi perusahaan..."
-            required></textarea>
+            rows="3">
+        </textarea>
 
         <button
             type="button"
@@ -35,16 +34,19 @@ function addMisi() {
 
 function removeMisi(button) {
 
-    const container = document.getElementById("misiContainer");
+    const items = document.querySelectorAll('.misi-item');
 
-    if (container.children.length === 1) {
+    if (items.length <= 1) {
 
-        alert("Minimal harus ada satu misi.");
+        Swal.fire({
+            icon: 'warning',
+            title: 'Tidak dapat menghapus',
+            text: 'Minimal harus ada satu misi.',
+            confirmButtonText: 'OK'
+        });
 
         return;
-
     }
 
-    button.closest(".misi-item").remove();
-
+    button.closest('.misi-item').remove();
 }

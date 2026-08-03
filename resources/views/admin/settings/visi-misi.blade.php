@@ -3,166 +3,168 @@
 @section('title', 'Visi & Misi')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/admin/visi-misi.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/visi-misi.css') }}">
 @endpush
 
 @section('content')
 
-<section class="visi-misi-section">
+    <section class="visi-misi-section">
 
-    <div class="settings-card">
+        <div class="settings-card">
 
-        <div class="card-header">
+            <div class="card-header">
 
-            <h3>
-                <i class="fa-solid fa-bullseye"></i>
-                Visi & Misi
-            </h3>
+                <h3>
+                    <i class="fa-solid fa-bullseye"></i>
+                    Visi & Misi
+                </h3>
 
-            <p>
-                Kelola visi dan misi perusahaan
-            </p>
+                <p>
+                    Kelola visi dan misi perusahaan
+                </p>
 
-        </div>
+            </div>
 
-        <div class="card-body">
+            <div class="card-body">
+                @if ($errors->any())
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Periksa kembali data',
+                                html: `{!! implode('<br>', $errors->all()) !!}`,
+                                confirmButtonText: 'OK'
+                            });
+                        });
+                    </script>
+                @endif
 
-            <form id="visiMisiForm" action="{{ route('admin.visi.update') }}" method="POST">
+                @if (session('error'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: "{{ session('error') }}",
+                                confirmButtonText: 'OK'
+                            });
+                        });
+                    </script>
+                @endif
 
-                @csrf
+                <form id="visiMisiForm" action="{{ route('admin.visi.update') }}" method="POST" novalidate>
 
-                <!-- VISI -->
-                <div class="form-group">
+                    @csrf
 
-                    <label>
-                        Visi
-                        <span class="required">*</span>
-                    </label>
+                    <!-- VISI -->
+                    <div class="form-group">
 
-                    <x-tiptap
-                        name="vision"
-                        :value="old('vision', $vision->vision ?? '')"
-                        placeholder="Masukkan visi perusahaan..."
-                        :image="false" />
+                        <label>
+                            Visi
+                            <span class="required">*</span>
+                        </label>
 
-                    <small class="form-help">
-                        Tuliskan visi perusahaan secara jelas dan inspiratif.
-                    </small>
+                        <x-tiptap name="vision" :value="old('vision', $vision->vision ?? '')" placeholder="Masukkan visi perusahaan..."
+                            :image="false" />
 
-                    @error('vision')
-                    <small class="text-danger">
-                        {{ $message }}
-                    </small>
-                    @enderror
+                        <small class="form-help">
+                            Tuliskan visi perusahaan secara jelas dan inspiratif.
+                        </small>
 
-                </div>
-
-                <hr>
-
-                <!-- MISI -->
-                <div class="form-group">
-
-                    <div class="misi-header">
-
-                        <div>
-
-                            <label>
-                                Misi
-                                <span class="required">*</span>
-                            </label>
-
-                            <small class="form-help">
-                                Tambahkan satu atau lebih misi perusahaan.
+                        @error('vision')
+                            <small class="text-danger">
+                                {{ $message }}
                             </small>
+                        @enderror
+
+                    </div>
+
+                    <hr>
+
+                    <!-- MISI -->
+                    <div class="form-group">
+
+                        <div class="misi-header">
+
+                            <div>
+
+                                <label>
+                                    Misi
+                                    <span class="required">*</span>
+                                </label>
+
+                                <small class="form-help">
+                                    Tambahkan satu atau lebih misi perusahaan.
+                                </small>
+
+                            </div>
+
+                            <button type="button" class="btn-add-misi" onclick="addMisi()">
+
+                                <i class="fa-solid fa-plus"></i>
+                                Tambah Misi
+
+                            </button>
 
                         </div>
 
-                        <button
-                            type="button"
-                            class="btn-add-misi"
-                            onclick="addMisi()">
+                        <div id="misiContainer">
 
-                            <i class="fa-solid fa-plus"></i>
-                            Tambah Misi
+                            @forelse($missions as $mission)
+                                <div class="misi-item">
+
+                                    <textarea class="form-control misi-text" name="missions[]" rows="3" placeholder="Masukkan misi perusahaan...">{{ old('missions.' . $loop->index, $mission->mission) }}</textarea>
+
+                                    <button type="button" class="btn-remove-misi" onclick="removeMisi(this)">
+
+                                        <i class="fa-solid fa-trash"></i>
+
+                                    </button>
+
+                                </div>
+
+                            @empty
+
+                                <div class="misi-item">
+
+                                    <textarea class="form-control misi-text" name="missions[]" rows="3" placeholder="Masukkan misi perusahaan..."
+                                        required></textarea>
+
+                                    <button type="button" class="btn-remove-misi" onclick="removeMisi(this)">
+
+                                        <i class="fa-solid fa-trash"></i>
+
+                                    </button>
+
+                                </div>
+                            @endforelse
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+
+                        <button type="submit" class="btn-simpan">
+
+                            <i class="fa-solid fa-save"></i>
+
+                            Simpan Visi & Misi
 
                         </button>
 
                     </div>
 
-                    <div id="misiContainer">
+                </form>
 
-                        @forelse($missions as $mission)
-
-                        <div class="misi-item">
-
-                            <textarea
-                                class="form-control misi-text"
-                                name="missions[]"
-                                rows="3"
-                                placeholder="Masukkan misi perusahaan..."
-                                required>{{ old('missions.' . $loop->index, $mission->mission) }}</textarea>
-
-                            <button
-                                type="button"
-                                class="btn-remove-misi"
-                                onclick="removeMisi(this)">
-
-                                <i class="fa-solid fa-trash"></i>
-
-                            </button>
-
-                        </div>
-
-                        @empty
-
-                        <div class="misi-item">
-
-                            <textarea
-                                class="form-control misi-text"
-                                name="missions[]"
-                                rows="3"
-                                placeholder="Masukkan misi perusahaan..."
-                                required></textarea>
-
-                            <button
-                                type="button"
-                                class="btn-remove-misi"
-                                onclick="removeMisi(this)">
-
-                                <i class="fa-solid fa-trash"></i>
-
-                            </button>
-
-                        </div>
-
-                        @endforelse
-
-                    </div>
-
-                </div>
-
-                <div class="form-actions">
-
-                    <button type="submit" class="btn-simpan">
-
-                        <i class="fa-solid fa-save"></i>
-
-                        Simpan Visi & Misi
-
-                    </button>
-
-                </div>
-
-            </form>
+            </div>
 
         </div>
 
-    </div>
-
-</section>
+    </section>
 
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/admin/visi-misi.js') }}"></script>
+    <script src="{{ asset('js/admin/visi-misi.js') }}"></script>
 @endpush
