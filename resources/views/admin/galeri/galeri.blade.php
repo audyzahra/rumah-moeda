@@ -8,12 +8,6 @@
         <link rel="stylesheet" href="{{ asset('css/admin/galeri.css') }}">
     @endpush
 
-    @if (session('success'))
-        <div class="alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
     <div class="content">
 
         <header class="topbar">
@@ -30,7 +24,7 @@
                 name="per_page"
                 id="perPageHidden"
                 value="{{ request('per_page', 5) }}">
-                
+
             <div class="filter-left">
 
                 <input type="text" id="searchInput" name="search" class="search-input" 
