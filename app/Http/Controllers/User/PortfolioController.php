@@ -1,19 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
 use App\Models\Portfolio;
 use App\Models\PortfolioCategory;
 use App\Models\Partner;
-use App\Models\PortfolioMedia;
-
-use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\PortfolioMedia;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Str;
 use App\Services\SecurityInputService;
 use App\Services\Security\DangerousInputException;
 
@@ -25,186 +22,119 @@ class PortfolioController extends Controller
     {
         $this->security = $security;
     }
-
+    /**
+     * Menampilkan daftar portfolio milik user
+     */
     public function index(Request $request)
     {
+        $perPage = $request->get('per_page', 5);
 
-    $perPage = $request->get('per_page', 5);
-    $query = Portfolio::with([
+        $query = Portfolio::with([
             'category',
             'partner',
             'media',
             'author'
-        ]);
+        ])->where('author_id', Auth::id());
 
-
-        // SEARCH
+        // Search
         if ($request->filled('search')) {
-
-            $search = $request->search;
-
-
-            $query->where(function ($q) use ($search) {
-
-                $q->where('title', 'like', "%$search%")
-
-
-                    ->orWhereHas('category', function ($category) use ($search) {
-
-                        $category->where(
-                            'name',
-                            'like',
-                            "%$search%"
-                        );
-                    })
-
-
-                    ->orWhereHas('partner', function ($partner) use ($search) {
-
-                        $partner->where(
-                            'name',
-                            'like',
-                            "%$search%"
-                        );
-                    })
-
-
-                    ->orWhereHas('author', function ($author) use ($search) {
-
-                        $author->where(
-                            'name',
-                            'like',
-                            "%$search%"
-                        );
-                    });
-            });
+            $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        // SORTING
+        // Filter kategori
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
 
-        if ($request->filled('sort')) {
+        // Sorting
+        switch ($request->sort) {
+            case 'oldest':
+                $query->oldest('activity_date');
+                break;
 
-            switch ($request->sort) {
+            case 'title_asc':
+                $query->orderBy('title');
+                break;
 
-                case 'oldest':
+            case 'title_desc':
+                $query->orderByDesc('title');
+                break;
 
-                    $query->oldest();
-
-                    break;
-
-                case 'title_asc':
-
-                    $query->orderBy('title');
-
-                    break;
-
-                case 'title_desc':
-
-                    $query->orderByDesc('title');
-
-                    break;
-
-                default:
-
-                    $query->latest();
-
-                    break;
-            }
-
-        } else {
-
-            $query->latest();
-
+            default:
+                $query->latest('activity_date');
+                break;
         }
 
         $portfolios = $query
             ->paginate($perPage)
             ->withQueryString();
 
-        return view(
-            'admin.portfolios.index',
-            compact('portfolios')
-        );
+        $categories = PortfolioCategory::orderBy('name')->get();
+        $partners = Partner::orderBy('name')->get();
+
+        return view('user.portfolios.index', compact(
+            'portfolios',
+            'categories',
+            'partners'
+        ));
     }
 
     public function create()
     {
+        $categories = PortfolioCategory::orderBy('name')->get();
+        $partners = Partner::orderBy('name')->get();
 
-
-        $categories = PortfolioCategory::all();
-
-
-        $partners = Partner::all();
-
-
-
-        return view(
-            'admin.portfolios.create',
-            compact(
-                'categories',
-                'partners'
-            )
-        );
+        return view('user.portfolios.create', compact(
+            'categories',
+            'partners'
+        ));
     }
-
-
-
-
 
     public function store(Request $request)
     {
 
 
-        $data = $request->validate([
+        $data = $request->validate(
+            [
 
-            'category_id' => 'required|exists:portfolio_categories,id',
-            'partner_id' => 'nullable|exists:partners,id',
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'activity_date' => 'required|date',
-            'author_id' => 'nullable|exists:users,id',
-            'location' => 'required|string|max:255',
-            'participants' => 'nullable|integer|min:0',
-            'latitude' => 'nullable|numeric|between:-90,90',
-            'longitude' => 'nullable|numeric|between:-180,180',
-            'images' => 'required|array|min:1',
-            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
-            'video_url.*' => 'nullable|url',
+                'category_id' => 'required|exists:portfolio_categories,id',
+                'partner_id' => 'nullable|exists:partners,id',
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'activity_date' => 'required|date',
+                'author_id' => 'nullable|exists:users,id',
+                'location' => 'required|string|max:255',
+                'participants' => 'nullable|integer|min:0',
+                'latitude' => 'nullable|numeric|between:-90,90',
+                'longitude' => 'nullable|numeric|between:-180,180',
+                'images' => 'required|array|min:1',
+                'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+                'video_url.*' => 'nullable|url',
 
-        ],
-         [
-            'category_id.required' => 'Kategori wajib dipilih.',
-            'category_id.exists' => 'Kategori tidak valid.',
+            ],
+            [
+                'category_id.required' => 'Kategori wajib dipilih.',
+                'title.required' => 'Judul wajib diisi.',
+                'description.required' => 'Deskripsi wajib diisi.',
+                'activity_date.required' => 'Tanggal kegiatan wajib diisi.',
+                'location.required' => 'Lokasi wajib diisi.',
 
-            'partner_id.exists' => 'Mitra tidak valid.',
+                'latitude.numeric' => 'Latitude harus berupa angka.',
+                'latitude.between' => 'Latitude harus berada antara -90 sampai 90.',
 
-            'title.required' => 'Judul wajib diisi.',
-            'title.max' => 'Judul maksimal 255 karakter.',
+                'longitude.numeric' => 'Longitude harus berupa angka.',
+                'longitude.between' => 'Longitude harus berada antara -180 sampai 180.',
 
-            'description.required' => 'Deskripsi wajib diisi.',
+                'images.required' => 'Minimal upload 1 foto.',
+                'images.array' => 'Minimal upload 1 foto.',
+                'images.min' => 'Minimal upload 1 foto.',
+                'images.*.image' => 'File harus berupa gambar.',
+                'images.*.mimes' => 'Format gambar harus JPG, JPEG, PNG, atau WEBP.',
+                'images.*.max' => 'Ukuran gambar maksimal 2 MB.',
 
-            'activity_date.required' => 'Tanggal kegiatan wajib diisi.',
-            'activity_date.date' => 'Format tanggal tidak valid.',
-
-            'location.required' => 'Lokasi wajib diisi.',
-            'location.max' => 'Lokasi maksimal 255 karakter.',
-
-            'participants.integer' => 'Jumlah peserta harus berupa angka.',
-            'participants.min' => 'Jumlah peserta tidak boleh kurang dari 0.',
-
-            'latitude.numeric' => 'Latitude harus berupa angka.',
-            'latitude.between' => 'Latitude harus berada antara -90 sampai 90.',
-
-            'longitude.numeric' => 'Longitude harus berupa angka.',
-            'longitude.between' => 'Longitude harus berada antara -180 sampai 180.',
-
-            'images.*.image' => 'File harus berupa gambar.',
-            'images.*.mimes' => 'Format gambar harus JPG, JPEG, PNG, atau WEBP.',
-            'images.*.max' => 'Ukuran gambar maksimal 2 MB.',
-
-            'video_url.*.url' => 'URL video YouTube tidak valid.',
-        ]
-    );
+                'video_url.*.url' => 'URL video YouTube tidak valid.',
+            ]
+        );
 
         try {
 
@@ -215,13 +145,11 @@ class PortfolioController extends Controller
                 : null;
 
             $description = $this->security->cleanHtml($data['description']);
-
         } catch (DangerousInputException $e) {
 
             return back()
                 ->withInput()
                 ->with('error', $e->getMessage());
-
         }
 
         $portfolio = Portfolio::create([
@@ -297,8 +225,11 @@ class PortfolioController extends Controller
         }
 
         return redirect()
-            ->route('admin.portfolios.index')
-            ->with('success', 'Portfolio berhasil ditambahkan');
+            ->route('user.portfolios.index')
+            ->with([
+                'title' => 'Berhasil! 🎉',
+                'success' => 'Portofolio berhasil ditambahkan.'
+            ]);
     }
 
     public function show(string $id)
@@ -309,6 +240,8 @@ class PortfolioController extends Controller
             'partner',
             'media'
         ])
+            ->where('author_id', Auth::id())
+            ->where('id', $id)
             ->findOrFail($id);
 
 
@@ -316,11 +249,14 @@ class PortfolioController extends Controller
         return response()->json($portfolio);
     }
 
+
     public function edit(string $id)
     {
 
 
         $portfolio = Portfolio::with('media', 'author')
+            ->where('author_id', Auth::id())
+            ->where('id', $id)
             ->findOrFail($id);
 
         $categories = PortfolioCategory::all();
@@ -331,7 +267,7 @@ class PortfolioController extends Controller
 
 
         return view(
-            'admin.portfolios.edit',
+            'user.portfolios.edit',
             compact(
                 'portfolio',
                 'categories',
@@ -344,43 +280,44 @@ class PortfolioController extends Controller
     {
 
 
-        $data = $request->validate([
-            'category_id' => 'required|exists:portfolio_categories,id',
-            'partner_id' => 'nullable|exists:partners,id',
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'activity_date' => 'required|date',
-            'location' => 'required|string|max:255',
-            'participants' => 'nullable|integer|min:0',
-            'latitude' => 'nullable|numeric|between:-90,90',
-            'longitude' => 'nullable|numeric|between:-180,180',
-            'images' => 'nullable|array',
-            'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'video_url.*' => 'nullable|url',
-            'delete_media.*' => 'nullable|exists:portfolio_media,id',
+        $data = $request->validate(
+            [
+                'category_id' => 'required|exists:portfolio_categories,id',
+                'partner_id' => 'nullable|exists:partners,id',
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'activity_date' => 'required|date',
+                'location' => 'required|string|max:255',
+                'participants' => 'nullable|integer|min:0',
+                'latitude' => 'nullable|numeric|between:-90,90',
+                'longitude' => 'nullable|numeric|between:-180,180',
+                'images' => 'nullable|array',
+                'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+                'video_url.*' => 'nullable|url',
+                'delete_media.*' => 'nullable|exists:portfolio_media,id',
 
-        ],
-        [
-            'category_id.required' => 'Kategori wajib dipilih.',
-            'title.required' => 'Judul wajib diisi.',
-            'description.required' => 'Deskripsi wajib diisi.',
-            'activity_date.required' => 'Tanggal kegiatan wajib diisi.',
-            'location.required' => 'Lokasi wajib diisi.',
+            ],
+            [
+                'category_id.required' => 'Kategori wajib dipilih.',
+                'title.required' => 'Judul wajib diisi.',
+                'description.required' => 'Deskripsi wajib diisi.',
+                'activity_date.required' => 'Tanggal kegiatan wajib diisi.',
+                'location.required' => 'Lokasi wajib diisi.',
 
-            'latitude.numeric' => 'Latitude harus berupa angka.',
-            'latitude.between' => 'Latitude harus berada antara -90 sampai 90.',
+                'latitude.numeric' => 'Latitude harus berupa angka.',
+                'latitude.between' => 'Latitude harus berada antara -90 sampai 90.',
 
-            'longitude.numeric' => 'Longitude harus berupa angka.',
-            'longitude.between' => 'Longitude harus berada antara -180 sampai 180.',
+                'longitude.numeric' => 'Longitude harus berupa angka.',
+                'longitude.between' => 'Longitude harus berada antara -180 sampai 180.',
 
-            'images.required' => 'Minimal upload 1 foto.',
-            'images.array' => 'Minimal upload 1 foto.',
-            'images.min' => 'Minimal upload 1 foto.',
-            'images.*.image' => 'File harus berupa gambar.',
-            'images.*.mimes' => 'Format gambar harus JPG, JPEG, PNG, atau WEBP.',
-            'images.*.max' => 'Ukuran gambar maksimal 2 MB.',
+                'images.required' => 'Minimal upload 1 foto.',
+                'images.array' => 'Minimal upload 1 foto.',
+                'images.min' => 'Minimal upload 1 foto.',
+                'images.*.image' => 'File harus berupa gambar.',
+                'images.*.mimes' => 'Format gambar harus JPG, JPEG, PNG, atau WEBP.',
+                'images.*.max' => 'Ukuran gambar maksimal 2 MB.',
 
-            'video_url.*.url' => 'URL video YouTube tidak valid.',
+                'video_url.*.url' => 'URL video YouTube tidak valid.',
             ]
         );
         try {
@@ -392,16 +329,16 @@ class PortfolioController extends Controller
                 : null;
 
             $description = $this->security->cleanHtml($data['description']);
-
         } catch (DangerousInputException $e) {
 
             return back()
                 ->withInput()
                 ->with('error', $e->getMessage());
-
         }
 
-        $portfolio = Portfolio::findOrFail($id);
+        $portfolio = Portfolio::where('author_id', Auth::id())
+            ->where('id', $id)
+            ->firstOrFail();
 
         $currentImages = $portfolio->media()
             ->where('type', 'image')
@@ -411,8 +348,8 @@ class PortfolioController extends Controller
             'id',
             $request->delete_media ?? []
         )
-        ->where('type', 'image')
-        ->count();
+            ->where('type', 'image')
+            ->count();
 
         $newImages = count($request->file('images') ?? []);
 
@@ -541,18 +478,16 @@ class PortfolioController extends Controller
 
 
         return redirect()
-            ->route('admin.portfolios.index')
+            ->route('user.portfolios.index')
             ->with('success', 'Portfolio berhasil diperbarui');
     }
-
-
-
-
 
     public function destroy(string $id)
     {
 
         $portfolio = Portfolio::with('media')
+            ->where('author_id', Auth::id())
+            ->where('id', $id)
             ->findOrFail($id);
 
 
@@ -570,7 +505,7 @@ class PortfolioController extends Controller
 
 
         return redirect()
-            ->route('admin.portfolios.index')
+            ->route('user.portfolios.index')
             ->with('success', 'Portfolio berhasil dihapus');
     }
 }

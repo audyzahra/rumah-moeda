@@ -20,11 +20,46 @@ class PortfolioCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = PortfolioCategory::latest()->paginate(5);
+        $perPage = $request->get('per_page', 5);
 
-        return view('admin.portfolio-category.index', compact('categories'));
+        $query = PortfolioCategory::query();
+
+        // Search
+        if ($request->filled('search')) {
+            $search = trim($request->search);
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        // Sort
+        switch ($request->sort) {
+
+            case 'oldest':
+                $query->oldest();
+                break;
+
+            case 'az':
+                $query->orderBy('name');
+                break;
+
+            case 'za':
+                $query->orderByDesc('name');
+                break;
+
+            default:
+                $query->latest();
+
+        }
+
+        $categories = $query
+            ->paginate($perPage)
+            ->withQueryString();
+
+        return view(
+            'admin.portfolio-category.index',
+            compact('categories')
+        );
     }
 
 

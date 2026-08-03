@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('user.layouts.app')
 
 @section('title', 'Portofolio')
 
@@ -25,7 +25,7 @@
 
             </div>
 
-            <a href="{{ route('admin.portfolios.create') }}" class="portfolio-btn-add">
+            <a href="{{ route('user.portfolios.create') }}" class="portfolio-btn-add">
 
                 <i class="fa-solid fa-plus"></i>
 
@@ -39,7 +39,7 @@
 
         <!-- ================= FILTER ================= -->
 
-        <form id="portfolioFilter" method="GET" action="{{ route('admin.portfolios.index') }}" class="portfolio-filter">
+        <form id="portfolioFilter" method="GET" action="{{ route('user.portfolios.index') }}" class="portfolio-filter">
 
             <div class="row g-3">
 
@@ -78,7 +78,7 @@
 
                 <div class="col-md-3 d-grid">
 
-                    <a href="{{ route('admin.portfolios.index') }}" class="portfolio-btn-reset">
+                    <a href="{{ route('user.portfolios.index') }}" class="portfolio-btn-reset">
 
                         Reset
 
@@ -88,6 +88,11 @@
 
             </div>
 
+            <input
+                type="hidden"
+                name="per_page"
+                value="{{ request('per_page', 5) }}"
+            >
         </form>
 
 
@@ -197,11 +202,9 @@
                                     </td>
 
                                     <td>
-                                        <span
-                                            class="portfolio-location"
-                                            title="{{ $portfolio->location }}">
-                                            {{ $portfolio->location ?? '-' }}
-                                        </span>
+
+                                        {{ $portfolio->location ?? '-' }}
+
                                     </td>
 
 
@@ -232,7 +235,7 @@
 
                                             <!-- EDIT -->
 
-                                            <a href="{{ route('admin.portfolios.edit', $portfolio->id) }}"
+                                            <a href="{{ route('user.portfolios.edit', $portfolio->id) }}"
                                                 class="portfolio-btn-edit">
 
                                                 <i class="fa-solid fa-pen-to-square"></i>
@@ -242,7 +245,7 @@
 
                                             <!-- DELETE -->
 
-                                            <form action="{{ route('admin.portfolios.destroy', $portfolio->id) }}"
+                                            <form action="{{ route('user.portfolios.destroy', $portfolio->id) }}"
                                                 method="POST" class="d-inline delete-form">
 
                                                 @csrf
@@ -285,57 +288,36 @@
 
             <div class="custom-pagination">
 
-                {{-- ==========================================
-                    SHOW ENTRIES
-                ========================================== --}}
+                {{-- Show Entries --}}
                 <div class="pagination-left">
 
-                    <form method="GET" id="perPageForm">
+                    <form method="GET">
+
+                        <input type="hidden" name="search" value="{{ request('search') }}">
+                        <input type="hidden" name="sort" value="{{ request('sort') }}">
 
                         @foreach(request()->except('per_page','page') as $key => $value)
-
-                            <input
-                                type="hidden"
-                                name="{{ $key }}"
-                                value="{{ $value }}">
-
+                            <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                         @endforeach
 
                         <span>Tampilkan</span>
 
-                        <select
-                            name="per_page"
-                            id="perPageSelect"
-                            onchange="this.form.submit()">
+                        <select name="per_page" onchange="this.form.submit()">
 
-                            <option value="5" {{ request('per_page',5)==5?'selected':'' }}>
-                                5
-                            </option>
-
-                            <option value="10" {{ request('per_page')==10?'selected':'' }}>
-                                10
-                            </option>
-
-                            <option value="20" {{ request('per_page')==20?'selected':'' }}>
-                                20
-                            </option>
-
-                            <option value="50" {{ request('per_page')==50?'selected':'' }}>
-                                50
-                            </option>
+                            <option value="5" {{ request('per_page',5)==5 ? 'selected' : '' }}>5</option>
+                            <option value="10" {{ request('per_page')==10 ? 'selected' : '' }}>10</option>
+                            <option value="20" {{ request('per_page')==20 ? 'selected' : '' }}>20</option>
+                            <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>50</option>
 
                         </select>
 
-                        <span>Portofolio</span>
+                        <span>portfolio</span>
 
                     </form>
 
                 </div>
 
-
-                {{-- ==========================================
-                    INFO DATA
-                ========================================== --}}
+                {{-- Info --}}
                 <div class="pagination-center">
 
                     <span>Menampilkan</span>
@@ -354,95 +336,51 @@
 
                 </div>
 
-
-                {{-- ==========================================
-                    PAGINATION
-                ========================================== --}}
+                {{-- Pagination --}}
                 <div class="pagination-right">
 
-                    {{-- Previous --}}
-                    @if($portfolios->onFirstPage())
+                    @if ($portfolios->onFirstPage())
 
-                        <button
-                            class="page-btn"
-                            disabled>
-
+                        <button class="page-btn" disabled>
                             <i class="fa-solid fa-chevron-left"></i>
-
                         </button>
 
                     @else
 
-                        <a
-                            href="{{ $portfolios->previousPageUrl() }}"
-                            class="page-btn">
-
+                        <a href="{{ $portfolios->appends(request()->query())->previousPageUrl() }}" class="page-btn">
                             <i class="fa-solid fa-chevron-left"></i>
-
                         </a>
 
                     @endif
 
+                    @foreach ($portfolios->appends(request()->query())->getUrlRange(1, $portfolios->lastPage()) as $page => $url)
 
-                    @php
-
-                        $start = max($portfolios->currentPage() - 1, 1);
-
-                        $end = min($start + 1, $portfolios->lastPage());
-
-                        if($end - $start < 1){
-
-                            $start = max($end - 1, 1);
-
-                        }
-
-                    @endphp
-
-
-                    @for($page = $start; $page <= $end; $page++)
-
-                        @if($page == $portfolios->currentPage())
+                        @if ($page == $portfolios->currentPage())
 
                             <span class="page-number active">
-
                                 {{ $page }}
-
                             </span>
 
                         @else
 
-                            <a
-                                href="{{ $portfolios->url($page) }}"
-                                class="page-number">
-
+                            <a href="{{ $url }}" class="page-number">
                                 {{ $page }}
-
                             </a>
 
                         @endif
 
-                    @endfor
+                    @endforeach
 
+                    @if ($portfolios->hasMorePages())
 
-                    {{-- Next --}}
-                    @if($portfolios->hasMorePages())
-
-                        <a
-                            href="{{ $portfolios->nextPageUrl() }}"
-                            class="page-btn">
-
+                        <a href="{{ $portfolios->appends(request()->query())->nextPageUrl() }}" class="page-btn">
                             <i class="fa-solid fa-chevron-right"></i>
-
                         </a>
 
                     @else
 
-                        <button
-                            class="page-btn"
-                            disabled>
-
+                        <button class="page-btn" disabled>
                             <i class="fa-solid fa-chevron-right"></i>
-
                         </button>
 
                     @endif

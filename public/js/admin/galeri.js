@@ -407,69 +407,195 @@ document.addEventListener("click", function (e) {
 });
 
 /* ==========================================
-   SEARCH & SORT GALERI ADMIN
+   SEARCH & SORT GALERI ADMIN (LARAVEL)
 ========================================== */
 
-const gallerySearch = document.getElementById("searchInput");
-const gallerySort = document.getElementById("sortGallery");
+/* ==========================================
+   LIVE SEARCH
+========================================== */
 
-function filterGallery() {
-    const keyword = gallerySearch.value.toLowerCase().trim();
+const sortGallery = document.getElementById("sortGallery");
 
-    const sortValue = gallerySort.value;
+let searchTimer = null;
+let currentRequest = null;
 
-    const tbody = document.getElementById("galleryTable");
+if (searchInput) {
 
-    const rows = Array.from(tbody.querySelectorAll("tr[data-title]"));
+    searchInput.addEventListener("input", function () {
 
-    rows.forEach(function (row) {
-        const title = row.dataset.title || "";
+        clearTimeout(searchTimer);
 
-        const match = title.includes(keyword);
+        const keyword = searchInput.value.trim();
 
-        row.style.display = match ? "" : "none";
+        if (keyword === "") {
+            applyServerFilter();
+            return;
+        }
+
+        searchTimer = setTimeout(function () {
+
+            applyServerFilter();
+
+        }, 150);
+
     });
 
-    rows.sort(function (a, b) {
-    const titleA = a.dataset.title || "";
-    const titleB = b.dataset.title || "";
+}
 
-    const dateA = Number(a.dataset.date);
-    const dateB = Number(b.dataset.date);
+/* ==========================================
+   SORT
+========================================== */
 
-    switch (sortValue) {
-        case "latest":
-            return dateB - dateA;
+if (sortGallery) {
 
-        case "oldest":
-            return dateA - dateB;
+    sortGallery.addEventListener("change", function () {
 
-        case "title_asc":
-            return titleA.localeCompare(titleB);
+        applyServerFilter();
 
-        case "title_desc":
-            return titleB.localeCompare(titleA);
+    });
 
-        default:
-            return 0;
+}
+
+/* ==========================================
+   APPLY SERVER FILTER
+========================================== */
+
+function applyServerFilter() {
+
+    const keyword = searchInput ? searchInput.value.trim() : "";
+    const sort = sortGallery ? sortGallery.value : "";
+
+    const url = new URL(window.location.href);
+
+    if (keyword !== "") {
+        url.searchParams.set("search", keyword);
+    } else {
+        url.searchParams.delete("search");
     }
+
+    if (sort !== "") {
+        url.searchParams.set("sort", sort);
+    } else {
+        url.searchParams.delete("sort");
+    }
+
+    url.searchParams.delete("page");
+
+    loadGalleryPage(url);
+
+}
+
+/* ==========================================
+   AJAX PAGINATION
+========================================== */
+
+document.addEventListener("click", function (e) {
+
+    const pageLink = e.target.closest(".custom-pagination a");
+
+    if (!pageLink) return;
+
+    e.preventDefault();
+
+    loadGalleryPage(new URL(pageLink.href));
+
 });
 
-    rows.forEach(function (row) {
-        tbody.appendChild(row);
+/* ==========================================
+   PER PAGE
+========================================== */
+
+document.addEventListener("change", function (e) {
+
+    if (e.target.id !== "perPageSelect") return;
+
+    const url = new URL(window.location.href);
+
+    url.searchParams.set("per_page", e.target.value);
+    url.searchParams.delete("page");
+
+    loadGalleryPage(url);
+
+});
+
+/* ==========================================
+   LOAD GALLERY AJAX
+========================================== */
+
+function loadGalleryPage(url) {
+
+    const keyword = searchInput ? searchInput.value.trim() : "";
+    const sort = sortGallery ? sortGallery.value : "";
+
+    if (keyword !== "") {
+        url.searchParams.set("search", keyword);
+    } else {
+        url.searchParams.delete("search");
+    }
+
+    if (sort !== "") {
+        url.searchParams.set("sort", sort);
+    } else {
+        url.searchParams.delete("sort");
+    }
+
+    if (currentRequest) {
+        currentRequest.abort();
+    }
+
+    currentRequest = new AbortController();
+
+    fetch(url.toString(), {
+        method: "GET",
+        signal: currentRequest.signal,
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            "Accept": "text/html"
+        }
+    })
+    .then(response => {
+
+        if (!response.ok) {
+            throw new Error("Gagal memuat data galeri.");
+        }
+
+        return response.text();
+
+    })
+    .then(html => {
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+
+        const newTable = doc.querySelector("#galleryTable");
+        const currentTable = document.querySelector("#galleryTable");
+
+        if (newTable && currentTable) {
+            currentTable.innerHTML = newTable.innerHTML;
+        }
+
+        const newPagination = doc.querySelector(".custom-pagination");
+        const currentPagination = document.querySelector(".custom-pagination");
+
+        if (newPagination && currentPagination) {
+            currentPagination.innerHTML = newPagination.innerHTML;
+        }
+
+        window.history.replaceState({}, "", url.toString());
+
+        currentRequest = null;
+
+    })
+    .catch(error => {
+
+        if (error.name === "AbortError") return;
+
+        console.error(error);
+
+        currentRequest = null;
+
     });
-}
 
-// SEARCH pakai keyup
-
-if (gallerySearch) {
-    gallerySearch.addEventListener("keyup", filterGallery);
-}
-
-// SORT pakai change
-
-if (gallerySort) {
-    gallerySort.addEventListener("change", filterGallery);
 }
 
 // helper js untuk yt
