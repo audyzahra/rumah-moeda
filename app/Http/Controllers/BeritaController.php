@@ -7,6 +7,7 @@ use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Models\NewsView;
 
 class BeritaController extends Controller
 {
@@ -47,7 +48,7 @@ class BeritaController extends Controller
     /**
      * Detail Berita
      */
-    public function show($slug)
+    public function show(Request $request, $slug)
 {
     // Guest
     if (!Auth::check()) {
@@ -57,11 +58,19 @@ class BeritaController extends Controller
             ->firstOrFail();
 
         // Tambah views hanya sekali selama session
-        $sessionKey = 'news_viewed_' . $news->id;
+        $exists = NewsView::where('news_id', $news->id)
+            ->where('ip_address', $request->ip())
+            ->exists();
 
-        if (!session()->has($sessionKey)) {
+        if (!$exists) {
+
+            NewsView::create([
+                'news_id' => $news->id,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+
             $news->increment('views');
-            session()->put($sessionKey, true);
         }
 
         $otherNews = News::with(['category', 'author'])
@@ -80,11 +89,19 @@ class BeritaController extends Controller
             ->firstOrFail();
 
         // Tambah views hanya sekali selama session
-        $sessionKey = 'news_viewed_' . $news->id;
+        $exists = NewsView::where('news_id', $news->id)
+            ->where('ip_address', $request->ip())
+            ->exists();
 
-        if (!session()->has($sessionKey)) {
+        if (!$exists) {
+
+            NewsView::create([
+                'news_id' => $news->id,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+
             $news->increment('views');
-            session()->put($sessionKey, true);
         }
 
         $otherNews = News::with(['category', 'author'])
