@@ -340,7 +340,7 @@ Route::middleware(['auth', 'admin'])
 
         Route::get(
             '/sidebar-notification',
-            [DashboardController::class, 'sidebarNotification']
+            [AspirasiController::class, 'sidebarNotification']
         )->name('sidebar.notification');
 
         /*
@@ -440,6 +440,8 @@ Route::middleware(['auth', 'admin'])
 
         Route::delete('/messages', [AspirasiController::class, 'bulkDelete'])
             ->name('messages.bulkDelete');
+        Route::get('/messages/statistics', [AspirasiController::class, 'statistics'])
+        ->name('messages.statistics');
 
         /*
         |--------------------------------------------------------------------------

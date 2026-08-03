@@ -27,7 +27,9 @@
 
                 <h4>Total Aspirasi</h4>
 
-                <h2>{{ $totalMessages }}</h2>
+                <h2 id="total-aspirasi">
+                    {{ $totalMessages }}
+                </h2>
 
             </div>
 
@@ -43,7 +45,9 @@
 
                 <h4>Belum Dibaca</h4>
 
-                <h2>{{ $unreadMessages }}</h2>
+                <h2 id="belum-dibaca">
+                    {{ $unreadMessages }}
+                </h2>
 
             </div>
 
@@ -59,7 +63,9 @@
 
                 <h4>Sudah Dibaca</h4>
 
-                <h2>{{ $readMessages }}</h2>
+                <h2 id="sudah-dibaca">
+                    {{ $readMessages }}
+                </h2>
 
             </div>
 
@@ -69,44 +75,32 @@
 
     <!-- ================= FILTER ================= -->
 
-        <div class="filter-section">
+    <div class="filter-section">
 
-            <div class="filter-left">
+        <div class="filter-left">
 
-                <input
-                    type="text"
-                    id="searchInput"
-                    class="search-input"
-                    placeholder="Cari nama atau email..."
-                    value="{{ request('search') }}">
+            <input type="text" id="searchInput" class="search-input" placeholder="Cari nama atau email..."
+                value="{{ request('search') }}">
 
-                <select
-                    id="filterStatus"
-                    class="filter-select">
+            <select id="filterStatus" class="filter-select">
 
-                    <option
-                        value=""
-                        {{ request('status') === null || request('status') === '' ? 'selected' : '' }}>
-                        Semua Status
-                    </option>
+                <option value="" {{ request('status') === null || request('status') === '' ? 'selected' : '' }}>
+                    Semua Status
+                </option>
 
-                    <option
-                        value="0"
-                        {{ request('status') === '0' ? 'selected' : '' }}>
-                        Belum Dibaca
-                    </option>
+                <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>
+                    Belum Dibaca
+                </option>
 
-                    <option
-                        value="1"
-                        {{ request('status') === '1' ? 'selected' : '' }}>
-                        Sudah Dibaca
-                    </option>
+                <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>
+                    Sudah Dibaca
+                </option>
 
-                </select>
-
-            </div>
+            </select>
 
         </div>
+
+    </div>
 
     <!-- ================= TABLE ================= -->
     <div class="table-section">
@@ -200,20 +194,16 @@
                                 <div class="action-buttons">
 
                                     {{-- Detail --}}
-                                    <button
-    class="btn-detail"
-    data-id="{{ $message->id }}"
-    data-name="{{ $message->full_name }}"
-    data-email="{{ $message->email }}"
-    data-phone="{{ $message->phone }}"
-    data-message="{{ $message->message }}"
-    data-status="{{ $message->is_read ? 1 : 0 }}"
-    data-created="{{ $message->created_at->format('d M Y H:i') }}"
-    onclick="showDetail(this)">
-    <i class="fa-solid fa-eye"></i>
-</button>
+                                    <button class="btn-detail" data-id="{{ $message->id }}"
+                                        data-name="{{ $message->full_name }}" data-email="{{ $message->email }}"
+                                        data-phone="{{ $message->phone }}" data-message="{{ $message->message }}"
+                                        data-status="{{ $message->is_read ? 1 : 0 }}"
+                                        data-created="{{ $message->created_at->format('d M Y H:i') }}"
+                                        onclick="showDetail(this)">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
 
-                                    
+
                                     {{-- Hapus --}}
                                     <button class="btn-hapus" onclick="deleteAspirasi({{ $message->id }})">
 
@@ -246,7 +236,7 @@
 
         </div>
 
-<!-- ================= PAGINATION ================= -->
+        <!-- ================= PAGINATION ================= -->
 
         <div class="custom-pagination">
 
@@ -259,43 +249,28 @@
 
                     {{-- Pertahankan search dan status --}}
                     @foreach (request()->except('per_page', 'page') as $key => $value)
-
-                        <input
-                            type="hidden"
-                            name="{{ $key }}"
-                            value="{{ $value }}">
-
+                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                     @endforeach
 
 
                     <span>Tampilkan</span>
 
 
-                    <select
-                        name="per_page"
-                        onchange="this.form.submit()">
+                    <select name="per_page" onchange="this.form.submit()">
 
-                        <option
-                            value="5"
-                            {{ request('per_page', 5) == 5 ? 'selected' : '' }}>
+                        <option value="5" {{ request('per_page', 5) == 5 ? 'selected' : '' }}>
                             5
                         </option>
 
-                        <option
-                            value="10"
-                            {{ request('per_page') == 10 ? 'selected' : '' }}>
+                        <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>
                             10
                         </option>
 
-                        <option
-                            value="20"
-                            {{ request('per_page') == 20 ? 'selected' : '' }}>
+                        <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>
                             20
                         </option>
 
-                        <option
-                            value="50"
-                            {{ request('per_page') == 50 ? 'selected' : '' }}>
+                        <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>
                             50
                         </option>
 
@@ -345,79 +320,49 @@
 
                 {{-- PREVIOUS --}}
                 @if ($messages->onFirstPage())
-
-                    <button
-                        class="page-btn"
-                        disabled>
+                    <button class="page-btn" disabled>
 
                         <i class="fa-solid fa-chevron-left"></i>
 
                     </button>
-
                 @else
-
-                    <a
-                        href="{{ $messages->previousPageUrl() }}"
-                        class="page-btn">
+                    <a href="{{ $messages->previousPageUrl() }}" class="page-btn">
 
                         <i class="fa-solid fa-chevron-left"></i>
 
                     </a>
-
                 @endif
 
 
                 {{-- NOMOR HALAMAN --}}
-                @foreach (
-                    $messages->getUrlRange(
-                        1,
-                        $messages->lastPage()
-                    )
-                    as $page => $url
-                )
-
+                @foreach ($messages->getUrlRange(1, $messages->lastPage()) as $page => $url)
                     @if ($page == $messages->currentPage())
-
                         <span class="page-number active">
                             {{ $page }}
                         </span>
-
                     @else
-
-                        <a
-                            href="{{ $url }}"
-                            class="page-number">
+                        <a href="{{ $url }}" class="page-number">
 
                             {{ $page }}
 
                         </a>
-
                     @endif
-
                 @endforeach
 
 
                 {{-- NEXT --}}
                 @if ($messages->hasMorePages())
-
-                    <a
-                        href="{{ $messages->nextPageUrl() }}"
-                        class="page-btn">
+                    <a href="{{ $messages->nextPageUrl() }}" class="page-btn">
 
                         <i class="fa-solid fa-chevron-right"></i>
 
                     </a>
-
                 @else
-
-                    <button
-                        class="page-btn"
-                        disabled>
+                    <button class="page-btn" disabled>
 
                         <i class="fa-solid fa-chevron-right"></i>
 
                     </button>
-
                 @endif
 
 
@@ -457,16 +402,19 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script>
+    window.statisticsUrl = "{{ route('admin.messages.statistics') }}";
+    </script>
     <script src="{{ asset('js/admin/aspirasi.js') }}"></script>
 
-    @if(session('success'))
+    @if (session('success'))
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
 
                 Swal.fire({
                     icon: 'success',
-                    title: '{{ session("title") ?? "Berhasil!" }}',
-                    text: '{{ session("success") }}',
+                    title: '{{ session('title') ?? 'Berhasil!' }}',
+                    text: '{{ session('success') }}',
                     confirmButtonColor: '#D4AF37',
                     timer: 2000,
                     timerProgressBar: true,
