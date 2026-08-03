@@ -47,19 +47,35 @@
 
                 {{-- VALIDATION --}}
                 @if ($errors->any())
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
 
-                    <div class="alert alert-danger">
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Periksa kembali data',
+                                html: `{!! implode('<br>', $errors->all()) !!}`,
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#4f46e5'
+                            });
 
-                        <ul>
+                        });
+                    </script>
+                @endif
 
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
+                @if (session('error'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
 
-                        </ul>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: "{{ session('error') }}",
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#4f46e5'
+                            });
 
-                    </div>
-
+                        });
+                    </script>
                 @endif
 
                 <form action="{{ route('admin.manage-account.store') }}" method="POST">
@@ -81,7 +97,7 @@
                             </label>
 
                             <input type="text" name="name" class="form-control" placeholder="Masukkan nama lengkap"
-                                value="{{ old('name') }}" required>
+                                value="{{ old('name') }}">
 
                         </div>
 
@@ -96,7 +112,7 @@
                             </label>
 
                             <input type="email" name="email" class="form-control" placeholder="Masukkan alamat email"
-                                value="{{ old('email') }}" required>
+                                value="{{ old('email') }}">
 
                         </div>
 
@@ -119,7 +135,7 @@
                             <div class="password-wrapper">
 
                                 <input type="password" id="password" name="password" class="form-control"
-                                    placeholder="Minimal 8 karakter" required>
+                                    placeholder="Minimal 8 karakter">
 
                                 <i class="fa-solid fa-eye toggle-password" data-target="password">
 
@@ -142,7 +158,7 @@
                             <div class="password-wrapper">
 
                                 <input type="password" id="password_confirmation" name="password_confirmation"
-                                    class="form-control" placeholder="Ulangi password" required>
+                                    class="form-control" placeholder="Ulangi password">
 
                                 <i class="fa-solid fa-eye toggle-password" data-target="password_confirmation">
 
@@ -166,7 +182,7 @@
 
                         </label>
 
-                        <select name="role" class="form-control" required>
+                        <select name="role" class="form-control">
 
                             <option value="" selected disabled>
 
@@ -201,7 +217,7 @@
 
                         </label>
 
-                        <select name="status" class="form-control" required>
+                        <select name="status" class="form-control">
 
                             <option value="1" {{ old('status', 1) == 1 ? 'selected' : '' }}>
 

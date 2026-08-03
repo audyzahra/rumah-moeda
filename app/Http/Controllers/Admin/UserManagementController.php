@@ -7,9 +7,17 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use App\Services\SecurityInputService;
+use App\Services\Security\DangerousInputException;
 
 class UserManagementController extends Controller
 {
+    protected SecurityInputService $security;
+
+    public function __construct(SecurityInputService $security)
+    {
+        $this->security = $security;
+    }
     /**
      * Display a listing of users.
      */
@@ -36,19 +44,39 @@ class UserManagementController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'                  => 'required|string|max:255',
-            'email'                 => 'required|email|max:255|unique:users,email',
-            'password'              => 'required|string|min:8|confirmed',
-            'role'                  => 'required|in:admin,user',
-            'status'                => 'required|boolean',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:admin,user',
+            'status' => 'required|boolean',
+        ], [
+            'name.required' => 'Nama wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan.',
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak sesuai.',
+            'role.required' => 'Role wajib dipilih.',
+            'status.required' => 'Status wajib dipilih.',
         ]);
+        try {
 
+        $name = $this->security->cleanText($validated['name']);
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
+        }
         User::create([
-            'name'      => $validated['name'],
-            'email'     => $validated['email'],
-            'password'  => Hash::make($validated['password']),
-            'role'      => $validated['role'],
-            'status'    => $validated['status'],
+            'name' => $name,
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role' => $validated['role'],
+            'status' => $validated['status'],
         ]);
 
         return redirect()
@@ -61,24 +89,45 @@ class UserManagementController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            $validated = $request->validate([
+        'name' => 'required|string|max:255',
 
-            'email' => [
-                'required',
-                'email',
-                'max:255',
-                Rule::unique('users')->ignore($user->id),
-            ],
+        'email' => [
+            'required',
+            'email',
+            'max:255',
+            Rule::unique('users')->ignore($user->id),
+        ],
 
             'role' => 'required|in:admin,user',
 
             'status' => 'required|boolean',
 
             'password' => 'nullable|string|min:8|confirmed',
+
+        ],[
+            'name.required' => 'Nama wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan.',
+            'password.min' => 'Password minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak sesuai.',
+            'role.required' => 'Role wajib dipilih.',
+            'status.required' => 'Status wajib dipilih.',
         ]);
 
-        $user->name = $validated['name'];
+        try {
+
+        $name = $this->security->cleanText($validated['name']);
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
+        }
+        $user->name = $name;
         $user->email = $validated['email'];
         $user->role = $validated['role'];
         $user->status = $validated['status'];
