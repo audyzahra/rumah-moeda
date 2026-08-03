@@ -29,7 +29,8 @@ class PortfolioController extends Controller
     public function index(Request $request)
     {
 
-        $query = Portfolio::with([
+    $perPage = $request->get('per_page', 5);
+    $query = Portfolio::with([
             'category',
             'partner',
             'media',
@@ -38,7 +39,7 @@ class PortfolioController extends Controller
 
 
         // SEARCH
-        if ($request->search) {
+        if ($request->filled('search')) {
 
             $search = $request->search;
 
@@ -79,64 +80,52 @@ class PortfolioController extends Controller
             });
         }
 
-
-
         // SORTING
 
-        switch ($request->sort) {
+        if ($request->filled('sort')) {
 
-            case 'oldest':
+            switch ($request->sort) {
 
-                $query->orderBy(
-                    'created_at',
-                    'asc'
-                );
+                case 'oldest':
 
-                break;
+                    $query->oldest();
 
+                    break;
 
-            case 'title_asc':
+                case 'title_asc':
 
-                $query->orderBy(
-                    'title',
-                    'asc'
-                );
+                    $query->orderBy('title');
 
-                break;
+                    break;
 
+                case 'title_desc':
 
-            case 'title_desc':
+                    $query->orderByDesc('title');
 
-                $query->orderBy(
-                    'title',
-                    'desc'
-                );
+                    break;
 
-                break;
+                default:
 
+                    $query->latest();
 
-            default:
+                    break;
+            }
 
-                $query->latest();
+        } else {
 
-                break;
+            $query->latest();
+
         }
 
-
-
-        $portfolios = $query->paginate(5)
+        $portfolios = $query
+            ->paginate($perPage)
             ->withQueryString();
-
-
 
         return view(
             'admin.portfolios.index',
             compact('portfolios')
         );
     }
-
-
-
 
     public function create()
     {

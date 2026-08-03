@@ -131,7 +131,7 @@
 
                                     <td>
 
-                                        {{ $loop->iteration }}
+                                        {{ $portfolios->firstItem() + $loop->index }}
 
                                     </td>
 
@@ -197,9 +197,11 @@
                                     </td>
 
                                     <td>
-
-                                        {{ $portfolio->location ?? '-' }}
-
+                                        <span
+                                            class="portfolio-location"
+                                            title="{{ $portfolio->location }}">
+                                            {{ $portfolio->location ?? '-' }}
+                                        </span>
                                     </td>
 
 
@@ -281,60 +283,168 @@
 
             <!-- ================= PAGINATION ================= -->
 
-            <div class="pagination-section">
+            <div class="custom-pagination">
 
-                <div class="info-data">
+                {{-- ==========================================
+                    SHOW ENTRIES
+                ========================================== --}}
+                <div class="pagination-left">
 
-                    Menampilkan
+                    <form method="GET" id="perPageForm">
 
-                    <strong>{{ $portfolios->firstItem() ?? 0 }}</strong>
+                        @foreach(request()->except('per_page','page') as $key => $value)
 
-                    -
+                            <input
+                                type="hidden"
+                                name="{{ $key }}"
+                                value="{{ $value }}">
 
-                    <strong>{{ $portfolios->lastItem() ?? 0 }}</strong>
+                        @endforeach
 
-                    dari
+                        <span>Tampilkan</span>
 
-                    <strong>{{ $portfolios->total() }}</strong>
+                        <select
+                            name="per_page"
+                            id="perPageSelect"
+                            onchange="this.form.submit()">
 
-                    data
+                            <option value="5" {{ request('per_page',5)==5?'selected':'' }}>
+                                5
+                            </option>
+
+                            <option value="10" {{ request('per_page')==10?'selected':'' }}>
+                                10
+                            </option>
+
+                            <option value="20" {{ request('per_page')==20?'selected':'' }}>
+                                20
+                            </option>
+
+                            <option value="50" {{ request('per_page')==50?'selected':'' }}>
+                                50
+                            </option>
+
+                        </select>
+
+                        <span>Portofolio</span>
+
+                    </form>
 
                 </div>
 
-                <div class="pagination-controls">
+
+                {{-- ==========================================
+                    INFO DATA
+                ========================================== --}}
+                <div class="pagination-center">
+
+                    <span>Menampilkan</span>
+
+                    <strong>{{ $portfolios->firstItem() ?? 0 }}</strong>
+
+                    <span>-</span>
+
+                    <strong>{{ $portfolios->lastItem() ?? 0 }}</strong>
+
+                    <span>dari</span>
+
+                    <strong>{{ $portfolios->total() }}</strong>
+
+                    <span>data</span>
+
+                </div>
+
+
+                {{-- ==========================================
+                    PAGINATION
+                ========================================== --}}
+                <div class="pagination-right">
 
                     {{-- Previous --}}
-                    @if ($portfolios->onFirstPage())
-                        <button class="page-btn" disabled>
+                    @if($portfolios->onFirstPage())
+
+                        <button
+                            class="page-btn"
+                            disabled>
+
                             <i class="fa-solid fa-chevron-left"></i>
+
                         </button>
+
                     @else
-                        <a href="{{ $portfolios->previousPageUrl() }}" class="page-btn">
+
+                        <a
+                            href="{{ $portfolios->previousPageUrl() }}"
+                            class="page-btn">
+
                             <i class="fa-solid fa-chevron-left"></i>
+
                         </a>
+
                     @endif
 
-                    <span id="pageInfo">
 
-                        Halaman
+                    @php
 
-                        {{ $portfolios->currentPage() }}
+                        $start = max($portfolios->currentPage() - 1, 1);
 
-                        dari
+                        $end = min($start + 1, $portfolios->lastPage());
 
-                        {{ $portfolios->lastPage() }}
+                        if($end - $start < 1){
 
-                    </span>
+                            $start = max($end - 1, 1);
+
+                        }
+
+                    @endphp
+
+
+                    @for($page = $start; $page <= $end; $page++)
+
+                        @if($page == $portfolios->currentPage())
+
+                            <span class="page-number active">
+
+                                {{ $page }}
+
+                            </span>
+
+                        @else
+
+                            <a
+                                href="{{ $portfolios->url($page) }}"
+                                class="page-number">
+
+                                {{ $page }}
+
+                            </a>
+
+                        @endif
+
+                    @endfor
+
 
                     {{-- Next --}}
-                    @if ($portfolios->hasMorePages())
-                        <a href="{{ $portfolios->nextPageUrl() }}" class="page-btn">
+                    @if($portfolios->hasMorePages())
+
+                        <a
+                            href="{{ $portfolios->nextPageUrl() }}"
+                            class="page-btn">
+
                             <i class="fa-solid fa-chevron-right"></i>
+
                         </a>
+
                     @else
-                        <button class="page-btn" disabled>
+
+                        <button
+                            class="page-btn"
+                            disabled>
+
                             <i class="fa-solid fa-chevron-right"></i>
+
                         </button>
+
                     @endif
 
                 </div>

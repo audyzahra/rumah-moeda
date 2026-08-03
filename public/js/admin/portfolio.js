@@ -400,75 +400,40 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /* ==========================================
-   SEARCH & SORT PORTFOLIO
-========================================== */
+    SEARCH & SORT (LARAVEL)
+    ========================================== */
+
+    const portfolioFilter = document.getElementById("portfolioFilter");
 
     const searchPortfolio = document.getElementById("searchPortfolio");
 
     const sortPortfolio = document.getElementById("sortPortfolio");
 
-    function filterPortfolio() {
-        const keyword = searchPortfolio.value.toLowerCase().trim();
+    if (searchPortfolio && portfolioFilter) {
 
-        const sortValue = sortPortfolio.value;
+        let timer;
 
-        const rows = document.querySelectorAll("#portfolioTable tr");
+        searchPortfolio.addEventListener("input", function () {
 
-        rows.forEach(function (row) {
-            // Lewati empty state
-            if (row.querySelector(".empty-state")) return;
+            clearTimeout(timer);
 
-            const title = row.dataset.title || "";
+            timer = setTimeout(function () {
 
-            const category = row.dataset.category || "";
+                portfolioFilter.submit();
 
-            const partner = row.dataset.partner || "";
+            }, 150);
 
-            const author = row.dataset.author || "";
-
-            const matchKeyword =
-                title.includes(keyword) ||
-                category.includes(keyword) ||
-                partner.includes(keyword) ||
-                author.includes(keyword);
-
-            row.style.display = matchKeyword ? "" : "none";
         });
 
-        // SORTING
+    }
 
-        const tbody = document.getElementById("portfolioTable");
+    if (sortPortfolio && portfolioFilter) {
 
-        const rowsArray = Array.from(tbody.querySelectorAll("tr"));
+        sortPortfolio.addEventListener("change", function () {
 
-        rowsArray.sort(function (a, b) {
-            const titleA = a.dataset.title || "";
+            portfolioFilter.submit();
 
-            const titleB = b.dataset.title || "";
-
-            if (sortValue === "title_asc") {
-                return titleA.localeCompare(titleB);
-            }
-
-            if (sortValue === "title_desc") {
-                return titleB.localeCompare(titleA);
-            }
-
-            return 0;
         });
 
-        rowsArray.forEach((row) => {
-            tbody.appendChild(row);
-        });
     }
-
-    if (searchPortfolio) {
-        searchPortfolio.addEventListener("keyup", filterPortfolio);
-    }
-
-    if (sortPortfolio) {
-        sortPortfolio.addEventListener("change", filterPortfolio);
-    }
-
-    // kurawal penutup
 });
