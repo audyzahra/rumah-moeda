@@ -41,12 +41,12 @@
         </li>
 
         <!-- Portofolio -->
-        <li class="active">
-            <a href="portofolio.html">
-                <i class="fa-solid fa-briefcase"></i>
-                <span>Portofolio</span>
-            </a>
-        </li>
+        <li class="{{ request()->routeIs('user.portfolios.*') ? 'active' : '' }}">
+    <a href="{{ route('user.portfolios.index') }}">
+        <i class="fa-solid fa-briefcase"></i>
+        <span>Portofolio</span>
+    </a>
+</li>
 
         <!-- Galeri -->
         <li class="{{ request()->routeIs('user.gallery.*') ? 'active' : '' }}">
