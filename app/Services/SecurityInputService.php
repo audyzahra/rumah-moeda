@@ -66,7 +66,7 @@ class SecurityInputService
     // Tolak apabila ditemukan pola berbahaya
     if ($this->containsDangerousPattern($html)) {
         throw new DangerousInputException(
-            'Isi berita mengandung kode yang tidak diperbolehkan.'
+            'Input mengandung kode atau karakter yang tidak diperbolehkan.'
         );
     }
 
