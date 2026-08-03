@@ -47,19 +47,31 @@
             <div class="card-body">
 
                 @if ($errors->any())
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Periksa kembali data',
+                                html: `{!! implode('<br>', $errors->all()) !!}`,
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#d4af37'
+                            });
+                        });
+                    </script>
+                @endif
 
-                    <div class="alert alert-danger">
-
-                        <ul>
-
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-
-                        </ul>
-
-                    </div>
-
+                @if (session('error'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Input Ditolak',
+                                text: @json(session('error')),
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#d4af37'
+                            });
+                        });
+                    </script>
                 @endif
 
                 <form action="{{ route('admin.faq.store') }}" method="POST">

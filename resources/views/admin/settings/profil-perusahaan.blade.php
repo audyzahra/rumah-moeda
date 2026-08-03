@@ -27,7 +27,33 @@
 
             <div class="card-body">
 
-                <form action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
+                @if ($errors->any())
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Periksa kembali data',
+                                html: `{!! implode('<br>', $errors->all()) !!}`,
+                                confirmButtonText: 'OK'
+                            });
+                        });
+                    </script>
+                @endif
+
+                @if (session('error'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: "{{ session('error') }}",
+                                confirmButtonText: 'OK'
+                            });
+                        });
+                    </script>
+                @endif
+
+                <form action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data" novalidate>
 
                     @csrf
 
@@ -61,7 +87,9 @@
 
                             <label>
                                 Upload Logo Baru
-                                <span class="required">*</span>
+                                @if (empty($setting?->website_logo))
+                                    <span class="required">*</span>
+                                @endif
                             </label>
 
                             <div class="logo-upload">
@@ -92,7 +120,7 @@
 
                         <label>
                             Deskripsi Website
-                            <span class="required">*</span>
+                            <span class="required"></span>
                         </label>
 
                         <x-tiptap name="website_description" :value="old('website_description', $setting->website_description ?? '')" placeholder="Masukkan deskripsi website..."
@@ -110,7 +138,10 @@
 
                         <div class="form-group form-group-half">
 
-                            <label>Nomor Telepon</label>
+                            <label>
+                                Nomor Telepon
+                                <span class="required">*</span>
+                            </label>
 
                             <input type="text" id="phoneNumber" name="phone_number" class="form-control"
                                 placeholder="+62 812-xxxx-xxxx"
@@ -120,9 +151,12 @@
 
                         <div class="form-group form-group-half">
 
-                            <label>Email</label>
+                            <label>
+                                Email
+                                <span class="required">*</span>
+                            </label>
 
-                            <input type="email" id="email" name="email" class="form-control"
+                            <input type="text" id="email" name="email" class="form-control"
                                 placeholder="info@website.com" value="{{ old('email', $setting->email ?? '') }}">
 
                         </div>
@@ -144,7 +178,10 @@
 
                     <div class="form-group">
 
-                        <label>Alamat</label>
+                        <label>
+                            Alamat
+                            <span class="required">*</span>
+                        </label>
 
                         <textarea id="address" name="address" class="form-control" rows="3" placeholder="Masukkan alamat lengkap">{{ old('address', $setting->address ?? '') }}</textarea>
 
@@ -158,7 +195,10 @@
 
                         <div class="form-group form-group-third">
 
-                            <label>Instagram</label>
+                            <label>
+                                Instagram
+                                <span class="required">*</span>
+                            </label>
 
                             <input type="text" id="instagram" name="instagram_url" class="form-control"
                                 placeholder="https://instagram.com/..."

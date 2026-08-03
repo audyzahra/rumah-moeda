@@ -46,19 +46,35 @@
             <div class="card-body">
 
                 @if ($errors->any())
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
 
-                    <div class="alert alert-danger">
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Periksa kembali data',
+                                html: `{!! implode('<br>', $errors->all()) !!}`,
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#4f46e5'
+                            });
 
-                        <ul>
+                        });
+                    </script>
+                @endif
 
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
+                @if (session('error'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
 
-                        </ul>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: "{{ session('error') }}",
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#4f46e5'
+                            });
 
-                    </div>
-
+                        });
+                    </script>
                 @endif
 
                 <form action="{{ route('admin.manage-account.update', $user) }}" method="POST">
@@ -81,7 +97,7 @@
                             </label>
 
                             <input type="text" name="name" class="form-control" placeholder="Masukkan nama lengkap"
-                                value="{{ old('name', $user->name) }}" required>
+                                value="{{ old('name', $user->name) }}">
 
                         </div>
 
@@ -96,7 +112,7 @@
                             </label>
 
                             <input type="email" name="email" class="form-control" placeholder="Masukkan alamat email"
-                                value="{{ old('email', $user->email) }}" required>
+                                value="{{ old('email', $user->email) }}">
 
                         </div>
 
@@ -162,7 +178,7 @@
 
                         </label>
 
-                        <select name="role" class="form-control" required>
+                        <select name="role" class="form-control">
 
                             <option value="" disabled>
 
@@ -197,7 +213,7 @@
 
                         </label>
 
-                        <select name="status" class="form-control" required>
+                        <select name="status" class="form-control">
 
                             <option value="1" {{ old('status', $user->status) == 1 ? 'selected' : '' }}>
 

@@ -407,70 +407,38 @@ document.addEventListener("click", function (e) {
 });
 
 /* ==========================================
-   SEARCH & SORT GALERI ADMIN
+   SEARCH & SORT GALERI ADMIN (LARAVEL)
 ========================================== */
 
-const gallerySearch = document.getElementById("searchInput");
-const gallerySort = document.getElementById("sortGallery");
+document.addEventListener("DOMContentLoaded", function () {
 
-function filterGallery() {
-    const keyword = gallerySearch.value.toLowerCase().trim();
+    const form = document.getElementById("galleryFilter");
+    const search = document.getElementById("searchInput");
+    const sort = document.getElementById("sortGallery");
 
-    const sortValue = gallerySort.value;
+    if (!form) return;
 
-    const tbody = document.getElementById("galleryTable");
+    let timer;
 
-    const rows = Array.from(tbody.querySelectorAll("tr[data-title]"));
+    search.addEventListener("input", function () {
 
-    rows.forEach(function (row) {
-        const title = row.dataset.title || "";
+        clearTimeout(timer);
 
-        const match = title.includes(keyword);
+        timer = setTimeout(function () {
 
-        row.style.display = match ? "" : "none";
+            form.submit();
+
+        }, 150);
+
     });
 
-    rows.sort(function (a, b) {
-    const titleA = a.dataset.title || "";
-    const titleB = b.dataset.title || "";
+    sort.addEventListener("change", function () {
 
-    const dateA = Number(a.dataset.date);
-    const dateB = Number(b.dataset.date);
+        form.submit();
 
-    switch (sortValue) {
-        case "latest":
-            return dateB - dateA;
+    });
 
-        case "oldest":
-            return dateA - dateB;
-
-        case "title_asc":
-            return titleA.localeCompare(titleB);
-
-        case "title_desc":
-            return titleB.localeCompare(titleA);
-
-        default:
-            return 0;
-    }
 });
-
-    rows.forEach(function (row) {
-        tbody.appendChild(row);
-    });
-}
-
-// SEARCH pakai keyup
-
-if (gallerySearch) {
-    gallerySearch.addEventListener("keyup", filterGallery);
-}
-
-// SORT pakai change
-
-if (gallerySort) {
-    gallerySort.addEventListener("change", filterGallery);
-}
 
 // helper js untuk yt
 function getYoutubeId(url) {

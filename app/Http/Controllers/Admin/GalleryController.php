@@ -53,8 +53,11 @@ class GalleryController extends Controller
                 break;
         }
 
+        // Jumlah data per halaman
+        $perPage = $request->get('per_page', 5);
+
         $galleries = $query
-            ->paginate(9)
+            ->paginate($perPage)
             ->withQueryString();
 
         return view('admin.galeri.galeri', compact('galleries'));

@@ -45,7 +45,6 @@
 
                     {{-- Judul --}}
                     <div class="form-group">
-
                         <label>
                             Judul Berita
                             <span class="required">*</span>
@@ -53,8 +52,6 @@
 
                         <input type="text" id="title" name="title" class="form-control" value="{{ old('title') }}"
                             placeholder="Masukkan judul berita">
-                        placeholder="Masukkan judul berita">
-
                     </div>
 
                     {{-- Kategori --}}

@@ -6,9 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\VisionMission;
 use App\Models\Mission;
+use App\Services\SecurityInputService;
+use App\Services\Security\DangerousInputException;
 
 class VisionMissionController extends Controller
 {
+    protected SecurityInputService $security;
+
+    public function __construct(SecurityInputService $security)
+    {
+        $this->security = $security;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -62,34 +70,76 @@ class VisionMissionController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-        'vision' => 'required',
-        'missions' => 'required|array',
-        'missions.*' => 'required'
-    ]);
+            'vision' => [
+                'required',
+                function ($attribute, $value, $fail) {
 
-    $vision = VisionMission::first();
+                    $text = trim(strip_tags($value));
 
-    if (!$vision) {
-        $vision = new VisionMission();
-    }
+                    if ($text === '') {
+                        $fail('Visi wajib diisi.');
+                    }
+                },
+            ],
+            'missions' => 'required|array|min:1',
+            'missions.*' => 'required|string',
+        ], [
+            'vision.required' => 'Visi wajib diisi.',
 
-    $vision->vision = $request->vision;
-    $vision->save();
+            'missions.required' => 'Minimal satu misi wajib diisi.',
+            'missions.array' => 'Data misi tidak valid.',
+            'missions.min' => 'Minimal satu misi wajib diisi.',
 
-    Mission::where('vision_mission_id', $vision->id)->delete();
-
-    foreach ($request->missions as $index => $mission) {
-
-        Mission::create([
-            'vision_mission_id' => $vision->id,
-            'mission' => $mission,
-            'display_order' => $index + 1,
+            'missions.*.required' => 'Misi tidak boleh kosong.',
         ]);
 
-    }
-    return redirect()
-        ->route('admin.settings.visi.index')
-        ->with('success', 'Visi dan Misi berhasil diperbarui.');
+        try {
+
+            $visionText = $this->security->cleanHtml($request->vision);
+
+            $missions = [];
+
+            foreach ($request->missions as $mission) {
+
+                $missions[] = $this->security->cleanText($mission);
+
+            }
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
+        }
+
+        $vision = VisionMission::first();
+
+        if (!$vision) {
+            $vision = new VisionMission();
+        }
+
+        $vision->vision = $visionText;
+        $vision->save();
+
+        Mission::where(
+            'vision_mission_id',
+            $vision->id
+        )->delete();
+
+        foreach ($missions as $index => $mission) {
+
+            Mission::create([
+                'vision_mission_id' => $vision->id,
+                'mission' => $mission,
+                'display_order' => $index + 1,
+            ]);
+
+        }
+
+        return redirect()
+            ->route('admin.settings.visi.index')
+            ->with('success', 'Visi dan misi berhasil diperbarui.');
     }
 
     /**

@@ -95,74 +95,42 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-// SEARCH DAN SORT
-document.addEventListener('DOMContentLoaded', () => {
+/* ==========================================
+   SEARCH & SORT (LARAVEL)
+========================================== */
 
-    const searchInput = document.getElementById('searchInput');
-    const sortSelect = document.getElementById('sortSelect');
+document.addEventListener("DOMContentLoaded", function () {
 
-    if (!searchInput || !sortSelect) return;
+    const form = document.getElementById("categoryFilterForm");
+    const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
 
-    const tbody = document.querySelector('.portfolio-category-table tbody');
+    if (searchInput && form) {
 
-    function renderTable() {
+        let timer;
 
-        let rows = [...tbody.querySelectorAll('tr')];
+        searchInput.addEventListener("input", function () {
 
-        // Abaikan row kosong
-        rows = rows.filter(row => !row.querySelector('.empty-data'));
+            clearTimeout(timer);
 
-        // SEARCH
-        const keyword = searchInput.value.toLowerCase();
+            timer = setTimeout(function () {
 
-        rows.forEach(row => {
+                form.submit();
 
-            const name = row.dataset.name;
-
-            row.style.display = name.includes(keyword) ? '' : 'none';
-
-        });
-
-        // SORT
-        rows.sort((a, b) => {
-
-            switch (sortSelect.value) {
-
-                case 'az':
-                    return a.dataset.name.localeCompare(b.dataset.name);
-
-                case 'za':
-                    return b.dataset.name.localeCompare(a.dataset.name);
-
-                case 'oldest':
-                    return Number(a.dataset.date) - Number(b.dataset.date);
-
-                default: // newest
-                    return Number(b.dataset.date) - Number(a.dataset.date);
-
-            }
-
-        });
-
-        rows.forEach(row => tbody.appendChild(row));
-
-        // Update nomor
-        let no = 1;
-
-        rows.forEach(row => {
-
-            if (row.style.display !== 'none') {
-
-                row.cells[0].textContent = no++;
-
-            }
+            }, 150);
 
         });
 
     }
 
-    searchInput.addEventListener('input', renderTable);
+    if (sortSelect && form) {
 
-    sortSelect.addEventListener('change', renderTable);
+        sortSelect.addEventListener("change", function () {
+
+            form.submit();
+
+        });
+
+    }
 
 });

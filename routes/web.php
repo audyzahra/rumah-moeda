@@ -32,6 +32,7 @@ use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\NewsController as UserNewsController;
 use App\Http\Controllers\User\GalleryController as UserGalleryController;
 use App\Http\Controllers\User\MessageController as UserMessageController;
+use App\Http\Controllers\User\PortfolioController as UserPortfolioController;
 
 use App\Services\SecurityInputService;
 
@@ -110,7 +111,7 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'verified'])
+Route::middleware(['auth', 'verified', 'user'])
     ->prefix('dashboard')
     ->name('user.')
     ->group(function () {
@@ -141,6 +142,15 @@ Route::middleware(['auth', 'verified'])
         */
 
         Route::resource('gallery', UserGalleryController::class);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Portfolio
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource('portfolios', UserPortfolioController::class);
 
         /*
         |--------------------------------------------------------------------------
@@ -181,6 +191,117 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+
+/*
+|--------------------------------------------------------------------------
+| User Public-Like Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'verified', 'user'])
+    ->prefix('user')
+    ->name('member.')
+    ->group(function () {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Home
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/', [HomeController::class, 'index'])
+            ->name('home');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | About
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/about', [TentangController::class, 'index'])
+            ->name('about');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Contact
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/contact', [ContactController::class, 'index'])
+            ->name('contact');
+
+
+        Route::post('/contact', [ContactController::class, 'store'])
+            ->name('contact.store');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | News
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/news', [BeritaController::class, 'index'])
+            ->name('news.index');
+
+
+        Route::get('/news/{slug}', [BeritaController::class, 'show'])
+            ->name('news.show');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Portfolio
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/portfolio', [PortfolioController::class, 'index'])
+            ->name('portfolio.index');
+
+
+        Route::get('/portfolio/{portfolio:slug}', [PortfolioController::class, 'show'])
+            ->name('portfolio.show');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Gallery
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/photos', [GalleryController::class, 'photos'])
+            ->name('gallery.photos');
+
+
+        Route::get('/videos', [GalleryController::class, 'videos'])
+            ->name('gallery.videos');
+
+
+        Route::get('/photos/{gallery}', [GalleryController::class, 'photoDetail'])
+            ->name('gallery.photos.detail');
+
+
+        Route::get('/videos/{gallery}', [GalleryController::class, 'videoDetail'])
+            ->name('gallery.videos.detail');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | FAQ
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/faq', [FaqController::class, 'index'])
+            ->name('faq.index');
+
+    });
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -555,7 +676,7 @@ Route::middleware(['auth', 'admin'])
                 )->name('admin.portfolios.search');
             });
     });
-    
+
     Route::get('/test-security', function () {
 
         $security = new SecurityInputService();

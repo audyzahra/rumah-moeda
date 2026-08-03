@@ -6,9 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Faq;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Services\SecurityInputService;
+use App\Services\Security\DangerousInputException;
 
 class FaqController extends Controller
 {
+    protected SecurityInputService $security;
+
+    public function __construct(SecurityInputService $security)
+    {
+        $this->security = $security;
+    }
     public function index()
     {
         $faqs = Faq::orderBy('display_order')
@@ -49,10 +57,32 @@ class FaqController extends Controller
             'display_order.min' => 'Urutan tampil minimal 1.',
             'display_order.unique' => 'Urutan tampil sudah digunakan. Silakan gunakan nomor lain atau ubah urutan FAQ yang sudah ada.',
         ]);
+        $plainAnswer = trim(strip_tags($validated['answer']));
+
+        if ($plainAnswer === '') {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'answer' => 'Jawaban wajib diisi.'
+                ]);
+        }
+        try {
+
+            $question = $this->security->cleanText($validated['question']);
+
+            $answer = $this->security->cleanHtml($validated['answer']);
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
+        }
 
         Faq::create([
-            'question'      => $validated['question'],
-            'answer'        => $validated['answer'],
+            'question'      => $question,
+            'answer'        => $answer,
             'display_order' => $validated['display_order'] ?? 0,
         ]);
 
@@ -81,10 +111,32 @@ class FaqController extends Controller
             'display_order.min' => 'Urutan tampil minimal 1.',
             'display_order.unique' => 'Urutan tampil sudah digunakan. Silakan gunakan nomor lain atau ubah urutan FAQ yang sudah ada.',
         ]);
+        $plainAnswer = trim(strip_tags($validated['answer']));
+
+        if ($plainAnswer === '') {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'answer' => 'Jawaban wajib diisi.'
+                ]);
+        }
+        try {
+
+            $question = $this->security->cleanText($validated['question']);
+
+            $answer = $this->security->cleanHtml($validated['answer']);
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
+        }
 
         $faq->update([
-            'question'      => $validated['question'],
-            'answer'        => $validated['answer'],
+            'question'      => $question,
+            'answer'        => $answer,
             'display_order' => $validated['display_order'] ?? 0,
         ]);
 
