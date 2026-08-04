@@ -51,7 +51,12 @@
                             <span class="required">*</span>
                         </label>
 
-                        <input type="text" id="title" name="title" class="form-control"
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            class="form-control"
+                            value="{{ old('title') }}"
                             placeholder="Masukkan judul berita">
 
                     </div>
@@ -69,10 +74,10 @@
                             <option value="">Pilih Kategori</option>
 
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">
-
+                                <option
+                                    value="{{ $category->id }}"
+                                    {{ old('category_id') == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
-
                                 </option>
                             @endforeach
 
@@ -129,7 +134,12 @@
                             <span class="required">*</span>
                         </label>
 
-                        <input type="datetime-local" id="publish_date" name="publish_date" class="form-control">
+                        <input
+                            type="datetime-local"
+                            id="publish_date"
+                            name="publish_date"
+                            class="form-control"
+                            value="{{ old('publish_date') }}">
 
                     </div>
 
@@ -162,6 +172,18 @@
     </div>
 
 @endsection
+@if (session('error'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'error',
+        title: 'Input Ditolak',
+        text: @json(session('error')),
+        confirmButtonColor: '#dc2626',
+    });
+});
+</script>
+@endif
 
 @push('scripts')
     <script src="{{ asset('js/admin/berita.js') }}"></script>
