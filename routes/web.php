@@ -36,6 +36,13 @@ use App\Http\Controllers\User\PortfolioController as UserPortfolioController;
 
 use App\Services\SecurityInputService;
 
+// SEO
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
+use App\Models\News;
+use App\Models\Portfolio;
+use App\Models\Gallery;
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -684,4 +691,64 @@ Route::get('/test-security', function () {
     $security = new SecurityInputService();
 
     return $security->cleanText('Rumah Moeda');
+});
+
+
+
+Route::get('/sitemap.xml', function () {
+
+    $sitemap = Sitemap::create()
+
+        ->add(Url::create('/'))
+        ->add(Url::create('/about'))
+        ->add(Url::create('/contact'))
+        ->add(Url::create('/faq'))
+        ->add(Url::create('/news'))
+        ->add(Url::create('/portfolio'))
+        ->add(Url::create('/photos'))
+        ->add(Url::create('/videos'));
+
+    /*
+    |--------------------------------------------------------------------------
+    | News
+    |--------------------------------------------------------------------------
+    */
+
+    foreach (News::all() as $news) {
+
+        $sitemap->add(
+            Url::create("/news/{$news->slug}")
+                ->setLastModificationDate($news->updated_at)
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Portfolio
+    |--------------------------------------------------------------------------
+    */
+
+    foreach (Portfolio::all() as $portfolio) {
+        $sitemap->add(
+            Url::create("/portfolio/{$portfolio->slug}")
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Gallery
+    |--------------------------------------------------------------------------
+    */
+
+    foreach (Gallery::all() as $gallery) {
+        $sitemap->add(
+            Url::create("/photos/{$gallery->slug}")
+        );
+
+        $sitemap->add(
+            Url::create("/videos/{$gallery->slug}")
+        );
+    }
+
+    return $sitemap;
 });
