@@ -21,11 +21,68 @@ class UserManagementController extends Controller
     /**
      * Display a listing of users.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::latest()->paginate(5);
+        $query = User::query();
 
-        return view('admin.kelola.kelola-akun', compact('users'));
+        // ================= SEARCH =================
+        if ($request->filled('search')) {
+
+            $query->where(function ($q) use ($request) {
+
+                $q->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('email', 'like', '%' . $request->search . '%');
+
+            });
+
+        }
+
+        // ================= FILTER ROLE =================
+        if ($request->filled('role')) {
+
+            $query->where('role', $request->role);
+
+        }
+
+        // ================= FILTER STATUS =================
+        if ($request->filled('status')) {
+
+            $query->where('status', $request->status);
+
+        }
+
+        // ================= SORT =================
+        switch ($request->sort) {
+
+            case 'oldest':
+                $query->oldest();
+                break;
+
+            case 'name_asc':
+                $query->orderBy('name');
+                break;
+
+            case 'name_desc':
+                $query->orderByDesc('name');
+                break;
+
+            default:
+                $query->latest();
+                break;
+
+        }
+
+        // ================= PAGINATION =================
+        $perPage = $request->get('per_page', 5);
+
+        $users = $query
+            ->paginate($perPage)
+            ->withQueryString();
+
+        return view(
+            'admin.kelola.kelola-akun',
+            compact('users')
+        );
     }
 
     public function create()

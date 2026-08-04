@@ -36,6 +36,178 @@
     margin-top: 15px;
 }
 
+/* ==================================================
+   FILTER SECTION
+================================================== */
+
+.filter-section{
+    width:100%;
+    margin:20px 0 25px;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.filter-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    flex:1;
+}
+
+/* ==================================================
+   SEARCH
+================================================== */
+
+.search-input{
+    min-width:260px;
+    height:44px;
+    padding:0 16px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    outline:none;
+    font-size:14px;
+    transition:.25s;
+    background:#fff;
+}
+
+.search-input:focus{
+    border-color:#D4AF37;
+    box-shadow:0 0 0 3px rgba(212,175,55,.18);
+}
+
+/* ==================================================
+   SELECT
+================================================== */
+
+.filter-select{
+    min-width:180px;
+    height:44px;
+    padding:0 14px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    background:#fff;
+    font-size:14px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.filter-select:focus{
+    outline:none;
+    border-color:#D4AF37;
+    box-shadow:0 0 0 3px rgba(212,175,55,.18);
+}
+
+/* ==================================================
+   REFRESH BUTTON
+================================================== */
+
+.btn-refresh{
+    width:44px;
+    height:44px;
+    border:none;
+    border-radius:10px;
+    background:#3b82f6;
+    color:#fff;
+    cursor:pointer;
+    transition:.25s;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:15px;
+}
+
+.btn-refresh:hover{
+    background:#2563eb;
+}
+
+/* ==================================================
+   TABLE
+================================================== */
+
+.table-responsive{
+    overflow-x:auto;
+}
+
+.table-admin{
+    min-width:900px;
+}
+
+/* RESPONSIVE TABLET */
+@media (max-width:992px){
+
+    .filter-section{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .filter-left{
+        width:100%;
+    }
+
+    .filter-right{
+        width:100%;
+        justify-content:flex-end;
+    }
+
+    .search-input{
+        flex:1;
+        min-width:220px;
+    }
+
+    .filter-select{
+        min-width:170px;
+    }
+
+}
+
+/* RESPONSIVE MOBILE */
+@media (max-width:992px){
+
+    .filter-section{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .filter-left{
+        width:100%;
+    }
+
+    .filter-right{
+        width:100%;
+        justify-content:flex-end;
+    }
+
+    .search-input{
+        flex:1;
+        min-width:220px;
+    }
+
+    .filter-select{
+        min-width:170px;
+    }
+
+}
+
+/* RESPONSIVE HP KECIL */
+@media (max-width:480px){
+
+    .settings-card{
+        padding:12px;
+    }
+
+    .card-body{
+        padding:0;
+    }
+
+    .table-admin{
+        min-width:760px;
+    }
+
+}
+
 
 /* =========================================================
    CARD
@@ -164,64 +336,242 @@
 
 }
 
-/* ===== PAGINATION ===== */
+/* ================= PAGINATION ================= */
 
-.pagination-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 12px;
-    flex-wrap: wrap;
-    gap: 15px;
+.custom-pagination{
+
+    margin-top:25px;
+    padding:20px 20px 15px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
+
+    border-top:1px solid #e5e7eb;
+
 }
 
-.info-data {
-    font-size: 14px;
-    color: #64748b;
+/* ================= LEFT ================= */
+
+.pagination-left form{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
 }
 
-.pagination-controls {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.pagination-left span{
+
+    font-size:14px;
+    color:#64748b;
+
 }
+
+.pagination-left select{
+
+    width:65px;
+    height:38px;
+
+    border:1px solid #d1d5db;
+    border-radius:8px;
+
+    padding:0 8px;
+
+    background:#fff;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.pagination-left select:focus{
+
+    outline:none;
+    border-color:#3b82f6;
+
+}
+
+/* ================= CENTER ================= */
+
+.pagination-center{
+
+    display:flex;
+    align-items:center;
+    gap:6px;
+
+    font-size:14px;
+    color:#64748b;
+
+}
+
+.pagination-center strong{
+
+    color:#1e293b;
+    font-weight:600;
+
+}
+
+/* ================= RIGHT ================= */
+
+.pagination-right{
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+}
+
+/* Tombol Previous Next */
 
 .page-btn{
-    width: 36px;
-    height: 36px;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
-    background: #fff;
-    color: #475569;
-    text-decoration: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: .3s;
+
+    width:38px;
+    height:38px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    text-decoration:none;
+
+    border:1px solid #d1d5db;
+    border-radius:8px;
+
+    background:#fff;
+    color:#475569;
+
+    transition:.25s;
+
 }
 
-.page-btn:hover{
-    background: #3b82f6;
-    border-color: #3b82f6;
-    color: #fff;
+.page-btn:hover:not(:disabled){
+
+    background:#3b82f6;
+    border-color:#3b82f6;
+    color:#fff;
+
 }
 
-.page-btn:disabled,
-.page-btn.disabled{
-    opacity: .4;
-    cursor: not-allowed;
-    pointer-events: none;
+.page-btn:disabled{
+
+    opacity:.5;
+    cursor:not-allowed;
+
 }
 
 .page-btn i{
-    pointer-events: none;
+
+    pointer-events:none;
+
 }
 
-#pageInfo {
-    font-weight: 600;
-    color: #1e293b;
-    font-size: 14px;
+/* Nomor Halaman */
+
+.page-number{
+
+    width:38px;
+    height:38px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    text-decoration:none;
+
+    border:1px solid #d1d5db;
+    border-radius:8px;
+
+    background:#fff;
+    color:#475569;
+
+    font-weight:500;
+
+    transition:.25s;
+
+}
+
+.page-number:hover{
+
+    background:#3b82f6;
+    border-color:#3b82f6;
+    color:#fff;
+
+}
+
+.page-number.active{
+
+    background:#2563eb;
+    border-color:#2563eb;
+    color:#fff;
+
+    font-weight:600;
+
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width:768px){
+
+    .custom-pagination{
+
+        flex-direction:column;
+        align-items:center;
+
+    }
+
+    .pagination-left,
+    .pagination-center,
+    .pagination-right{
+
+        width:100%;
+        justify-content:center;
+
+    }
+
+}
+/* ==========================
+   Responsive
+========================== */
+
+@media (max-width: 768px) {
+    .pagination-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pagination {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .pagination .page-link {
+        width: 48px;
+        height: 48px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pagination-summary {
+        text-align: center;
+        width: 100%;
+    }
+
+    .pagination {
+        justify-content: center;
+    }
+
+    .pagination .page-link {
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+        border-radius: 12px;
+    }
 }
 
 /* =========================================================

@@ -61,3 +61,38 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+
+// FILTER DAN SORT
+const filterForm = document.getElementById("accountFilter");
+
+if (filterForm) {
+
+    const search = filterForm.querySelector("[name='search']");
+    const selects = filterForm.querySelectorAll("select");
+
+    let timer;
+
+    search.addEventListener("keyup", function () {
+
+        clearTimeout(timer);
+
+        timer = setTimeout(() => {
+
+            filterForm.submit();
+
+        }, 400);
+
+    });
+
+    selects.forEach(select => {
+
+        select.addEventListener("change", function () {
+
+            filterForm.submit();
+
+        });
+
+    });
+
+}
