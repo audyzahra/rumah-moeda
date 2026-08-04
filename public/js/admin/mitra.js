@@ -55,7 +55,7 @@ if (refreshBtn) {
 
     refreshBtn.addEventListener("click", function () {
 
-        window.location.href = "/admin/partners";
+        window.location.href = refreshBtn.dataset.url;
 
     });
 

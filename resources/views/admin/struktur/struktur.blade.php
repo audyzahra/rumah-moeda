@@ -22,7 +22,14 @@
 
             <!-- ===== FILTER & SEARCH ===== -->
             <section class="filter-section">
-                <form class="filter-left" id="filterForm">
+                <form  method="GET" 
+                        action="{{ route('admin.organization-structures.index') }}"
+                        class="filter-left" id="filterForm">
+                    
+                    <input
+                    type="hidden"
+                    name="per_page"
+                    value="{{ request('per_page',5) }}">
 
                     <input type="text" id="searchInput" name="search" value="{{ request('search') }}"
                         placeholder="Cari nama atau jabatan..." class="search-input">
@@ -79,17 +86,15 @@
 
                 <a href="{{ route('admin.organization-structures.template') }}"
                     class="btn btn-primary">
-
                     <i class="fas fa-file-excel"></i>
-
                     Template
-
                 </a>
 
-                <button type="button" class="btn-refresh" onclick="location.reload()">
-
+                <a
+                    href="{{ route('admin.organization-structures.index') }}"
+                    class="btn-refresh">
                     <i class="fa-solid fa-rotate-right"></i>
-                </button>
+                </a>
 
                 <a href="{{ route('admin.organization-structures.create') }}" class="btn-tambah">
                     <i class="fa-solid fa-plus"></i>
@@ -107,7 +112,6 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Foto</th>
                                 <th>Nama</th>
                                 <th>Jabatan</th>
                                 <th>Tipe</th>
@@ -123,17 +127,6 @@
                                     data-position="{{ strtolower($anggota->position) }}">
                                     <td>
                                         {{ $struktur->firstItem() + $index }}
-                                    </td>
-
-                                    <td>
-                                        @if ($anggota->photo)
-                                            <img src="{{ asset('storage/' . $anggota->photo) }}" class="table-photo"
-                                                alt="{{ $anggota->full_name }}">
-                                        @else
-                                            <div class="table-photo-placeholder">
-                                                <i class="fa-solid fa-user"></i>
-                                            </div>
-                                        @endif
                                     </td>
 
                                     <td>{{ $anggota->full_name }}</td>
@@ -192,7 +185,7 @@
                                 {{-- INI UNTUK LARAVEL/DB KETIKA DATA TIDAK ADA --}}
 
                                 <tr>
-                                    <td colspan="7" class="text-center">
+                                    <td colspan="6" class="text-center">
                                         Tidak ada data struktur organisasi.
                                     </td>
                                 </tr>
@@ -201,7 +194,7 @@
                             {{-- UNTUK SEARCH KETIKA DATA TIDAK DITEMUKAN --}}
 
                             <tr id="emptySearchRow" style="display:none;">
-                                <td colspan="7" class="text-center">
+                                <td colspan="6" class="text-center">
                                     Data struktur organisasi tidak ditemukan.
                                 </td>
                             </tr>
@@ -214,60 +207,164 @@
 
                 <!-- ================= PAGINATION ================= -->
 
-                <div class="pagination-section">
+                <div class="custom-pagination">
 
-                    <div class="info-data">
+                    {{-- ==========================================
+                        SHOW ENTRIES
+                    ========================================== --}}
+                    <div class="pagination-left">
 
-                        Menampilkan
+                        <form method="GET" id="perPageForm">
 
-                        <strong>{{ $struktur->firstItem() ?? 0 }}</strong>
+                            @foreach(request()->except('per_page','page') as $key => $value)
 
-                        -
+                                <input
+                                    type="hidden"
+                                    name="{{ $key }}"
+                                    value="{{ $value }}">
 
-                        <strong>{{ $struktur->lastItem() ?? 0 }}</strong>
+                            @endforeach
 
-                        dari
+                            <span>Tampilkan</span>
 
-                        <strong>{{ $struktur->total() }}</strong>
+                            <select
+                                name="per_page"
+                                id="perPageSelect"
+                                onchange="this.form.submit()">
 
-                        data
+                                <option value="5" {{ request('per_page',5)==5 ? 'selected' : '' }}>
+                                    5
+                                </option>
+
+                                <option value="10" {{ request('per_page')==10 ? 'selected' : '' }}>
+                                    10
+                                </option>
+
+                                <option value="20" {{ request('per_page')==20 ? 'selected' : '' }}>
+                                    20
+                                </option>
+
+                                <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>
+                                    50
+                                </option>
+
+                            </select>
+
+                            <span>Anggota</span>
+
+                        </form>
 
                     </div>
 
-                    <div class="pagination-controls">
+
+                    {{-- ==========================================
+                        INFO DATA
+                    ========================================== --}}
+                    <div class="pagination-center">
+
+                        <span>Menampilkan</span>
+
+                        <strong>{{ $struktur->firstItem() ?? 0 }}</strong>
+
+                        <span>-</span>
+
+                        <strong>{{ $struktur->lastItem() ?? 0 }}</strong>
+
+                        <span>dari</span>
+
+                        <strong>{{ $struktur->total() }}</strong>
+
+                        <span>data</span>
+
+                    </div>
+
+
+                    {{-- ==========================================
+                        PAGINATION
+                    ========================================== --}}
+                    <div class="pagination-right">
 
                         {{-- Previous --}}
-                        @if ($struktur->onFirstPage())
+                        @if($struktur->onFirstPage())
+
                             <button class="page-btn" disabled>
+
                                 <i class="fa-solid fa-chevron-left"></i>
+
                             </button>
+
                         @else
-                            <a href="{{ $struktur->previousPageUrl() }}" class="page-btn">
+
+                            <a
+                                href="{{ $struktur->previousPageUrl() }}"
+                                class="page-btn">
+
                                 <i class="fa-solid fa-chevron-left"></i>
+
                             </a>
+
                         @endif
 
-                        <span id="pageInfo">
 
-                            Halaman
+                        @php
 
-                            {{ $struktur->currentPage() }}
+                            $start = max($struktur->currentPage() - 1, 1);
 
-                            dari
+                            $end = min($start + 1, $struktur->lastPage());
 
-                            {{ $struktur->lastPage() }}
+                            if($end - $start < 1){
 
-                        </span>
+                                $start = max($end - 1, 1);
+
+                            }
+
+                        @endphp
+
+
+                        @for($page = $start; $page <= $end; $page++)
+
+                            @if($page == $struktur->currentPage())
+
+                                <span class="page-number active">
+
+                                    {{ $page }}
+
+                                </span>
+
+                            @else
+
+                                <a
+                                    href="{{ $struktur->url($page) }}"
+                                    class="page-number">
+
+                                    {{ $page }}
+
+                                </a>
+
+                            @endif
+
+                        @endfor
+
 
                         {{-- Next --}}
-                        @if ($struktur->hasMorePages())
-                            <a href="{{ $struktur->nextPageUrl() }}" class="page-btn">
+                        @if($struktur->hasMorePages())
+
+                            <a
+                                href="{{ $struktur->nextPageUrl() }}"
+                                class="page-btn">
+
                                 <i class="fa-solid fa-chevron-right"></i>
+
                             </a>
+
                         @else
+
                             <button class="page-btn" disabled>
+
                                 <i class="fa-solid fa-chevron-right"></i>
+
                             </button>
+
                         @endif
 
                     </div>

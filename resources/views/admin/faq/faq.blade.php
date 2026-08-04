@@ -29,6 +29,48 @@
 
     </header>
 
+    {{-- FILTER --}}
+    <form method="GET" id="faqFilter">
+        
+        <input
+            type="hidden"
+            name="per_page"
+            value="{{ request('per_page',5) }}">
+            
+        <input
+            id="searchInput"
+            type="text"
+            name="search"
+            value="{{ request('search') }}"
+            class="search-input"
+            placeholder="Cari FAQ...">
+
+        <select
+            id="sortFaq"
+            name="sort"
+            class="filter-select">
+
+            <option value="">Urutkan</option>
+
+            <option value="oldest"
+                {{ request('sort')=='oldest' ? 'selected' : '' }}>
+                Terlama
+            </option>
+
+            <option value="question_asc"
+                {{ request('sort')=='question_asc' ? 'selected' : '' }}>
+                Pertanyaan A-Z
+            </option>
+
+            <option value="question_desc"
+                {{ request('sort')=='question_desc' ? 'selected' : '' }}>
+                Pertanyaan Z-A
+            </option>
+
+        </select>
+
+    </form>
+
     <!-- ================= CONTENT ================= -->
 
     <section class="faq-section">
@@ -141,66 +183,162 @@
                     </table>
             <!-- ================= PAGINATION ================= -->
 
-                        <div class="pagination-section">
+                        <div class="custom-pagination">
 
-                            <div class="info-data">
+                            {{-- ==========================================
+                                SHOW ENTRIES
+                            ========================================== --}}
+                            <div class="pagination-left">
 
-                                Menampilkan
+                                <form method="GET" id="perPageForm">
 
-                                <strong>{{ $faqs->firstItem() ?? 0 }}</strong>
+                                    @foreach(request()->except('per_page','page') as $key => $value)
 
-                                -
+                                        <input
+                                            type="hidden"
+                                            name="{{ $key }}"
+                                            value="{{ $value }}">
 
-                                <strong>{{ $faqs->lastItem() ?? 0 }}</strong>
+                                    @endforeach
 
-                                dari
+                                    <span>Tampilkan</span>
 
-                                <strong>{{ $faqs->total() }}</strong>
+                                    <select
+                                        name="per_page"
+                                        id="perPageSelect"
+                                        onchange="this.form.submit()">
 
-                                data
+                                        <option value="5" {{ request('per_page',5)==5 ? 'selected' : '' }}>
+                                            5
+                                        </option>
+
+                                        <option value="10" {{ request('per_page')==10 ? 'selected' : '' }}>
+                                            10
+                                        </option>
+
+                                        <option value="20" {{ request('per_page')==20 ? 'selected' : '' }}>
+                                            20
+                                        </option>
+
+                                        <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>
+                                            50
+                                        </option>
+
+                                    </select>
+
+                                    <span>FAQ</span>
+
+                                </form>
 
                             </div>
 
-                            <div class="pagination-controls">
+
+                            {{-- ==========================================
+                                INFO DATA
+                            ========================================== --}}
+                            <div class="pagination-center">
+
+                                <span>Menampilkan</span>
+
+                                <strong>{{ $faqs->firstItem() ?? 0 }}</strong>
+
+                                <span>-</span>
+
+                                <strong>{{ $faqs->lastItem() ?? 0 }}</strong>
+
+                                <span>dari</span>
+
+                                <strong>{{ $faqs->total() }}</strong>
+
+                                <span>data</span>
+
+                            </div>
+
+
+                            {{-- ==========================================
+                                PAGINATION
+                            ========================================== --}}
+                            <div class="pagination-right">
 
                                 {{-- Previous --}}
-                                @if ($faqs->onFirstPage())
+                                @if($faqs->onFirstPage())
 
                                     <button class="page-btn" disabled>
+
                                         <i class="fa-solid fa-chevron-left"></i>
+
                                     </button>
 
                                 @else
 
-                                    <a href="{{ $faqs->previousPageUrl() }}" class="page-btn">
+                                    <a
+                                        href="{{ $faqs->previousPageUrl() }}"
+                                        class="page-btn">
+
                                         <i class="fa-solid fa-chevron-left"></i>
+
                                     </a>
 
                                 @endif
 
-                                <span id="pageInfo">
 
-                                    Halaman
+                                @php
 
-                                    {{ $faqs->currentPage() }}
+                                    $start = max($faqs->currentPage() - 1, 1);
 
-                                    dari
+                                    $end = min($start + 1, $faqs->lastPage());
 
-                                    {{ $faqs->lastPage() }}
+                                    if($end - $start < 1){
 
-                                </span>
+                                        $start = max($end - 1, 1);
+
+                                    }
+
+                                @endphp
+
+
+                                @for($page = $start; $page <= $end; $page++)
+
+                                    @if($page == $faqs->currentPage())
+
+                                        <span class="page-number active">
+
+                                            {{ $page }}
+
+                                        </span>
+
+                                    @else
+
+                                        <a
+                                            href="{{ $faqs->url($page) }}"
+                                            class="page-number">
+
+                                            {{ $page }}
+
+                                        </a>
+
+                                    @endif
+
+                                @endfor
+
 
                                 {{-- Next --}}
-                                @if ($faqs->hasMorePages())
+                                @if($faqs->hasMorePages())
 
-                                    <a href="{{ $faqs->nextPageUrl() }}" class="page-btn">
+                                    <a
+                                        href="{{ $faqs->nextPageUrl() }}"
+                                        class="page-btn">
+
                                         <i class="fa-solid fa-chevron-right"></i>
+
                                     </a>
 
                                 @else
 
                                     <button class="page-btn" disabled>
+
                                         <i class="fa-solid fa-chevron-right"></i>
+
                                     </button>
 
                                 @endif

@@ -16,7 +16,7 @@
             <div class="portfolio-header-info">
 
                 <h1 class="portfolio-title">
-                    Portfolio
+                    Portpfolio
                 </h1>
 
                 <p class="portfolio-subtitle">
@@ -29,7 +29,7 @@
 
                 <i class="fa-solid fa-plus"></i>
 
-                <span>Tambah Portfolio</span>
+                <span>Tambah Portofolio</span>
 
             </a>
 
