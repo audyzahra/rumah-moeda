@@ -18,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => AdminMiddleware::class,
             'user' => \App\Http\Middleware\UserMiddleware::class,
         ]);
+        $middleware->web(append: [
+
+            \App\Http\Middleware\TrackWebsiteVisitor::class,
+
+        ]);
 
     })
     ->withExceptions(function (Exceptions $exceptions): void {
