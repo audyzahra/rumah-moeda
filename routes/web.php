@@ -81,10 +81,10 @@ Route::get('/photos', [GalleryController::class, 'photos'])
 Route::get('/videos', [GalleryController::class, 'videos'])
     ->name('gallery.videos');
 
-Route::get('/photos/{gallery}', [GalleryController::class, 'photoDetail'])
+Route::get('/photos/{gallery:slug}', [GalleryController::class, 'photoDetail'])
     ->name('gallery.photos.detail');
 
-Route::get('/videos/{gallery}', [GalleryController::class, 'videoDetail'])
+Route::get('/videos/{gallery:slug}', [GalleryController::class, 'videoDetail'])
     ->name('gallery.videos.detail');
 
 // FAQ
@@ -280,11 +280,10 @@ Route::middleware(['auth', 'verified', 'user'])
             ->name('gallery.videos');
 
 
-        Route::get('/photos/{gallery}', [GalleryController::class, 'photoDetail'])
+        Route::get('/photos/{gallery:slug}', [GalleryController::class, 'photoDetail'])
             ->name('gallery.photos.detail');
 
-
-        Route::get('/videos/{gallery}', [GalleryController::class, 'videoDetail'])
+        Route::get('/videos/{gallery:slug}', [GalleryController::class, 'videoDetail'])
             ->name('gallery.videos.detail');
 
 
@@ -296,7 +295,6 @@ Route::middleware(['auth', 'verified', 'user'])
 
         Route::get('/faq', [FaqController::class, 'index'])
             ->name('faq.index');
-
     });
 
 
@@ -395,7 +393,9 @@ Route::middleware(['auth', 'admin'])
             ->name('organization-structures.export');
 
         Route::get(
-            'organization-structures/template', [OrganizationStructureController::class, 'downloadTemplate'])
+            'organization-structures/template',
+            [OrganizationStructureController::class, 'downloadTemplate']
+        )
             ->name('organization-structures.template');
 
         Route::resource('organization-structures', OrganizationStructureController::class);
@@ -441,7 +441,7 @@ Route::middleware(['auth', 'admin'])
         Route::delete('/messages', [AspirasiController::class, 'bulkDelete'])
             ->name('messages.bulkDelete');
         Route::get('/messages/statistics', [AspirasiController::class, 'statistics'])
-        ->name('messages.statistics');
+            ->name('messages.statistics');
 
         /*
         |--------------------------------------------------------------------------
@@ -679,10 +679,9 @@ Route::middleware(['auth', 'admin'])
             });
     });
 
-    Route::get('/test-security', function () {
+Route::get('/test-security', function () {
 
-        $security = new SecurityInputService();
+    $security = new SecurityInputService();
 
-        return $security->cleanText('Rumah Moeda');
-
-    });
+    return $security->cleanText('Rumah Moeda');
+});

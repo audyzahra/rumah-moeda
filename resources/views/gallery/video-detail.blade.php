@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
-@section('title', $gallery->title)
+@section('title', $gallery->title . ' | Galeri Rumah Moeda')
+
+@section('description', Str::limit(strip_tags($gallery->description), 160))
+
+@section('keywords', 'Galeri Rumah Moeda, ' . $gallery->title . ', dokumentasi kegiatan, video kegiatan, foto kegiatan, program sosial, kolaborasi, mitra Rumah Moeda')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/galeri.css') }}">

@@ -1,6 +1,10 @@
 @extends('Layouts.app')
 
-@section('title', 'Hubungi Kami')
+@section('title', 'Hubungi Kami | Rumah Moeda')
+
+@section('description', 'Hubungi Rumah Moeda untuk informasi mengenai program, kerja sama, kemitraan, layanan multimedia, maupun pertanyaan lainnya. Kami siap membantu dan menjalin kolaborasi dengan berbagai pihak.')
+
+@section('keywords', 'Hubungi Rumah Moeda, kontak Rumah Moeda, kerja sama, kemitraan, multimedia, perfilman, pendidikan, pemberdayaan generasi muda, kolaborasi')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/hubungi.css') }}">

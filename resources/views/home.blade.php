@@ -1,6 +1,10 @@
 @extends('Layouts.app')
 
-@section('title', 'Home')
+@section('title', 'Rumah Moeda | Berbagi dan Berkarya')
+
+@section('description', 'Rumah Moeda merupakan yayasan yang bergerak di bidang multimedia, perfilman, pendidikan, serta pemberdayaan generasi muda melalui berbagai program kreatif, inovatif, dan kolaboratif.')
+
+@section('keywords', 'Rumah Moeda, multimedia, perfilman, pendidikan, pemberdayaan generasi muda, kegiatan sosial, dokumentasi, kolaborasi, portofolio')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
