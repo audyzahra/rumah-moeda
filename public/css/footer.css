@@ -180,13 +180,12 @@
 
 .visitor-section{
 
-    grid-column:2;
-    justify-self:center;
+   
 
     width:100%;
     max-width:420px;
 
-    margin-top:-20px;
+    margin-top:20px;
     margin-bottom:5px;
 
 }
