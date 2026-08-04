@@ -37,6 +37,11 @@
                     {{ $news->author->name ?? 'Admin Rumah Moeda' }}
                 </span>
 
+                <span>
+                    <i class="fa-regular fa-eye"></i>
+                    {{ number_format($news->views) }}
+                </span>
+
             </div>
 
         </div>
