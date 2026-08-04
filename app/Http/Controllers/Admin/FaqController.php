@@ -17,11 +17,45 @@ class FaqController extends Controller
     {
         $this->security = $security;
     }
-    public function index()
+
+    public function index(Request $request)
     {
-        $faqs = Faq::orderBy('display_order')
-            ->orderBy('created_at', 'desc')
-            ->paginate(3);
+        $query = Faq::query();
+
+        // Search
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('question', 'like', '%' . $request->search . '%')
+                ->orWhere('answer', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Sorting
+        switch ($request->sort) {
+
+            case 'oldest':
+                $query->oldest();
+                break;
+
+            case 'question_asc':
+                $query->orderBy('question', 'asc');
+                break;
+
+            case 'question_desc':
+                $query->orderBy('question', 'desc');
+                break;
+
+            default:
+                $query->orderBy('display_order')
+                    ->orderBy('created_at', 'desc');
+                break;
+        }
+
+        $perPage = $request->get('per_page', 5);
+
+        $faqs = $query
+            ->paginate($perPage)
+            ->withQueryString();
 
         return view('admin.faq.faq', compact('faqs'));
     }

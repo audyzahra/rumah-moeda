@@ -26,6 +26,11 @@
                 method="GET"
                 action="{{ route('admin.partners.index') }}"
                 class="filter-form">
+                
+                <input
+                    type="hidden"
+                    name="per_page"
+                    value="{{ request('per_page', 5) }}">
 
                 <input
                     id="searchInput"
@@ -50,16 +55,29 @@
                 </select>
 
                 <select id="sortFilter" name="sort" class="filter-select">
-                    <option value="display_order">Urutan Tampil</option>
-                    <option value="nama_az">Nama A-Z</option>
-                    <option value="nama_za">Nama Z-A</option>
+
+                    <option value="display_order"
+                        {{ request('sort','display_order') == 'display_order' ? 'selected' : '' }}>
+                        Urutan Tampil
+                    </option>
+
+                    <option value="nama_az"
+                        {{ request('sort') == 'nama_az' ? 'selected' : '' }}>
+                        Nama A-Z
+                    </option>
+
+                    <option value="nama_za"
+                        {{ request('sort') == 'nama_za' ? 'selected' : '' }}>
+                        Nama Z-A
+                    </option>
+
                 </select>
 
                 <button
                     type="button"
                     id="refreshBtn"
-                    class="btn-refresh">
-
+                    class="btn-refresh"
+                    data-url="{{ route('admin.partners.index') }}">
                     <i class="fa-solid fa-rotate-right"></i>
 
                 </button>
@@ -87,8 +105,6 @@
 
                             <th>No</th>
 
-                            <th>Logo</th>
-
                             <th>Nama Mitra</th>
 
                             <th>Website</th>
@@ -104,30 +120,10 @@
                     <tbody>
 
                         @forelse($mitra as $item)
-                            <tr 
-                                data-name="{{ strtolower($item->name) }}"
-                                data-website="{{ $item->website ? 'ada' : 'tidak' }}"
-                                data-order="{{ $item->display_order }}">
+                            <tr>
 
                                 <td>
                                     {{ $loop->iteration + ($mitra->firstItem() - 1) }}
-                                </td>
-
-                                <td>
-
-                                    @if($item->logo)
-
-                                        <img
-                                            src="{{ asset('storage/'.$item->logo) }}"
-                                            class="table-logo"
-                                            alt="{{ $item->name }}">
-
-                                    @else
-
-                                        -
-
-                                    @endif
-
                                 </td>
 
                                 <td>
@@ -225,7 +221,7 @@
 
                             <tr>
 
-                                <td colspan="6" class="text-center">
+                                <td colspan="5" class="text-center">
 
                                     Belum ada data mitra.
 
@@ -241,66 +237,162 @@
 
                 <!-- ================= PAGINATION ================= -->
 
-                <div class="pagination-section">
+                <div class="custom-pagination">
 
-                    <div class="info-data">
+                    {{-- ==========================================
+                        SHOW ENTRIES
+                    ========================================== --}}
+                    <div class="pagination-left">
 
-                        Menampilkan
+                        <form method="GET" id="perPageForm">
 
-                        <strong>{{ $mitra->firstItem() ?? 0 }}</strong>
+                            @foreach(request()->except('per_page','page') as $key => $value)
 
-                        -
+                                <input
+                                    type="hidden"
+                                    name="{{ $key }}"
+                                    value="{{ $value }}">
 
-                        <strong>{{ $mitra->lastItem() ?? 0 }}</strong>
+                            @endforeach
 
-                        dari
+                            <span>Tampilkan</span>
 
-                        <strong>{{ $mitra->total() }}</strong>
+                            <select
+                                name="per_page"
+                                id="perPageSelect"
+                                onchange="this.form.submit()">
 
-                        data
+                                <option value="5" {{ request('per_page',5)==5 ? 'selected' : '' }}>
+                                    5
+                                </option>
+
+                                <option value="10" {{ request('per_page')==10 ? 'selected' : '' }}>
+                                    10
+                                </option>
+
+                                <option value="20" {{ request('per_page')==20 ? 'selected' : '' }}>
+                                    20
+                                </option>
+
+                                <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>
+                                    50
+                                </option>
+
+                            </select>
+
+                            <span>Mitra</span>
+
+                        </form>
 
                     </div>
 
-                    <div class="pagination-controls">
+
+                    {{-- ==========================================
+                        INFO DATA
+                    ========================================== --}}
+                    <div class="pagination-center">
+
+                        <span>Menampilkan</span>
+
+                        <strong>{{ $mitra->firstItem() ?? 0 }}</strong>
+
+                        <span>-</span>
+
+                        <strong>{{ $mitra->lastItem() ?? 0 }}</strong>
+
+                        <span>dari</span>
+
+                        <strong>{{ $mitra->total() }}</strong>
+
+                        <span>data</span>
+
+                    </div>
+
+
+                    {{-- ==========================================
+                        PAGINATION
+                    ========================================== --}}
+                    <div class="pagination-right">
 
                         {{-- Previous --}}
-                        @if ($mitra->onFirstPage())
+                        @if($mitra->onFirstPage())
 
                             <button class="page-btn" disabled>
+
                                 <i class="fa-solid fa-chevron-left"></i>
+
                             </button>
 
                         @else
 
-                            <a href="{{ $mitra->previousPageUrl() }}" class="page-btn">
+                            <a
+                                href="{{ $mitra->previousPageUrl() }}"
+                                class="page-btn">
+
                                 <i class="fa-solid fa-chevron-left"></i>
+
                             </a>
 
                         @endif
 
-                        <span id="pageInfo">
 
-                            Halaman
+                        @php
 
-                            {{ $mitra->currentPage() }}
+                            $start = max($mitra->currentPage() - 1, 1);
 
-                            dari
+                            $end = min($start + 1, $mitra->lastPage());
 
-                            {{ $mitra->lastPage() }}
+                            if($end - $start < 1){
 
-                        </span>
+                                $start = max($end - 1, 1);
+
+                            }
+
+                        @endphp
+
+
+                        @for($page = $start; $page <= $end; $page++)
+
+                            @if($page == $mitra->currentPage())
+
+                                <span class="page-number active">
+
+                                    {{ $page }}
+
+                                </span>
+
+                            @else
+
+                                <a
+                                    href="{{ $mitra->url($page) }}"
+                                    class="page-number">
+
+                                    {{ $page }}
+
+                                </a>
+
+                            @endif
+
+                        @endfor
+
 
                         {{-- Next --}}
-                        @if ($mitra->hasMorePages())
+                        @if($mitra->hasMorePages())
 
-                            <a href="{{ $mitra->nextPageUrl() }}" class="page-btn">
+                            <a
+                                href="{{ $mitra->nextPageUrl() }}"
+                                class="page-btn">
+
                                 <i class="fa-solid fa-chevron-right"></i>
+
                             </a>
 
                         @else
 
                             <button class="page-btn" disabled>
+
                                 <i class="fa-solid fa-chevron-right"></i>
+
                             </button>
 
                         @endif

@@ -19,85 +19,61 @@ document.querySelectorAll(".btn-edit").forEach((button) => {
 });
 
 // =========================
-// Search & Sort Struktur
+// SEARCH, FILTER & SORT
 // =========================
 
-const searchInput = document.getElementById("searchInput");
-const jabatanFilter = document.getElementById("jabatanFilter");
-const sortSelect = document.getElementById("sortSelect");
+document.addEventListener("DOMContentLoaded", function () {
 
-function filterStruktur() {
-    const keyword = searchInput.value.toLowerCase().trim();
+    const form = document.getElementById("filterForm");
 
-    const selectedJabatan = jabatanFilter.value.toLowerCase().trim();
+    if (!form) return;
 
-    const sortValue = sortSelect.value;
+    const searchInput = document.getElementById("searchInput");
+    const jabatanFilter = document.getElementById("jabatanFilter");
+    const sortSelect = document.getElementById("sortSelect");
 
-    const tbody = document.getElementById("strukturTable");
+    let timer;
 
-    const rows = Array.from(tbody.querySelectorAll("tr"));
+    // Search otomatis
+    if (searchInput) {
 
-    // SEARCH
+        searchInput.addEventListener("keyup", function () {
 
-    rows.forEach(function (row) {
-        // skip empty row
-        if (row.querySelector("td[colspan]")) {
-            return;
-        }
+            clearTimeout(timer);
 
-        const name = row.dataset.name || "";
+            timer = setTimeout(function () {
 
-        const position = row.dataset.position || "";
+                form.submit();
 
-        const matchSearch =
-            name.includes(keyword) || position.includes(keyword);
+            }, 150);
 
-        const matchJabatan =
-            selectedJabatan === "" || position === selectedJabatan;
+        });
 
-        const match = matchSearch && matchJabatan;
+    }
 
-        row.style.display = match ? "" : "none";
-    });
-
-    // SORTING
-
-    rows.sort(function (a, b) {
-        const nameA = a.dataset.name || "";
-
-        const nameB = b.dataset.name || "";
-
-        if (sortValue === "nama_asc") {
-            return nameA.localeCompare(nameB);
-        }
-
-        if (sortValue === "nama_desc") {
-            return nameB.localeCompare(nameA);
-        }
-
-        return 0;
-    });
-
-    rows.forEach(function (row) {
-        tbody.appendChild(row);
-    });
-}
-
-if (searchInput) {
-    searchInput.addEventListener("keyup", filterStruktur);
-}
-
-if (sortSelect) {
-    sortSelect.addEventListener("change", filterStruktur);
-
+    // Filter Jabatan
     if (jabatanFilter) {
-        jabatanFilter.addEventListener("change", filterStruktur);
+
+        jabatanFilter.addEventListener("change", function () {
+
+            form.submit();
+
+        });
+
     }
 
+    // Sort
     if (sortSelect) {
-        sortSelect.addEventListener("change", filterStruktur);
+
+        sortSelect.addEventListener("change", function () {
+
+            form.submit();
+
+        });
+
     }
-}
+
+});
 
 // =========================
 // PARENT CHILD VALIDATION

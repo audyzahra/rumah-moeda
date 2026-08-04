@@ -399,41 +399,172 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    
     /* ==========================================
-    SEARCH & SORT (LARAVEL)
-    ========================================== */
+   LIVE SEARCH
+========================================== */
+const searchPortfolio = document.getElementById("searchPortfolio");
+const sortPortfolio = document.getElementById("sortPortfolio");
 
-    const portfolioFilter = document.getElementById("portfolioFilter");
+let searchTimer = null;
+let currentRequest = null;
 
-    const searchPortfolio = document.getElementById("searchPortfolio");
+if (searchPortfolio) {
 
-    const sortPortfolio = document.getElementById("sortPortfolio");
+    searchPortfolio.addEventListener("input", function () {
 
-    if (searchPortfolio && portfolioFilter) {
+        clearTimeout(searchTimer);
 
-        let timer;
+        const keyword = this.value.trim();
 
-        searchPortfolio.addEventListener("input", function () {
+        if (keyword === "") {
+            applyServerFilter();
+            return;
+        }
 
-            clearTimeout(timer);
+        searchTimer = setTimeout(function () {
+            applyServerFilter();
+        }, 150);
 
-            timer = setTimeout(function () {
+    });
 
-                portfolioFilter.submit();
+}
 
-            }, 150);
+/* ==========================================
+   SORT
+========================================== */
 
-        });
+if (sortPortfolio) {
 
+    sortPortfolio.addEventListener("change", function () {
+
+        applyServerFilter();
+
+    });
+
+}
+
+/* ==========================================
+   APPLY FILTER
+========================================== */
+
+function applyServerFilter() {
+
+    const url = new URL(window.location.href);
+
+    const keyword = searchPortfolio.value.trim();
+    const sort = sortPortfolio.value;
+
+    if (keyword !== "") {
+        url.searchParams.set("search", keyword);
+    } else {
+        url.searchParams.delete("search");
     }
 
-    if (sortPortfolio && portfolioFilter) {
-
-        sortPortfolio.addEventListener("change", function () {
-
-            portfolioFilter.submit();
-
-        });
-
+    if (sort !== "") {
+        url.searchParams.set("sort", sort);
+    } else {
+        url.searchParams.delete("sort");
     }
+
+    url.searchParams.delete("page");
+
+    loadPortfolioPage(url);
+
+}
+
+/* ==========================================
+   PAGINATION CLICK
+========================================== */
+
+document.addEventListener("click", function (e) {
+
+    const link = e.target.closest(".custom-pagination a");
+
+    if (!link) return;
+
+    e.preventDefault();
+
+    loadPortfolioPage(new URL(link.href));
+
+});
+
+/* ==========================================
+   PER PAGE
+========================================== */
+
+document.addEventListener("change", function (e) {
+
+    if (e.target.id !== "perPageSelect") return;
+
+    const url = new URL(window.location.href);
+
+    url.searchParams.set("per_page", e.target.value);
+    url.searchParams.delete("page");
+
+    loadPortfolioPage(url);
+
+});
+
+/* ==========================================
+   AJAX
+========================================== */
+
+function loadPortfolioPage(url) {
+
+    const keyword = searchPortfolio.value.trim();
+    const sort = sortPortfolio.value;
+
+    if (keyword !== "") {
+        url.searchParams.set("search", keyword);
+    }
+
+    if (sort !== "") {
+        url.searchParams.set("sort", sort);
+    }
+
+    if (currentRequest) {
+        currentRequest.abort();
+    }
+
+    currentRequest = new AbortController();
+
+    fetch(url.toString(), {
+        method: "GET",
+        signal: currentRequest.signal,
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            "Accept": "text/html"
+        }
+    })
+
+    .then(response => response.text())
+
+    .then(html => {
+
+        const doc = new DOMParser().parseFromString(html, "text/html");
+
+        document.querySelector("#portfolioTable").innerHTML =
+            doc.querySelector("#portfolioTable").innerHTML;
+
+        document.querySelector(".custom-pagination").innerHTML =
+            doc.querySelector(".custom-pagination").innerHTML;
+
+        window.history.replaceState({}, "", url.toString());
+
+        currentRequest = null;
+
+    })
+
+    .catch(error => {
+
+        if (error.name !== "AbortError") {
+            console.error(error);
+        }
+
+        currentRequest = null;
+
+    });
+
+}
 });

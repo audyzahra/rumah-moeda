@@ -97,3 +97,40 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 });
+
+// =========================
+// SEARCH & SORT FAQ
+// =========================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("faqFilter");
+    const search = document.getElementById("searchInput");
+    const sort = document.getElementById("sortFaq");
+
+    // Hentikan jika salah satu elemen tidak ditemukan
+    if (!form || !search || !sort) return;
+
+    let timer;
+
+    // Search otomatis saat mengetik
+    search.addEventListener("keyup", function () {
+
+        clearTimeout(timer);
+
+        timer = setTimeout(function () {
+
+            form.submit();
+
+        }, 300);
+
+    });
+
+    // Sort otomatis saat berubah
+    sort.addEventListener("change", function () {
+
+        form.submit();
+
+    });
+
+});

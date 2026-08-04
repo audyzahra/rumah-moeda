@@ -66,27 +66,28 @@ class PartnerController extends Controller
     // ==========================
     switch ($request->sort) {
 
+        case 'display_order':
+        $query->orderBy('display_order', 'asc');
+        break;
+
         case 'nama_az':
-
             $query->orderBy('name', 'asc');
-
             break;
 
         case 'nama_za':
-
             $query->orderBy('name', 'desc');
-
             break;
 
         default:
-
             $query->orderBy('display_order', 'asc');
-
             break;
 
     }
 
-    $mitra = $query->paginate(5)->withQueryString();
+    $perPage = $request->get('per_page', 5);
+    $mitra = $query
+        ->paginate($perPage)
+        ->withQueryString();
 
     return view('admin.mitra.mitra', compact('mitra'));
 }
