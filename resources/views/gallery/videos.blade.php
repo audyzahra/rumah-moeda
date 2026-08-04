@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Galeri Video')
+@section('title', 'Galeri Video | Rumah Moeda')
+
+@section('description', 'Saksikan berbagai dokumentasi video kegiatan, program, kolaborasi, dan aktivitas Rumah Moeda bersama masyarakat serta mitra.')
+
+@section('keywords', 'Galeri Video Rumah Moeda, video kegiatan Rumah Moeda, dokumentasi video, program sosial, kolaborasi, mitra, kegiatan Rumah Moeda')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/galeri.css') }}">
