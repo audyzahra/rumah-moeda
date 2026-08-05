@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Services\SecurityInputService;
 use App\Services\Security\DangerousInputException;
+use Illuminate\Support\Facades\Crypt;
 
 class GalleryController extends Controller
 {
@@ -203,14 +204,16 @@ class GalleryController extends Controller
     /**
      * Detail
      */
-    public function show(Gallery $gallery)
+    public function show(string $id)
     {
-        abort_if($gallery->author_id!=Auth::id(),403);
+        $id = Crypt::decryptString($id);
 
-        $gallery->load([
+        $gallery = Gallery::with([
             'media',
             'author'
-        ]);
+        ])->findOrFail($id);
+
+        abort_if($gallery->author_id != Auth::id(), 403);
 
         return response()->json($gallery);
     }
@@ -218,16 +221,18 @@ class GalleryController extends Controller
     /**
      * Edit
      */
-    public function edit(Gallery $gallery)
+    public function edit(string $id)
     {
-        abort_if($gallery->author_id!=Auth::id(),403);
+        $id = Crypt::decryptString($id);
 
-        $gallery->load([
+        $gallery = Gallery::with([
             'media',
             'author'
-        ]);
+        ])->findOrFail($id);
 
-        return view('user.gallery.edit',compact('gallery'));
+        abort_if($gallery->author_id != Auth::id(), 403);
+
+        return view('user.gallery.edit', compact('gallery'));
     }
 
     /**
@@ -235,6 +240,8 @@ class GalleryController extends Controller
      */
     public function update(Request $request, Gallery $gallery)
     {
+        $id = Crypt::decryptString($id);
+        $gallery = Gallery::findOrFail($id);
         abort_if($gallery->author_id!=Auth::id(),403);
 
         $data = $request->validate([
@@ -422,24 +429,25 @@ if ($request->filled('deleted_media')) {
     /**
      * Hapus
      */
-    public function destroy(Gallery $gallery)
+    public function destroy(string $id)
     {
-        abort_if($gallery->author_id!=Auth::id(),403);
+        $id = Crypt::decryptString($id);
 
-        foreach($gallery->media as $media){
+        $gallery = Gallery::with('media')->findOrFail($id);
 
-            if($media->type=='image'){
+        abort_if($gallery->author_id != Auth::id(), 403);
 
-                if(Storage::disk('public')->exists($media->file_path)){
+        foreach ($gallery->media as $media) {
 
-                    Storage::disk('public')->delete($media->file_path);
-
-                }
-
+            if (
+                $media->type == 'image' &&
+                $media->file_path &&
+                Storage::disk('public')->exists($media->file_path)
+            ) {
+                Storage::disk('public')->delete($media->file_path);
             }
 
             $media->delete();
-
         }
 
         $gallery->delete();
@@ -450,6 +458,5 @@ if ($request->filled('deleted_media')) {
                 'title' => 'Berhasil! 🎉',
                 'success' => 'Galeri berhasil dihapus.'
             ]);
-
     }
 }

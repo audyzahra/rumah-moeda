@@ -5,7 +5,9 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/galeri.css') }}">
 @endpush
-
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
 @section('content')
 
     <div class="gallery-container">
@@ -41,12 +43,12 @@
         {{-- ================= FORM ================= --}}
         <div class="form-card">
 
-            <form action="{{ route('user.gallery.update', $gallery->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('user.gallery.update', Crypt::encryptString($gallery->id)) }}" method="POST" enctype="multipart/form-data">
 
                 @csrf
                 @method('PUT')
                 <div id="deleted-media-container"></div>
-                
+
                 {{-- ================= JUDUL ================= --}}
                 <div class="form-group">
 
