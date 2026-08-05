@@ -11,6 +11,7 @@ use App\Services\SecurityInputService;
 use App\Services\Security\DangerousInputException;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Crypt;
 
 class UserManagementController extends Controller
 {
@@ -92,8 +93,12 @@ class UserManagementController extends Controller
         return view('admin.kelola.create');
     }
 
-    public function edit(User $user)
+    public function edit(string $id)
     {
+        $id = Crypt::decryptString($id);
+
+        $user = User::findOrFail($id);
+
         return view('admin.kelola.edit', compact('user'));
     }
 
@@ -163,8 +168,11 @@ class UserManagementController extends Controller
     /**
      * Update the specified user.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, string $id)
     {
+        $id = Crypt::decryptString($id);
+
+        $user = User::findOrFail($id);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
 
@@ -259,19 +267,23 @@ class UserManagementController extends Controller
     /**
      * Remove the specified user.
      */
-    public function destroy(User $user)
-    {
-        if ($user->id === auth()->id()) {
+    public function destroy(string $id)
+{
+    $id = Crypt::decryptString($id);
 
-            return redirect()
-                ->route('admin.manage-account.index')
-                ->with('error', 'Anda tidak dapat menghapus akun sendiri.');
-        }
+    $user = User::findOrFail($id);
 
-        $user->delete();
+    if ($user->id === auth()->id()) {
 
         return redirect()
             ->route('admin.manage-account.index')
-            ->with('success', 'Akun berhasil dihapus.');
+            ->with('error', 'Anda tidak dapat menghapus akun sendiri.');
     }
+
+    $user->delete();
+
+    return redirect()
+        ->route('admin.manage-account.index')
+        ->with('success', 'Akun berhasil dihapus.');
+}
 }

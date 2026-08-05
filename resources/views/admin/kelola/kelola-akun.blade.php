@@ -200,7 +200,7 @@
                                         <div class="action-buttons">
 
                                             <!-- ================= EDIT ================= -->
-                                            <a href="{{ route('admin.manage-account.edit', $user) }}"
+                                            <a href="{{ route('admin.manage-account.edit', Crypt::encryptString($user->id)) }}"
                                                 class="btn-icon btn-edit" title="Edit">
 
                                                 <i class="fa-solid fa-pen"></i>
@@ -209,7 +209,8 @@
 
                                             <!-- ================= DELETE ================= -->
                                             @if (auth()->id() != $user->id)
-                                                <form action="{{ route('admin.manage-account.destroy', $user) }}"
+                                                <form
+                                                    action="{{ route('admin.manage-account.destroy', Crypt::encryptString($user->id)) }}"
                                                     method="POST" class="delete-form" style="display:inline;">
 
                                                     @csrf
