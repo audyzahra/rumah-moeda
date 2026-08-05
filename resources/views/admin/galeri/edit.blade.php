@@ -1,12 +1,13 @@
 @extends('admin.layouts.app')
 
 @section('title', 'Edit Galeri')
-
-@section('content')
-
-    @push('styles')
+@push('styles')
         <link rel="stylesheet" href="{{ asset('css/admin/galeri.css') }}">
     @endpush
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
+@section('content')
 
     <div class="content">
 
@@ -41,7 +42,7 @@
 
             <div class="form-card">
 
-                <form action="{{ route('admin.gallery.update', $gallery->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.gallery.update', Crypt::encryptString($gallery->id)) }}"
 
                     @csrf
                     @method('PUT')
