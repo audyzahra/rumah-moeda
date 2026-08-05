@@ -5,7 +5,9 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/struktur.css') }}">
 @endpush
-
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
 @section('content')
 
     <div class="wrapper">
@@ -22,10 +24,10 @@
 
             <!-- ===== FILTER & SEARCH ===== -->
             <section class="filter-section">
-                <form  method="GET" 
+                <form  method="GET"
                         action="{{ route('admin.organization-structures.index') }}"
                         class="filter-left" id="filterForm">
-                    
+
                     <input
                     type="hidden"
                     name="per_page"
@@ -156,14 +158,11 @@
                                                 <i class="fa-solid fa-eye"></i>
                                             </button>
 
-                                            <a href="{{ route('admin.organization-structures.edit', $anggota->id) }}"
-                                                class="btn-edit">
+                                            <a href="{{ route('admin.organization-structures.edit', Crypt::encryptString($anggota->id)) }}"
                                                 <i class="fa-solid fa-pen"></i>
                                             </a>
 
-                                            <form
-                                                action="{{ route('admin.organization-structures.destroy', $anggota->id) }}"
-                                                method="POST" class="delete-form">
+                                           <form action="{{ route('admin.organization-structures.destroy', Crypt::encryptString($anggota->id)) }}"
 
                                                 @csrf
                                                 @method('DELETE')
