@@ -124,6 +124,14 @@ class GalleryController extends Controller
                         ->with('error', $e->getMessage());
 
                 }
+
+                if (Gallery::where('title', $title)->exists()) {
+
+                    return back()
+                        ->withInput()
+                        ->with('error', 'Judul dokumentasi sudah digunakan. Silakan gunakan judul lain.');
+
+                }
                 $gallery = Gallery::create([
                     'title' => $title,
                     'description' => $description,
