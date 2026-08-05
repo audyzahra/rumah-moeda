@@ -14,36 +14,64 @@ class BeritaController extends Controller
     /**
      * Daftar Berita
      */
-    public function index()
-    {
-        $perPage = request('per_page', 5);
-        // Guest -> semua berita
-        if (!Auth::check()) {
+    public function index(Request $request)
+{
+    $perPage = $request->get('per_page', 5);
 
-            $news = News::with(['category', 'author'])
-            ->latest('publish_date')
-            ->paginate($perPage)
-            ->withQueryString();
+    if (!Auth::check()) {
 
-        }
-        // Login (Admin/User) -> hanya berita miliknya
-        else {
+        $query = News::with(['category', 'author']);
 
-            $news = News::with(['category', 'author'])
-            ->where('author_id', Auth::id())
-            ->latest('publish_date')
-            ->paginate($perPage)
-            ->withQueryString();
+    } else {
 
-        }
+        $query = News::with(['category', 'author'])
+            ->where('author_id', Auth::id());
 
-        $categories = Category::orderBy('name')->get();
-
-        return view('berita', compact(
-            'news',
-            'categories'
-        ));
     }
+
+    // SEARCH
+    if ($request->filled('search')) {
+
+        $query->where(function ($q) use ($request) {
+
+            $q->where('title', 'like', '%' . $request->search . '%')
+              ->orWhere('content', 'like', '%' . $request->search . '%');
+
+        });
+
+    }
+
+    // SORT
+    switch ($request->sort) {
+
+        case 'terlama':
+            $query->orderBy('publish_date');
+            break;
+
+        case 'az':
+            $query->orderBy('title');
+            break;
+
+        case 'za':
+            $query->orderByDesc('title');
+            break;
+
+        default:
+            $query->latest('publish_date');
+            break;
+    }
+
+    $news = $query
+        ->paginate($perPage)
+        ->withQueryString();
+
+    $categories = Category::orderBy('name')->get();
+
+    return view('berita', compact(
+        'news',
+        'categories'
+    ));
+}
 
     /**
      * Detail Berita

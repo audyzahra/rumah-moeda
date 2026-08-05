@@ -22,32 +22,57 @@
                 Informasi terbaru mengenai kegiatan Rumah Moeda.
             </p>
 
-            <div class="berita-toolbar">
+            <form method="GET" id="filterForm" class="berita-toolbar">
 
-    <div class="search-box">
+                <div class="search-box">
 
-        <i class="fa-solid fa-magnifying-glass"></i>
+                    <i class="fa-solid fa-magnifying-glass"></i>
 
-        <input
-            type="text"
-            id="searchBerita"
-            placeholder="Cari dokumentasi..."
-        >
+                    <input
+                        type="text"
+                        name="search"
+                        id="searchBerita"
+                        placeholder="Cari dokumentasi..."
+                        value="{{ request('search') }}">
 
-    </div>
+                </div>
 
-    <div class="sort-box">
+                <div class="sort-box">
 
-        <select id="sortBerita">
-            <option value="terbaru">Terbaru</option>
-            <option value="terlama">Terlama</option>
-            <option value="az">Judul A-Z</option>
-            <option value="za">Judul Z-A</option>
-        </select>
+                    <select
+                        name="sort"
+                        id="sortBerita">
 
-    </div>
+                        <option value="terbaru"
+                            {{ request('sort') == 'terbaru' ? 'selected' : '' }}>
+                            Terbaru
+                        </option>
 
-</div>
+                        <option value="terlama"
+                            {{ request('sort') == 'terlama' ? 'selected' : '' }}>
+                            Terlama
+                        </option>
+
+                        <option value="az"
+                            {{ request('sort') == 'az' ? 'selected' : '' }}>
+                            Judul A-Z
+                        </option>
+
+                        <option value="za"
+                            {{ request('sort') == 'za' ? 'selected' : '' }}>
+                            Judul Z-A
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <input
+                    type="hidden"
+                    name="per_page"
+                    value="{{ request('per_page',5) }}">
+
+            </form>
         </div>
 
     </div>
@@ -243,61 +268,25 @@
     <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    const searchInput = document.getElementById("searchBerita");
-    const sortSelect = document.getElementById("sortBerita");
-    const beritaList = document.querySelector(".berita-list");
+    const form = document.getElementById("filterForm");
+    const search = document.getElementById("searchBerita");
+    const sort = document.getElementById("sortBerita");
 
-    function filterAndSort() {
+    let timer;
 
-        const keyword = searchInput.value.toLowerCase().trim();
+    search.addEventListener("keyup", function () {
 
-        let cards = Array.from(document.querySelectorAll(".berita-card"));
+        clearTimeout(timer);
 
-        // SEARCH
-        cards.forEach(function(card) {
+        timer = setTimeout(function () {
+            form.submit();
+        }, 500);
 
-            const title = card.dataset.title;
-            const content = card.dataset.content;
+    });
 
-            if (title.includes(keyword) || content.includes(keyword)) {
-                card.style.display = "flex";
-            } else {
-                card.style.display = "none";
-            }
-
-        });
-
-        // SORT
-        cards.sort(function(a, b) {
-
-            switch (sortSelect.value) {
-
-                case "terbaru":
-                    return Number(b.dataset.date) - Number(a.dataset.date);
-
-                case "terlama":
-                    return Number(a.dataset.date) - Number(b.dataset.date);
-
-                case "az":
-                    return a.dataset.title.localeCompare(b.dataset.title);
-
-                case "za":
-                    return b.dataset.title.localeCompare(a.dataset.title);
-
-                default:
-                    return 0;
-            }
-
-        });
-
-        cards.forEach(function(card) {
-            beritaList.appendChild(card);
-        });
-
-    }
-
-    searchInput.addEventListener("keyup", filterAndSort);
-    sortSelect.addEventListener("change", filterAndSort);
+    sort.addEventListener("change", function () {
+        form.submit();
+    });
 
 });
 </script>
