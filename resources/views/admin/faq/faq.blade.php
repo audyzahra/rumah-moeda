@@ -1,226 +1,209 @@
-@extends('admin.layouts.app')
+    @extends('admin.layouts.app')
 
-@section('title', 'FAQ')
+    @section('title', 'FAQ')
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/admin/faq.css') }}">
-@endpush
+    @push('styles')
+        <link rel="stylesheet" href="{{ asset('css/admin/faq.css') }}">
+    @endpush
+    @php
+        use Illuminate\Support\Facades\Crypt;
+    @endphp
+    @section('content')
 
-@section('content')
+        <!-- ================= HEADER ================= -->
 
-    <!-- ================= HEADER ================= -->
+        <header class="topbar">
 
-    <header class="topbar">
+            <div>
 
-        <div>
+                <h1>Manajemen FAQ</h1>
 
-            <h1>Manajemen FAQ</h1>
+                <p>Kelola pertanyaan yang sering diajukan.</p>
 
-            <p>Kelola pertanyaan yang sering diajukan.</p>
+            </div>
+            <a href="{{ route('admin.faq.create') }}" class="btn-tambah">
 
-        </div>
-         <a href="{{ route('admin.faq.create') }}" class="btn-tambah">
+                <i class="fa-solid fa-plus"></i>
 
-                    <i class="fa-solid fa-plus"></i>
+                Tambah FAQ
 
-                    Tambah FAQ
+            </a>
 
-                </a>
+        </header>
 
-    </header>
+        {{-- FILTER --}}
+        <form method="GET" id="faqFilter">
 
-    {{-- FILTER --}}
-    <form method="GET" id="faqFilter">
-        
-        <input
-            type="hidden"
-            name="per_page"
-            value="{{ request('per_page',5) }}">
-            
-        <input
-            id="searchInput"
-            type="text"
-            name="search"
-            value="{{ request('search') }}"
-            class="search-input"
-            placeholder="Cari FAQ...">
+            <input type="hidden" name="per_page" value="{{ request('per_page', 5) }}">
 
-        <select
-            id="sortFaq"
-            name="sort"
-            class="filter-select">
+            <input id="searchInput" type="text" name="search" value="{{ request('search') }}" class="search-input"
+                placeholder="Cari FAQ...">
 
-            <option value="">Urutkan</option>
+            <select id="sortFaq" name="sort" class="filter-select">
 
-            <option value="oldest"
-                {{ request('sort')=='oldest' ? 'selected' : '' }}>
-                Terlama
-            </option>
+                <option value="">Urutkan</option>
 
-            <option value="question_asc"
-                {{ request('sort')=='question_asc' ? 'selected' : '' }}>
-                Pertanyaan A-Z
-            </option>
+                <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>
+                    Terlama
+                </option>
 
-            <option value="question_desc"
-                {{ request('sort')=='question_desc' ? 'selected' : '' }}>
-                Pertanyaan Z-A
-            </option>
+                <option value="question_asc" {{ request('sort') == 'question_asc' ? 'selected' : '' }}>
+                    Pertanyaan A-Z
+                </option>
 
-        </select>
+                <option value="question_desc" {{ request('sort') == 'question_desc' ? 'selected' : '' }}>
+                    Pertanyaan Z-A
+                </option>
 
-    </form>
+            </select>
 
-    <!-- ================= CONTENT ================= -->
+        </form>
 
-    <section class="faq-section">
+        <!-- ================= CONTENT ================= -->
 
-        <div class="settings-card">
+        <section class="faq-section">
+
+            <div class="settings-card">
 
 
-            <!-- Card Body -->
+                <!-- Card Body -->
 
-            <div class="card-body">
+                <div class="card-body">
 
-                <div class="table-responsive">
+                    <div class="table-responsive">
 
-                    <table class="table-admin">
+                        <table class="table-admin">
 
-                        <thead>
+                            <thead>
 
-                            <tr>
-
-                                <th width="90">Urutan</th>
-
-                                <th>Pertanyaan</th>
-
-                                <th>Jawaban</th>
-
-                                <th width="190">Aksi</th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                            @forelse($faqs as $faq)
                                 <tr>
 
-                                    <td>
+                                    <th width="90">Urutan</th>
 
-                                        {{ $faq->display_order }}
+                                    <th>Pertanyaan</th>
 
-                                    </td>
+                                    <th>Jawaban</th>
 
-                                    <td>
+                                    <th width="190">Aksi</th>
 
-                                        <strong>{{ $faq->question }}</strong>
+                                </tr>
 
-                                    </td>
+                            </thead>
 
-                                    <td>
+                            <tbody>
 
-                                        {{ Str::limit(strip_tags(html_entity_decode($faq->answer)), 80) }}
+                                @forelse($faqs as $faq)
+                                    <tr>
 
-                                    </td>
+                                        <td>
 
-                                    <td>
+                                            {{ $faq->display_order }}
 
-                                        <div class="action-buttons">
+                                        </td>
 
-                                            <button type="button" class="btn-detail" data-question="{{ $faq->question }}"
-                                                data-answer="{{ html_entity_decode($faq->answer) }}">
-                                                <i class="fa-solid fa-eye"></i>
-                                                Detail
-                                            </button>
+                                        <td>
 
-                                            <a href="{{ route('admin.faq.edit', $faq) }}" class="btn-edit">
+                                            <strong>{{ $faq->question }}</strong>
 
-                                                <i class="fa-solid fa-pen"></i>
+                                        </td>
 
-                                                Edit
+                                        <td>
 
-                                            </a>
+                                            {{ Str::limit(strip_tags(html_entity_decode($faq->answer)), 80) }}
 
-                                            <form action="{{ route('admin.faq.destroy', $faq) }}" method="POST"
-                                                class="delete-form">
+                                        </td>
 
-                                                @csrf
-                                                @method('DELETE')
+                                        <td>
 
-                                                <button type="submit" class="btn-delete">
+                                            <div class="action-buttons">
 
-                                                    <i class="fa-solid fa-trash"></i>
-
-                                                    Hapus
-
+                                                <button type="button" class="btn-detail"
+                                                    data-question="{{ $faq->question }}"
+                                                    data-answer="{{ html_entity_decode($faq->answer) }}">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                    Detail
                                                 </button>
 
-                                            </form>
+                                                <a href="{{ route('admin.faq.edit', Crypt::encryptString($faq->id)) }}"
+                                                    class="btn-edit">
 
-                                        </div>
+                                                    <i class="fa-solid fa-pen"></i>
 
-                                    </td>
+                                                    Edit
 
-                                </tr>
+                                                </a>
 
-                            @empty
+                                                <form
+                                                    action="{{ route('admin.faq.destroy', Crypt::encryptString($faq->id)) }}"
+                                                    method="POST" class="delete-form">
 
-                                <tr>
+                                                    @csrf
+                                                    @method('DELETE')
 
-                                    <td colspan="4" class="text-center">
+                                                    <button type="submit" class="btn-delete">
 
-                                        Belum ada data FAQ.
+                                                        <i class="fa-solid fa-trash"></i>
 
-                                    </td>
+                                                        Hapus
 
-                                </tr>
-                            @endforelse
+                                                    </button>
 
-                        </tbody>
+                                                </form>
 
-                    </table>
-            <!-- ================= PAGINATION ================= -->
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+
+                                @empty
+
+                                    <tr>
+
+                                        <td colspan="4" class="text-center">
+
+                                            Belum ada data FAQ.
+
+                                        </td>
+
+                                    </tr>
+                                @endforelse
+
+                            </tbody>
+
+                        </table>
+                        <!-- ================= PAGINATION ================= -->
 
                         <div class="custom-pagination">
 
                             {{-- ==========================================
-                                SHOW ENTRIES
-                            ========================================== --}}
+                                    SHOW ENTRIES
+                                ========================================== --}}
                             <div class="pagination-left">
 
                                 <form method="GET" id="perPageForm">
 
-                                    @foreach(request()->except('per_page','page') as $key => $value)
-
-                                        <input
-                                            type="hidden"
-                                            name="{{ $key }}"
-                                            value="{{ $value }}">
-
+                                    @foreach (request()->except('per_page', 'page') as $key => $value)
+                                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                                     @endforeach
 
                                     <span>Tampilkan</span>
 
-                                    <select
-                                        name="per_page"
-                                        id="perPageSelect"
-                                        onchange="this.form.submit()">
+                                    <select name="per_page" id="perPageSelect" onchange="this.form.submit()">
 
-                                        <option value="5" {{ request('per_page',5)==5 ? 'selected' : '' }}>
+                                        <option value="5" {{ request('per_page', 5) == 5 ? 'selected' : '' }}>
                                             5
                                         </option>
 
-                                        <option value="10" {{ request('per_page')==10 ? 'selected' : '' }}>
+                                        <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>
                                             10
                                         </option>
 
-                                        <option value="20" {{ request('per_page')==20 ? 'selected' : '' }}>
+                                        <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>
                                             20
                                         </option>
 
-                                        <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>
+                                        <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>
                                             50
                                         </option>
 
@@ -234,8 +217,8 @@
 
 
                             {{-- ==========================================
-                                INFO DATA
-                            ========================================== --}}
+                                    INFO DATA
+                                ========================================== --}}
                             <div class="pagination-center">
 
                                 <span>Menampilkan</span>
@@ -256,29 +239,23 @@
 
 
                             {{-- ==========================================
-                                PAGINATION
-                            ========================================== --}}
+                                    PAGINATION
+                                ========================================== --}}
                             <div class="pagination-right">
 
                                 {{-- Previous --}}
-                                @if($faqs->onFirstPage())
-
+                                @if ($faqs->onFirstPage())
                                     <button class="page-btn" disabled>
 
                                         <i class="fa-solid fa-chevron-left"></i>
 
                                     </button>
-
                                 @else
-
-                                    <a
-                                        href="{{ $faqs->previousPageUrl() }}"
-                                        class="page-btn">
+                                    <a href="{{ $faqs->previousPageUrl() }}" class="page-btn">
 
                                         <i class="fa-solid fa-chevron-left"></i>
 
                                     </a>
-
                                 @endif
 
 
@@ -288,159 +265,143 @@
 
                                     $end = min($start + 1, $faqs->lastPage());
 
-                                    if($end - $start < 1){
-
+                                    if ($end - $start < 1) {
                                         $start = max($end - 1, 1);
-
                                     }
 
                                 @endphp
 
 
-                                @for($page = $start; $page <= $end; $page++)
-
-                                    @if($page == $faqs->currentPage())
-
+                                @for ($page = $start; $page <= $end; $page++)
+                                    @if ($page == $faqs->currentPage())
                                         <span class="page-number active">
 
                                             {{ $page }}
 
                                         </span>
-
                                     @else
-
-                                        <a
-                                            href="{{ $faqs->url($page) }}"
-                                            class="page-number">
+                                        <a href="{{ $faqs->url($page) }}" class="page-number">
 
                                             {{ $page }}
 
                                         </a>
-
                                     @endif
-
                                 @endfor
 
 
                                 {{-- Next --}}
-                                @if($faqs->hasMorePages())
-
-                                    <a
-                                        href="{{ $faqs->nextPageUrl() }}"
-                                        class="page-btn">
+                                @if ($faqs->hasMorePages())
+                                    <a href="{{ $faqs->nextPageUrl() }}" class="page-btn">
 
                                         <i class="fa-solid fa-chevron-right"></i>
 
                                     </a>
-
                                 @else
-
                                     <button class="page-btn" disabled>
 
                                         <i class="fa-solid fa-chevron-right"></i>
 
                                     </button>
-
                                 @endif
 
                             </div>
 
                         </div>
 
+                    </div>
+
                 </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= MODAL DETAIL FAQ ================= -->
+
+        <div class="faq-modal" id="faqModal">
+
+            <div class="faq-modal-content">
+
+                <div class="faq-modal-header">
+
+                    <h3>
+                        <i class="fa-solid fa-circle-question"></i>
+                        Detail FAQ
+                    </h3>
+
+                    <button class="faq-close" id="closeFaqModal">
+                        &times;
+                    </button>
+
+                </div>
+
+
+                <div class="faq-modal-body">
+
+
+                    <div class="detail-item">
+
+                        <label>Pertanyaan</label>
+
+                        <p id="detailQuestion"></p>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <label>Jawaban</label>
+
+                        <div id="detailAnswer"></div>
+
+                    </div>
+
+
+                </div>
+
 
             </div>
 
         </div>
 
-    </section>
+    @endsection
 
+    @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- ================= MODAL DETAIL FAQ ================= -->
+        <script src="{{ asset('js/admin/faq.js') }}"></script>
 
-    <div class="faq-modal" id="faqModal">
+        @if (session('success'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
 
-        <div class="faq-modal-content">
+                    Swal.fire({
+                        icon: 'success',
+                        title: '{{ session('title') ?? 'Berhasil!' }}',
+                        text: '{{ session('success') }}',
+                        confirmButtonColor: '#D4AF37',
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
 
-            <div class="faq-modal-header">
-
-                <h3>
-                    <i class="fa-solid fa-circle-question"></i>
-                    Detail FAQ
-                </h3>
-
-                <button class="faq-close" id="closeFaqModal">
-                    &times;
-                </button>
-
-            </div>
-
-
-            <div class="faq-modal-body">
-
-
-                <div class="detail-item">
-
-                    <label>Pertanyaan</label>
-
-                    <p id="detailQuestion"></p>
-
-                </div>
-
-
-                <div class="detail-item">
-
-                    <label>Jawaban</label>
-
-                    <div id="detailAnswer"></div>
-
-                </div>
-
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-@endsection
-
-@push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script src="{{ asset('js/admin/faq.js') }}"></script>
-
-    @if (session('success'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-
-                Swal.fire({
-                    icon: 'success',
-                    title: '{{ session('title') ?? 'Berhasil!' }}',
-                    text: '{{ session('success') }}',
-                    confirmButtonColor: '#D4AF37',
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
                 });
+            </script>
+        @endif
 
-            });
-        </script>
-    @endif
+        @if (session('error'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
 
-    @if (session('error'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: '{{ session('error') }}',
+                        confirmButtonColor: '#dc3545'
+                    });
 
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal!',
-                    text: '{{ session('error') }}',
-                    confirmButtonColor: '#dc3545'
                 });
-
-            });
-        </script>
-    @endif
-@endpush
+            </script>
+        @endif
+    @endpush

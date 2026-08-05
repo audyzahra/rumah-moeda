@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Services\SecurityInputService;
 use App\Services\Security\DangerousInputException;
+use Illuminate\Support\Facades\Crypt;
 
 class PortfolioCategoryController extends Controller
 {
@@ -132,6 +133,8 @@ class PortfolioCategoryController extends Controller
      */
     public function edit(string $id)
     {
+        $id = Crypt::decryptString($id);
+
         $category = PortfolioCategory::findOrFail($id);
 
         return view('admin.portfolio-category.edit', compact('category'));
@@ -143,6 +146,7 @@ class PortfolioCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $id = Crypt::decryptString($id);
         $category = PortfolioCategory::findOrFail($id);
 
         $request->validate([
@@ -198,7 +202,7 @@ class PortfolioCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-
+        $id = Crypt::decryptString($id);
         $category = PortfolioCategory::findOrFail($id);
 
 

@@ -5,7 +5,9 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/portfolio/index.css') }}">
 @endpush
-
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
 @section('content')
 
     <div class="portfolio-page">
@@ -16,7 +18,7 @@
             <div class="portfolio-header-info">
 
                 <h1 class="portfolio-title">
-                    Portpfolio
+                    Portofolio
                 </h1>
 
                 <p class="portfolio-subtitle">
@@ -197,9 +199,7 @@
                                     </td>
 
                                     <td>
-                                        <span
-                                            class="portfolio-location"
-                                            title="{{ $portfolio->location }}">
+                                        <span class="portfolio-location" title="{{ $portfolio->location }}">
                                             {{ $portfolio->location ?? '-' }}
                                         </span>
                                     </td>
@@ -232,7 +232,7 @@
 
                                             <!-- EDIT -->
 
-                                            <a href="{{ route('admin.portfolios.edit', $portfolio->id) }}"
+                                            <a href="{{ route('admin.portfolios.edit', Crypt::encryptString($portfolio->id)) }}"
                                                 class="portfolio-btn-edit">
 
                                                 <i class="fa-solid fa-pen-to-square"></i>
@@ -242,7 +242,8 @@
 
                                             <!-- DELETE -->
 
-                                            <form action="{{ route('admin.portfolios.destroy', $portfolio->id) }}"
+                                            <form
+                                                action="{{ route('admin.portfolios.destroy', Crypt::encryptString($portfolio->id)) }}"
                                                 method="POST" class="d-inline delete-form">
 
                                                 @csrf
@@ -292,35 +293,27 @@
 
                     <form method="GET" id="perPageForm">
 
-                        @foreach(request()->except('per_page','page') as $key => $value)
-
-                            <input
-                                type="hidden"
-                                name="{{ $key }}"
-                                value="{{ $value }}">
-
+                        @foreach (request()->except('per_page', 'page') as $key => $value)
+                            <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                         @endforeach
 
                         <span>Tampilkan</span>
 
-                        <select
-                            name="per_page"
-                            id="perPageSelect"
-                            onchange="this.form.submit()">
+                        <select name="per_page" id="perPageSelect" onchange="this.form.submit()">
 
-                            <option value="5" {{ request('per_page',5)==5?'selected':'' }}>
+                            <option value="5" {{ request('per_page', 5) == 5 ? 'selected' : '' }}>
                                 5
                             </option>
 
-                            <option value="10" {{ request('per_page')==10?'selected':'' }}>
+                            <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>
                                 10
                             </option>
 
-                            <option value="20" {{ request('per_page')==20?'selected':'' }}>
+                            <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>
                                 20
                             </option>
 
-                            <option value="50" {{ request('per_page')==50?'selected':'' }}>
+                            <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>
                                 50
                             </option>
 
@@ -361,26 +354,18 @@
                 <div class="pagination-right">
 
                     {{-- Previous --}}
-                    @if($portfolios->onFirstPage())
-
-                        <button
-                            class="page-btn"
-                            disabled>
+                    @if ($portfolios->onFirstPage())
+                        <button class="page-btn" disabled>
 
                             <i class="fa-solid fa-chevron-left"></i>
 
                         </button>
-
                     @else
-
-                        <a
-                            href="{{ $portfolios->previousPageUrl() }}"
-                            class="page-btn">
+                        <a href="{{ $portfolios->previousPageUrl() }}" class="page-btn">
 
                             <i class="fa-solid fa-chevron-left"></i>
 
                         </a>
-
                     @endif
 
 
@@ -390,61 +375,43 @@
 
                         $end = min($start + 1, $portfolios->lastPage());
 
-                        if($end - $start < 1){
-
+                        if ($end - $start < 1) {
                             $start = max($end - 1, 1);
-
                         }
 
                     @endphp
 
 
-                    @for($page = $start; $page <= $end; $page++)
-
-                        @if($page == $portfolios->currentPage())
-
+                    @for ($page = $start; $page <= $end; $page++)
+                        @if ($page == $portfolios->currentPage())
                             <span class="page-number active">
 
                                 {{ $page }}
 
                             </span>
-
                         @else
-
-                            <a
-                                href="{{ $portfolios->url($page) }}"
-                                class="page-number">
+                            <a href="{{ $portfolios->url($page) }}" class="page-number">
 
                                 {{ $page }}
 
                             </a>
-
                         @endif
-
                     @endfor
 
 
                     {{-- Next --}}
-                    @if($portfolios->hasMorePages())
-
-                        <a
-                            href="{{ $portfolios->nextPageUrl() }}"
-                            class="page-btn">
+                    @if ($portfolios->hasMorePages())
+                        <a href="{{ $portfolios->nextPageUrl() }}" class="page-btn">
 
                             <i class="fa-solid fa-chevron-right"></i>
 
                         </a>
-
                     @else
-
-                        <button
-                            class="page-btn"
-                            disabled>
+                        <button class="page-btn" disabled>
 
                             <i class="fa-solid fa-chevron-right"></i>
 
                         </button>
-
                     @endif
 
                 </div>

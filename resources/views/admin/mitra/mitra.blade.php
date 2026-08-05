@@ -5,7 +5,9 @@
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/admin/mitra.css') }}">
 @endpush
-
+@php
+use Illuminate\Support\Facades\Crypt;
+@endphp
 @section('content')
 
 <div class="wrapper">
@@ -26,7 +28,7 @@
                 method="GET"
                 action="{{ route('admin.partners.index') }}"
                 class="filter-form">
-                
+
                 <input
                     type="hidden"
                     name="per_page"
@@ -187,7 +189,7 @@
                                         </button>
 
                                         <a
-                                            href="{{ route('admin.partners.edit',$item) }}"
+                                           href="{{ route('admin.partners.edit', Crypt::encryptString($item->id)) }}"
                                             class="btn-edit">
 
                                             <i class="fa-solid fa-pen"></i>
@@ -200,7 +202,7 @@
                                             type="button"
                                             class="btn-delete"
 
-                                            data-id="{{ $item->id }}"
+                                            data-id="{{ Crypt::encryptString($item->id) }}"
                                             data-name="{{ $item->name }}"
 
                                             onclick="confirmDelete(this)">

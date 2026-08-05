@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 
 use App\Services\SecurityInputService;
 use App\Services\Security\DangerousInputException;
+use Illuminate\Support\Facades\Crypt;
 
 class PartnerController extends Controller
 {
@@ -174,16 +175,23 @@ class PartnerController extends Controller
     /**
  * Show the form for editing the specified resource.
  */
-    public function edit(Partner $mitra)
+    public function edit(string $id)
     {
+        $id = Crypt::decryptString($id);
+
+        $mitra = Partner::findOrFail($id);
+
         return view('admin.mitra.edit', compact('mitra'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Partner $mitra)
+    public function update(Request $request, string $id)
     {
+        $id = Crypt::decryptString($id);
+
+        $mitra = Partner::findOrFail($id);
         // Validasi
         $request->validate([
             'name' => 'required|string|max:255',
@@ -260,9 +268,12 @@ class PartnerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Partner $mitra)
-        {
-        // Delete logo
+   public function destroy(string $id)
+    {
+        $id = Crypt::decryptString($id);
+
+        $mitra = Partner::findOrFail($id);
+
         if ($mitra->logo) {
             Storage::disk('public')->delete($mitra->logo);
         }
@@ -270,10 +281,10 @@ class PartnerController extends Controller
         $mitra->delete();
 
         return redirect()
-        ->route('admin.partners.index')
-        ->with([
-            'title' => 'Berhasil Dihapus 🗑️',
-            'success' => 'Mitra berhasil dihapus.'
-        ]);
+            ->route('admin.partners.index')
+            ->with([
+                'title' => 'Berhasil Dihapus 🗑️',
+                'success' => 'Mitra berhasil dihapus.'
+            ]);
     }
 }

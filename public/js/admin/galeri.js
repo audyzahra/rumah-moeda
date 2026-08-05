@@ -609,6 +609,119 @@ function getYoutubeId(url) {
 }
 
 /* ==========================================
+   PREVIEW FOTO & VIDEO
+========================================== */
+
+function previewImages(inputSelector, previewId) {
+
+    const preview = document.getElementById(previewId);
+
+    if (!preview) return;
+
+    preview.innerHTML = "";
+
+    document.querySelectorAll(inputSelector).forEach(input => {
+
+        Array.from(input.files).forEach(file => {
+
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+
+                preview.innerHTML += `
+                    <div class="preview-item">
+                        <img src="${e.target.result}">
+                    </div>
+                `;
+
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    });
+
+}
+
+function previewVideos(inputSelector, previewId) {
+
+    const preview = document.getElementById(previewId);
+
+    if (!preview) return;
+
+    preview.innerHTML = "";
+
+    document.querySelectorAll(inputSelector).forEach(input => {
+
+        const id = getYoutubeId(input.value);
+
+        if (!id) return;
+
+        preview.innerHTML += `
+            <div class="preview-item">
+
+                <iframe
+                    width="100%"
+                    height="180"
+                    src="https://www.youtube.com/embed/${id}"
+                    frameborder="0"
+                    allowfullscreen>
+                </iframe>
+
+            </div>
+        `;
+
+    });
+
+}
+
+/* ==========================================
+   EVENT PREVIEW FOTO
+========================================== */
+
+document.addEventListener("change", function (e) {
+
+    if (!e.target.matches('input[name="images[]"]')) return;
+
+    if (document.getElementById("photo-preview")) {
+
+        previewImages('input[name="images[]"]', "photo-preview");
+
+    }
+
+    if (document.getElementById("edit-photo-preview")) {
+
+        previewImages('input[name="images[]"]', "edit-photo-preview");
+
+    }
+
+});
+
+
+/* ==========================================
+   EVENT PREVIEW VIDEO
+========================================== */
+
+document.addEventListener("input", function (e) {
+
+    if (!e.target.matches('input[name="videos[]"]')) return;
+
+    if (document.getElementById("video-preview")) {
+
+        previewVideos('input[name="videos[]"]', "video-preview");
+
+    }
+
+    if (document.getElementById("edit-video-preview")) {
+
+        previewVideos('input[name="videos[]"]', "edit-video-preview");
+
+    }
+
+});
+
+/* ==========================================
    DELETE GALLERY CONFIRMATION
 ========================================== */
 

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Services\SecurityInputService;
 use App\Services\Security\DangerousInputException;
+use Illuminate\Support\Facades\Crypt;
 
 class FaqController extends Controller
 {
@@ -67,8 +68,12 @@ class FaqController extends Controller
         return view('admin.faq.create', compact('nextOrder'));
     }
 
-    public function edit(Faq $faq)
+    public function edit(string $id)
     {
+        $id = Crypt::decryptString($id);
+
+        $faq = Faq::findOrFail($id);
+
         return view('admin.faq.edit', compact('faq'));
     }
 
@@ -126,8 +131,11 @@ class FaqController extends Controller
             ->with('title', 'Berhasil!');
     }
 
-    public function update(Request $request, Faq $faq)
+    public function update(Request $request, string $id)
     {
+        $id = Crypt::decryptString($id);
+
+        $faq = Faq::findOrFail($id);
         $validated = $request->validate([
             'question' => 'required|string|max:255',
             'answer' => 'required|string',
@@ -180,8 +188,12 @@ class FaqController extends Controller
             ->with('title', 'Berhasil!');
     }
 
-    public function destroy(Faq $faq)
+    public function destroy(string $id)
     {
+        $id = Crypt::decryptString($id);
+
+        $faq = Faq::findOrFail($id);
+
         $faq->delete();
 
         return redirect()

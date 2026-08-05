@@ -12,6 +12,7 @@ use App\Exports\OrganizationStructureTemplateExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Services\SecurityInputService;
 use App\Services\Security\DangerousInputException;
+use Illuminate\Support\Facades\Crypt;
 
 class OrganizationStructureController extends Controller
 {
@@ -190,15 +191,19 @@ class OrganizationStructureController extends Controller
             ->with('success', 'Data berhasil ditambahkan');
     }
 
-    public function show($id)
+    public function show(string $id)
     {
+        $id = Crypt::decryptString($id);
+
         $struktur = OrganizationStructure::findOrFail($id);
 
         return view('admin.organization-structures.struktur', compact('struktur'));
     }
 
-    public function edit($id)
+    public function edit(string $id)
     {
+        $id = Crypt::decryptString($id);
+
         $organization = OrganizationStructure::with('descendants')
             ->findOrFail($id);
 
@@ -207,6 +212,7 @@ class OrganizationStructureController extends Controller
             ->toArray();
 
         $excludeIds[] = $organization->id;
+
         $parents = OrganizationStructure::whereNotIn('id', $excludeIds)
             ->orderBy('full_name')
             ->get();
@@ -217,8 +223,9 @@ class OrganizationStructureController extends Controller
         ));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
+        $id = Crypt::decryptString($id);
         $struktur = OrganizationStructure::findOrFail($id);
 
         $request->validate([
@@ -302,8 +309,10 @@ class OrganizationStructureController extends Controller
             ->with('success', 'Data berhasil diubah');
     }
 
-    public function destroy($id)
+    public function destroy(string $id)
     {
+        $id = Crypt::decryptString($id);
+
         $struktur = OrganizationStructure::findOrFail($id);
 
         if ($struktur->photo) {

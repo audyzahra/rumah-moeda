@@ -1,7 +1,9 @@
 @extends('admin.layouts.app')
 
 @section('title', 'Edit Kategori')
-
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
 @section('content')
 
     @push('styles')
@@ -39,8 +41,7 @@
         {{-- FORM EDIT --}}
         <div class="portfolio-category-table">
 
-            <form action="{{ route('admin.portfolio-categories.update', $category->id) }}" method="POST"
-                class="portfolio-form">
+            <form action="{{ route('admin.portfolio-categories.update', Crypt::encryptString($category->id)) }}"
 
                 @csrf
                 @method('PUT')
