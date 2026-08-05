@@ -14,41 +14,82 @@ class PortfolioController extends Controller
      * Menampilkan daftar portofolio.
      */
     public function index(Request $request)
-    {
+    {   
         $perPage = $request->input('per_page', 6);
-
+        
         // Guest -> semua portofolio
-        if (!Auth::check()) {
+        $query = Portfolio::with([
+            'category',
+            'partner',
+            'media' => function ($query) {
+                $query->orderBy('display_order');
+            }
+        ]);
 
-            $portfolios = Portfolio::with([
-                    'category',
-                    'partner',
-                    'media' => function ($query) {
-                        $query->orderBy('display_order');
-                    }
-                ])
-                ->latest('activity_date')
-                ->paginate($perPage)
-                ->withQueryString();
+        // Jika login, hanya tampilkan portofolio miliknya
+        if (Auth::check()) {
 
-        }
-        // Login (Admin/User) -> hanya portofolio miliknya
-        else {
-
-            $portfolios = Portfolio::with([
-                    'category',
-                    'partner',
-                    'media' => function ($query) {
-                        $query->orderBy('display_order');
-                    }
-                ])
-                ->where('author_id', Auth::id())
-                ->latest('activity_date')
-                ->paginate($perPage)
-                ->withQueryString();
+            $query->where('author_id', Auth::id());
 
         }
-         $categories = PortfolioCategory::orderBy('name')->get();
+        
+        // ==========================
+        // SEARCH
+        // ==========================
+        if ($request->filled('search')) {
+
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+
+                $q->where('title', 'like', "%{$search}%")
+                ->orWhere('location', 'like', "%{$search}%")
+                ->orWhereHas('partner', function ($partner) use ($search) {
+
+                    $partner->where('name', 'like', "%{$search}%");
+
+                });
+
+            });
+
+        }
+        // ==========================
+        // CATEGORY
+        // ==========================
+        if ($request->filled('category')) {
+
+            $query->whereHas('category', function ($q) use ($request) {
+
+                $q->where('name', $request->category);
+
+            });
+
+        }
+        // ==========================
+        // SORT
+        // ==========================
+        switch ($request->sort) {
+
+            case 'oldest':
+
+                $query->oldest('activity_date');
+
+                break;
+
+            default:
+
+                $query->latest('activity_date');
+
+                break;
+
+        }
+        // ==========================
+        // PAGINATION
+        // ==========================
+        $portfolios = $query
+            ->paginate($perPage)
+            ->withQueryString();
+        $categories = PortfolioCategory::orderBy('name')->get();
 
         $totalPortfolio = Portfolio::count();
 

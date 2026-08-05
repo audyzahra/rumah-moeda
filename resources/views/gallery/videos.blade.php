@@ -26,110 +26,146 @@
 
     </section>
 
-    <div class="galeri-toolbar">
+    <form method="GET" id="galleryFilter">
 
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
+        <input
+            type="hidden"
+            name="per_page"
+            value="{{ request('per_page', 6) }}">
 
-            <input type="text" id="searchVideo" placeholder="Cari dokumentasi...">
+        <div class="galeri-toolbar">
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    id="searchVideo"
+                    type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Cari dokumentasi...">
+
+            </div>
+
+            <div class="sort-box">
+                <select id="sortVideo" name="sort">
+                    <option
+                        value="terbaru"
+                        {{ request('sort','terbaru') == 'terbaru' ? 'selected' : '' }}>
+                        Terbaru
+                    </option>
+
+                    <option
+                        value="terlama"
+                        {{ request('sort') == 'terlama' ? 'selected' : '' }}>
+                        Terlama
+                    </option>
+
+                    <option
+                        value="az"
+                        {{ request('sort') == 'az' ? 'selected' : '' }}>
+                        Judul A-Z
+                    </option>
+
+                    <option
+                        value="za"
+                        {{ request('sort') == 'za' ? 'selected' : '' }}>
+                        Judul Z-A
+                    </option>
+                </select>
+            </div>
         </div>
+    </form>
 
-        <div class="sort-box">
-            <select id="sortVideo">
-                <option value="terbaru">Terbaru</option>
-                <option value="terlama">Terlama</option>
-                <option value="az">Judul A-Z</option>
-                <option value="za">Judul Z-A</option>
-            </select>
-        </div>
+    <div id="galleryTable">
+        <section class="galeri-container">
 
-    </div>
-    <section class="galeri-container">
+            @forelse($gallery as $item)
+                <a href="{{ route('gallery.videos.detail', $item) }}" class="galeri-card"
+                    data-title="{{ strtolower($item->title) }}"
+                    data-description="{{ strtolower(strip_tags($item->description)) }}"
+                    data-date="{{ \Carbon\Carbon::parse($item->activity_date)->timestamp }}">
 
-        @forelse($gallery as $item)
-            <a href="{{ route('gallery.videos.detail', $item) }}" class="galeri-card"
-                data-title="{{ strtolower($item->title) }}"
-                data-description="{{ strtolower(strip_tags($item->description)) }}"
-                data-date="{{ \Carbon\Carbon::parse($item->activity_date)->timestamp }}">
+                    {{-- Thumbnail Video --}}
+                    @php
+                        $media = $item->media->first();
 
-                {{-- Thumbnail Video --}}
-                @php
-                    $media = $item->media->first();
+                        if ($media && $media->youtube_id) {
+                            $thumbnail = "https://img.youtube.com/vi/{$media->youtube_id}/hqdefault.jpg";
+                        } else {
+                            $thumbnail = defaultImage('video');
+                        }
+                    @endphp
 
-                    if ($media && $media->youtube_id) {
-                        $thumbnail = "https://img.youtube.com/vi/{$media->youtube_id}/hqdefault.jpg";
-                    } else {
-                        $thumbnail = defaultImage('video');
-                    }
-                @endphp
+                    <div class="video-thumbnail">
 
-                <div class="video-thumbnail">
+                        <img src="{{ $thumbnail }}" alt="{{ $item->title }}" loading="lazy">
 
-                    <img src="{{ $thumbnail }}" alt="{{ $item->title }}" loading="lazy">
+                        <div class="play-icon">
 
-                    <div class="play-icon">
+                            <i class="fa-solid fa-circle-play"></i>
 
-                        <i class="fa-solid fa-circle-play"></i>
+                        </div>
 
                     </div>
 
-                </div>
+
+                    <div class="galeri-info">
+
+                        <h3>
+                            {{ $item->title }}
+                        </h3>
+
+                        <p>
+                            {{ \Illuminate\Support\Str::limit(strip_tags($item->description), 100) }}
+                        </p>
 
 
-                <div class="galeri-info">
+                        <div class="galeri-meta">
+
+                            <span>
+
+                                <i class="fa-solid fa-video"></i>
+
+                                {{ $item->media->count() }} Video
+
+                            </span>
+
+
+                            <span>
+
+                                <i class="fa-regular fa-calendar"></i>
+
+                                {{ \Carbon\Carbon::parse($item->activity_date)->translatedFormat('d F Y') }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            @empty
+
+                <div class="empty-gallery">
+
+                    <i class="fa-solid fa-video-slash"></i>
 
                     <h3>
-                        {{ $item->title }}
+                        Belum ada galeri video.
                     </h3>
 
                     <p>
-                        {{ \Illuminate\Support\Str::limit(strip_tags($item->description), 100) }}
+                        Dokumentasi video kegiatan belum tersedia.
                     </p>
 
-
-                    <div class="galeri-meta">
-
-                        <span>
-
-                            <i class="fa-solid fa-video"></i>
-
-                            {{ $item->media->count() }} Video
-
-                        </span>
-
-
-                        <span>
-
-                            <i class="fa-regular fa-calendar"></i>
-
-                            {{ \Carbon\Carbon::parse($item->activity_date)->translatedFormat('d F Y') }}
-
-                        </span>
-
-                    </div>
-
                 </div>
+            @endforelse
 
-            </a>
-
-        @empty
-
-            <div class="empty-gallery">
-
-                <i class="fa-solid fa-video-slash"></i>
-
-                <h3>
-                    Belum ada galeri video.
-                </h3>
-
-                <p>
-                    Dokumentasi video kegiatan belum tersedia.
-                </p>
-
-            </div>
-        @endforelse
-
-    </section>
+        </section>
+    </div>
 
     {{-- PAGINATION --}}
     <div class="custom-pagination">
@@ -137,29 +173,29 @@
         {{-- Show Entries --}}
         <div class="pagination-left">
 
-            <form method="GET" id="perPageForm">
+            <span>Tampilkan</span>
 
-                @foreach (request()->except('per_page', 'page') as $key => $value)
-                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-                @endforeach
+                <select id="perPageSelect" form="galleryFilter" name="per_page">
 
-                <span>Tampilkan</span>
+                    <option value="6" {{ request('per_page',6)==6 ? 'selected' : '' }}>
+                        6
+                    </option>
 
-                <select name="per_page" onchange="this.form.submit()">
+                    <option value="12" {{ request('per_page')==12 ? 'selected' : '' }}>
+                        12
+                    </option>
 
-                    <option value="6" {{ request('per_page', 6) == 6 ? 'selected' : '' }}>6</option>
+                    <option value="24" {{ request('per_page')==24 ? 'selected' : '' }}>
+                        24
+                    </option>
 
-                    <option value="12" {{ request('per_page') == 12 ? 'selected' : '' }}>12</option>
-
-                    <option value="24" {{ request('per_page') == 24 ? 'selected' : '' }}>24</option>
-
-                    <option value="48" {{ request('per_page') == 48 ? 'selected' : '' }}>48</option>
+                    <option value="48" {{ request('per_page')==48 ? 'selected' : '' }}>
+                        48
+                    </option>
 
                 </select>
 
-                <span>video</span>
-
-            </form>
+            <span>video</span>
 
         </div>
 

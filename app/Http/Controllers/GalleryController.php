@@ -50,9 +50,10 @@ class GalleryController extends Controller
     | Video Gallery
     |--------------------------------------------------------------------------
     */
-
     public function videos(Request $request)
     {
+        $perPage = $request->input('per_page', 6);
+
         $query = Gallery::with([
             'media' => function ($q) {
                 $q->where('type', 'video');
@@ -61,17 +62,44 @@ class GalleryController extends Controller
             $q->where('type', 'video');
         });
 
+        // Login
         if (Auth::check()) {
             $query->where('author_id', Auth::id());
         }
-
-        $perPage = $request->input('per_page', 6);
-
+        /*
+        |--------------------------------------------------------------------------
+        | SEARCH
+        |--------------------------------------------------------------------------
+        */
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+        /*
+        |--------------------------------------------------------------------------
+        | SORT
+        |--------------------------------------------------------------------------
+        */
+        switch ($request->sort) {
+            case 'terlama':
+                $query->oldest('activity_date');
+                break;
+            case 'az':
+                $query->orderBy('title', 'asc');
+                break;
+            case 'za':
+                $query->orderBy('title', 'desc');
+                break;
+            default:
+                $query->latest('activity_date');
+                break;
+        }
         $gallery = $query
-            ->orderByDesc('activity_date')
             ->paginate($perPage)
             ->withQueryString();
-
         return view('gallery.videos', compact('gallery'));
     }
 

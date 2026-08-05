@@ -202,83 +202,98 @@
             TOOLBAR
         ============================================================ --}}
         <div class="portfolio-content">
-            <section class="portfolio-toolbar">
+            <form id="portfolioFilter">
+                <input
+                    type="hidden"
+                    name="per_page"
+                    value="{{ request('per_page', 6) }}">
 
-                {{-- SEARCH --}}
-                <div class="toolbar-search">
+                <section class="portfolio-toolbar">
 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
-                        stroke="currentColor" stroke-width="2">
+                    {{-- SEARCH --}}
+                    <div class="toolbar-search">
 
-                        <circle cx="9" cy="9" r="7">
-                        </circle>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                            stroke="currentColor" stroke-width="2">
 
-                        <path d="M20 20l-4-4">
-                        </path>
+                            <circle cx="9" cy="9" r="7">
+                            </circle>
 
-                    </svg>
+                            <path d="M20 20l-4-4">
+                            </path>
 
-                    <input type="text" placeholder="Cari nama kegiatan atau mitra...">
+                        </svg>
 
-                </div>
+                        <input
+                            id="searchInput"
+                            type="text"
+                            name="search"
+                            value="{{ request('search') }}"
+                            placeholder="Cari nama kegiatan atau mitra...">
 
-
-                {{-- SORT --}}
-                <div class="toolbar-select">
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
-                        stroke="currentColor" stroke-width="2">
-
-                        <rect x="3" y="4" width="14" height="14" rx="2">
-                        </rect>
-
-                        <path d="M8 2v4M16 2v4M3 10h14">
-                        </path>
-
-                    </svg>
-
-                    <select id="sortFilter">
-
-                        <option value="newest">
-                            Terbaru
-                        </option>
-
-                        <option value="oldest">
-                            Terlama
-                        </option>
-
-                    </select>
-
-                </div>
+                    </div>
 
 
-                <div class="toolbar-select">
+                    {{-- SORT --}}
+                    <div class="toolbar-select">
 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
-                        stroke="currentColor" stroke-width="2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                            stroke="currentColor" stroke-width="2">
 
-                        <path d="M4 7h16"></path>
-                        <path d="M7 12h10"></path>
-                        <path d="M10 17h4"></path>
+                            <rect x="3" y="4" width="14" height="14" rx="2">
+                            </rect>
 
-                    </svg>
+                            <path d="M8 2v4M16 2v4M3 10h14">
+                            </path>
 
-                    <select id="categoryFilter">
+                        </svg>
 
-                        <option value="">
-                            Semua Kategori
-                        </option>
-
-                        @foreach ($categories as $category)
-                            <option value="{{ strtolower($category->name) }}">
-                                {{ $category->name }}
+                        <select id="sortFilter" name="sort">
+                            <option
+                                value="newest"
+                                {{ request('sort','newest') == 'newest' ? 'selected' : '' }}>
+                                Terbaru
                             </option>
-                        @endforeach
 
-                    </select>
+                            <option
+                                value="oldest"
+                                {{ request('sort') == 'oldest' ? 'selected' : '' }}>
+                                Terlama
+                            </option>
+                        </select>
 
-                </div>
-            </section>
+                    </div>
+
+
+                    <div class="toolbar-select">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                            stroke="currentColor" stroke-width="2">
+
+                            <path d="M4 7h16"></path>
+                            <path d="M7 12h10"></path>
+                            <path d="M10 17h4"></path>
+
+                        </svg>
+
+                        <select id="categoryFilter" name="category">
+
+                            <option value="">
+                                Semua Kategori
+                            </option>
+
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->name }}"
+                                    {{ request('category') == $category->name ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+
+                        </select>
+
+                    </div>
+                </section>
+            </form>
 
 
             {{-- ===========================================================
