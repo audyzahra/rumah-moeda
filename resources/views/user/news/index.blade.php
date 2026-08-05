@@ -142,7 +142,7 @@
                                     <button
                                         class="btn-detail"
                                         onclick='showDetail({
-                                            id: '{{ Crypt::encryptString($item->id) }}',
+                                            id: {{ $item->id }},
                                             title: @json($item->title),
                                             content: @json($item->content),
                                             thumbnail: @json($item->thumbnail ? Storage::url($item->thumbnail) : asset("assets/no-image.png")),
