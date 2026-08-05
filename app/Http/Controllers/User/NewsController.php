@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Services\Security\DangerousInputException;
 use App\Services\SecurityInputService;
+use Illuminate\Support\Facades\Crypt;
 
 class NewsController extends Controller
 {
@@ -152,6 +153,8 @@ class NewsController extends Controller
      */
     public function show($id)
     {
+        $id = Crypt::decryptString($id);
+
         $news = News::with(['category', 'author'])
             ->where('author_id', Auth::id())
             ->findOrFail($id);
@@ -164,6 +167,8 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
+        $id = Crypt::decryptString($id);
+
         $news = News::where('author_id', Auth::id())
             ->findOrFail($id);
 
@@ -180,6 +185,7 @@ class NewsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $id = Crypt::decryptString($id);
         $news = News::where('author_id', Auth::id())
             ->findOrFail($id);
 
@@ -294,6 +300,8 @@ private function generateUniqueSlugForUpdate(string $title, int $newsId): string
      */
     public function destroy($id)
     {
+        $id = Crypt::decryptString($id);
+
         $news = News::where('author_id', Auth::id())
             ->findOrFail($id);
 
@@ -306,10 +314,11 @@ private function generateUniqueSlugForUpdate(string $title, int $newsId): string
 
         $news->delete();
 
-        return redirect()->route('user.news.index')
-        ->with([
-            'title' => 'Berhasil Dihapus 🗑️',
-            'success' => 'Berita berhasil dihapus.'
-        ]);
+        return redirect()
+            ->route('user.news.index')
+            ->with([
+                'title' => 'Berhasil Dihapus 🗑️',
+                'success' => 'Berita berhasil dihapus.'
+            ]);
     }
 }

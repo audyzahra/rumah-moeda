@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Services\SecurityInputService;
 use App\Services\Security\DangerousInputException;
+use Illuminate\Support\Facades\Crypt;
 
 class GalleryController extends Controller
 {
@@ -160,8 +161,12 @@ class GalleryController extends Controller
             ->with('success', 'Data galeri berhasil ditambahkan.');
     }
 
-    public function edit(Gallery $gallery)
+    public function edit(string $id)
     {
+        $id = Crypt::decryptString($id);
+
+        $gallery = Gallery::findOrFail($id);
+
         $gallery->load('media');
 
         $galleries = Gallery::with(['author', 'media'])
@@ -176,6 +181,10 @@ class GalleryController extends Controller
 
     public function update(Request $request, Gallery $gallery)
     {
+        $id = Crypt::decryptString($id);
+
+        $gallery = Gallery::findOrFail($id);
+
         $data = $request->validate([
             'title' => 'required|max:255',
             'activity_date' => 'required|date',
@@ -302,8 +311,12 @@ class GalleryController extends Controller
             ->with('success', 'Galeri berhasil diperbarui.');
     }
 
-    public function destroy(Gallery $gallery)
+   public function destroy(string $id)
     {
+        $id = Crypt::decryptString($id);
+
+        $gallery = Gallery::findOrFail($id);
+
         $gallery->load('media');
 
         foreach ($gallery->media as $media) {
@@ -315,6 +328,7 @@ class GalleryController extends Controller
             ) {
                 Storage::disk('public')->delete($media->file_path);
             }
+
         }
 
         $gallery->delete();

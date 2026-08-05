@@ -5,7 +5,9 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/kategori.css') }}">
 @endpush
-
+@php
+use Illuminate\Support\Facades\Crypt;
+@endphp
 @section('content')
 
 <div class="kategori-container">
@@ -42,7 +44,7 @@
     <div class="form-card">
 
         <form
-            action="{{ route('admin.categories.update', $category->id) }}"
+            action="{{ route('admin.categories.update', Crypt::encryptString($category->id)) }}"
             method="POST">
 
             @csrf

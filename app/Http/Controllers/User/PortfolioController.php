@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Services\SecurityInputService;
 use App\Services\Security\DangerousInputException;
+use Illuminate\Support\Facades\Crypt;
 
 class PortfolioController extends Controller
 {
@@ -99,7 +100,7 @@ class PortfolioController extends Controller
 
         $categories = PortfolioCategory::orderBy('name')->get();
         $partners = Partner::orderBy('name')->get();
-        
+
         if ($request->ajax()) {
                 return view('user.portfolios.index', compact(
                     'portfolios',
@@ -270,17 +271,15 @@ class PortfolioController extends Controller
 
     public function show(string $id)
     {
+        $id = Crypt::decryptString($id);
 
         $portfolio = Portfolio::with([
             'category',
             'partner',
             'media'
         ])
-            ->where('author_id', Auth::id())
-            ->where('id', $id)
-            ->findOrFail($id);
-
-
+        ->where('author_id', Auth::id())
+        ->findOrFail($id);
 
         return response()->json($portfolio);
     }
@@ -288,19 +287,14 @@ class PortfolioController extends Controller
 
     public function edit(string $id)
     {
-
+        $id = Crypt::decryptString($id);
 
         $portfolio = Portfolio::with('media', 'author')
             ->where('author_id', Auth::id())
-            ->where('id', $id)
             ->findOrFail($id);
 
         $categories = PortfolioCategory::all();
-
-
         $partners = Partner::all();
-
-
 
         return view(
             'user.portfolios.edit',
@@ -314,7 +308,7 @@ class PortfolioController extends Controller
 
     public function update(Request $request, string $id)
     {
-
+        $id = Crypt::decryptString($id);
 
         $data = $request->validate(
             [
@@ -558,25 +552,21 @@ private function generateUniqueSlugForUpdate(string $title, int $portfolioId): s
 
     public function destroy(string $id)
     {
+        $id = Crypt::decryptString($id);
 
         $portfolio = Portfolio::with('media')
             ->where('author_id', Auth::id())
-            ->where('id', $id)
             ->findOrFail($id);
-
 
         foreach ($portfolio->media as $media) {
 
             if ($media->type == 'image' && $media->file_path) {
-
-                Storage::disk('public')
-                    ->delete($media->file_path);
+                Storage::disk('public')->delete($media->file_path);
             }
+
         }
 
-
         $portfolio->delete();
-
 
         return redirect()
             ->route('user.portfolios.index')

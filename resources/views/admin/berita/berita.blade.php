@@ -5,7 +5,9 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/berita.css') }}">
 @endpush
-
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
 @section('content')
 
     <div class="berita-container">
@@ -61,31 +63,19 @@
 
         <div class="filter-left">
 
-            <input
-                type="text"
-                id="searchInput"
-                class="search-input"
-                placeholder="Cari Judul Berita..."
+            <input type="text" id="searchInput" class="search-input" placeholder="Cari Judul Berita..."
                 value="{{ request('search') }}">
 
-            <select
-                id="categoryFilter"
-                class="filter-select">
+            <select id="categoryFilter" class="filter-select">
 
-                <option
-                    value=""
-                    {{ request('category') === null || request('category') === '' ? 'selected' : '' }}>
+                <option value="" {{ request('category') === null || request('category') === '' ? 'selected' : '' }}>
                     Semua Kategori
                 </option>
 
                 @foreach ($categories as $category)
-
-                    <option
-                        value="{{ $category->id }}"
-                        {{ request('category') == $category->id ? 'selected' : '' }}>
+                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
                         {{ $category->name }}
                     </option>
-
                 @endforeach
 
             </select>
@@ -158,11 +148,11 @@
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
 
-                                <a href="{{ route('admin.news.edit', $item->id) }}" class="btn-edit">
+                                <a href="{{ route('admin.news.edit', Crypt::encryptString($item->id)) }}" class="btn-edit">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
 
-                                <button class="btn-delete" onclick="deleteBerita({{ $item->id }})">
+                                <button class="btn-delete" onclick="deleteBerita('{{ Crypt::encryptString($item->id) }}')">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
 
@@ -198,41 +188,26 @@
 
                     {{-- Pertahankan search & category --}}
                     @foreach (request()->except('per_page', 'page') as $key => $value)
-
-                        <input
-                            type="hidden"
-                            name="{{ $key }}"
-                            value="{{ $value }}">
-
+                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                     @endforeach
 
                     <span>Tampilkan</span>
 
-                    <select
-                        name="per_page"
-                        id="perPageSelect">
+                    <select name="per_page" id="perPageSelect">
 
-                        <option
-                            value="5"
-                            {{ request('per_page', 5) == 5 ? 'selected' : '' }}>
+                        <option value="5" {{ request('per_page', 5) == 5 ? 'selected' : '' }}>
                             5
                         </option>
 
-                        <option
-                            value="10"
-                            {{ request('per_page') == 10 ? 'selected' : '' }}>
+                        <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>
                             10
                         </option>
 
-                        <option
-                            value="20"
-                            {{ request('per_page') == 20 ? 'selected' : '' }}>
+                        <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>
                             20
                         </option>
 
-                        <option
-                            value="50"
-                            {{ request('per_page') == 50 ? 'selected' : '' }}>
+                        <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>
                             50
                         </option>
 
@@ -278,89 +253,67 @@
             ========================================== --}}
             <div class="pagination-right">
 
-                    {{-- Previous --}}
-                    @if ($news->onFirstPage())
+                {{-- Previous --}}
+                @if ($news->onFirstPage())
+                    <button class="page-btn" disabled>
 
-                        <button
-                            class="page-btn"
-                            disabled>
+                        <i class="fa-solid fa-chevron-left"></i>
 
-                            <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                @else
+                    <a href="{{ $news->previousPageUrl() }}" class="page-btn">
 
-                        </button>
+                        <i class="fa-solid fa-chevron-left"></i>
 
+                    </a>
+                @endif
+
+
+                {{-- Nomor Halaman --}}
+                @php
+                    $start = max($news->currentPage() - 1, 1);
+                    $end = min($start + 1, $news->lastPage());
+
+                    // kalau sudah mentok di akhir
+                    if ($end - $start < 1) {
+                        $start = max($end - 1, 1);
+                    }
+                @endphp
+
+                @for ($page = $start; $page <= $end; $page++)
+                    @if ($page == $news->currentPage())
+                        <span class="page-number active">
+                            {{ $page }}
+                        </span>
                     @else
-
-                        <a
-                            href="{{ $news->previousPageUrl() }}"
-                            class="page-btn">
-
-                            <i class="fa-solid fa-chevron-left"></i>
-
+                        <a href="{{ $news->url($page) }}" class="page-number">
+                            {{ $page }}
                         </a>
-
                     @endif
+                @endfor
 
 
-                    {{-- Nomor Halaman --}}
-                    @php
-                        $start = max($news->currentPage() - 1, 1);
-                        $end = min($start + 1, $news->lastPage());
+                {{-- Next --}}
+                @if ($news->hasMorePages())
+                    <a href="{{ $news->nextPageUrl() }}" class="page-btn">
 
-                        // kalau sudah mentok di akhir
-                        if ($end - $start < 1) {
-                            $start = max($end - 1, 1);
-                        }
-                    @endphp
+                        <i class="fa-solid fa-chevron-right"></i>
 
-                    @for($page = $start; $page <= $end; $page++)
+                    </a>
+                @else
+                    <button class="page-btn" disabled>
 
-                        @if($page == $news->currentPage())
+                        <i class="fa-solid fa-chevron-right"></i>
 
-                            <span class="page-number active">
-                                {{ $page }}
-                            </span>
-
-                        @else
-
-                            <a href="{{ $news->url($page) }}" class="page-number">
-                                {{ $page }}
-                            </a>
-
-                        @endif
-
-                    @endfor
-
-
-                    {{-- Next --}}
-                    @if ($news->hasMorePages())
-
-                        <a
-                            href="{{ $news->nextPageUrl() }}"
-                            class="page-btn">
-
-                            <i class="fa-solid fa-chevron-right"></i>
-
-                        </a>
-
-                    @else
-
-                        <button
-                            class="page-btn"
-                            disabled>
-
-                            <i class="fa-solid fa-chevron-right"></i>
-
-                        </button>
-
-                    @endif
-
-                </div>
+                    </button>
+                @endif
 
             </div>
+
         </div>
     </div>
-    
+    </div>
+
     {{-- ===========================
             MODAL TAMBAH / EDIT
     ============================ --}}
@@ -440,8 +393,8 @@
 
                         </label>
 
-                        <input type="file" id="thumbnail" name="thumbnail" class="form-control" accept=".jpg,.jpeg,.png"
-                            onchange="previewImage(event)">
+                        <input type="file" id="thumbnail" name="thumbnail" class="form-control"
+                            accept=".jpg,.jpeg,.png" onchange="previewImage(event)">
 
                         <small class="text-muted">
                             Format yang diperbolehkan :
