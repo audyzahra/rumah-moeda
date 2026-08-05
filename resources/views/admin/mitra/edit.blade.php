@@ -5,7 +5,9 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/mitra.css') }}">
 @endpush
-
+@php
+use Illuminate\Support\Facades\Crypt;
+@endphp
 @section('content')
 
     <!-- ================= HEADER ================= -->
@@ -75,7 +77,7 @@
                     </script>
                 @endif
 
-                <form action="{{ route('admin.partners.update', $mitra) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.partners.update', Crypt::encryptString($mitra->id)) }}"
 
                     @csrf
                     @method('PUT')
