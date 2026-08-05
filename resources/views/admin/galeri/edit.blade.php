@@ -150,6 +150,7 @@
                         + Tambah Foto
 
                     </button>
+                    <div id="edit-photo-preview" class="preview-grid"></div>
 
                     <div id="edit-video-container">
 
@@ -181,6 +182,7 @@
                         + Tambah Link Video
 
                     </button>
+                    <div id="edit-video-preview" class="preview-grid"></div>
 
 
                     <div class="modal-footer">
