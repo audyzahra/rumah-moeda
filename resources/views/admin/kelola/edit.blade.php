@@ -5,7 +5,9 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/kelola-akun.css') }}">
 @endpush
-
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
 @section('content')
 
     <!-- ================= HEADER ================= -->
@@ -77,7 +79,7 @@
                     </script>
                 @endif
 
-                <form action="{{ route('admin.manage-account.update', $user) }}" method="POST">
+                <form action="{{ route('admin.manage-account.update', Crypt::encryptString($user->id)) }}" method="POST">
 
                     @csrf
                     @method('PUT')

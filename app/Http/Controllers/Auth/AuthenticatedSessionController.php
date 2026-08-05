@@ -26,8 +26,14 @@ public function store(LoginRequest $request): RedirectResponse
 {
     $request->authenticate();
 
-    // Cek apakah akun aktif
-    if (! auth()->user()->status) {
+    $user = auth()->user();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cek Email Verification
+    |--------------------------------------------------------------------------
+    */
+    if (! $user->hasVerifiedEmail()) {
 
         Auth::logout();
 
@@ -35,13 +41,30 @@ public function store(LoginRequest $request): RedirectResponse
         $request->session()->regenerateToken();
 
         return back()->withErrors([
-            'email' => 'Akun Anda telah dinonaktifkan. Silakan hubungi administrator.',
+            'email' => 'Email Anda belum diverifikasi. Silakan cek email Anda untuk melakukan verifikasi.',
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cek Status Akun
+    |--------------------------------------------------------------------------
+    */
+    if (! $user->status) {
+
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return back()->withErrors([
+            'email' => 'Akun Anda tidak aktif. Silakan hubungi administrator untuk informasi lebih lanjut.',
         ]);
     }
 
     $request->session()->regenerate();
 
-    if (auth()->user()->role === 'admin') {
+    if ($user->role === 'admin') {
         return redirect()->route('admin.dashboard');
     }
 

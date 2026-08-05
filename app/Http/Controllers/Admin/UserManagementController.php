@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use App\Services\SecurityInputService;
 use App\Services\Security\DangerousInputException;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Crypt;
 
 class UserManagementController extends Controller
 {
@@ -90,8 +93,12 @@ class UserManagementController extends Controller
         return view('admin.kelola.create');
     }
 
-    public function edit(User $user)
+    public function edit(string $id)
     {
+        $id = Crypt::decryptString($id);
+
+        $user = User::findOrFail($id);
+
         return view('admin.kelola.edit', compact('user'));
     }
 
@@ -103,7 +110,15 @@ class UserManagementController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => [
+            'required',
+            'confirmed',
+
+            Password::min(8)
+                ->mixedCase()
+                ->numbers()
+                ->symbols(),
+        ],
             'role' => 'required|in:admin,user',
             'status' => 'required|boolean',
         ], [
@@ -114,6 +129,9 @@ class UserManagementController extends Controller
             'password.required' => 'Password wajib diisi.',
             'password.min' => 'Password minimal 8 karakter.',
             'password.confirmed' => 'Konfirmasi password tidak sesuai.',
+            'password.mixed' => 'Password harus memenuhi syarat keamanan.',
+            'password.numbers' => 'Password harus memenuhi syarat keamanan.',
+            'password.symbols' => 'Password harus memenuhi syarat keamanan.',
             'role.required' => 'Role wajib dipilih.',
             'status.required' => 'Status wajib dipilih.',
         ]);
@@ -128,7 +146,7 @@ class UserManagementController extends Controller
                 ->with('error', $e->getMessage());
 
         }
-        User::create([
+        $user = User::create([
             'name' => $name,
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
@@ -136,46 +154,68 @@ class UserManagementController extends Controller
             'status' => $validated['status'],
         ]);
 
+        // Kirim email verifikasi
+        $user->sendEmailVerificationNotification();
+
         return redirect()
             ->route('admin.manage-account.index')
-            ->with('success', 'Akun berhasil ditambahkan.');
+            ->with(
+                'success',
+                'Akun berhasil ditambahkan. Email verifikasi telah dikirim ke pengguna.'
+            );
     }
 
     /**
      * Update the specified user.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, string $id)
     {
-            $validated = $request->validate([
-        'name' => 'required|string|max:255',
+        $id = Crypt::decryptString($id);
 
-        'email' => [
-            'required',
-            'email',
-            'max:255',
-            Rule::unique('users')->ignore($user->id),
-        ],
+        $user = User::findOrFail($id);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($user->id),
+            ],
 
             'role' => 'required|in:admin,user',
 
             'status' => 'required|boolean',
 
-            'password' => 'nullable|string|min:8|confirmed',
+            'password' => [
+                'nullable',
+                'confirmed',
 
-        ],[
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols(),
+            ],
+
+        ], [
             'name.required' => 'Nama wajib diisi.',
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email sudah digunakan.',
+
             'password.min' => 'Password minimal 8 karakter.',
             'password.confirmed' => 'Konfirmasi password tidak sesuai.',
+            'password.mixed' => 'Password harus memenuhi syarat keamanan.',
+            'password.numbers' => 'Password harus memenuhi syarat keamanan.',
+            'password.symbols' => 'Password harus memenuhi syarat keamanan.',
+
             'role.required' => 'Role wajib dipilih.',
             'status.required' => 'Status wajib dipilih.',
         ]);
 
         try {
 
-        $name = $this->security->cleanText($validated['name']);
+            $name = $this->security->cleanText($validated['name']);
 
         } catch (DangerousInputException $e) {
 
@@ -184,38 +224,66 @@ class UserManagementController extends Controller
                 ->with('error', $e->getMessage());
 
         }
+
+        // Simpan email lama
+        $oldEmail = $user->email;
+
+        // Update data
         $user->name = $name;
         $user->email = $validated['email'];
         $user->role = $validated['role'];
         $user->status = $validated['status'];
 
+        // Update password jika diisi
         if ($request->filled('password')) {
             $user->password = Hash::make($validated['password']);
         }
 
+        // Cek apakah email berubah
+        $emailChanged = $oldEmail !== $validated['email'];
+
+        if ($emailChanged) {
+            // Wajib verifikasi ulang
+            $user->email_verified_at = null;
+        }
+
         $user->save();
+
+        // Kirim email verifikasi ke email baru
+        if ($emailChanged) {
+            $user->sendEmailVerificationNotification();
+        }
 
         return redirect()
             ->route('admin.manage-account.index')
-            ->with('success', 'Akun berhasil diperbarui.');
+            ->with(
+                'success',
+                $emailChanged
+                    ? 'Akun berhasil diperbarui. Email berubah sehingga pengguna harus melakukan verifikasi ulang melalui email baru.'
+                    : 'Akun berhasil diperbarui.'
+            );
     }
 
     /**
      * Remove the specified user.
      */
-    public function destroy(User $user)
-    {
-        if ($user->id === auth()->id()) {
+    public function destroy(string $id)
+{
+    $id = Crypt::decryptString($id);
 
-            return redirect()
-                ->route('admin.manage-account.index')
-                ->with('error', 'Anda tidak dapat menghapus akun sendiri.');
-        }
+    $user = User::findOrFail($id);
 
-        $user->delete();
+    if ($user->id === auth()->id()) {
 
         return redirect()
             ->route('admin.manage-account.index')
-            ->with('success', 'Akun berhasil dihapus.');
+            ->with('error', 'Anda tidak dapat menghapus akun sendiri.');
     }
+
+    $user->delete();
+
+    return redirect()
+        ->route('admin.manage-account.index')
+        ->with('success', 'Akun berhasil dihapus.');
+}
 }

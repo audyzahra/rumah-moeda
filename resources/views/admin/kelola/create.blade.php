@@ -53,7 +53,7 @@
                             Swal.fire({
                                 icon: 'warning',
                                 title: 'Periksa kembali data',
-                                html: `{!! implode('<br>', $errors->all()) !!}`,
+                                text: "{{ $errors->first() }}",
                                 confirmButtonText: 'OK',
                                 confirmButtonColor: '#4f46e5'
                             });
@@ -135,7 +135,7 @@
                             <div class="password-wrapper">
 
                                 <input type="password" id="password" name="password" class="form-control"
-                                    placeholder="Minimal 8 karakter">
+                                    placeholder="Minimal 8 karakter, terdiri dari huruf besar, huruf kecil, angka, dan simbol.">
 
                                 <i class="fa-solid fa-eye toggle-password" data-target="password">
 

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\ContactMessage;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 #[Fillable([
     'name',
@@ -23,7 +24,7 @@ use App\Models\ContactMessage;
     'remember_token'
 ])]
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 

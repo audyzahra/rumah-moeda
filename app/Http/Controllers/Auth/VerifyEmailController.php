@@ -3,25 +3,79 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\URL;
 
 class VerifyEmailController extends Controller
 {
+
+
     /**
-     * Mark the authenticated user's email address as verified.
+     * Verifikasi email pengguna tanpa perlu login terlebih dahulu.
      */
-    public function __invoke(EmailVerificationRequest $request): RedirectResponse
+    public function __invoke(Request $request): RedirectResponse
     {
-        if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validasi Signed URL
+        |--------------------------------------------------------------------------
+        */
+        if (! URL::hasValidSignature($request)) {
+            abort(403, 'Link verifikasi tidak valid atau telah kedaluwarsa.');
         }
 
-        if ($request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
+        /*
+        |--------------------------------------------------------------------------
+        | Cari User
+        |--------------------------------------------------------------------------
+        */
+        $user = User::findOrFail($request->route('id'));
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validasi Hash Email
+        |--------------------------------------------------------------------------
+        */
+        if (! hash_equals(
+            (string) $request->route('hash'),
+            sha1($user->getEmailForVerification())
+        )) {
+            abort(403, 'Link verifikasi tidak valid.');
         }
 
-        return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
+        /*
+        |--------------------------------------------------------------------------
+        | Jika Sudah Diverifikasi
+        |--------------------------------------------------------------------------
+        */
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->route('login')->with(
+                'success',
+                'Email Anda sudah berhasil diverifikasi. Silakan login.'
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Tandai Email Sebagai Terverifikasi
+        |--------------------------------------------------------------------------
+        */
+        if ($user->markEmailAsVerified()) {
+            event(new Verified($user));
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Redirect ke Login
+        |--------------------------------------------------------------------------
+        */
+        return redirect()->route('login')->with(
+            'success',
+            'Email berhasil diverifikasi. Silakan tunggu akun Anda diaktifkan oleh administrator sebelum login.'
+        );
     }
 }
