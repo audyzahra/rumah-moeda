@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Services\SecurityInputService;
 use App\Services\Security\DangerousInputException;
+use Illuminate\Support\Facades\Crypt;
 
 class CategoryController extends Controller
 {
@@ -121,6 +122,8 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
+        $id = Crypt::decryptString($id);
+
         $category = Category::withCount('news')
             ->findOrFail($id);
 
@@ -132,6 +135,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
+        $id = Crypt::decryptString($id);
+
         $category = Category::findOrFail($id);
 
         return view('admin.kategori.edit', compact('category'));
@@ -142,6 +147,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $id = Crypt::decryptString($id);
         $category = Category::findOrFail($id);
 
         $request->validate([
@@ -176,10 +182,11 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        $id = Crypt::decryptString($id);
+
         $category = Category::withCount('news')
             ->findOrFail($id);
 
-        // Jangan hapus jika masih dipakai berita
         if ($category->news_count > 0) {
 
             return redirect()

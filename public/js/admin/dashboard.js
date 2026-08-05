@@ -111,10 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function showNotification(message, type = 'info') {
         const notification = document.getElementById('notification');
         if (!notification) return;
-        
+
         notification.textContent = message;
         notification.className = `notification ${type} show`;
-        
+
         setTimeout(() => {
             notification.classList.remove('show');
         }, 3000);
@@ -136,22 +136,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==============================
 
     const clock = document.createElement('span');
-    clock.id = 'clock';
-    clock.style.cssText = 'font-size:14px;color:#666;margin-left:15px;';
-    
-    const topbar = document.querySelector('.topbar');
+clock.id = 'clock';
 
-if (topbar) {
-    clock.style.marginLeft = "0";
-    clock.style.marginRight = "10px";
-    topbar.appendChild(clock);
+clock.style.cssText = `
+    display:flex;
+    align-items:center;
+    gap:5px;
+    font-size:14px;
+    color:#666;
+`;
+
+clock.innerHTML = `<i class="fa-regular fa-clock"></i> 00:00:00`;
+
+clock.style.cssText = `
+    font-size:14px;
+    color:#666;
+    display:flex;
+    align-items:center;
+    white-space:nowrap;
+`;
+
+const topbarRight = document.querySelector('.topbar-right');
+const profile = document.querySelector('.profile');
+
+if (topbarRight && profile) {
+    topbarRight.insertBefore(clock, profile);
 }
 
     function updateClock() {
         if (!clock) return;
         const now = new Date();
-        const jam = now.toLocaleTimeString('id-ID', { 
-            hour: '2-digit', 
+        const jam = now.toLocaleTimeString('id-ID', {
+            hour: '2-digit',
             minute: '2-digit',
             second: '2-digit'
         });

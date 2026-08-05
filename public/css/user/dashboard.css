@@ -91,6 +91,18 @@ TOPBAR
     color: #222;
 }
 
+.topbar-right{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+#clock {
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
 /*========================
 ANALYTICS
 =========================*/
@@ -648,7 +660,7 @@ tbody tr:hover {
 
     }
 
-}   
+}
 
 @media(max-width:768px){
 

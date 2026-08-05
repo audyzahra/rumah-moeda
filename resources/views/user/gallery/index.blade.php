@@ -1,12 +1,12 @@
 @extends('user.layouts.app')
 @section('title', 'Galeri')
-@section('content')
-
-    @push('styles')
+@push('styles')
         <link rel="stylesheet" href="{{ asset('css/admin/galeri.css') }}">
     @endpush
-
-
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
+@section('content')
     <div class="content">
 
         {{-- ================= HEADER ================= --}}
@@ -121,7 +121,7 @@
                                     {{ $galleries->firstItem() + $loop->index }}
                                 </td>
 
-                                
+
 
                                 <td>
                                     <strong>{{ $gallery->title }}</strong>
@@ -134,7 +134,7 @@
                                 <td>
                                     {{ Str::limit(strip_tags(html_entity_decode($gallery->description)), 80) }}
                                 </td>
-                                
+
                                 <td>
                                     {{ $gallery->author?->name ?? '-' }}
                                 </td>
@@ -158,14 +158,14 @@
                                         </button>
 
                                         {{-- Edit --}}
-                                        <a href="{{ route('user.gallery.edit', $gallery->id) }}" class="action-btn edit">
+                                        <a href="{{ route('user.gallery.edit', Crypt::encryptString($gallery->id)) }}" class="action-btn edit">
 
                                             <i class="fa-solid fa-pen"></i>
 
                                         </a>
 
                                         {{-- Delete --}}
-                                        <form action="{{ route('user.gallery.destroy', $gallery->id) }}" method="POST"
+                                        <form action="{{ route('user.gallery.destroy', Crypt::encryptString($gallery->id)) }}" method="POST"
                                             class="delete-form">
 
                                             @csrf

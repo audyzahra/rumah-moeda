@@ -2,11 +2,13 @@
 
 @section('title', 'Galeri')
 
-@section('content')
-
-    @push('styles')
+@push('styles')
         <link rel="stylesheet" href="{{ asset('css/admin/galeri.css') }}">
-    @endpush
+@endpush
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
+@section('content')
 
     <div class="content">
 
@@ -27,7 +29,7 @@
 
             <div class="filter-left">
 
-                <input type="text" id="searchInput" name="search" class="search-input" 
+                <input type="text" id="searchInput" name="search" class="search-input"
                         value="{{ request('search') }}"
                         placeholder="Cari dokumentasi...">
 
@@ -142,12 +144,12 @@
                                         </button>
 
                                         <!-- Edit -->
-                                        <a href="{{ route('admin.gallery.edit', $gallery->id) }}" class="action-btn edit">
+                                        <a href="{{ route('admin.gallery.edit', Crypt::encryptString($gallery->id)) }}" class="action-btn edit">
                                             <i class="fa-solid fa-pen"></i>
                                         </a>
 
                                         <!-- Delete -->
-                                        <form action="{{ route('admin.gallery.destroy', $gallery->id) }}" method="POST">
+                                        <form action="{{ route('admin.gallery.destroy', Crypt::encryptString($gallery->id) ) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
 

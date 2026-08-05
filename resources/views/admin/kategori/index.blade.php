@@ -5,7 +5,9 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/kategori.css') }}">
 @endpush
-
+@php
+use Illuminate\Support\Facades\Crypt;
+@endphp
 @section('content')
 
     <div class="kategori-container">
@@ -101,14 +103,14 @@
                                 <div class="action-group">
 
                                     {{-- DETAIL --}}
-                                    <a href="{{ route('admin.categories.show', $category->id) }}" class="btn-detail">
+                                    <a href="{{ route('admin.categories.show', Crypt::encryptString($category->id)) }}" class="btn-detail">
 
                                         <i class="fa-solid fa-eye"></i>
 
                                     </a>
 
                                     {{-- EDIT --}}
-                                    <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn-edit">
+                                    <a href="{{ route('admin.categories.edit', Crypt::encryptString($category->id)) }}" class="btn-edit">
 
                                         <i class="fa-solid fa-pen"></i>
 
@@ -118,7 +120,7 @@
                                     <button
                                         type="button"
                                         class="btn-delete"
-                                        onclick="deleteKategori({{ $category->id }})">
+                                        onclick="deleteKategori('{{ Crypt::encryptString($category->id) }}')">
 
                                         <i class="fa-solid fa-trash"></i>
 

@@ -92,6 +92,30 @@ TOPBAR
     font-weight:600;
 }
 
+.topbar-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 15px;
+    flex-direction: row;
+}
+
+#clock {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #666;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+#clock i {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
 
 /*=========================================
 STATISTIK
@@ -526,3 +550,477 @@ BERITA TERPOPULER
     font-size:15px;
 
 }
+
+/*=========================================
+    RESPONSIVE
+=========================================*/
+
+@media (max-width: 900px) {
+    .content {
+        margin-left: 220px;
+        padding: 30px;
+    }
+
+    .analytics {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+    flex: 1;
+    margin-left: 270px;
+    padding: 40px;
+}
+
+    .topbar {
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .topbar-left {
+        flex: 1;
+    }
+
+    .topbar h1 {
+        font-size: 24px;
+    }
+
+    .topbar p {
+        font-size: 14px;
+    }
+
+    .profile span {
+        display: none;
+    }
+
+    .analytics {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .icon {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    .card h2 {
+        font-size: 22px;
+    }
+
+    .card h4 {
+        font-size: 12px;
+    }
+
+    .table-section {
+        overflow-x: auto;
+        padding: 20px;
+    }
+
+    table {
+        min-width: 600px;
+    }
+
+    th,
+    td {
+        white-space: nowrap;
+        padding: 12px;
+    }
+
+    .section-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .section-header button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .content {
+        padding: 15px;
+    }
+
+    .topbar h1 {
+        font-size: 20px;
+    }
+
+    .topbar p {
+        font-size: 12px;
+    }
+
+    .analytics {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .card h2 {
+        font-size: 20px;
+    }
+
+    .table-section {
+        padding: 15px;
+    }
+
+    .section-header h2 {
+        font-size: 17px;
+    }
+
+    table {
+        min-width: 480px;
+    }
+
+    th,
+    td {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .status {
+        font-size: 11px;
+        padding: 4px 10px;
+    }
+}
+.btn-kelola{
+    display:inline-block;
+    background:#EEDCC9;
+    color:#000;
+    text-decoration:none;
+    padding:12px 18px;
+    border-radius:10px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn-kelola:hover{
+    background:#dccbb8;
+    transform:translateY(-2px);
+}
+
+
+/*=========================================
+    USER DASHBOARD
+=========================================*/
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:35% 65%;
+    gap:25px;
+    margin-top:25px;
+    align-items:start;
+}
+.dashboard-card{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    border:1px solid #ececec;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+
+    height:100%;
+
+}
+
+/*=========================================
+    ACTIVITY
+=========================================*/
+
+.activity-list{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.activity-item{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:15px;
+    border:1px solid #eee;
+    border-radius:14px;
+    transition:.25s;
+}
+
+.activity-item:hover{
+    background:#faf8f5;
+    transform:translateY(-2px);
+}
+
+.activity-icon{
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+    font-size:18px;
+    flex-shrink:0;
+}
+
+.activity-icon.news{
+    background:#3b82f6;
+}
+
+.activity-icon.gallery{
+    background:#f59e0b;
+}
+
+.activity-icon.message{
+    background:#10b981;
+}
+
+.activity-content{
+    flex:1;
+}
+
+.activity-content h4{
+    font-size:15px;
+    margin-bottom:5px;
+    color:#222;
+}
+
+.activity-content small{
+    color:#777;
+    font-size:13px;
+}
+
+/*=========================================
+    POPULAR NEWS
+=========================================*/
+
+.popular-news{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+
+}
+
+.popular-item{
+
+    display:flex;
+    align-items:center;
+    gap:20px;
+
+    padding:18px;
+
+    border:1px solid #ececec;
+    border-radius:18px;
+
+    transition:.3s;
+
+    width:100%;
+
+    min-height:120px;
+}
+
+.popular-item:hover{
+    background:#faf8f5;
+    transform:translateY(-2px);
+}
+
+.popular-number{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    background:#3b82f6;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:700;
+    font-size:18px;
+    flex-shrink:0;
+}
+
+.popular-content{
+    flex:1;
+}
+
+.popular-content h4{
+
+    font-size:28px;
+    font-weight:700;
+
+    margin-top:10px;
+
+    margin-bottom:5px;
+
+}
+
+.popular-content small{
+    color:#777;
+    font-size:13px;
+}
+
+/*=========================================
+    EMPTY
+=========================================*/
+
+.empty-state{
+    padding:40px 20px;
+    text-align:center;
+    color:#999;
+}
+
+.empty-state i{
+    font-size:42px;
+    margin-bottom:10px;
+    color:#cfcfcf;
+}
+
+.empty-state p{
+    margin:0;
+}
+
+/*=========================================
+    RESPONSIVE
+=========================================*/
+
+@media(max-width:992px){
+
+    .dashboard-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .activity-item,
+    .popular-item{
+
+        padding:12px;
+
+    }
+
+    .activity-icon,
+    .popular-number{
+
+        width:42px;
+        height:42px;
+        font-size:16px;
+
+    }
+
+}
+/*=========================================
+POPULAR NEWS
+=========================================*/
+
+.popular-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    padding:18px;
+
+    border:1px solid #ececec;
+
+    border-radius:18px;
+
+    width:100%;
+
+    transition:.3s;
+
+}
+
+.popular-item:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.popular-thumb{
+
+    width:150px;
+    height:95px;
+
+    object-fit:cover;
+
+    border-radius:14px;
+
+    flex-shrink:0;
+
+}
+
+.popular-content{
+
+    flex:1;
+
+}
+
+.popular-category{
+
+    display:inline-block;
+
+    padding:4px 10px;
+
+    background:#eef4ff;
+
+    color:#3b82f6;
+
+    border-radius:30px;
+
+    font-size:12px;
+
+    margin-bottom:8px;
+
+}
+
+.popular-content h4{
+
+    font-size:17px;
+
+    color:#222;
+
+    margin-bottom:10px;
+
+}
+
+.popular-meta{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-top:12px;
+
+    width:100%;
+
+}
+
+.popular-meta span{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+}
+

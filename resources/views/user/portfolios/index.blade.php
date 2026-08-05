@@ -5,7 +5,9 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/portfolio/index.css') }}">
 @endpush
-
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
 @section('content')
 
     <div class="portfolio-page">
@@ -235,7 +237,7 @@
 
                                             <!-- EDIT -->
 
-                                            <a href="{{ route('user.portfolios.edit', $portfolio->id) }}"
+                                            <a href="{{ route('user.portfolios.edit', Crypt::encryptString($portfolio->id)) }}"
                                                 class="portfolio-btn-edit">
 
                                                 <i class="fa-solid fa-pen-to-square"></i>
@@ -245,7 +247,7 @@
 
                                             <!-- DELETE -->
 
-                                            <form action="{{ route('user.portfolios.destroy', $portfolio->id) }}"
+                                            <form action="{{ route('user.portfolios.destroy', Crypt::encryptString($portfolio->id)) }}"
                                                 method="POST" class="d-inline delete-form">
 
                                                 @csrf

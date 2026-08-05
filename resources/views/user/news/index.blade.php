@@ -5,7 +5,9 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/berita.css') }}">
 @endpush
-
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
 @section('content')
 
     <div class="berita-container">
@@ -109,7 +111,7 @@
 
                             <td>{{ $news->firstItem() + $index }}</td>
 
-                            
+
 
                             <td>
                                 <div class="news-title">
@@ -151,14 +153,14 @@
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
 
-                                    <a href="{{ route('user.news.edit', $item->id) }}"
+                                    <a href="{{ route('user.news.edit', Crypt::encryptString($item->id)) }}"
                                     class="btn-edit">
                                         <i class="fa-solid fa-pen"></i>
                                     </a>
 
                                     <button
                                         class="btn-delete"
-                                        onclick="deleteBerita({{ $item->id }})">
+                                        onclick="deleteBerita('{{ Crypt::encryptString($item->id) }}')">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
 
