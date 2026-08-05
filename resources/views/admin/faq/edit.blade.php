@@ -74,7 +74,7 @@
                     </script>
                 @endif
 
-                <form action="{{ route('admin.faq.update', $faq) }}" method="POST">
+                <form action="{{ route('admin.faq.update', Crypt::encryptString($faq->id)) }}" method="POST">
 
                     @csrf
                     @method('PUT')
