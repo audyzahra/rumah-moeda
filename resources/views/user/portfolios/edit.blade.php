@@ -63,9 +63,12 @@
 
                 <label>Mitra <span class="required">*</span></label>
 
-                <select name="partner_id" class="form-control">
+                <select name="partner_id" class="form-control" required>
 
-                    <option value="">Tanpa Mitra</option>
+                    <option value="" disabled
+                        {{ old('partner_id', $portfolio->partner_id) ? '' : 'selected' }}>
+                        Pilih Mitra
+                    </option>
 
                     @foreach ($partners as $partner)
                         <option value="{{ $partner->id }}"

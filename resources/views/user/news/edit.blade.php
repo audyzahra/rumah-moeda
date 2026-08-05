@@ -175,6 +175,21 @@
     </div>
 
 @endsection
+@if ($errors->any())
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    Swal.fire({
+        icon: 'error',
+        title: 'Data belum lengkap',
+        html: `{!! implode('<br>', $errors->all()) !!}`,
+        confirmButtonColor: '#dc2626'
+    });
+
+});
+</script>
+@endif
+
 @if (session('error'))
 <script>
 document.addEventListener('DOMContentLoaded', function () {
