@@ -1,246 +1,229 @@
 @extends('admin.layouts.app')
 
-@section('title','Kategori Portofolio')
-
-@section('content')
+@section('title', 'Kategori Portofolio')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/admin/portfolio-category/index.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/portfolio-category/index.css') }}">
 @endpush
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
+@section('content')
 
-<div class="content">
-    {{-- HEADER --}}
-    <header class="topbar">
+    <div class="content">
+        {{-- HEADER --}}
+        <header class="topbar">
 
-        <div>
-            <h1>Kategori Portofolio</h1>
-            <p>Kelola kategori portofolio</p>
-        </div>
-
-
-        <a href="{{ route('admin.portfolio-categories.create') }}" class="btn-add">
-            <i class="fa-solid fa-plus"></i>
-            Tambah Kategori
-        </a>
-
-    </header>
-    {{-- FILTER --}}
-    <form
-        id="categoryFilterForm"
-        method="GET"
-        action="{{ route('admin.portfolio-categories.index') }}"
-        class="filter-container">
-
-        <input
-            type="text"
-            id="searchInput"
-            name="search"
-            class="search-input"
-            placeholder="Cari kategori..."
-            value="{{ request('search') }}">
-
-        <select
-            id="sortSelect"
-            name="sort"
-            class="filter-select">
-            <option value="" {{ request('sort') == '' ? 'selected' : '' }}>
-                Terbaru
-            </option>
-
-            <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>
-                Terlama
-            </option>
-
-            <option value="az" {{ request('sort') == 'az' ? 'selected' : '' }}>
-                Nama (A-Z)
-            </option>
-
-            <option value="za" {{ request('sort') == 'za' ? 'selected' : '' }}>
-                Nama (Z-A)
-            </option>
-        </select>
-
-    </form>
-
-    {{-- TABLE KATEGORI PORTFOLIO --}}
-    <div class="portfolio-category-table">
-        <table>
-
-            <thead>
-
-                <tr>
-                    <th>No</th>
-                    <th>Nama Kategori</th>
-                    <th>Slug</th>
-                    <th>Dibuat</th>
-                    <th>Aksi</th>
-                </tr>
-
-            </thead>
+            <div>
+                <h1>Kategori Portofolio</h1>
+                <p>Kelola kategori portofolio</p>
+            </div>
 
 
-            <tbody>
+            <a href="{{ route('admin.portfolio-categories.create') }}" class="btn-add">
+                <i class="fa-solid fa-plus"></i>
+                Tambah Kategori
+            </a>
 
-                @forelse($categories as $category)
+        </header>
+        {{-- FILTER --}}
+        <form id="categoryFilterForm" method="GET" action="{{ route('admin.portfolio-categories.index') }}"
+            class="filter-container">
 
-                    <tr
-                        data-name="{{ strtolower($category->name) }}"
-                        data-date="{{ $category->created_at->timestamp }}">
+            <input type="text" id="searchInput" name="search" class="search-input" placeholder="Cari kategori..."
+                value="{{ request('search') }}">
 
-                        <td>
-                            {{ $categories->firstItem() + $loop->index }}
-                        </td>
+            <select id="sortSelect" name="sort" class="filter-select">
+                <option value="" {{ request('sort') == '' ? 'selected' : '' }}>
+                    Terbaru
+                </option>
 
-                        <td>
-                            {{ $category->name }}
-                        </td>
+                <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>
+                    Terlama
+                </option>
 
-                        <td>
-                            {{ $category->slug }}
-                        </td>
+                <option value="az" {{ request('sort') == 'az' ? 'selected' : '' }}>
+                    Nama (A-Z)
+                </option>
 
-                        <td>
-                            {{ $category->created_at->format('d M Y') }}
-                        </td>
+                <option value="za" {{ request('sort') == 'za' ? 'selected' : '' }}>
+                    Nama (Z-A)
+                </option>
+            </select>
 
-                        <td>
-                            <div class="portfolio-category-action">
+        </form>
 
-                                {{-- Detail --}}
-                                <button
-                                    class="btn-action detail"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#detailModal{{ $category->id }}">
-                                    <i class="fa-solid fa-eye"></i>
-                                </button>
+        {{-- TABLE KATEGORI PORTFOLIO --}}
+        <div class="portfolio-category-table">
+            <table>
 
-                                {{-- Edit --}}
-                                <a href="{{ route('admin.portfolio-categories.edit', $category->id) }}"
-                                class="btn-action edit">
-                                    <i class="fa-solid fa-pen"></i>
-                                </a>
+                <thead>
 
-                                {{-- Delete --}}
-                                <form action="{{ route('admin.portfolio-categories.destroy', $category->id) }}"
-                                    method="POST"
-                                    class="delete-form">
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button type="submit" class="btn-delete">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </form>
-
-                            </div>
-                        </td>
-
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Kategori</th>
+                        <th>Slug</th>
+                        <th>Dibuat</th>
+                        <th>Aksi</th>
                     </tr>
 
-
-                    {{-- MODAL DETAIL --}}
-
-                    <div class="modal fade"
-                        id="detailModal{{ $category->id }}"
-                        tabindex="-1">
+                </thead>
 
 
-                        <div class="modal-dialog modal-dialog-centered">
+                <tbody>
 
+                    @forelse($categories as $category)
+                        <tr data-name="{{ strtolower($category->name) }}"
+                            data-date="{{ $category->created_at->timestamp }}">
 
-                            <div class="modal-content">
+                            <td>
+                                {{ $categories->firstItem() + $loop->index }}
+                            </td>
 
+                            <td>
+                                {{ $category->name }}
+                            </td>
 
-                                <div class="modal-header">
+                            <td>
+                                {{ $category->slug }}
+                            </td>
 
+                            <td>
+                                {{ $category->created_at->format('d M Y') }}
+                            </td>
 
-                                    <h5 class="modal-title">
-                                        Detail Kategori Portofolio
-                                    </h5>
+                            <td>
+                                <div class="portfolio-category-action">
 
-
-                                    <button
-                                        type="button"
-                                        class="btn-close"
-                                        data-bs-dismiss="modal">
+                                    {{-- Detail --}}
+                                    <button class="btn-action detail" data-bs-toggle="modal"
+                                        data-bs-target="#detailModal{{ $category->id }}">
+                                        <i class="fa-solid fa-eye"></i>
                                     </button>
 
+                                    {{-- Edit --}}
+                                    <a href="{{ route('admin.portfolio-categories.edit', Crypt::encryptString($category->id)) }}"
+                                        class="btn-action edit">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+
+                                    {{-- Delete --}}
+                                    <form
+                                        action="{{ route('admin.portfolio-categories.destroy', Crypt::encryptString($category->id)) }}"
+                                        method="POST" class="delete-form">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit" class="btn-delete">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
 
                                 </div>
+                            </td>
+
+                        </tr>
 
 
+                        {{-- MODAL DETAIL --}}
 
-                                <div class="modal-body">
+                        <div class="modal fade" id="detailModal{{ $category->id }}" tabindex="-1">
 
 
-                                    <div class="detail-item">
+                            <div class="modal-dialog modal-dialog-centered">
 
-                                        <label>
-                                            Nama Kategori
-                                        </label>
 
-                                        <p>
-                                            {{ $category->name }}
-                                        </p>
+                                <div class="modal-content">
+
+
+                                    <div class="modal-header">
+
+
+                                        <h5 class="modal-title">
+                                            Detail Kategori Portofolio
+                                        </h5>
+
+
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal">
+                                        </button>
+
 
                                     </div>
 
 
 
-                                    <div class="detail-item">
+                                    <div class="modal-body">
 
-                                        <label>
-                                            Slug
-                                        </label>
 
-                                        <p>
-                                            {{ $category->slug }}
-                                        </p>
+                                        <div class="detail-item">
+
+                                            <label>
+                                                Nama Kategori
+                                            </label>
+
+                                            <p>
+                                                {{ $category->name }}
+                                            </p>
+
+                                        </div>
+
+
+
+                                        <div class="detail-item">
+
+                                            <label>
+                                                Slug
+                                            </label>
+
+                                            <p>
+                                                {{ $category->slug }}
+                                            </p>
+
+                                        </div>
+
+
+
+                                        <div class="detail-item">
+
+                                            <label>
+                                                Dibuat
+                                            </label>
+
+                                            <p>
+                                                {{ $category->created_at->format('d M Y H:i') }}
+                                            </p>
+
+                                        </div>
+
+
+
+                                        <div class="detail-item">
+
+                                            <label>
+                                                Update Terakhir
+                                            </label>
+
+                                            <p>
+                                                {{ $category->updated_at->format('d M Y H:i') }}
+                                            </p>
+
+                                        </div>
+
 
                                     </div>
 
 
+                                    <div class="modal-footer">
 
-                                    <div class="detail-item">
 
-                                        <label>
-                                            Dibuat
-                                        </label>
+                                        <button class="btn-close-modal" data-bs-dismiss="modal">
 
-                                        <p>
-                                            {{ $category->created_at->format('d M Y H:i') }}
-                                        </p>
+                                            Tutup
+
+                                        </button>
+
 
                                     </div>
-
-
-
-                                    <div class="detail-item">
-
-                                        <label>
-                                            Update Terakhir
-                                        </label>
-
-                                        <p>
-                                            {{ $category->updated_at->format('d M Y H:i') }}
-                                        </p>
-
-                                    </div>
-
-
-                                </div>
-
-
-                                <div class="modal-footer">
-
-
-                                    <button
-                                        class="btn-close-modal"
-                                        data-bs-dismiss="modal">
-
-                                        Tutup
-
-                                    </button>
 
 
                                 </div>
@@ -252,33 +235,28 @@
                         </div>
 
 
-                    </div>
+                    @empty
 
 
-                @empty
+                        <tr>
 
+                            <td colspan="5" class="empty-data">
 
-                    <tr>
+                                Belum ada kategori portofolio
 
-                        <td colspan="5" class="empty-data">
+                            </td>
 
-                            Belum ada kategori portofolio
-
-                        </td>
-
-                    </tr>
-
-
-                @endforelse
+                        </tr>
+                    @endforelse
 
 
 
-            </tbody>
+                </tbody>
 
 
-        </table>
+            </table>
 
-        <!-- ================= PAGINATION ================= -->
+            <!-- ================= PAGINATION ================= -->
 
             <div class="custom-pagination">
 
@@ -289,35 +267,27 @@
 
                     <form method="GET" id="perPageForm">
 
-                        @foreach(request()->except('per_page','page') as $key => $value)
-
-                            <input
-                                type="hidden"
-                                name="{{ $key }}"
-                                value="{{ $value }}">
-
+                        @foreach (request()->except('per_page', 'page') as $key => $value)
+                            <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                         @endforeach
 
                         <span>Tampilkan</span>
 
-                        <select
-                            name="per_page"
-                            id="perPageSelect"
-                            onchange="this.form.submit()">
+                        <select name="per_page" id="perPageSelect" onchange="this.form.submit()">
 
-                            <option value="5" {{ request('per_page',5)==5 ? 'selected' : '' }}>
+                            <option value="5" {{ request('per_page', 5) == 5 ? 'selected' : '' }}>
                                 5
                             </option>
 
-                            <option value="10" {{ request('per_page')==10 ? 'selected' : '' }}>
+                            <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>
                                 10
                             </option>
 
-                            <option value="20" {{ request('per_page')==20 ? 'selected' : '' }}>
+                            <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>
                                 20
                             </option>
 
-                            <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>
+                            <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>
                                 50
                             </option>
 
@@ -358,22 +328,18 @@
                 <div class="pagination-right">
 
                     {{-- Previous --}}
-                    @if($categories->onFirstPage())
-
+                    @if ($categories->onFirstPage())
                         <button class="page-btn" disabled>
 
                             <i class="fa-solid fa-chevron-left"></i>
 
                         </button>
-
                     @else
-
                         <a href="{{ $categories->previousPageUrl() }}" class="page-btn">
 
                             <i class="fa-solid fa-chevron-left"></i>
 
                         </a>
-
                     @endif
 
 
@@ -383,71 +349,57 @@
 
                         $end = min($start + 1, $categories->lastPage());
 
-                        if($end - $start < 1){
-
+                        if ($end - $start < 1) {
                             $start = max($end - 1, 1);
-
                         }
 
                     @endphp
 
 
-                    @for($page = $start; $page <= $end; $page++)
-
-                        @if($page == $categories->currentPage())
-
+                    @for ($page = $start; $page <= $end; $page++)
+                        @if ($page == $categories->currentPage())
                             <span class="page-number active">
 
                                 {{ $page }}
 
                             </span>
-
                         @else
-
-                            <a href="{{ $categories->url($page) }}"
-                            class="page-number">
+                            <a href="{{ $categories->url($page) }}" class="page-number">
 
                                 {{ $page }}
 
                             </a>
-
                         @endif
-
                     @endfor
 
 
                     {{-- Next --}}
-                    @if($categories->hasMorePages())
-
-                        <a href="{{ $categories->nextPageUrl() }}"
-                        class="page-btn">
+                    @if ($categories->hasMorePages())
+                        <a href="{{ $categories->nextPageUrl() }}" class="page-btn">
 
                             <i class="fa-solid fa-chevron-right"></i>
 
                         </a>
-
                     @else
-
                         <button class="page-btn" disabled>
 
                             <i class="fa-solid fa-chevron-right"></i>
 
                         </button>
-
                     @endif
 
                 </div>
 
             </div>
 
+        </div>
+
+
     </div>
-
-
-</div>
 
 
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/admin/portfolio_category.js') }}"></script>
+    <script src="{{ asset('js/admin/portfolio_category.js') }}"></script>
 @endpush

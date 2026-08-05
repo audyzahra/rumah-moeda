@@ -5,8 +5,9 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/portfolio/edit.css') }}">
 @endpush
-
-
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
 @section('content')
     <div class="content">
 
@@ -29,7 +30,7 @@
 
         </div>
 
-        <form action="{{ route('admin.portfolios.update', $portfolio->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.portfolios.update', Crypt::encryptString($portfolio->id)) }}"
 
             @csrf
             @method('PUT')

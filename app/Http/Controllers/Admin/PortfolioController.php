@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Services\SecurityInputService;
 use App\Services\Security\DangerousInputException;
 
+use Illuminate\Support\Facades\Crypt;
+
 class PortfolioController extends Controller
 {
     protected SecurityInputService $security;
@@ -301,15 +303,15 @@ class PortfolioController extends Controller
             ->with('success', 'Portfolio berhasil ditambahkan');
     }
 
-    public function show(string $id)
+   public function show(string $id)
     {
+        $id = Crypt::decryptString($id);
 
         $portfolio = Portfolio::with([
             'category',
             'partner',
             'media'
-        ])
-            ->findOrFail($id);
+        ])->findOrFail($id);
 
 
 
@@ -318,7 +320,7 @@ class PortfolioController extends Controller
 
     public function edit(string $id)
     {
-
+        $id = Crypt::decryptString($id);
 
         $portfolio = Portfolio::with('media', 'author')
             ->findOrFail($id);
@@ -342,6 +344,9 @@ class PortfolioController extends Controller
 
     public function update(Request $request, string $id)
     {
+        $id = Crypt::decryptString($id);
+
+        $portfolio = Portfolio::findOrFail($id);
 
 
         $data = $request->validate([
@@ -400,8 +405,6 @@ class PortfolioController extends Controller
                 ->with('error', $e->getMessage());
 
         }
-
-        $portfolio = Portfolio::findOrFail($id);
 
         $currentImages = $portfolio->media()
             ->where('type', 'image')
@@ -551,7 +554,8 @@ class PortfolioController extends Controller
 
     public function destroy(string $id)
     {
-
+        $id = Crypt::decryptString($id);
+        
         $portfolio = Portfolio::with('media')
             ->findOrFail($id);
 
