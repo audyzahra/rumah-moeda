@@ -68,19 +68,24 @@ class RegisteredUserController extends Controller
         );
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => 'user',
+        'status' => 0,
+    ]);
 
+       // Tetap boleh dipanggil
         event(new Registered($user));
 
+                try {
+            $user->sendEmailVerificationNotification();
+        } catch (\Throwable $e) {
+            dd($e->getMessage(), $e);
+        };
         Auth::login($user);
 
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
+        return redirect()->route('verification.notice');
 
-        return redirect()->route('user.dashboard');
     }
 }

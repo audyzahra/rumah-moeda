@@ -1063,3 +1063,50 @@
     background:#fee2e2;
     color:#991b1b;
 }
+/* ==================================================
+   EMAIL STATUS
+================================================== */
+
+.email-wrapper{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.email-text{
+    color:#374151;
+    font-weight:500;
+    word-break:break-word;
+    line-height:1.5;
+}
+
+/* ================= ICON ================= */
+
+.email-status{
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    color:#fff;
+    font-size:11px;
+    transition:.2s ease;
+}
+
+.email-status:hover{
+    transform:scale(1.08);
+}
+
+/* VERIFIED */
+
+.email-status.verified{
+    background:#22c55e;
+}
+
+/* UNVERIFIED */
+
+.email-status.unverified{
+    background:#ef4444;
+}
