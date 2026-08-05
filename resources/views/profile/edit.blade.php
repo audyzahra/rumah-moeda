@@ -19,9 +19,10 @@
             <!-- PANEL KIRI -->
             <div class="profile-left">
 
-                <a href="{{ url('/') }}" class="btn-back">
-    <i class="fa-solid fa-arrow-left"></i>
-</a>
+                <a href="{{ auth()->user()->role == 'admin' ? route('admin.dashboard') : route('user.dashboard') }}"
+                    class="btn-back">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
 
                 <div class="left-content">
 
@@ -69,11 +70,13 @@
 
                     </div>
 
-                    <div class="password-link">
-    <a href="{{ route('password.request') }}">
-        Ubah Password?
-    </a>
-</div>
+                    @if (auth()->user()->role == 'user')
+                        <div class="password-link">
+                            <a href="{{ route('password.request') }}">
+                                Ubah Password?
+                            </a>
+                        </div>
+                    @endif
 
                     <button type="submit" class="btn-save">
                         Simpan

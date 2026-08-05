@@ -25,11 +25,17 @@
 
         </div>
 
+         <div class="topbar-right">
+
+        <span id="clock"></span>
+
         <div class="profile">
-            <a href="profile.html">
+            <a href="{{ route('profile.edit') }}">
                 <i class="fa-solid fa-user"></i>
             </a>
         </div>
+
+    </div>
 
     </header>
 

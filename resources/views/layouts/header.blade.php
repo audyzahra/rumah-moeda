@@ -1,20 +1,20 @@
 <header class="main-header">
 
-@php
-    $isUser = auth()->check() && auth()->user()->role === 'user';
+    @php
+        $isUser = auth()->check() && auth()->user()->role === 'user';
 
-    $homeRoute = $isUser ? 'member.home' : 'home';
-    $aboutRoute = $isUser ? 'member.about' : 'about';
-    $contactRoute = $isUser ? 'member.contact' : 'contact';
+        $homeRoute = $isUser ? 'member.home' : 'home';
+        $aboutRoute = $isUser ? 'member.about' : 'about';
+        $contactRoute = $isUser ? 'member.contact' : 'contact';
 
-    $newsRoute = $isUser ? 'member.news.index' : 'news.index';
-    $portfolioRoute = $isUser ? 'member.portfolio.index' : 'portfolio.index';
+        $newsRoute = $isUser ? 'member.news.index' : 'news.index';
+        $portfolioRoute = $isUser ? 'member.portfolio.index' : 'portfolio.index';
 
-    $photoRoute = $isUser ? 'member.gallery.photos' : 'gallery.photos';
-    $videoRoute = $isUser ? 'member.gallery.videos' : 'gallery.videos';
+        $photoRoute = $isUser ? 'member.gallery.photos' : 'gallery.photos';
+        $videoRoute = $isUser ? 'member.gallery.videos' : 'gallery.videos';
 
-    $faqRoute = $isUser ? 'member.faq.index' : 'faq.index';
-@endphp
+        $faqRoute = $isUser ? 'member.faq.index' : 'faq.index';
+    @endphp
 
 
     <div class="header-container">
@@ -22,16 +22,15 @@
         {{-- Logo --}}
         <div class="logo-section">
 
-                @if (!empty($setting->website_logo))
-                    <img src="{{ Storage::url($setting->website_logo) }}" class="logo-img"
-                        alt="{{ $setting->website_name }}">
-                @else
-                    <img src="{{ asset('assets/logo-default.png') }}" class="logo-img" alt="Logo">
-                @endif
+            @if (!empty($setting->website_logo))
+                <img src="{{ Storage::url($setting->website_logo) }}" class="logo-img" alt="{{ $setting->website_name }}">
+            @else
+                <img src="{{ asset('assets/logo-default.png') }}" class="logo-img" alt="Logo">
+            @endif
 
             <a href="{{ route($homeRoute) }}" class="logo-text">
-    {{ $setting->website_name }}
-</a>
+                {{ $setting->website_name }}
+            </a>
         </div>
 
         <!-- Hamburger -->
@@ -50,18 +49,17 @@
                 </li>
 
                 <li>
-                    <a href="{{ route($aboutRoute) }}"
-   class="{{ request()->routeIs($aboutRoute) ? 'active' : '' }}">
+                    <a href="{{ route($aboutRoute) }}" class="{{ request()->routeIs($aboutRoute) ? 'active' : '' }}">
                         Tentang Kami
                     </a>
                 </li>
 
                 <li>
-    <a href="{{ route($contactRoute) }}"
-       class="{{ request()->routeIs($contactRoute) ? 'active' : '' }}">
-        Hubungi Kami
-    </a>
-</li>
+                    <a href="{{ route($contactRoute) }}"
+                        class="{{ request()->routeIs($contactRoute) ? 'active' : '' }}">
+                        Hubungi Kami
+                    </a>
+                </li>
                 <li class="dropdown">
 
                     <a href="#">
@@ -115,8 +113,8 @@
                         <li>
 
                             <a href="{{ route($videoRoute) }}">
-    Video
-</a>
+                                Video
+                            </a>
 
                         </li>
 
@@ -146,30 +144,6 @@
                 </button>
 
                 {{-- User Dropdown --}}
-                <div class="user-dropdown">
-
-                    <button class="user-btn" id="userMenuBtn">
-                        <i class="fas fa-user-circle"></i>
-                    </button>
-
-                    <div class="dropdown-menu" id="userDropdown">
-
-                        <a href="{{ route('profile.edit') }}">
-                            <i class="fas fa-user"></i>
-                            Profil
-                        </a>
-
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit">
-                                <i class="fas fa-sign-out-alt"></i>
-                                Logout
-                            </button>
-                        </form>
-
-                    </div>
-
-                </div>
 
             @endauth
 

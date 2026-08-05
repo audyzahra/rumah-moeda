@@ -9,6 +9,7 @@
 @section('content')
 
     <header class="topbar">
+
         <div class="topbar-left">
             <div>
                 <h1>Beranda</h1>
@@ -16,11 +17,14 @@
             </div>
         </div>
 
-        <div class="profile">
-            <a href="profile.html">
-                <i class="fa-solid fa-user"></i>
-            </a>
+        <div class="topbar-right">
+            <div class="profile">
+                <a href="{{ route('profile.edit') }}">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+            </div>
         </div>
+
     </header>
 
     <!-- Statistik -->
