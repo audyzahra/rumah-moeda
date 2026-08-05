@@ -232,18 +232,31 @@
                 </a>
             @endif
 
-            {{-- Nomor Halaman --}}
-            @foreach ($gallery->getUrlRange(1, $gallery->lastPage()) as $page => $url)
-                @if ($page == $gallery->currentPage())
+            {{-- Nomor Halaman - NOMOR HALAMAN (HANYA 2 ANGKA) --}}
+            @php
+                $current = $gallery->currentPage();
+                $last = $gallery->lastPage();
+
+                $start = $current;
+                $end = min($current + 1, $last);
+
+                // Jika di halaman terakhir, mundurkan satu halaman
+                if ($start == $last && $last > 1) {
+                    $start = $last - 1;
+                }
+            @endphp
+
+            @for ($page = $start; $page <= $end; $page++)
+                @if ($page == $current)
                     <span class="page-number active">
                         {{ $page }}
                     </span>
                 @else
-                    <a href="{{ $url }}" class="page-number">
+                    <a href="{{ $gallery->url($page) }}" class="page-number">
                         {{ $page }}
                     </a>
                 @endif
-            @endforeach
+            @endfor
 
             {{-- Next --}}
             @if ($gallery->hasMorePages())

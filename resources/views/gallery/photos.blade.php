@@ -26,135 +26,160 @@
 
     </section>
 
-    <div class="galeri-toolbar">
+    <form method="GET" id="galleryPhotoFilter">
+        <input
+            type="hidden"
+            name="per_page"
+            value="{{ request('per_page',6) }}">
 
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
+        <div class="galeri-toolbar">
+            {{-- SEARCH --}}
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
 
-            <input type="text" id="searchGaleri" placeholder="Cari dokumentasi...">
+                <input
+                    id="searchPhoto"
+                    type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Cari dokumentasi...">
+            </div>
+
+            {{-- SORT --}}
+            <div class="sort-box">
+                <select
+                    id="sortPhoto"
+                    name="sort">
+
+                    <option value="terbaru"
+                        {{ request('sort','terbaru')=='terbaru' ? 'selected' : '' }}>
+                        Terbaru
+                    </option>
+
+                    <option value="terlama"
+                        {{ request('sort')=='terlama' ? 'selected' : '' }}>
+                        Terlama
+                    </option>
+
+                    <option value="az"
+                        {{ request('sort')=='az' ? 'selected' : '' }}>
+                        Judul A-Z
+                    </option>
+
+                    <option value="za"
+                        {{ request('sort')=='za' ? 'selected' : '' }}>
+                        Judul Z-A
+                    </option>
+                </select>
+            </div>
         </div>
+    </form>
 
-        <div class="sort-box">
-            <select id="sortGaleri">
-                <option value="terbaru">Terbaru</option>
-                <option value="terlama">Terlama</option>
-                <option value="az">Judul A-Z</option>
-                <option value="za">Judul Z-A</option>
-            </select>
-        </div>
+    <div id="galleryPhotoTable">
+        <section class="galeri-container">
 
-    </div>
+            @forelse($gallery as $item)
+                <a href="{{ route('gallery.photos.detail', $item) }}" class="galeri-card"
+                    data-title="{{ strtolower($item->title) }}"
+                    data-description="{{ strtolower(strip_tags($item->description)) }}"
+                    data-date="{{ \Carbon\Carbon::parse($item->activity_date)->timestamp }}">
 
-    <section class="galeri-container">
+                    {{-- Thumbnail --}}
+                    @php
+                        $media = $item->media->first();
 
-        @forelse($gallery as $item)
-            <a href="{{ route('gallery.photos.detail', $item) }}" class="galeri-card"
-                data-title="{{ strtolower($item->title) }}"
-                data-description="{{ strtolower(strip_tags($item->description)) }}"
-                data-date="{{ \Carbon\Carbon::parse($item->activity_date)->timestamp }}">
+                        $image = $media ? Storage::url($media->file_path) : defaultImage();
+                    @endphp
 
-                {{-- Thumbnail --}}
-                @php
-                    $media = $item->media->first();
+                    <img loading="lazy" src="{{ $image }}" alt="{{ $item->title }}">
 
-                    $image = $media ? Storage::url($media->file_path) : defaultImage();
-                @endphp
+                    <div class="galeri-info">
 
-                <img loading="lazy" src="{{ $image }}" alt="{{ $item->title }}">
+                        <h3>
 
-                <div class="galeri-info">
+                            {{ $item->title }}
 
-                    <h3>
+                        </h3>
 
-                        {{ $item->title }}
+                        <p>
 
-                    </h3>
+                            {{ Str::limit(strip_tags($item->description), 100) }}
 
-                    <p>
+                        </p>
 
-                        {{ Str::limit(strip_tags($item->description), 100) }}
+                        <div class="galeri-meta">
 
-                    </p>
+                            <span>
 
-                    <div class="galeri-meta">
+                                <i class="fa-regular fa-images"></i>
 
-                        <span>
+                                {{ $item->media->count() }} Foto
 
-                            <i class="fa-regular fa-images"></i>
+                            </span>
 
-                            {{ $item->media->count() }} Foto
+                            <span>
 
-                        </span>
+                                <i class="fa-regular fa-calendar"></i>
 
-                        <span>
+                                {{ \Carbon\Carbon::parse($item->activity_date)->translatedFormat('d F Y') }}
 
-                            <i class="fa-regular fa-calendar"></i>
+                            </span>
 
-                            {{ \Carbon\Carbon::parse($item->activity_date)->translatedFormat('d F Y') }}
-
-                        </span>
+                        </div>
 
                     </div>
 
+                </a>
+
+            @empty
+
+                <div class="empty-gallery">
+
+                    <i class="fa-regular fa-image"></i>
+
+                    <h3>Belum ada galeri foto.</h3>
+
+                    <p>
+                        Dokumentasi foto kegiatan belum tersedia.
+                    </p>
+
                 </div>
+            @endforelse
 
-            </a>
+        </section>
+    </div>
 
-        @empty
-
-            <div class="empty-gallery">
-
-                <i class="fa-regular fa-image"></i>
-
-                <h3>Belum ada galeri foto.</h3>
-
-                <p>
-                    Dokumentasi foto kegiatan belum tersedia.
-                </p>
-
-            </div>
-        @endforelse
-
-    </section>
     {{-- PAGINATION --}}
     <div class="custom-pagination">
 
         {{-- Show Entries --}}
         <div class="pagination-left">
-
-            <form method="GET" id="perPageForm">
-
-                {{-- Menyimpan query search/sort jika nanti ada --}}
-                @foreach (request()->except('per_page', 'page') as $key => $value)
-                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-                @endforeach
-
-                <span>Tampilkan</span>
-
-                <select name="per_page" onchange="this.form.submit()">
-
-                    <option value="6" {{ request('per_page', 6) == 6 ? 'selected' : '' }}>
+            <span>Tampilkan</span>
+                <select
+                    id="perPagePhoto"
+                    name="per_page"
+                    form="galleryPhotoFilter">
+                    <option value="6"
+                        {{ request('per_page',6)==6 ? 'selected' : '' }}>
                         6
                     </option>
 
-                    <option value="12" {{ request('per_page') == 12 ? 'selected' : '' }}>
+                    <option value="12"
+                        {{ request('per_page')==12 ? 'selected' : '' }}>
                         12
                     </option>
 
-                    <option value="24" {{ request('per_page') == 24 ? 'selected' : '' }}>
+                    <option value="24"
+                        {{ request('per_page')==24 ? 'selected' : '' }}>
                         24
                     </option>
 
-                    <option value="48" {{ request('per_page') == 48 ? 'selected' : '' }}>
+                    <option value="48"
+                        {{ request('per_page')==48 ? 'selected' : '' }}>
                         48
                     </option>
-
                 </select>
-
-                <span>galeri</span>
-
-            </form>
-
+            <span>galeri</span>
         </div>
 
         {{-- Info --}}
@@ -190,18 +215,31 @@
                 </a>
             @endif
 
-            {{-- Nomor Halaman --}}
-            @foreach ($gallery->getUrlRange(1, $gallery->lastPage()) as $page => $url)
-                @if ($page == $gallery->currentPage())
+            {{-- Nomor Halaman - NOMOR HALAMAN (HANYA 2 ANGKA) --}}
+            @php
+                $current = $gallery->currentPage();
+                $last = $gallery->lastPage();
+
+                $start = $current;
+                $end = min($current + 1, $last);
+
+                // Kalau di halaman terakhir, mundurkan satu halaman
+                if ($start == $last && $last > 1) {
+                    $start = $last - 1;
+                }
+            @endphp
+
+            @for ($page = $start; $page <= $end; $page++)
+                @if ($page == $current)
                     <span class="page-number active">
                         {{ $page }}
                     </span>
                 @else
-                    <a href="{{ $url }}" class="page-number">
+                    <a href="{{ $gallery->url($page) }}" class="page-number">
                         {{ $page }}
                     </a>
                 @endif
-            @endforeach
+            @endfor
 
             {{-- Next --}}
             @if ($gallery->hasMorePages())

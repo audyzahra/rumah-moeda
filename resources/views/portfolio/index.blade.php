@@ -465,18 +465,41 @@
                         </a>
                     @endif
 
-                    {{-- Nomor Halaman --}}
-                    @foreach ($portfolios->getUrlRange(1, $portfolios->lastPage()) as $page => $url)
-                        @if ($page == $portfolios->currentPage())
-                            <span class="page-number active">
-                                {{ $page }}
-                            </span>
-                        @else
-                            <a href="{{ $url }}" class="page-number">
-                                {{ $page }}
-                            </a>
-                        @endif
-                    @endforeach
+                    {{-- Nomor Halaman PAGINATION (HANYA 2 NOMOR HALAMAN)--}}
+                        @php
+                            $current = $portfolios->currentPage();
+                            $last = $portfolios->lastPage();
+
+                            // Mulai dari halaman aktif
+                            $start = $current;
+
+                            // Akhir maksimal 2 halaman
+                            $end = min($current + 1, $last);
+
+                            // Kalau sudah di halaman terakhir,
+                            // mundurkan supaya tetap tampil 2 angka
+                            if ($end - $start < 1 && $start > 1) {
+                                $start--;
+                            }
+                        @endphp
+
+                        @for ($page = $start; $page <= $end; $page++)
+
+                            @if ($page == $current)
+
+                                <span class="page-number active">
+                                    {{ $page }}
+                                </span>
+
+                            @else
+
+                                <a href="{{ $portfolios->url($page) }}" class="page-number">
+                                    {{ $page }}
+                                </a>
+
+                            @endif
+
+                        @endfor
 
                     {{-- Next --}}
                     @if ($portfolios->hasMorePages())

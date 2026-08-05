@@ -774,7 +774,45 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* ==========================================
-   SEARCH & SORT GALERI PUBLIK
+   SEARCH & SORT GALERI FOTO (WEB PUBLIK USER)
+========================================== */
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("galleryPhotoFilter");
+    if (!form) return;
+
+    const search = document.getElementById("searchPhoto");
+    const sort = document.getElementById("sortPhoto");
+    const perPage = document.getElementById("perPagePhoto");
+    let timer;
+
+    /* ==========================
+       SEARCH
+    ========================== */
+    search?.addEventListener("keyup", function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            form.submit();
+        }, 400);
+    });
+
+    /* ==========================
+       SORT
+    ========================== */
+    sort?.addEventListener("change", function () {
+        form.submit();
+    });
+
+    /* ==========================
+       PER PAGE
+    ========================== */
+    perPage?.addEventListener("change", function () {
+        form.submit();
+    });
+});
+
+/* ==========================================
+   SEARCH & SORT GALERI PUBLIK (WEB PUBLIK USER)
 ========================================== */
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("galleryFilter");

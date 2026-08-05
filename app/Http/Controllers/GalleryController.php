@@ -22,6 +22,8 @@ class GalleryController extends Controller
 
     public function photos(Request $request)
     {
+        $perPage = $request->input('per_page', 6);
+
         $query = Gallery::with([
             'media' => function ($q) {
                 $q->where('type', 'image');
@@ -30,15 +32,48 @@ class GalleryController extends Controller
             $q->where('type', 'image');
         });
 
-        // Jika login (Admin/User), hanya tampilkan galeri miliknya
+        // Login
         if (Auth::check()) {
             $query->where('author_id', Auth::id());
         }
 
-        $perPage = $request->input('per_page', 6);
+        /*
+        |--------------------------------------------------------------------------
+        | SEARCH
+        |--------------------------------------------------------------------------
+        */
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | SORT
+        |--------------------------------------------------------------------------
+        */
+        switch ($request->sort) {
+            case 'terlama':
+                $query->oldest('activity_date');
+                break;
+
+            case 'az':
+                $query->orderBy('title', 'asc');
+                break;
+
+            case 'za':
+                $query->orderBy('title', 'desc');
+                break;
+
+            default:
+                $query->latest('activity_date');
+                break;
+        }
 
         $gallery = $query
-            ->orderByDesc('activity_date')
             ->paginate($perPage)
             ->withQueryString();
 
