@@ -61,12 +61,13 @@
 
                 <label>Mitra <span class="required">*</span></label>
 
-                <select name="partner_id" class="form-control">
+                <select name="partner_id" class="form-control" required>
 
-                    <option value="">Tanpa Mitra</option>
+                    <option value="" disabled selected>Pilih Mitra</option>
 
                     @foreach ($partners as $partner)
-                        <option value="{{ $partner->id }}" {{ old('partner_id') == $partner->id ? 'selected' : '' }}>
+                        <option value="{{ $partner->id }}"
+                            {{ old('partner_id') == $partner->id ? 'selected' : '' }}>
                             {{ $partner->name }}
                         </option>
                     @endforeach

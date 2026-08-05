@@ -84,13 +84,32 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title'         => 'required|string|max:255',
-            'content'       => 'required',
-            'category_id'   => 'required|exists:categories,id',
-            'publish_date'  => 'required|date',
-            'thumbnail'     => 'required|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+        $request->validate(
+    [
+        'title'         => 'required|string|max:255',
+        'content'       => 'required',
+        'category_id'   => 'required|exists:categories,id',
+        'publish_date'  => 'required|date',
+        'thumbnail'     => 'required|image|mimes:jpg,jpeg,png|max:2048',
+    ],
+    [
+        'title.required'         => 'Judul wajib diisi.',
+        'title.max'              => 'Judul maksimal 255 karakter.',
+
+        'content.required'       => 'Isi berita wajib diisi.',
+
+        'category_id.required'   => 'Kategori wajib dipilih.',
+        'category_id.exists'     => 'Kategori tidak valid.',
+
+        'publish_date.required'  => 'Tanggal publish wajib diisi.',
+        'publish_date.date'      => 'Format tanggal publish tidak valid.',
+
+        'thumbnail.required'     => 'Thumbnail wajib diunggah.',
+        'thumbnail.image'        => 'Thumbnail harus berupa gambar.',
+        'thumbnail.mimes'        => 'Thumbnail harus berformat JPG, JPEG, atau PNG.',
+        'thumbnail.max'          => 'Ukuran thumbnail maksimal 2 MB.',
+    ]
+);
 
         try {
 
@@ -116,7 +135,7 @@ class NewsController extends Controller
             'thumbnail'     => $thumbnail,
             'content' => $content,
             'category_id'   => $request->category_id,
-            'slug' => Str::slug($title),
+            'slug' => $this->generateUniqueSlug($title),
             'publish_date'  => $request->publish_date,
             'author_id'     => Auth::id(),
         ]);
@@ -164,13 +183,31 @@ class NewsController extends Controller
         $news = News::where('author_id', Auth::id())
             ->findOrFail($id);
 
-        $request->validate([
-            'title'         => 'required|string|max:255',
-            'content'       => 'required',
-            'category_id'   => 'required|exists:categories,id',
-            'publish_date'  => 'required|date',
-            'thumbnail'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+        $request->validate(
+    [
+        'title'         => 'required|string|max:255',
+        'content'       => 'required',
+        'category_id'   => 'required|exists:categories,id',
+        'publish_date'  => 'required|date',
+        'thumbnail'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ],
+    [
+        'title.required'         => 'Judul wajib diisi.',
+        'title.max'              => 'Judul maksimal 255 karakter.',
+
+        'content.required'       => 'Isi berita wajib diisi.',
+
+        'category_id.required'   => 'Kategori wajib dipilih.',
+        'category_id.exists'     => 'Kategori tidak valid.',
+
+        'publish_date.required'  => 'Tanggal publish wajib diisi.',
+        'publish_date.date'      => 'Format tanggal publish tidak valid.',
+
+        'thumbnail.image'        => 'Thumbnail harus berupa gambar.',
+        'thumbnail.mimes'        => 'Thumbnail harus berformat JPG, JPEG, atau PNG.',
+        'thumbnail.max'          => 'Ukuran thumbnail maksimal 2 MB.',
+    ]
+);
         try {
 
             $title = $this->security->cleanText($request->title);
@@ -203,7 +240,7 @@ class NewsController extends Controller
             'thumbnail'     => $thumbnail,
             'content' => $content,
             'category_id'   => $request->category_id,
-            'slug' => Str::slug($title),
+            'slug' => $this->generateUniqueSlugForUpdate($title, $news->id),
             'publish_date'  => $request->publish_date,
         ]);
 
@@ -213,6 +250,44 @@ class NewsController extends Controller
             'success' => 'Berita berhasil diperbarui.'
         ]);
     }
+
+    /**
+ * Generate slug unik saat tambah berita.
+ */
+private function generateUniqueSlug(string $title): string
+{
+    $slug = Str::slug($title);
+    $originalSlug = $slug;
+    $count = 1;
+
+    while (News::where('slug', $slug)->exists()) {
+        $slug = $originalSlug . '-' . $count;
+        $count++;
+    }
+
+    return $slug;
+}
+
+/**
+ * Generate slug unik saat update berita.
+ */
+private function generateUniqueSlugForUpdate(string $title, int $newsId): string
+{
+    $slug = Str::slug($title);
+    $originalSlug = $slug;
+    $count = 1;
+
+    while (
+        News::where('slug', $slug)
+            ->where('id', '!=', $newsId)
+            ->exists()
+    ) {
+        $slug = $originalSlug . '-' . $count;
+        $count++;
+    }
+
+    return $slug;
+}
 
     /**
      * Hapus berita

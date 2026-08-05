@@ -39,7 +39,15 @@ class PortfolioController extends Controller
         // Search
         if ($request->filled('search')) {
 
-            $keyword = $request->search;
+            try {
+
+                $keyword = $this->security->cleanText($request->search);
+
+            } catch (DangerousInputException $e) {
+
+                return back()->with('error', $e->getMessage());
+
+            }
 
             $query->where(function ($q) use ($keyword) {
 
@@ -190,7 +198,7 @@ class PortfolioController extends Controller
 
             'title' => $title,
 
-            'slug' => Str::slug($title),
+            'slug' => $this->generateUniqueSlug($title),
 
             'description' => $description,
 
@@ -399,7 +407,7 @@ class PortfolioController extends Controller
 
             'title' => $title,
 
-            'slug' => Str::slug($title),
+            'slug' => $this->generateUniqueSlugForUpdate($title, $portfolio->id),
 
             'description' => $description,
 
@@ -509,6 +517,44 @@ class PortfolioController extends Controller
             ->route('user.portfolios.index')
             ->with('success', 'Portfolio berhasil diperbarui');
     }
+
+    /**
+ * Generate slug unik saat tambah portofolio.
+ */
+private function generateUniqueSlug(string $title): string
+{
+    $slug = Str::slug($title);
+    $originalSlug = $slug;
+    $count = 1;
+
+    while (Portfolio::where('slug', $slug)->exists()) {
+        $slug = $originalSlug . '-' . $count;
+        $count++;
+    }
+
+    return $slug;
+}
+
+/**
+ * Generate slug unik saat update portofolio.
+ */
+private function generateUniqueSlugForUpdate(string $title, int $portfolioId): string
+{
+    $slug = Str::slug($title);
+    $originalSlug = $slug;
+    $count = 1;
+
+    while (
+        Portfolio::where('slug', $slug)
+            ->where('id', '!=', $portfolioId)
+            ->exists()
+    ) {
+        $slug = $originalSlug . '-' . $count;
+        $count++;
+    }
+
+    return $slug;
+}
 
     public function destroy(string $id)
     {
