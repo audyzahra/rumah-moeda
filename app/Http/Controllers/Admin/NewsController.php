@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Crypt;
 
 class NewsController extends Controller
 {
@@ -152,6 +153,8 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
+        $id = Crypt::decryptString($id);
+
         $news = News::findOrFail($id);
 
         $categories = Category::orderBy('name')->get();
@@ -217,6 +220,7 @@ class NewsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $id = Crypt::decryptString($id);
         $beritum = News::findOrFail($id);
 
         $request->validate([
@@ -276,6 +280,8 @@ class NewsController extends Controller
      */
     public function destroy($id)
     {
+        $id = Crypt::decryptString($id);
+
         $news = News::findOrFail($id);
 
         if (
