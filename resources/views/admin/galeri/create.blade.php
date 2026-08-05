@@ -107,6 +107,7 @@
                         + Tambah Foto
 
                     </button>
+                    <div id="photo-preview" class="preview-grid"></div>
 
                     <div id="video-container">
 
@@ -137,6 +138,7 @@
                         + Tambah Link Video
 
                     </button>
+                    <div id="video-preview" class="preview-grid"></div>
 
                     <div class="modal-footer">
 
@@ -177,46 +179,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 @endif
 
-@push('scripts')
-    <script src="{{ asset('js/admin/galeri.js') }}"></script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-
-            const form = document.querySelector("form");
-
-            form.addEventListener("submit", function(e) {
-
-                const photoInputs = document.querySelectorAll('input[name="images[]"]');
-
-                let hasPhoto = false;
-
-                photoInputs.forEach(input => {
-                    if (input.files.length > 0) {
-                        hasPhoto = true;
-                    }
-                });
-
-                if (!hasPhoto) {
-
-                    e.preventDefault();
-
-                    Swal.fire({
-                        icon: "warning",
-                        title: "Foto wajib diisi",
-                        text: "Minimal harus menambahkan 1 foto sebelum galeri disimpan.",
-                        confirmButtonColor: "#D4AF37",
-                        confirmButtonText: "Mengerti"
-                    });
-
-                    return;
-                }
-
-            });
-
-        });
-    </script>
-@endpush
 @push('scripts')
     <script src="{{ asset('js/admin/galeri.js') }}"></script>
     <script>

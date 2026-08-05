@@ -194,6 +194,7 @@
                         Tambah Link Video
 
                     </button>
+                    <div id="videoPreview" class="preview-grid"></div>
 
                 </div>
 
@@ -259,7 +260,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const photoContainer = document.getElementById('photoContainer');
     const photoPreview = document.getElementById('photoPreview');
+    const videoPreview = document.getElementById('videoPreview');
+    // ================ PREVIEW VIDEO =================
+    function getYoutubeId(url) {
 
+        const regExp =
+            /^.*(?:youtu\.be\/|v\/|embed\/|watch\?v=|.*&v=)([^#&?]{11}).*/;
+
+        const match = url.match(regExp);
+
+        return match ? match[1] : null;
+    }
+
+    function previewVideos() {
+
+        videoPreview.innerHTML = '';
+
+        document.querySelectorAll('input[name="videos[]"]').forEach(input => {
+
+            const videoId = getYoutubeId(input.value);
+
+            if (videoId) {
+
+                videoPreview.innerHTML += `
+                    <div class="preview-item">
+                        <iframe
+                            width="100%"
+                            height="180"
+                            src="https://www.youtube.com/embed/${videoId}"
+                            frameborder="0"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                `;
+
+            }
+
+        });
+
+    }
     // ================= PREVIEW FOTO =================
     function previewPhotos() {
         photoPreview.innerHTML = '';
@@ -292,6 +331,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (e.target.matches('#photoContainer input[type="file"]')) {
             previewPhotos();
+        }
+
+    });
+
+    // Preview ketika memasukkan link video
+    document.addEventListener('input', function (e) {
+
+        if (e.target.matches('input[name="videos[]"]')) {
+            previewVideos();
         }
 
     });
