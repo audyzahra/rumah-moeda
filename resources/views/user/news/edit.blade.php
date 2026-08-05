@@ -5,7 +5,9 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/berita.css') }}">
 @endpush
-
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
 @section('content')
 
     <div class="berita-container">
@@ -36,7 +38,7 @@
         {{-- FORM --}}
         <div class="modal-content">
 
-            <form action="{{ route('user.news.update', $news->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('user.news.update', Crypt::encryptString($news->id)) }}" method="POST" enctype="multipart/form-data">
 
                 @csrf
                 @method('PUT')
