@@ -1,6 +1,10 @@
 @extends('Layouts.app')
 
-@section('title', 'Pertanyaan')
+@section('title', 'Pertanyaan Umum | FAQ Rumah Moeda')
+
+@section('description', 'Temukan jawaban atas pertanyaan umum mengenai Rumah Moeda, program, kegiatan, layanan, kerja sama, serta informasi lainnya yang sering ditanyakan.')
+
+@section('keywords', 'FAQ Rumah Moeda, pertanyaan umum Rumah Moeda, informasi Rumah Moeda, program sosial, kegiatan Rumah Moeda, kerja sama')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/pertanyaan.css') }}">

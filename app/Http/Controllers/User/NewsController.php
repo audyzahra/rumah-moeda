@@ -9,9 +9,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Services\Security\DangerousInputException;
+use App\Services\SecurityInputService;
 
 class NewsController extends Controller
 {
+    protected SecurityInputService $security;
+
+    public function __construct(SecurityInputService $security)
+    {
+        $this->security = $security;
+    }
     /**
      * Menampilkan daftar berita milik user
      */
@@ -24,8 +32,15 @@ class NewsController extends Controller
 
     // Search judul
     if ($request->filled('search')) {
-        $query->where('title', 'like', '%' . $request->search . '%');
+
+    try {
+        $search = $this->security->cleanText($request->search);
+    } catch (DangerousInputException $e) {
+        return back()->with('error', $e->getMessage());
     }
+
+    $query->where('title', 'like', "%{$search}%");
+}
 
     // Filter kategori
     if ($request->filled('category')) {
@@ -77,6 +92,18 @@ class NewsController extends Controller
             'thumbnail'     => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        try {
+
+            $title = $this->security->cleanText($request->title);
+            $content = $this->security->cleanHtml($request->content);
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
+
         $thumbnail = null;
 
         if ($request->hasFile('thumbnail')) {
@@ -85,11 +112,11 @@ class NewsController extends Controller
         }
 
         News::create([
-            'title'         => $request->title,
+            'title' => $title,
             'thumbnail'     => $thumbnail,
-            'content'       => $request->content,
+            'content' => $content,
             'category_id'   => $request->category_id,
-            'slug'          => Str::slug($request->title),
+            'slug' => Str::slug($title),
             'publish_date'  => $request->publish_date,
             'author_id'     => Auth::id(),
         ]);
@@ -144,6 +171,17 @@ class NewsController extends Controller
             'publish_date'  => 'required|date',
             'thumbnail'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+        try {
+
+            $title = $this->security->cleanText($request->title);
+            $content = $this->security->cleanHtml($request->content);
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
 
         $thumbnail = $news->thumbnail;
 
@@ -161,11 +199,11 @@ class NewsController extends Controller
         }
 
         $news->update([
-            'title'         => $request->title,
+            'title' => $title,
             'thumbnail'     => $thumbnail,
-            'content'       => $request->content,
+            'content' => $content,
             'category_id'   => $request->category_id,
-            'slug'          => Str::slug($request->title),
+            'slug' => Str::slug($title),
             'publish_date'  => $request->publish_date,
         ]);
 

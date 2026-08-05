@@ -1,10 +1,15 @@
 @extends('layouts.app')
 
-@section('title', $gallery->title)
+@section('title', $gallery->title . ' | Galeri Rumah Moeda')
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/galeri.css') }}">
-@endpush
+@section('description', Str::limit(strip_tags($gallery->description), 160))
+
+@section('keywords', 'Galeri Rumah Moeda, ' . $gallery->title . ', dokumentasi kegiatan, video kegiatan, foto kegiatan,
+    program sosial, kolaborasi, mitra Rumah Moeda')
+
+    @push('styles')
+        <link rel="stylesheet" href="{{ asset('css/galeri.css') }}">
+    @endpush
 
 @section('content')
 
@@ -21,12 +26,26 @@
 
                 <h1>{{ $gallery->title }}</h1>
 
-                @if ($gallery->activity_date)
-                    <p class="tanggal">
-                        <i class="fa-regular fa-calendar"></i>
-                        {{ \Carbon\Carbon::parse($gallery->activity_date)->translatedFormat('d F Y') }}
-                    </p>
-                @endif
+                <div class="galeri-meta">
+
+                    @if ($gallery->activity_date)
+                        <span>
+                            <i class="fa-regular fa-calendar"></i>
+                            {{ \Carbon\Carbon::parse($gallery->activity_date)->translatedFormat('d F Y') }}
+                        </span>
+                    @endif
+
+                    <span>
+                        <i class="fa-regular fa-user"></i>
+                        {{ $gallery->author->name ?? 'Admin Rumah Moeda' }}
+                    </span>
+
+                    <span>
+                        <i class="fa-regular fa-eye"></i>
+                        {{ number_format($gallery->views ?? 0) }}
+                    </span>
+
+                </div>
 
             </div>
 

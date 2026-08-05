@@ -1,5 +1,11 @@
 @extends('Layouts.app')
 
+@section('title', $news->title . ' | Rumah Moeda')
+
+@section('description', Str::limit(strip_tags($news->content), 160))
+
+@section('keywords', 'Berita Rumah Moeda, ' . $news->title . ', kegiatan Rumah Moeda, informasi Rumah Moeda, kolaborasi, program sosial')
+
 @section('title', $news->title)
 
 @push('styles')
@@ -35,6 +41,11 @@
                 <span>
                     <i class="fa-regular fa-user"></i>
                     {{ $news->author->name ?? 'Admin Rumah Moeda' }}
+                </span>
+
+                <span>
+                    <i class="fa-regular fa-eye"></i>
+                    {{ number_format($news->views) }}
                 </span>
 
             </div>
@@ -90,7 +101,7 @@
         </div>
 
     </section>
-    
+
 <div class="lightbox" id="lightbox">
 
     <span class="lightbox-close">&times;</span>

@@ -77,6 +77,53 @@
                 </div>
 
             </div>
+            <div class="visitor-section">
+
+                <div class="visitor-title">
+
+                    <h3>Total Pengunjung</h3>
+
+                </div>
+
+                <div class="visitor-card">
+
+                    <div class="visitor-box">
+
+                        <div class="visitor-box-icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+
+                        <div class="visitor-content">
+
+                            <span>Total Keseluruhan</span>
+
+                            {{ number_format($totalVisitors) }}
+
+                        </div>
+
+                    </div>
+
+                    <div class="visitor-divider"></div>
+
+                    <div class="visitor-box">
+
+                        <div class="visitor-box-icon">
+                            <i class="fa-regular fa-calendar-days"></i>
+                        </div>
+
+                        <div class="visitor-content">
+
+                            <span>Pengunjung Hari Ini</span>
+
+                            {{ number_format($todayVisitors) }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
         </div>
 
         <div class="footer-item">
@@ -91,54 +138,10 @@
                 loading="lazy">
             </iframe>
         </div>
+        
     </div>
-    <div class="visitor-section">
-
-        <div class="visitor-title">
-
-            <h3>Total Pengunjung</h3>
-
-        </div>
-
-        <div class="visitor-card">
-
-            <div class="visitor-box">
-
-                <div class="visitor-box-icon">
-                    <i class="fa-solid fa-users"></i>
-                </div>
-
-                <div class="visitor-content">
-
-                    <span>Total Keseluruhan</span>
-
-                    {{ number_format($totalVisitors) }}
-
-                </div>
-
-            </div>
-
-            <div class="visitor-divider"></div>
-
-            <div class="visitor-box">
-
-                <div class="visitor-box-icon">
-                    <i class="fa-regular fa-calendar-days"></i>
-                </div>
-
-                <div class="visitor-content">
-
-                    <span>Pengunjung Hari Ini</span>
-
-                    {{ number_format($todayVisitors) }}
-
-                </div>
-
-            </div>
-
-        </div>
-
     </div>
+    
 
     <div class="footer-bottom">
         © {{ date('Y') }} {{ $setting->website_name }}. All Rights Reserved.

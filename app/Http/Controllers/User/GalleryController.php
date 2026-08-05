@@ -8,9 +8,17 @@ use App\Models\GalleryMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Services\SecurityInputService;
+use App\Services\Security\DangerousInputException;
 
 class GalleryController extends Controller
 {
+    protected SecurityInputService $security;
+
+    public function __construct(SecurityInputService $security)
+    {
+        $this->security = $security;
+    }
     /**
      * List gallery user
      */
@@ -74,31 +82,54 @@ class GalleryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'activity_date' => 'required|date',
 
-            'title'=>'required|max:255',
+            'photos' => 'required|array|min:1',
+            'photos.*' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
 
-            'description'=>'nullable',
+            'videos' => 'nullable|array',
+            'videos.*' => 'nullable|url',
+        ], [
+            'title.required' => 'Judul galeri wajib diisi.',
+            'title.max' => 'Judul maksimal 255 karakter.',
 
-            'activity_date'=>'required|date',
+            'activity_date.required' => 'Tanggal kegiatan wajib diisi.',
+            'activity_date.date' => 'Format tanggal tidak valid.',
 
-            'photos.*'=>'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'photos.required' => 'Minimal harus menambahkan 1 foto.',
+            'photos.array' => 'Format foto tidak valid.',
+            'photos.min' => 'Minimal harus menambahkan 1 foto.',
 
-            'videos.*'=>'nullable|url'
+            'photos.*.required' => 'Foto wajib dipilih.',
+            'photos.*.image' => 'File harus berupa gambar.',
+            'photos.*.mimes' => 'Format gambar hanya boleh JPG, JPEG, PNG atau WEBP.',
+            'photos.*.max' => 'Ukuran gambar maksimal 2 MB.',
 
+            'videos.*.url' => 'Link video harus berupa URL yang valid.',
         ]);
+                try {
 
-        $gallery = Gallery::create([
+                    $title = $this->security->cleanText($request->title);
 
-            'title'=>$request->title,
+                    $description = $request->filled('description')
+                        ? $this->security->cleanHtml($request->description)
+                        : null;
 
-            'description'=>$request->description,
+                } catch (DangerousInputException $e) {
 
-            'activity_date'=>$request->activity_date,
+                    return back()
+                        ->withInput()
+                        ->with('error', $e->getMessage());
 
-            'author_id'=>Auth::id()
-
-        ]);
-
+                }
+                $gallery = Gallery::create([
+                    'title' => $title,
+                    'description' => $description,
+                    'activity_date' => $request->activity_date,
+                    'author_id' => Auth::id(),
+                ]);
         /*
         |--------------------------------------------------------------------------
         | Upload Foto
@@ -198,19 +229,51 @@ class GalleryController extends Controller
     {
         abort_if($gallery->author_id!=Auth::id(),403);
 
-        $request->validate([
+        $data = $request->validate([
 
-            'title'=>'required|max:255',
+            'title' => 'required|string|max:255',
 
-            'description'=>'nullable',
+            'description' => 'nullable|string',
 
-            'activity_date'=>'required|date',
+            'activity_date' => 'required|date',
 
-            'photos.*'=>'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'photos.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
 
-            'videos.*'=>'nullable|url'
+            'videos' => 'nullable|array',
+
+            'videos.*' => 'nullable|url'
+
+        ], [
+
+            'title.required' => 'Judul galeri wajib diisi.',
+            'title.max' => 'Judul maksimal 255 karakter.',
+
+            'activity_date.required' => 'Tanggal kegiatan wajib diisi.',
+            'activity_date.date' => 'Format tanggal tidak valid.',
+
+            'photos.*.image' => 'File harus berupa gambar.',
+            'photos.*.mimes' => 'Format gambar hanya boleh JPG, JPEG, PNG atau WEBP.',
+            'photos.*.max' => 'Ukuran gambar maksimal 2 MB.',
+
+            'videos.*.url' => 'Link video harus berupa URL yang valid.',
 
         ]);
+
+        try {
+
+            $title = $this->security->cleanText($data['title']);
+
+            $description = !empty($data['description'])
+                ? $this->security->cleanHtml($data['description'])
+                : null;
+
+        } catch (DangerousInputException $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
+        }
 
         $existingImages = $gallery->media()
     ->where('type', 'image')
@@ -247,11 +310,11 @@ if ($totalImages < 1) {
 
         $gallery->update([
 
-            'title'=>$request->title,
+            'title' => $title,
 
-            'description'=>$request->description,
+            'description' => $description,
 
-            'activity_date'=>$request->activity_date
+            'activity_date' => $data['activity_date'],
 
         ]);
 
