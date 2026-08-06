@@ -204,6 +204,7 @@
     {{-- Pagination --}}
     <div class="pagination-right">
 
+        {{-- Previous --}}
         @if ($news->onFirstPage())
             <button class="page-btn" disabled>
                 <i class="fa-solid fa-chevron-left"></i>
@@ -214,24 +215,40 @@
             </a>
         @endif
 
-        @foreach ($news->getUrlRange(1,$news->lastPage()) as $page => $url)
+        @php
+            $current = $news->currentPage();
+            $last = $news->lastPage();
 
-            @if ($page == $news->currentPage())
+            if ($last <= 2) {
+                $start = 1;
+                $end = $last;
+            } elseif ($current == 1) {
+                $start = 1;
+                $end = 2;
+            } elseif ($current == $last) {
+                $start = $last - 1;
+                $end = $last;
+            } else {
+                $start = $current;
+                $end = min($current + 1, $last);
+            }
+        @endphp
 
+        @for ($page = $start; $page <= $end; $page++)
+
+            @if ($page == $current)
                 <span class="page-number active">
                     {{ $page }}
                 </span>
-
             @else
-
-                <a href="{{ $url }}" class="page-number">
+                <a href="{{ $news->url($page) }}" class="page-number">
                     {{ $page }}
                 </a>
-
             @endif
 
-        @endforeach
+        @endfor
 
+        {{-- Next --}}
         @if ($news->hasMorePages())
             <a href="{{ $news->nextPageUrl() }}" class="page-btn">
                 <i class="fa-solid fa-chevron-right"></i>
