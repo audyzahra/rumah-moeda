@@ -85,6 +85,18 @@
 
                     </div>
 
+                    <div style="margin-bottom:20px;">
+
+                        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+
+                            <input type="checkbox" name="remember">
+
+                            Ingat Saya
+
+                        </label>
+
+                    </div>
+
                     <div class="forgot">
 
                         @if (Route::has('password.request'))
