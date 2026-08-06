@@ -15,12 +15,17 @@
     box-sizing: border-box;
 }
 
-/* Tablet */
-@media (max-width: 992px){
+/* Tablet & Mobile */
+@media (max-width:992px){
+
     .main-content{
-        margin-left: 220px;
-        width: calc(100% - 220px);
+
+        margin-left:0;
+        width:100%;
+        padding:20px;
+
     }
+
 }
 
 /* Mobile */
@@ -29,5 +34,41 @@
         margin-left: 0;
         width: 100%;
         padding: 20px;
+    }
+}
+
+.hamburger-btn{
+    width:45px;
+    height:45px;
+    border:none;
+    border-radius:12px;
+    background:#fff;
+    cursor:pointer;
+    font-size:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+    display:block;
+}
+
+.hamburger-btn:hover{
+    background:#EEDCC9;
+}
+
+/* ==========================
+   HAMBURGER RESPONSIVE
+========================== */
+
+/* Desktop */
+@media (min-width: 993px){
+    .hamburger-btn{
+        display: none !important;
+    }
+}
+
+/* Tablet & HP */
+@media (max-width: 992px){
+    .hamburger-btn{
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
     }
 }

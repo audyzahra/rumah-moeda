@@ -101,8 +101,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const hamburger = document.querySelector('.hamburger-btn');
         const overlay = document.getElementById('overlay');
 
-        // Hanya di mobile (≤ 768px)
-        if (window.innerWidth <= 768) {
+        // Hanya di mobile (≤ 992px)
+        if (window.innerWidth <= 992) {
             if (sidebar && sidebar.classList.contains('open')) {
                 const isClickInsideSidebar = sidebar.contains(event.target);
                 const isClickHamburger = hamburger && hamburger.contains(event.target);
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('resize', function () {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(function () {
-            if (window.innerWidth > 768) {
+            if (window.innerWidth > 992) {
                 closeSidebar();
             }
         }, 200);
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ===== CEK UKURAN LAYAR SAAT LOAD =====
     function checkScreenSize() {
         const sidebar = document.getElementById('sidebar');
-        if (window.innerWidth > 768 && sidebar) {
+        if (window.innerWidth > 992 && sidebar) {
             sidebar.classList.remove('open');
             document.body.style.overflow = '';
         }
