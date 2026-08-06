@@ -151,28 +151,113 @@
 }
 
 /* Deskripsi Pendiri */
-.pendiri-card p{
-    text-align: justify;
-    text-justify: inter-word;
-    line-height: 1.8;
-    margin-top: 12px;
-    width: 100%;
+.pendiri-card{
+    position:relative;
+    overflow:hidden;
+
+    background:rgba(255,255,255,.45);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+
+    max-width:500px;
+    margin:20px auto;
+    padding:35px 30px;
+
+    border:1.5px solid rgba(205,160,54,.35);
+    border-radius:20px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.08),
+        inset 0 1px 0 rgba(255,255,255,.35);
+
+    transition:.35s ease;
+}
+.pendiri-card::before{
+    content:"";
+    position:absolute;
+    top:-40%;
+    left:-70%;
+
+    width:60%;
+    height:200%;
+
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,.45),
+        transparent
+    );
+
+    transform:rotate(25deg);
+    transition:.7s;
+}
+.pendiri-card:hover{
+    transform:translateY(-10px);
+    border-color:#cda036;
+
+    box-shadow:
+        0 20px 45px rgba(205,160,54,.25),
+        0 12px 30px rgba(0,0,0,.15);
 }
 
+.pendiri-card:hover::before{
+    left:140%;
+}
+.pendiri-card img{
+    transition:.35s;
+}
+
+.pendiri-card:hover img{
+    transform:scale(1.08);
+}
 /* ==========================================
    VISI MISI
 ========================================== */
 
 .visi-box,
 .misi-box{
+
+    position:relative;
+    overflow:hidden;
+
+    background:rgba(255,255,255,.45);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+
     max-width:900px;
     margin:25px auto;
     padding:30px;
-    background:var(--card-bg);
-    border-radius:15px;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-    transition:all .35s ease;
-    animation:fadeUp .8s ease;
+
+    border:1.5px solid rgba(205,160,54,.35);
+    border-radius:20px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.08),
+        inset 0 1px 0 rgba(255,255,255,.35);
+
+    transition:.35s;
+}
+.visi-box::before,
+.misi-box::before{
+
+    content:"";
+    position:absolute;
+
+    top:-40%;
+    left:-70%;
+
+    width:60%;
+    height:200%;
+
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,.45),
+        transparent
+    );
+
+    transform:rotate(25deg);
+    transition:.7s;
 }
 
 
@@ -180,8 +265,19 @@
 
 .visi-box:hover,
 .misi-box:hover{
-    transform:translateY(-8px);
-    box-shadow:0 15px 30px rgba(0,0,0,.15);
+
+    transform:translateY(-10px);
+
+    border-color:#cda036;
+
+    box-shadow:
+        0 20px 45px rgba(205,160,54,.25),
+        0 12px 30px rgba(0,0,0,.15);
+}
+
+.visi-box:hover::before,
+.misi-box:hover::before{
+    left:140%;
 }
 
 
@@ -343,9 +439,21 @@
     margin: 0 auto !important;
 }
 
-.google-visualization-orgchart-node {
-    text-align: center !important;
-    vertical-align: middle !important;
+.google-visualization-orgchart-node{
+    text-align:center !important;
+    vertical-align:middle !important;
+
+    background:#fffdf5 !important;
+
+    border:2px solid #d4af37 !important;
+    border-radius:18px !important;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.12) !important;
+
+    transition:
+        transform .35s ease,
+        box-shadow .35s ease,
+        border-color .35s ease !important;
 }
 
 .google-visualization-orgchart-node .org-card {
@@ -353,16 +461,45 @@
 }
 
 /* Hilangkan warna biru bawaan Google */
-.google-visualization-orgchart-node{
 
-    background:#fffdf5 !important;
-    border:2px solid #d4af37 !important;
-    border-radius:14px !important;
-    box-shadow:0 4px 12px rgba(0,0,0,.15) !important;
-    padding:0 !important;
 
+.google-visualization-orgchart-node:hover{
+
+    transform:translateY(-8px) scale(1.03);
+
+    border-color:#cda036 !important;
+
+    box-shadow:
+        0 20px 45px rgba(205,160,54,.28),
+        0 10px 20px rgba(0,0,0,.15) !important;
 }
 
+.google-visualization-orgchart-node img{
+    transition:.35s;
+}
+
+.google-visualization-orgchart-node:hover img{
+    transform:scale(1.08);
+}
+.google-visualization-orgchart-node:hover{
+
+    transform:translateY(-8px) scale(1.03);
+
+    border-color:#cda036 !important;
+
+    box-shadow:
+        0 20px 45px rgba(205,160,54,.28),
+        0 10px 20px rgba(0,0,0,.15) !important;
+}
+
+
+.google-visualization-orgchart-node img{
+    transition:.35s;
+}
+
+.google-visualization-orgchart-node:hover img{
+    transform:scale(1.08);
+}
 /* Warna garis */
 .google-visualization-orgchart-lineleft,
 .google-visualization-orgchart-lineright,
@@ -390,6 +527,24 @@
 
 [data-theme="dark"] .section-subtitle{
     color:#cbd5e1;
+}
+/* Card Struktur - Dark Mode */
+[data-theme="dark"] .google-visualization-orgchart-node{
+    background: #3f3f3f !important;
+    border: 2px solid #d4af37 !important;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.25) !important;
+}
+
+/* Nama */
+[data-theme="dark"] .google-visualization-orgchart-node .org-card b{
+    color: #ffffff !important;
+}
+
+/* Jabatan */
+[data-theme="dark"] .google-visualization-orgchart-node .org-card span{
+    color: #e0e0e0 !important;
 }
 /* ==========================================
    DARK MODE - TENTANG KAMI
