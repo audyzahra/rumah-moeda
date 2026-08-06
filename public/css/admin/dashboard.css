@@ -555,7 +555,7 @@ BERITA TERPOPULER
     RESPONSIVE
 =========================================*/
 
-@media (max-width: 900px) {
+/* @media (max-width: 900px) {
     .content {
         margin-left: 220px;
         padding: 30px;
@@ -564,14 +564,14 @@ BERITA TERPOPULER
     .analytics {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
-}
+} */
 
-@media (max-width: 768px) {
-    .content {
-    flex: 1;
-    margin-left: 270px;
-    padding: 40px;
-}
+@media (max-width:992px){
+    .content{
+        margin-left:0;
+        width:100%;
+        padding:25px;
+    }
 
     .topbar {
         gap: 15px;

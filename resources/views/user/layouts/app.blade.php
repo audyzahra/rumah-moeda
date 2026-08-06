@@ -33,7 +33,9 @@
         @include('user.partials.sidebar')
 
         <main class="main-content">
-
+             <button class="hamburger-btn" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
             @yield('content')
 
         </main>

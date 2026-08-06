@@ -11,7 +11,9 @@
     <header class="topbar">
 
         <div class="topbar-left">
-
+<button class="hamburger-btn" onclick="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
             <div>
 
                 <h1>Beranda</h1>
