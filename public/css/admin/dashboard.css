@@ -1023,4 +1023,291 @@ POPULAR NEWS
     gap:6px;
 
 }
+/*=========================================
+    WEBSITE PREVIEW MODAL
+=========================================*/
 
+.preview-panel {
+
+    position: fixed;
+
+    top: 70px;
+
+    right: 25px;
+
+    width: 900px;
+
+    height: 82vh;
+
+    background: #fff;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    border: 1px solid #ddd;
+
+    box-shadow: 0 25px 60px rgba(0, 0, 0, .28);
+
+    z-index: 9999;
+
+    display: none;
+
+    animation: previewFade .25s ease;
+
+}
+
+.preview-panel.show {
+
+    display: block;
+
+}
+
+.preview-header {
+
+    height: 55px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 0 18px;
+
+    background: #f8f8f8;
+
+    border-bottom: 1px solid #ececec;
+
+    cursor: move;
+
+    user-select: none;
+
+}
+
+.preview-header span {
+
+    font-weight: 600;
+
+}
+
+.preview-header div {
+
+    display: flex;
+
+    gap: 8px;
+
+}
+
+.preview-action {
+
+    width: 36px;
+
+    height: 36px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    background: #f3f4f6;
+
+    transition: .2s;
+
+}
+
+.preview-action:hover {
+
+    background: #2563eb;
+
+    color: #fff;
+
+}
+
+#previewFrame {
+
+    width: 100%;
+
+    height: calc(100% - 55px);
+
+    border: none;
+
+}
+
+.preview-btn {
+
+    width: 42px;
+
+    height: 42px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #fff;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+.preview-btn:hover {
+
+    background: #2563eb;
+
+    color: #fff;
+
+}
+
+@keyframes previewFade {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-15px) scale(.96);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: none;
+
+    }
+
+}
+
+@media(max-width:992px) {
+
+    .preview-panel {
+
+        position: fixed;
+
+        top: 70px;
+
+        right: 25px;
+
+        resize: both;
+
+        overflow: hidden;
+
+        min-width: 500px;
+
+        min-height: 350px;
+
+    }
+
+}
+/*==========================
+RESIZE HANDLE
+==========================*/
+
+.resize{
+
+    position:absolute;
+
+    z-index:10000;
+
+}
+
+.resize-n{
+
+    top:-4px;
+    left:10px;
+    right:10px;
+
+    height:8px;
+
+    cursor:n-resize;
+
+}
+
+.resize-s{
+
+    bottom:-4px;
+    left:10px;
+    right:10px;
+
+    height:8px;
+
+    cursor:s-resize;
+
+}
+
+.resize-e{
+
+    top:10px;
+    bottom:10px;
+
+    right:-4px;
+
+    width:8px;
+
+    cursor:e-resize;
+
+}
+
+.resize-w{
+
+    top:10px;
+    bottom:10px;
+
+    left:-4px;
+
+    width:8px;
+
+    cursor:w-resize;
+
+}
+
+.resize-ne{
+
+    width:14px;
+    height:14px;
+
+    top:-4px;
+    right:-4px;
+
+    cursor:ne-resize;
+
+}
+
+.resize-nw{
+
+    width:14px;
+    height:14px;
+
+    top:-4px;
+    left:-4px;
+
+    cursor:nw-resize;
+
+}
+
+.resize-se{
+
+    width:14px;
+    height:14px;
+
+    bottom:-4px;
+    right:-4px;
+
+    cursor:se-resize;
+
+}
+
+.resize-sw{
+
+    width:14px;
+    height:14px;
+
+    bottom:-4px;
+    left:-4px;
+
+    cursor:sw-resize;
+
+}

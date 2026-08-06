@@ -25,24 +25,27 @@
 
         </div>
 
-         <div class="topbar-right">
+        <div class="topbar-right">
+            <button id="btnPreview" type="button" class="preview-btn" title="Preview Website">
 
-        <span id="clock"></span>
+                <i class="fa-solid fa-display"></i>
 
-        <div class="profile">
-            <a href="{{ route('profile.edit') }}">
-                <i class="fa-solid fa-user"></i>
-            </a>
+            </button>
+            <span id="clock"></span>
+
+            <div class="profile">
+                <a href="{{ route('profile.edit') }}">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+            </div>
+
         </div>
-
-    </div>
 
     </header>
 
-
     {{-- ===========================
-    CARD STATISTIK
-=========================== --}}
+            CARD STATISTIK
+            =========================== --}}
 
     <section class="analytics">
 
@@ -291,11 +294,50 @@
 
         </div>
         {{-- ===========================
-    NOTIFICATION
-=========================== --}}
+            NOTIFICATION
+        =========================== --}}
 
         <div id="notification" class="notification"></div>
+        </div>
 
+        <div id="previewPanel" class="preview-panel">
+
+            <div class="preview-header">
+
+                <span>Preview Website</span>
+
+                <div>
+
+                    <button id="btnFullscreen" class="preview-action">
+
+                        <i class="fa-solid fa-up-right-from-square"></i>
+
+                    </button>
+
+                    <button id="btnClosePreview" class="preview-action">
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <iframe id="previewFrame" src="{{ url('/') }}">
+            </iframe>
+            <!-- Resize Handle -->
+            <div class="resize resize-n"></div>
+            <div class="resize resize-s"></div>
+            <div class="resize resize-e"></div>
+            <div class="resize resize-w"></div>
+
+            <div class="resize resize-ne"></div>
+            <div class="resize resize-nw"></div>
+            <div class="resize resize-se"></div>
+            <div class="resize resize-sw"></div>
+
+        </div>
     @endsection
 
     @push('scripts')
