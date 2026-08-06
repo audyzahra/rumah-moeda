@@ -140,13 +140,23 @@
 
             </div>
 
-        @empty
+       @empty
+            <div class="empty-state">
 
-            <div style="text-align:center;padding:60px;">
+                <div class="empty-icon">
+                    <i class="fa-regular fa-newspaper"></i>
+                </div>
 
-                <h3>Belum ada berita.</h3>
+                <h2>Belum Ada Berita</h2>
+
+                <p>
+                    Berita yang telah dipublikasikan akan muncul di sini.
+                    <br>
+                    Silakan kembali lagi nanti.
+                </p>
 
             </div>
+
         @endforelse
 
     </section>

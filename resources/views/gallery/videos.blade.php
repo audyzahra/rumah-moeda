@@ -151,17 +151,20 @@
 
                 <div class="empty-gallery">
 
-                    <i class="fa-solid fa-video-slash"></i>
+                    <div class="empty-icon">
+                        <i class="fa-solid fa-video"></i>
+                    </div>
 
-                    <h3>
-                        Belum ada galeri video.
-                    </h3>
+                    <h2>Belum Ada Galeri Video</h2>
 
                     <p>
-                        Dokumentasi video kegiatan belum tersedia.
+                        Dokumentasi video yang telah dipublikasikan akan muncul di sini.
+                        <br>
+                        Silakan kembali lagi nanti.
                     </p>
 
                 </div>
+
             @endforelse
 
         </section>

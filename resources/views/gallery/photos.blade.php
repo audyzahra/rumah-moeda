@@ -135,15 +135,20 @@
 
                 <div class="empty-gallery">
 
-                    <i class="fa-regular fa-image"></i>
+                    <div class="empty-icon">
+                        <i class="fa-regular fa-image"></i>
+                    </div>
 
-                    <h3>Belum ada galeri foto.</h3>
+                    <h2>Belum Ada Galeri Foto</h2>
 
                     <p>
-                        Dokumentasi foto kegiatan belum tersedia.
+                        Dokumentasi foto yang telah dipublikasikan akan muncul di sini.
+                        <br>
+                        Silakan kembali lagi nanti.
                     </p>
 
                 </div>
+
             @endforelse
 
         </section>

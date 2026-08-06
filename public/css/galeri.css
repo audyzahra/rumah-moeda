@@ -2185,3 +2185,67 @@ MENU GALERI
     border-color:#e3b84c;
     box-shadow:0 16px 40px rgba(205,160,54,.35);
 }
+
+/* ==========================================
+   EMPTY STATE GALERI
+========================================== */
+
+.empty-gallery{
+    width:100%;
+    padding:40px 20px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+
+    /* supaya memenuhi lebar grid */
+    grid-column:1 / -1;
+}
+
+.empty-icon{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:#f7efd9;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:20px;
+}
+
+.empty-icon i{
+    font-size:36px;
+    color:#b8860b;
+}
+
+.empty-gallery h2{
+    font-size:34px;
+    font-weight:700;
+    color:#1f2937;
+    margin-bottom:10px;
+}
+
+.empty-gallery p{
+    font-size:16px;
+    color:#6b7280;
+    line-height:1.6;
+}
+
+/* Dark Mode */
+
+[data-theme="dark"] .empty-gallery h2{
+    color:#fff;
+}
+
+[data-theme="dark"] .empty-gallery p{
+    color:#cfcfcf;
+}
+
+[data-theme="dark"] .empty-icon{
+    background:rgba(205,160,54,.15);
+}
+
+[data-theme="dark"] .empty-icon i{
+    color:#d4af37;
+}
