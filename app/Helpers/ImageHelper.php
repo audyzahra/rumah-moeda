@@ -10,7 +10,7 @@ if (!function_exists('defaultImage')) {
 
             'logo' => asset('assets/images/logo-default.png'),
 
-            'hero' => asset('assets/images/hero-default.png'),
+            'hero' => asset('assets/images/hero-default.jpg'),
 
             default => asset('assets/images/foto-default.jpg'),
 
