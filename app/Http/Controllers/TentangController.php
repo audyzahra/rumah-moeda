@@ -6,9 +6,11 @@ use App\Models\Setting;
 use App\Models\VisionMission;
 use App\Models\OrganizationStructure;
 
+use App\Services\SeoService;
+
 class TentangController extends Controller
 {
-    public function index()
+    public function index(SeoService $seoService)
     {
         $settings = Setting::first();
 
@@ -19,10 +21,14 @@ class TentangController extends Controller
             ->orderBy('full_name')
             ->get();
 
+            // seo
+            $seo = $seoService->generate($settings);
+
         return view('tentang', compact(
             'settings',
             'vision',
-            'organizations'
+            'organizations',
+            'seo'
         ));
     }
 }

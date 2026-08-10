@@ -1,11 +1,5 @@
 @extends('layouts.app')
 
-@section('title', $portfolio->title . ' | Rumah Moeda')
-
-@section('description', Str::limit(strip_tags($portfolio->description), 160))
-
-@section('keywords', 'Portofolio Rumah Moeda, ' . $portfolio->title . ', proyek Rumah Moeda, kolaborasi, mitra, multimedia, dokumentasi kegiatan, program sosial')
-
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/portfolio-detail.css') }}">
 @endpush

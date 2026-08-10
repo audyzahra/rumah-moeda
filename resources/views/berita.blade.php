@@ -1,11 +1,5 @@
 @extends('Layouts.app')
 
-@section('title', 'Berita Rumah Moeda | Informasi Terbaru')
-
-@section('description', 'Dapatkan informasi terbaru seputar kegiatan, program, kolaborasi, dan berbagai aktivitas Rumah Moeda melalui kumpulan berita dan artikel terkini.')
-
-@section('keywords', 'Berita Rumah Moeda, informasi Rumah Moeda, kegiatan Rumah Moeda, program sosial, kolaborasi, dokumentasi kegiatan, artikel Rumah Moeda')
-
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/berita.css') }}">
 @endpush
