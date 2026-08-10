@@ -70,16 +70,16 @@
                     @php
                         $media = $item->media->where('type', 'video')->first();
 
-                        if ($media && $media->youtube_id) {
-                            $thumbnail = "https://img.youtube.com/vi/{$media->youtube_id}/hqdefault.jpg";
-                        } else {
-                            $thumbnail = defaultImage('video');
-                        }
+                        $thumbnail =
+                            $media && $media->youtube_id
+                                ? "https://img.youtube.com/vi/{$media->youtube_id}/hqdefault.jpg"
+                                : defaultImage('video');
                     @endphp
 
                     <div class="video-thumbnail">
 
-                        <img src="{{ $thumbnail }}" alt="{{ $item->title }}" loading="lazy">
+                        <img src="{{ $thumbnail }}" alt="{{ $item->title }}" loading="lazy"
+                            onerror="this.onerror=null; this.src='{{ defaultImage('video') }}';">
 
                         <div class="play-icon">
                             <i class="fa-solid fa-circle-play"></i>
