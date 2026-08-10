@@ -5,7 +5,6 @@
 @endpush
 
 @section('content')
-
     <section class="detail-container">
 
         <a href="{{ route('news.index') }}" class="back-btn">
@@ -46,12 +45,11 @@
 
         <div class="hero-image">
 
-            @if ($news->thumbnail)
+            @if ($news->thumbnail && Storage::disk('public')->exists($news->thumbnail))
                 <img src="{{ Storage::url($news->thumbnail) }}" alt="{{ $news->title }}">
             @else
-                <img src="{{ asset('assets/no-image.png') }}" alt="No Image">
+                <img src="{{ defaultImage() }}" alt="Foto Default">
             @endif
-
         </div>
 
         <div class="artikel-content">
@@ -73,10 +71,10 @@
             @foreach ($otherNews as $item)
                 <div class="artikel-card">
 
-                    @if ($item->thumbnail)
+                    @if ($item->thumbnail && Storage::disk('public')->exists($item->thumbnail))
                         <img src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}">
                     @else
-                        <img src="{{ asset('assets/no-image.png') }}" alt="No Image">
+                        <img src="{{ defaultImage() }}" alt="Foto Default">
                     @endif
 
                     <h3>
@@ -94,16 +92,15 @@
 
     </section>
 
-<div class="lightbox" id="lightbox">
+    <div class="lightbox" id="lightbox">
 
-    <span class="lightbox-close">&times;</span>
+        <span class="lightbox-close">&times;</span>
 
-    <img id="lightboxImage" src="" alt="Preview">
+        <img id="lightboxImage" src="" alt="Preview">
 
-</div>
-
+    </div>
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/detail-berita.js') }}"></script>
+    <script src="{{ asset('js/detail-berita.js') }}"></script>
 @endpush

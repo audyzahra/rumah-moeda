@@ -22,7 +22,7 @@
         {{-- Logo --}}
         <div class="logo-section">
 
-            @if (!empty($setting->website_logo))
+            @if (!empty($setting->website_logo) && Storage::disk('public')->exists($setting->website_logo))
                 <img src="{{ Storage::url($setting->website_logo) }}" class="logo-img" alt="{{ $setting->website_name }}">
             @else
                 <img src="{{ defaultImage('logo') }}" class="logo-img" alt="Logo">

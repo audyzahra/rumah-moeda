@@ -5,7 +5,6 @@
 @endpush
 
 @section('content')
-
     <main class="container-page">
 
         {{-- ================= PROFIL ================= --}}
@@ -15,7 +14,11 @@
 
             <div class="pendiri-card">
 
-                <img src="{{ Storage::url($settings->website_logo) }}" alt="{{ $settings->website_name }}">
+                @if ($settings && $settings->website_logo && Storage::disk('public')->exists($settings->website_logo))
+                    <img src="{{ Storage::url($settings->website_logo) }}" alt="{{ $settings->website_name }}">
+                @else
+                    <img src="{{ defaultImage('logo') }}" alt="Logo">
+                @endif
 
                 <h3>{{ $settings->website_name }}</h3>
 
@@ -80,7 +83,6 @@
         </section>
 
     </main>
-
 @endsection
 
 
