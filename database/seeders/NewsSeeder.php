@@ -10,12 +10,13 @@ use Illuminate\Support\Str;
 
 class NewsSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $author = User::first();
+
+        if (!$author) {
+            return;
+        }
 
         $news = [
             [
@@ -56,8 +57,11 @@ class NewsSeeder extends Seeder
         ];
 
         foreach ($news as $item) {
-
             $category = Category::where('name', $item['category'])->first();
+
+            if (!$category) {
+                continue;
+            }
 
             DB::table('news')->insert([
                 'title' => $item['title'],
