@@ -1,11 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Portofolio | Rumah Moeda')
-
-@section('description', 'Lihat berbagai portofolio Rumah Moeda berupa proyek, kegiatan, kolaborasi, dan karya kreatif yang telah dilakukan bersama mitra serta masyarakat.')
-
-@section('keywords', 'Portofolio Rumah Moeda, proyek Rumah Moeda, karya kreatif, kolaborasi, mitra Rumah Moeda, multimedia, dokumentasi kegiatan, program sosial')
-
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/portfolio.css') }}">
 @endpush

@@ -1,11 +1,5 @@
 @extends('Layouts.app')
 
-@section('title', 'Tentang Kami | Rumah Moeda')
-
-@section('description', 'Kenali lebih dekat Rumah Moeda, yayasan yang bergerak di bidang multimedia, perfilman, pendidikan, serta pemberdayaan generasi muda melalui program kreatif, inovatif, dan kolaboratif.')
-
-@section('keywords', 'Tentang Rumah Moeda, profil Rumah Moeda, sejarah Rumah Moeda, multimedia, perfilman, pendidikan, pemberdayaan generasi muda, program sosial')
-
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/tentang.css') }}">
 @endpush

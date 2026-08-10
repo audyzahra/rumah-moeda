@@ -6,6 +6,9 @@ use App\Models\Gallery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Setting;
+use App\Services\SeoService;
+
 class GalleryController extends Controller
 {
     /*
@@ -20,7 +23,7 @@ class GalleryController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function photos(Request $request)
+    public function photos(Request $request, SeoService $seoService)
     {
         $perPage = $request->input('per_page', 6);
 
@@ -46,7 +49,7 @@ class GalleryController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
@@ -77,7 +80,10 @@ class GalleryController extends Controller
             ->paginate($perPage)
             ->withQueryString();
 
-        return view('gallery.photos', compact('gallery'));
+        $setting = Setting::first();
+        $seo = $seoService->generate($setting);
+
+        return view('gallery.photos', compact('gallery', 'seo'));
     }
 
     /*
@@ -85,7 +91,7 @@ class GalleryController extends Controller
     | Video Gallery
     |--------------------------------------------------------------------------
     */
-    public function videos(Request $request)
+    public function videos(Request $request, SeoService $seoService)
     {
         $perPage = $request->input('per_page', 6);
 
@@ -110,7 +116,7 @@ class GalleryController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
         /*
@@ -135,7 +141,11 @@ class GalleryController extends Controller
         $gallery = $query
             ->paginate($perPage)
             ->withQueryString();
-        return view('gallery.videos', compact('gallery'));
+
+        $setting = Setting::first();
+        $seo = $seoService->generate($setting);
+
+        return view('gallery.videos', compact('gallery', 'seo'));
     }
 
     /*
@@ -144,7 +154,7 @@ class GalleryController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function photoDetail(Gallery $gallery)
+    public function photoDetail(Gallery $gallery, SeoService $seoService)
     {
         // Admin/User hanya boleh membuka galeri miliknya
         if (Auth::check() && $gallery->author_id != Auth::id()) {
@@ -160,7 +170,14 @@ class GalleryController extends Controller
             abort(404);
         }
 
-        return view('gallery.photo-detail', compact('gallery'));
+        $setting = Setting::first();
+
+        $seo = $seoService->generate(
+            $setting,
+            $gallery
+        );
+
+        return view('gallery.photo-detail', compact('gallery', 'seo'));
     }
 
     /*
@@ -169,21 +186,29 @@ class GalleryController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function videoDetail(Gallery $gallery)
-    {
-        if (Auth::check() && $gallery->author_id != Auth::id()) {
-            abort(403);
-        }
-
-        $gallery->load([
-            'media' => function ($q) {
-                $q->where('type', 'video');
+    public function videoDetail(Gallery $gallery, SeoService $seoService)
+    { {
+            if (Auth::check() && $gallery->author_id != Auth::id()) {
+                abort(403);
             }
-        ]);
-        if ($gallery->media->isEmpty()) {
-            abort(404);
-        }
 
-        return view('gallery.video-detail', compact('gallery'));
+            $gallery->load([
+                'media' => function ($q) {
+                    $q->where('type', 'video');
+                }
+            ]);
+            if ($gallery->media->isEmpty()) {
+                abort(404);
+            }
+
+            $setting = Setting::first();
+
+            $seo = $seoService->generate(
+                $setting,
+                $gallery
+            );
+
+            return view('gallery.video-detail', compact('gallery', 'seo'));
+        }
     }
 }
