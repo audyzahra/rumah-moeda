@@ -16,8 +16,11 @@
 
             <div class="hero-image">
 
-                <img src="{{ $heroImage ? asset('storage/' . $heroImage->file_path) : asset('images/no-image.png') }}"
-                    alt="{{ $portfolio->title }}">
+                @if ($heroImage && Storage::disk('public')->exists($heroImage->file_path))
+                    <img src="{{ Storage::url($heroImage->file_path) }}" alt="{{ $portfolio->title }}">
+                @else
+                    <img src="{{ defaultImage() }}" alt="Foto Default">
+                @endif
 
                 <div class="hero-overlay"></div>
 
@@ -238,22 +241,30 @@
                         </div>
 
                         @if ($portfolio->media->count())
-
                             <div class="gallery-grid">
 
                                 @foreach ($portfolio->media->sortBy('display_order') as $media)
                                     {{-- FOTO --}}
                                     @if ($media->type === 'image')
-                                        <a href="{{ asset('storage/' . $media->file_path) }}" class="gallery-item">
+                                        @if (Storage::disk('public')->exists($media->file_path))
+                                            <a href="{{ Storage::url($media->file_path) }}" class="gallery-item">
 
-                                            <img src="{{ asset('storage/' . $media->file_path) }}"
-                                                alt="{{ $portfolio->title }}">
+                                                <img src="{{ Storage::url($media->file_path) }}"
+                                                    alt="{{ $portfolio->title }}">
 
-                                            <div class="gallery-overlay">
-                                                <i class="fa-solid fa-magnifying-glass-plus"></i>
+                                                <div class="gallery-overlay">
+                                                    <i class="fa-solid fa-magnifying-glass-plus"></i>
+                                                </div>
+
+                                            </a>
+                                        @else
+                                            <div class="gallery-item">
+
+                                                <img src="{{ defaultImage() }}" alt="Foto Default">
+
                                             </div>
+                                        @endif
 
-                                        </a>
 
                                         {{-- VIDEO YOUTUBE --}}
                                     @elseif ($media->type === 'video')
@@ -277,29 +288,29 @@
                                                 </iframe>
 
                                             </div>
+                                        @else
+                                            <div class="gallery-item">
+
+                                                <img src="{{ defaultImage('video') }}" alt="Video Default">
+
+                                            </div>
                                         @endif
                                     @endif
                                 @endforeach
 
                             </div>
                         @else
-                            <div class="gallery-empty">
+                            {{-- Tidak ada media sama sekali --}}
+                            <div class="gallery-item">
 
-                                <i class="fa-regular fa-image"></i>
-
-                                <p>
-
-                                    Belum ada dokumentasi kegiatan.
-
-                                </p>
+                                <img src="{{ defaultImage() }}" alt="Foto Default">
 
                             </div>
-
                         @endif
-
                     </div>
 
                 </section>
+
                 {{-- ==========================================
     TENTANG MITRA
 ========================================== --}}
@@ -321,11 +332,11 @@
 
                         <div class="partner-logo">
 
-                            @if ($portfolio->partner && $portfolio->partner->logo)
-                                <img src="{{ asset('storage/' . $portfolio->partner->logo) }}"
+                            @if ($portfolio->partner && $portfolio->partner->logo && Storage::disk('public')->exists($portfolio->partner->logo))
+                                <img src="{{ Storage::url($portfolio->partner->logo) }}"
                                     alt="{{ $portfolio->partner->name }}">
                             @else
-                                <img src="{{ asset('images/no-image.png') }}" alt="Partner">
+                                <img src="{{ defaultImage() }}" alt="Foto Default">
                             @endif
 
                         </div>
@@ -386,11 +397,11 @@
 
                                         <div class="related-image">
 
-                                            @if ($thumbnail)
-                                                <img src="{{ asset('storage/' . $thumbnail->file_path) }}"
+                                            @if ($thumbnail && Storage::disk('public')->exists($thumbnail->file_path))
+                                                <img src="{{ Storage::url($thumbnail->file_path) }}"
                                                     alt="{{ $item->title }}">
                                             @else
-                                                <img src="{{ asset('images/no-image.png') }}" alt="No Image">
+                                                <img src="{{ defaultImage() }}" alt="Foto Default">
                                             @endif
 
                                             <span class="related-category">

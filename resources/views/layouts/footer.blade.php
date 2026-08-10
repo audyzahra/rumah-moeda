@@ -3,7 +3,7 @@
 
         <!-- Logo & Deskripsi -->
         <div class="footer-item">
-            @if (!empty($setting->website_logo))
+            @if (!empty($setting->website_logo) && Storage::disk('public')->exists($setting->website_logo))
                 <img src="{{ Storage::url($setting->website_logo) }}" alt="{{ $setting->website_name }}"
                     class="footer-logo">
             @else

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 
-    @push('styles')
-        <link rel="stylesheet" href="{{ asset('css/galeri.css') }}">
-    @endpush
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/galeri.css') }}">
+@endpush
 
 @section('content')
 
@@ -49,21 +49,23 @@
             $hero = $gallery->media->first();
         @endphp
 
-        @if ($hero)
-            <section class="hero-photo">
+        <section class="hero-photo">
 
-                <div class="photo-detail-container">
+            <div class="photo-detail-container">
 
-                    <img src="{{ $hero ? Storage::url($hero->file_path) : defaultImage() }}" alt="{{ $gallery->title }}"
+                @if ($hero && Storage::disk('public')->exists($hero->file_path))
+                    <img src="{{ Storage::url($hero->file_path) }}" alt="{{ $gallery->title }}"
                         class="hero-image preview-image">
-                </div>
+                @else
+                    <img src="{{ defaultImage() }}" alt="Foto Default" class="hero-image preview-image">
+                @endif
 
-            </section>
-        @endif
+            </div>
+
+        </section>
 
 
         @if ($gallery->media->count() > 1)
-
             <section class="photo-detail-section">
 
                 <div class="photo-detail-container">
@@ -73,8 +75,14 @@
                         @foreach ($gallery->media->skip(1) as $media)
                             <div class="photo-card">
 
-                                <img src="{{ $media ? Storage::url($media->file_path) : defaultImage() }}"
-                                    alt="{{ $gallery->title }}" loading="lazy" class="preview-image">
+                                @if ($media && Storage::disk('public')->exists($media->file_path))
+                                    <img src="{{ Storage::url($media->file_path) }}" alt="{{ $gallery->title }}"
+                                        loading="lazy" class="preview-image">
+                                @else
+                                    <img src="{{ defaultImage() }}" alt="Foto Default" loading="lazy"
+                                        class="preview-image">
+                                @endif
+
                             </div>
                         @endforeach
 
@@ -83,9 +91,7 @@
                 </div>
 
             </section>
-
         @endif
-
 
         @if ($gallery->description)
             <section class="gallery-description">

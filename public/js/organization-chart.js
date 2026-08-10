@@ -1,78 +1,56 @@
 const organizations = JSON.parse(
-    document.getElementById('organization-data').textContent
+    document.getElementById("organization-data").textContent,
 );
 
-
-function flattenOrganizations(items){
-
+function flattenOrganizations(items) {
     let result = [];
 
-
-    items.forEach(item => {
-
+    items.forEach((item) => {
         result.push(item);
 
-
-        if(item.children_recursive){
-
+        if (item.children_recursive) {
             result = result.concat(
-                flattenOrganizations(item.children_recursive)
+                flattenOrganizations(item.children_recursive),
             );
-
         }
-
     });
 
-
     return result;
-
 }
-
-
 
 const organizationData = flattenOrganizations(organizations);
 
-
-
-google.charts.load('current', {
-    packages:['orgchart']
+google.charts.load("current", {
+    packages: ["orgchart"],
 });
-
 
 google.charts.setOnLoadCallback(drawOrganizationChart);
 
-
-
-function drawOrganizationChart(){
-
-
+function drawOrganizationChart() {
     let data = new google.visualization.DataTable();
 
-
-    data.addColumn('string','Name');
-    data.addColumn('string','Manager');
-
+    data.addColumn("string", "Name");
+    data.addColumn("string", "Manager");
 
     let rows = [];
 
-
-    organizationData.forEach(item=>{
-
-
+    organizationData.forEach((item) => {
         rows.push([
-
             {
+                v: item.id.toString(),
 
-                v:item.id.toString(),
-
-                f:`
+                f: `
 
                     <div class="org-card">
 
-                        <img src="${item.photo
-                            ? '/storage/'+item.photo
-                            : 'assets/images/default-user.png'
-                        }">
+                        <img
+    src="${
+        item.photo
+            ? "/storage/" + item.photo
+            : "/assets/images/default-user.png"
+    }"
+    onerror="this.onerror=null; this.src='/assets/images/default-user.png';"
+>
 
 
                         <b>
@@ -87,34 +65,21 @@ function drawOrganizationChart(){
 
                     </div>
 
-                `
+                `,
             },
 
-
-            item.parent_id
-                ? item.parent_id.toString()
-                : ''
-
+            item.parent_id ? item.parent_id.toString() : "",
         ]);
-
-
     });
-
-
 
     data.addRows(rows);
 
-
-
     let chart = new google.visualization.OrgChart(
-        document.getElementById('organization-chart')
+        document.getElementById("organization-chart"),
     );
 
-
-    chart.draw(data,{
-        allowHtml:true,
-        allowCollapse:true
+    chart.draw(data, {
+        allowHtml: true,
+        allowCollapse: true,
     });
-
-
 }

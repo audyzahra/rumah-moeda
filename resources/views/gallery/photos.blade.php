@@ -5,7 +5,6 @@
 @endpush
 
 @section('content')
-
     <section class="galeri-header">
 
         <div class="header-text">
@@ -21,47 +20,34 @@
     </section>
 
     <form method="GET" id="galleryPhotoFilter">
-        <input
-            type="hidden"
-            name="per_page"
-            value="{{ request('per_page',6) }}">
+        <input type="hidden" name="per_page" value="{{ request('per_page', 6) }}">
 
         <div class="galeri-toolbar">
             {{-- SEARCH --}}
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
 
-                <input
-                    id="searchPhoto"
-                    type="text"
-                    name="search"
-                    value="{{ request('search') }}"
+                <input id="searchPhoto" type="text" name="search" value="{{ request('search') }}"
                     placeholder="Cari dokumentasi...">
             </div>
 
             {{-- SORT --}}
             <div class="sort-box">
-                <select
-                    id="sortPhoto"
-                    name="sort">
+                <select id="sortPhoto" name="sort">
 
-                    <option value="terbaru"
-                        {{ request('sort','terbaru')=='terbaru' ? 'selected' : '' }}>
+                    <option value="terbaru" {{ request('sort', 'terbaru') == 'terbaru' ? 'selected' : '' }}>
                         Terbaru
                     </option>
 
-                    <option value="terlama"
-                        {{ request('sort')=='terlama' ? 'selected' : '' }}>
+                    <option value="terlama" {{ request('sort') == 'terlama' ? 'selected' : '' }}>
                         Terlama
                     </option>
 
-                    <option value="az"
-                        {{ request('sort')=='az' ? 'selected' : '' }}>
+                    <option value="az" {{ request('sort') == 'az' ? 'selected' : '' }}>
                         Judul A-Z
                     </option>
 
-                    <option value="za"
-                        {{ request('sort')=='za' ? 'selected' : '' }}>
+                    <option value="za" {{ request('sort') == 'za' ? 'selected' : '' }}>
                         Judul Z-A
                     </option>
                 </select>
@@ -82,8 +68,13 @@
                     @php
                         $media = $item->media->first();
 
-                        $image = $media ? Storage::url($media->file_path) : defaultImage();
+                        $image =
+                            $media && Storage::disk('public')->exists($media->file_path)
+                                ? Storage::url($media->file_path)
+                                : defaultImage();
                     @endphp
+
+                    <img loading="lazy" src="{{ $image }}" alt="{{ $item->title }}">
 
                     <img loading="lazy" src="{{ $image }}" alt="{{ $item->title }}">
 
@@ -142,7 +133,6 @@
                     </p>
 
                 </div>
-
             @endforelse
 
         </section>
@@ -154,30 +144,23 @@
         {{-- Show Entries --}}
         <div class="pagination-left">
             <span>Tampilkan</span>
-                <select
-                    id="perPagePhoto"
-                    name="per_page"
-                    form="galleryPhotoFilter">
-                    <option value="6"
-                        {{ request('per_page',6)==6 ? 'selected' : '' }}>
-                        6
-                    </option>
+            <select id="perPagePhoto" name="per_page" form="galleryPhotoFilter">
+                <option value="6" {{ request('per_page', 6) == 6 ? 'selected' : '' }}>
+                    6
+                </option>
 
-                    <option value="12"
-                        {{ request('per_page')==12 ? 'selected' : '' }}>
-                        12
-                    </option>
+                <option value="12" {{ request('per_page') == 12 ? 'selected' : '' }}>
+                    12
+                </option>
 
-                    <option value="24"
-                        {{ request('per_page')==24 ? 'selected' : '' }}>
-                        24
-                    </option>
+                <option value="24" {{ request('per_page') == 24 ? 'selected' : '' }}>
+                    24
+                </option>
 
-                    <option value="48"
-                        {{ request('per_page')==48 ? 'selected' : '' }}>
-                        48
-                    </option>
-                </select>
+                <option value="48" {{ request('per_page') == 48 ? 'selected' : '' }}>
+                    48
+                </option>
+            </select>
             <span>galeri</span>
         </div>
 

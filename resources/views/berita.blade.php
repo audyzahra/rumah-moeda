@@ -5,7 +5,6 @@
 @endpush
 
 @section('content')
-
     <div class="berita-header">
 
         <div>
@@ -22,38 +21,28 @@
 
                     <i class="fa-solid fa-magnifying-glass"></i>
 
-                    <input
-                        type="text"
-                        name="search"
-                        id="searchBerita"
-                        placeholder="Cari dokumentasi..."
+                    <input type="text" name="search" id="searchBerita" placeholder="Cari dokumentasi..."
                         value="{{ request('search') }}">
 
                 </div>
 
                 <div class="sort-box">
 
-                    <select
-                        name="sort"
-                        id="sortBerita">
+                    <select name="sort" id="sortBerita">
 
-                        <option value="terbaru"
-                            {{ request('sort') == 'terbaru' ? 'selected' : '' }}>
+                        <option value="terbaru" {{ request('sort') == 'terbaru' ? 'selected' : '' }}>
                             Terbaru
                         </option>
 
-                        <option value="terlama"
-                            {{ request('sort') == 'terlama' ? 'selected' : '' }}>
+                        <option value="terlama" {{ request('sort') == 'terlama' ? 'selected' : '' }}>
                             Terlama
                         </option>
 
-                        <option value="az"
-                            {{ request('sort') == 'az' ? 'selected' : '' }}>
+                        <option value="az" {{ request('sort') == 'az' ? 'selected' : '' }}>
                             Judul A-Z
                         </option>
 
-                        <option value="za"
-                            {{ request('sort') == 'za' ? 'selected' : '' }}>
+                        <option value="za" {{ request('sort') == 'za' ? 'selected' : '' }}>
                             Judul Z-A
                         </option>
 
@@ -61,10 +50,7 @@
 
                 </div>
 
-                <input
-                    type="hidden"
-                    name="per_page"
-                    value="{{ request('per_page',5) }}">
+                <input type="hidden" name="per_page" value="{{ request('per_page', 5) }}">
 
             </form>
         </div>
@@ -75,15 +61,15 @@
     <section class="berita-list">
 
         @forelse($news as $item)
-            <div class="berita-card"
-                data-title="{{ strtolower($item->title) }}"
+            <div class="berita-card" data-title="{{ strtolower($item->title) }}"
                 data-content="{{ strtolower(strip_tags($item->content)) }}"
                 data-date="{{ \Carbon\Carbon::parse($item->publish_date)->timestamp }}">
 
-                @if ($item->thumbnail)
-                    <img src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}">
+                @if ($item->thumbnail && Storage::disk('public')->exists($item->thumbnail))
+                    <img src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}"
+                        onerror="this.onerror=null; this.src='{{ defaultImage() }}';">
                 @else
-                    <img src="{{ asset('assets/no-image.png') }}" alt="No Image">
+                    <img src="{{ defaultImage() }}" alt="Foto Default">
                 @endif
 
                 <div class="berita-content">
@@ -134,7 +120,7 @@
 
             </div>
 
-       @empty
+        @empty
             <div class="empty-state">
 
                 <div class="empty-icon">
@@ -150,122 +136,119 @@
                 </p>
 
             </div>
-
         @endforelse
 
     </section>
-       {{-- PAGINATION --}}
-        <div class="custom-pagination">
+    {{-- PAGINATION --}}
+    <div class="custom-pagination">
 
-    {{-- Show Entries --}}
-    <div class="pagination-left">
+        {{-- Show Entries --}}
+        <div class="pagination-left">
 
-        <form method="GET">
+            <form method="GET">
 
-            @foreach(request()->except('per_page','page') as $key => $value)
-                <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-            @endforeach
+                @foreach (request()->except('per_page', 'page') as $key => $value)
+                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                @endforeach
 
-            <span>Tampilkan</span>
+                <span>Tampilkan</span>
 
-            <select name="per_page" onchange="this.form.submit()">
+                <select name="per_page" onchange="this.form.submit()">
 
-                <option value="5" {{ request('per_page',5)==5 ? 'selected' : '' }}>5</option>
+                    <option value="5" {{ request('per_page', 5) == 5 ? 'selected' : '' }}>5</option>
 
-                <option value="10" {{ request('per_page')==10 ? 'selected' : '' }}>10</option>
+                    <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
 
-                <option value="20" {{ request('per_page')==20 ? 'selected' : '' }}>20</option>
+                    <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
 
-                <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>50</option>
+                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
 
-            </select>
+                </select>
 
-            <span>berita</span>
+                <span>berita</span>
 
-        </form>
+            </form>
 
-    </div>
+        </div>
 
-    {{-- Info --}}
-    <div class="pagination-center">
+        {{-- Info --}}
+        <div class="pagination-center">
 
-        <span>Menampilkan</span>
+            <span>Menampilkan</span>
 
-        <strong>{{ $news->firstItem() ?? 0 }}</strong>
+            <strong>{{ $news->firstItem() ?? 0 }}</strong>
 
-        <span>-</span>
+            <span>-</span>
 
-        <strong>{{ $news->lastItem() ?? 0 }}</strong>
+            <strong>{{ $news->lastItem() ?? 0 }}</strong>
 
-        <span>dari</span>
+            <span>dari</span>
 
-        <strong>{{ $news->total() }}</strong>
+            <strong>{{ $news->total() }}</strong>
 
-        <span>data</span>
+            <span>data</span>
 
-    </div>
+        </div>
 
-    {{-- Pagination --}}
-    <div class="pagination-right">
+        {{-- Pagination --}}
+        <div class="pagination-right">
 
-        {{-- Previous --}}
-        @if ($news->onFirstPage())
-            <button class="page-btn" disabled>
-                <i class="fa-solid fa-chevron-left"></i>
-            </button>
-        @else
-            <a href="{{ $news->previousPageUrl() }}" class="page-btn">
-                <i class="fa-solid fa-chevron-left"></i>
-            </a>
-        @endif
-
-        @php
-            $current = $news->currentPage();
-            $last = $news->lastPage();
-
-            if ($last <= 2) {
-                $start = 1;
-                $end = $last;
-            } elseif ($current == 1) {
-                $start = 1;
-                $end = 2;
-            } elseif ($current == $last) {
-                $start = $last - 1;
-                $end = $last;
-            } else {
-                $start = $current;
-                $end = min($current + 1, $last);
-            }
-        @endphp
-
-        @for ($page = $start; $page <= $end; $page++)
-
-            @if ($page == $current)
-                <span class="page-number active">
-                    {{ $page }}
-                </span>
+            {{-- Previous --}}
+            @if ($news->onFirstPage())
+                <button class="page-btn" disabled>
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
             @else
-                <a href="{{ $news->url($page) }}" class="page-number">
-                    {{ $page }}
+                <a href="{{ $news->previousPageUrl() }}" class="page-btn">
+                    <i class="fa-solid fa-chevron-left"></i>
                 </a>
             @endif
 
-        @endfor
+            @php
+                $current = $news->currentPage();
+                $last = $news->lastPage();
 
-        {{-- Next --}}
-        @if ($news->hasMorePages())
-            <a href="{{ $news->nextPageUrl() }}" class="page-btn">
-                <i class="fa-solid fa-chevron-right"></i>
-            </a>
-        @else
-            <button class="page-btn" disabled>
-                <i class="fa-solid fa-chevron-right"></i>
-            </button>
-        @endif
+                if ($last <= 2) {
+                    $start = 1;
+                    $end = $last;
+                } elseif ($current == 1) {
+                    $start = 1;
+                    $end = 2;
+                } elseif ($current == $last) {
+                    $start = $last - 1;
+                    $end = $last;
+                } else {
+                    $start = $current;
+                    $end = min($current + 1, $last);
+                }
+            @endphp
+
+            @for ($page = $start; $page <= $end; $page++)
+                @if ($page == $current)
+                    <span class="page-number active">
+                        {{ $page }}
+                    </span>
+                @else
+                    <a href="{{ $news->url($page) }}" class="page-number">
+                        {{ $page }}
+                    </a>
+                @endif
+            @endfor
+
+            {{-- Next --}}
+            @if ($news->hasMorePages())
+                <a href="{{ $news->nextPageUrl() }}" class="page-btn">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            @else
+                <button class="page-btn" disabled>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            @endif
+
+        </div>
 
     </div>
-
-</div>
 
     <script>
         const modal = document.getElementById("beritaModal");
@@ -287,29 +270,28 @@
         }
     </script>
     <script>
-document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
 
-    const form = document.getElementById("filterForm");
-    const search = document.getElementById("searchBerita");
-    const sort = document.getElementById("sortBerita");
+            const form = document.getElementById("filterForm");
+            const search = document.getElementById("searchBerita");
+            const sort = document.getElementById("sortBerita");
 
-    let timer;
+            let timer;
 
-    search.addEventListener("keyup", function () {
+            search.addEventListener("keyup", function() {
 
-        clearTimeout(timer);
+                clearTimeout(timer);
 
-        timer = setTimeout(function () {
-            form.submit();
-        }, 500);
+                timer = setTimeout(function() {
+                    form.submit();
+                }, 500);
 
-    });
+            });
 
-    sort.addEventListener("change", function () {
-        form.submit();
-    });
+            sort.addEventListener("change", function() {
+                form.submit();
+            });
 
-});
-</script>
-
+        });
+    </script>
 @endsection
