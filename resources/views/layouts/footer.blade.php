@@ -7,7 +7,7 @@
                 <img src="{{ Storage::url($setting->website_logo) }}" alt="{{ $setting->website_name }}"
                     class="footer-logo">
             @else
-                <img src="{{ asset('assets/logo-default.png') }}" alt="Logo" class="footer-logo">
+                <img src="{{ defaultImage('logo') }}" alt="Logo" class="footer-logo">
             @endif
 
             <h3>{{ $setting->website_name }}</h3>
@@ -138,10 +138,10 @@
                 loading="lazy">
             </iframe>
         </div>
-        
+
     </div>
     </div>
-    
+
 
     <div class="footer-bottom">
         © {{ date('Y') }} {{ $setting->website_name }}. All Rights Reserved.
