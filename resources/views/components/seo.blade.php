@@ -1,22 +1,71 @@
-<title>{{ $title ?? 'Rumah Moeda' }}</title>
+{{-- SEO Basic --}}
 
-<meta name="description" content="{{ $description ?? 'Website resmi Rumah Moeda' }}">
+<title>{{ $title }}</title>
 
-<meta name="keywords" content="{{ $keywords ?? 'Rumah Moeda' }}">
+<meta
+    name="description"
+    content="{{ $description }}"
+>
 
-<meta name="author" content="Rumah Moeda">
+<meta
+    name="keywords"
+    content="{{ $keywords }}"
+>
 
-<meta name="robots" content="index, follow">
+<meta
+    name="author"
+    content="{{ $setting->website_name ?? 'Rumah Moeda' }}"
+>
 
-<link rel="canonical" href="{{ url()->current() }}">
+{{-- Open Graph --}}
 
-<meta property="og:title" content="{{ $title ?? 'Rumah Moeda' }}">
-<meta property="og:description" content="{{ $description ?? 'Website resmi Rumah Moeda' }}">
-<meta property="og:type" content="website">
-<meta property="og:url" content="{{ url()->current() }}">
-<meta property="og:image" content="{{ asset('images/logo.png') }}">
+<meta
+    property="og:title"
+    content="{{ $title }}"
+>
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ $title ?? 'Rumah Moeda' }}">
-<meta name="twitter:description" content="{{ $description ?? 'Website resmi Rumah Moeda' }}">
-<meta name="twitter:image" content="{{ asset('images/logo.png') }}">
+<meta
+    property="og:description"
+    content="{{ $description }}"
+>
+
+<meta
+    property="og:url"
+    content="{{ url()->current() }}"
+>
+
+<meta
+    property="og:type"
+    content="website"
+>
+
+@if (!empty($setting?->website_logo))
+    <meta
+        property="og:image"
+        content="{{ asset('storage/' . $setting->website_logo) }}"
+    >
+@endif
+
+{{-- Twitter --}}
+
+<meta
+    name="twitter:card"
+    content="summary_large_image"
+>
+
+<meta
+    name="twitter:title"
+    content="{{ $title }}"
+>
+
+<meta
+    name="twitter:description"
+    content="{{ $description }}"
+>
+
+@if (!empty($setting?->website_logo))
+    <meta
+        name="twitter:image"
+        content="{{ asset('storage/' . $setting->website_logo) }}"
+    >
+@endif

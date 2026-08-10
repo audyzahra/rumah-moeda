@@ -6,12 +6,19 @@ use App\Models\ContactMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Setting;
+use App\Services\SeoService;
+
 class ContactController extends Controller
 {
-    public function index()
-    {
-        return view('hubungi');
-    }
+    public function index(SeoService $seoService)
+{
+    $setting = Setting::first();
+
+    $seo = $seoService->generate($setting);
+
+    return view('hubungi', compact('seo'));
+}
 
     public function store(Request $request)
     {

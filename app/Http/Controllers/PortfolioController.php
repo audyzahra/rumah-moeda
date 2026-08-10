@@ -8,15 +8,18 @@ use App\Models\PortfolioCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Services\SeoService;
+use App\Models\Setting;
+
 class PortfolioController extends Controller
 {
     /**
      * Menampilkan daftar portofolio.
      */
-    public function index(Request $request)
-    {   
+    public function index(Request $request, SeoService $seoService)
+    {
         $perPage = $request->input('per_page', 6);
-        
+
         // Guest -> semua portofolio
         $query = Portfolio::with([
             'category',
@@ -32,7 +35,7 @@ class PortfolioController extends Controller
             $query->where('author_id', Auth::id());
 
         }
-        
+
         // ==========================
         // SEARCH
         // ==========================
@@ -99,20 +102,27 @@ class PortfolioController extends Controller
 
         $totalParticipants = Portfolio::sum('participants');
 
+        // SEO
+
+        $setting = Setting::first();
+
+$seo = $seoService->generate($setting);
+
         return view('portfolio.index', compact(
             'portfolios',
             'categories',
             'totalPortfolio',
             'totalPartner',
             'totalCategory',
-            'totalParticipants'
+            'totalParticipants',
+            'seo'
         ));
-    }   
+    }
 
     /**
      * Menampilkan detail portofolio.
      */
-    public function show(Portfolio $portfolio)
+    public function show(Portfolio $portfolio, SeoService $seoService)
     {
         $portfolio->load([
             'partner',
@@ -130,9 +140,14 @@ class PortfolioController extends Controller
             ->take(3)
             ->get();
 
+            $setting = Setting::first();
+
+$seo = $seoService->generate($setting, $portfolio);
+
         return view('portfolio.show', compact(
             'portfolio',
-            'relatedPortfolios'
+            'relatedPortfolios',
+            'seo'
         ));
     }
 }

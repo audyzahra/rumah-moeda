@@ -9,12 +9,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\NewsView;
 
+use App\Services\SeoService;
+use App\Models\Setting;
+
 class BeritaController extends Controller
 {
     /**
      * Daftar Berita
      */
-    public function index(Request $request)
+    public function index(Request $request, SeoService $seoService)
 {
     $perPage = $request->get('per_page', 5);
 
@@ -67,16 +70,21 @@ class BeritaController extends Controller
 
     $categories = Category::orderBy('name')->get();
 
+    $setting = Setting::first();
+
+$seo = $seoService->generate($setting);
+
     return view('berita', compact(
         'news',
-        'categories'
+        'categories',
+        'seo'
     ));
 }
 
     /**
      * Detail Berita
      */
-    public function show(Request $request, $slug)
+    public function show(Request $request, $slug, SeoService $seoService)
 {
     // Guest
     if (!Auth::check()) {
@@ -141,9 +149,14 @@ class BeritaController extends Controller
 
     }
 
+    $setting = Setting::first();
+
+$seo = $seoService->generate($setting, $news);
+
     return view('detail-berita', compact(
         'news',
-        'otherNews'
+        'otherNews',
+        'seo'
     ));
 }
     /**

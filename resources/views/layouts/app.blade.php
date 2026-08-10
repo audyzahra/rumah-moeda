@@ -8,10 +8,10 @@
 
     {{-- SEO --}}
     <x-seo
-        :title="trim($__env->yieldContent('title')) ?: 'Rumah Moeda'"
-        :description="trim($__env->yieldContent('description')) ?: 'Website resmi Rumah Moeda yang menyediakan informasi mengenai kegiatan, berita, galeri, dan portfolio.'"
-        :keywords="trim($__env->yieldContent('keywords')) ?: 'Rumah Moeda, CSR, kegiatan sosial, berita, portfolio, galeri'"
-    />
+    :title="$seo['title'] ?? $setting->website_name ?? 'Rumah Moeda'"
+    :description="$seo['description'] ?? $setting->website_description ?? 'Website resmi Rumah Moeda.'"
+    :keywords="$seo['keywords'] ?? 'Rumah Moeda, CSR, kegiatan sosial, berita, portfolio, galeri'"
+/>
 
     {{-- Favicon --}}
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
@@ -24,8 +24,7 @@
     @stack('styles')
 
     {{-- Font Awesome --}}
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
