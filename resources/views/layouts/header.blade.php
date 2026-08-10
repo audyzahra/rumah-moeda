@@ -25,7 +25,7 @@
             @if (!empty($setting->website_logo))
                 <img src="{{ Storage::url($setting->website_logo) }}" class="logo-img" alt="{{ $setting->website_name }}">
             @else
-                <img src="{{ asset('assets/logo-default.png') }}" class="logo-img" alt="Logo">
+                <img src="{{ defaultImage('logo') }}" class="logo-img" alt="Logo">
             @endif
 
             <a href="{{ route($homeRoute) }}" class="logo-text">
