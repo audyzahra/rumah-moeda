@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-    @push('styles')
-        <link rel="stylesheet" href="{{ asset('css/galeri.css') }}">
-    @endpush
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/galeri.css') }}">
+@endpush
 
 @section('content')
 
@@ -45,7 +45,8 @@
         </section>
 
         @php
-            $hero = $gallery->media->first();
+            $videos = $gallery->media->where('type', 'video');
+            $hero = $videos->first();
         @endphp
 
         @if ($hero)
@@ -54,20 +55,23 @@
 
                 <div class="video-detail-container">
 
-                    @if ($hero->video_url)
-                        <iframe class="hero-player" src="https://www.youtube.com/embed/{{ $hero->youtube_id }}"
-                            title="{{ $gallery->title }}" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen>
-                        </iframe>
+                    @if ($hero)
+                        @if ($hero->video_url)
+                            <iframe class="hero-player" src="https://www.youtube.com/embed/{{ $hero->youtube_id }}"
+                                title="{{ $gallery->title }}" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen>
+                            </iframe>
+                        @elseif ($hero->file_path && Storage::disk('public')->exists($hero->file_path))
+                            <video class="hero-player" controls preload="metadata">
+                                <source src="{{ Storage::disk('public')->url($hero->file_path) }}" type="video/mp4">
+                                Browser Anda tidak mendukung video.
+                            </video>
+                        @else
+                            <img class="hero-player" src="{{ defaultImage('video') }}" alt="Video Default">
+                        @endif
                     @else
-                        <video class="hero-player" controls preload="metadata">
-
-                            <source src="{{ Storage::url($hero->file_path) }}" type="video/mp4">
-
-                            Browser Anda tidak mendukung video.
-
-                        </video>
+                        <img class="hero-player" src="{{ defaultImage('video') }}" alt="Video Default">
                     @endif
 
                 </div>
@@ -88,14 +92,13 @@
 
         {{-- Video lainnya (jika ada) --}}
         @if ($gallery->media->count() > 1)
-
             <section class="video-detail-section">
 
                 <div class="video-detail-container">
 
                     <div class="video-grid">
 
-                        @foreach ($gallery->media->skip(1) as $media)
+                        @foreach ($videos->skip(1) as $media)
                             <div class="video-card">
 
                                 @if ($media->video_url)
@@ -104,14 +107,14 @@
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                         allowfullscreen>
                                     </iframe>
-                                @else
+                                @elseif ($media->file_path && Storage::disk('public')->exists($media->file_path))
                                     <video controls preload="metadata">
-
-                                        <source src="{{ Storage::url($media->file_path) }}" type="video/mp4">
-
+                                        <source src="{{ Storage::disk('public')->url($media->file_path) }}"
+                                            type="video/mp4">
                                         Browser Anda tidak mendukung video.
-
                                     </video>
+                                @else
+                                    <img src="{{ defaultImage('video') }}" alt="Video Default">
                                 @endif
 
                             </div>
@@ -122,7 +125,6 @@
                 </div>
 
             </section>
-
         @endif
 
 

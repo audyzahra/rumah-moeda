@@ -12,6 +12,8 @@ if (!function_exists('defaultImage')) {
 
             'hero' => asset('assets/images/hero-default.jpg'),
 
+            'default-user' => asset('assets/images/default-user.png'),
+
             default => asset('assets/images/foto-default.jpg'),
 
         };

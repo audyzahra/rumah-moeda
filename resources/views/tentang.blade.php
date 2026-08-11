@@ -5,7 +5,6 @@
 @endpush
 
 @section('content')
-
     <main class="container-page">
 
         {{-- ================= PROFIL ================= --}}
@@ -15,12 +14,18 @@
 
             <div class="pendiri-card">
 
-                <img src="{{ Storage::url($settings->website_logo) }}" alt="{{ $settings->website_name }}">
+                @php
+                    $logo =
+                        $settings->website_logo && Storage::disk('public')->exists($settings->website_logo)
+                            ? Storage::disk('public')->url($settings->website_logo)
+                            : defaultImage('logo');
+                @endphp
 
+                <img src="{{ $logo }}" alt="{{ $settings->website_name }}">
                 <h3>{{ $settings->website_name }}</h3>
 
                 <div>
-                    {!! $setting->website_description !!}
+                    {!! $settings->website_description !!}
                 </div>
 
             </div>
@@ -80,7 +85,6 @@
         </section>
 
     </main>
-
 @endsection
 
 

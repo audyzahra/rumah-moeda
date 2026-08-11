@@ -80,10 +80,12 @@
 
                     {{-- Thumbnail --}}
                     @php
-                        $media = $item->media->first();
+    $media = $item->media->where('type', 'image')->first();
 
-                        $image = $media ? Storage::url($media->file_path) : defaultImage();
-                    @endphp
+    $image = ($media && $media->file_path && Storage::disk('public')->exists($media->file_path))
+        ? Storage::disk('public')->url($media->file_path)
+        : defaultImage();
+@endphp
 
                     <img loading="lazy" src="{{ $image }}" alt="{{ $item->title }}">
 

@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="{{ asset('css/portfolio.css') }}">
 @endpush
 @section('content')
-
     <div class="portfolio-page">
 
         {{-- ===========================================================
@@ -197,10 +196,7 @@
         ============================================================ --}}
         <div class="portfolio-content">
             <form id="portfolioFilter">
-                <input
-                    type="hidden"
-                    name="per_page"
-                    value="{{ request('per_page', 6) }}">
+                <input type="hidden" name="per_page" value="{{ request('per_page', 6) }}">
 
                 <section class="portfolio-toolbar">
 
@@ -218,11 +214,7 @@
 
                         </svg>
 
-                        <input
-                            id="searchInput"
-                            type="text"
-                            name="search"
-                            value="{{ request('search') }}"
+                        <input id="searchInput" type="text" name="search" value="{{ request('search') }}"
                             placeholder="Cari nama kegiatan atau mitra...">
 
                     </div>
@@ -243,15 +235,11 @@
                         </svg>
 
                         <select id="sortFilter" name="sort">
-                            <option
-                                value="newest"
-                                {{ request('sort','newest') == 'newest' ? 'selected' : '' }}>
+                            <option value="newest" {{ request('sort', 'newest') == 'newest' ? 'selected' : '' }}>
                                 Terbaru
                             </option>
 
-                            <option
-                                value="oldest"
-                                {{ request('sort') == 'oldest' ? 'selected' : '' }}>
+                            <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>
                                 Terlama
                             </option>
                         </select>
@@ -300,20 +288,19 @@
 
                         @php
                             $image = $portfolio->media->where('type', 'image')->sortBy('display_order')->first();
+
+                            $imageUrl =
+                                $image && $image->file_path && Storage::disk('public')->exists($image->file_path)
+                                    ? Storage::disk('public')->url($image->file_path)
+                                    : defaultImage();
                         @endphp
 
                         <div class="card-image">
 
-                            @if ($image)
-                                <img src="{{ asset('storage/' . $image->file_path) }}" alt="{{ $portfolio->title }}">
-                            @else
-                                <img src="{{ asset('images/no-image.png') }}" alt="No Image">
-                            @endif
+                            <img src="{{ $imageUrl }}" alt="{{ $portfolio->title }}">
 
                             <span class="card-category">
-
                                 {{ $portfolio->category?->name }}
-
                             </span>
 
                         </div>
@@ -459,41 +446,35 @@
                         </a>
                     @endif
 
-                    {{-- Nomor Halaman PAGINATION (HANYA 2 NOMOR HALAMAN)--}}
-                        @php
-                            $current = $portfolios->currentPage();
-                            $last = $portfolios->lastPage();
+                    {{-- Nomor Halaman PAGINATION (HANYA 2 NOMOR HALAMAN) --}}
+                    @php
+                        $current = $portfolios->currentPage();
+                        $last = $portfolios->lastPage();
 
-                            // Mulai dari halaman aktif
-                            $start = $current;
+                        // Mulai dari halaman aktif
+                        $start = $current;
 
-                            // Akhir maksimal 2 halaman
-                            $end = min($current + 1, $last);
+                        // Akhir maksimal 2 halaman
+                        $end = min($current + 1, $last);
 
-                            // Kalau sudah di halaman terakhir,
-                            // mundurkan supaya tetap tampil 2 angka
-                            if ($end - $start < 1 && $start > 1) {
-                                $start--;
-                            }
-                        @endphp
+                        // Kalau sudah di halaman terakhir,
+                        // mundurkan supaya tetap tampil 2 angka
+                        if ($end - $start < 1 && $start > 1) {
+                            $start--;
+                        }
+                    @endphp
 
-                        @for ($page = $start; $page <= $end; $page++)
-
-                            @if ($page == $current)
-
-                                <span class="page-number active">
-                                    {{ $page }}
-                                </span>
-
-                            @else
-
-                                <a href="{{ $portfolios->url($page) }}" class="page-number">
-                                    {{ $page }}
-                                </a>
-
-                            @endif
-
-                        @endfor
+                    @for ($page = $start; $page <= $end; $page++)
+                        @if ($page == $current)
+                            <span class="page-number active">
+                                {{ $page }}
+                            </span>
+                        @else
+                            <a href="{{ $portfolios->url($page) }}" class="page-number">
+                                {{ $page }}
+                            </a>
+                        @endif
+                    @endfor
 
                     {{-- Next --}}
                     @if ($portfolios->hasMorePages())
@@ -559,7 +540,6 @@
         @endif
 
     </div>
-
 @endsection
 
 

@@ -69,10 +69,7 @@ function drawOrganizationChart(){
 
                     <div class="org-card">
 
-                        <img src="${item.photo
-                            ? '/storage/'+item.photo
-                            : 'assets/images/default-user.png'
-                        }">
+                        <img src="${item.photo_url}" alt="${item.full_name}">
 
 
                         <b>

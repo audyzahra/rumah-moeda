@@ -43,6 +43,12 @@ class GallerySeeder extends Seeder
             ],
         ];
 
+        // Gallery yang ingin diberi gambar dummy
+        $galleriesWithImage = [
+            'Workshop Dasar Sinematografi',
+            'Pelatihan Editing Video',
+        ];
+
         foreach ($galleries as $item) {
             $galleryId = DB::table('galleries')->insertGetId([
                 'title' => $item['title'],
@@ -54,16 +60,17 @@ class GallerySeeder extends Seeder
                 'updated_at' => now(),
             ]);
 
-            DB::table('gallery_media')->insert([
-                [
+            // Hanya gallery tertentu yang memiliki media
+            if (in_array($item['title'], $galleriesWithImage)) {
+                DB::table('gallery_media')->insert([
                     'gallery_id' => $galleryId,
                     'type' => 'image',
                     'file_path' => 'uploads/oganLopian.png',
                     'video_url' => null,
                     'created_at' => now(),
                     'updated_at' => now(),
-                ],
-            ]);
+                ]);
+            }
         }
     }
 }
