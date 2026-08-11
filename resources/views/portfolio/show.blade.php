@@ -248,11 +248,9 @@
                                             <img src="{{ Storage::url($media->file_path) }}"
                                                 alt="{{ $portfolio->title }}">
 
-                                            <div class="gallery-overlay">
-                                                <i class="fa-solid fa-magnifying-glass-plus"></i>
                                             </div>
+                                        @endif
 
-                                        </a>
 
                                         {{-- VIDEO YOUTUBE --}}
                                     @elseif ($media->type === 'video')
@@ -276,28 +274,29 @@
                                                 </iframe>
 
                                             </div>
+                                        @else
+                                            <div class="gallery-item">
+
+                                                <img src="{{ defaultImage('video') }}" alt="Video Default">
+
+                                            </div>
                                         @endif
                                     @endif
                                 @endforeach
 
                             </div>
                         @else
-                            <div class="gallery-empty">
+                            {{-- Tidak ada media sama sekali --}}
+                            <div class="gallery-item">
 
-                                <i class="fa-regular fa-image"></i>
-
-                                <p>
-
-                                    Belum ada dokumentasi kegiatan.
-
-                                </p>
+                                <img src="{{ defaultImage() }}" alt="Foto Default">
 
                             </div>
                         @endif
-
                     </div>
 
                 </section>
+
                 {{-- ==========================================
     TENTANG MITRA
 ========================================== --}}

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 
-    @push('styles')
-        <link rel="stylesheet" href="{{ asset('css/galeri.css') }}">
-    @endpush
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/galeri.css') }}">
+@endpush
 
 @section('content')
 
