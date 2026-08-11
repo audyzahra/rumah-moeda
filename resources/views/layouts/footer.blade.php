@@ -3,12 +3,13 @@
 
         <!-- Logo & Deskripsi -->
         <div class="footer-item">
-            @if (!empty($setting->website_logo))
-                <img src="{{ Storage::url($setting->website_logo) }}" alt="{{ $setting->website_name }}"
-                    class="footer-logo">
-            @else
-                <img src="{{ defaultImage('logo') }}" alt="Logo" class="footer-logo">
-            @endif
+            @php
+                $logo = ($setting->website_logo && Storage::disk('public')->exists($setting->website_logo))
+                    ? Storage::disk('public')->url($setting->website_logo)
+                    : defaultImage('logo');
+            @endphp
+
+            <img src="{{ $logo }}" alt="{{ $setting->website_name }}" class="footer-logo">
 
             <h3>{{ $setting->website_name }}</h3>
 

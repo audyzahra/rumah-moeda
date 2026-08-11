@@ -46,46 +46,52 @@
         </section>
 
         @php
-            $hero = $gallery->media->first();
+    $images = $gallery->media->where('type', 'image');
+    $hero = $images->first();
+@endphp
+
+<section class="hero-photo">
+    <div class="photo-detail-container">
+        @php
+            $heroImage = ($hero && $hero->file_path && Storage::disk('public')->exists($hero->file_path))
+                ? Storage::disk('public')->url($hero->file_path)
+                : defaultImage();
         @endphp
 
-        @if ($hero)
-            <section class="hero-photo">
+        <img
+            src="{{ $heroImage }}"
+            alt="{{ $gallery->title }}"
+            class="hero-image preview-image"
+        >
+    </div>
+</section>
 
-                <div class="photo-detail-container">
+@if ($images->count() > 1)
+    <section class="photo-detail-section">
+        <div class="photo-detail-container">
+            <div class="photo-grid">
 
-                    <img src="{{ $hero ? Storage::url($hero->file_path) : defaultImage() }}" alt="{{ $gallery->title }}"
-                        class="hero-image preview-image">
-                </div>
+                @foreach ($images->skip(1) as $media)
+                    @php
+                        $image = ($media->file_path && Storage::disk('public')->exists($media->file_path))
+                            ? Storage::disk('public')->url($media->file_path)
+                            : defaultImage();
+                    @endphp
 
-            </section>
-        @endif
-
-
-        @if ($gallery->media->count() > 1)
-
-            <section class="photo-detail-section">
-
-                <div class="photo-detail-container">
-
-                    <div class="photo-grid">
-
-                        @foreach ($gallery->media->skip(1) as $media)
-                            <div class="photo-card">
-
-                                <img src="{{ $media ? Storage::url($media->file_path) : defaultImage() }}"
-                                    alt="{{ $gallery->title }}" loading="lazy" class="preview-image">
-                            </div>
-                        @endforeach
-
+                    <div class="photo-card">
+                        <img
+                            src="{{ $image }}"
+                            alt="{{ $gallery->title }}"
+                            loading="lazy"
+                            class="preview-image"
+                        >
                     </div>
+                @endforeach
 
-                </div>
-
-            </section>
-
-        @endif
-
+            </div>
+        </div>
+    </section>
+@endif
 
         @if ($gallery->description)
             <section class="gallery-description">

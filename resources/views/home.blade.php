@@ -11,11 +11,14 @@
         <div class="hero-container">
             <div class="hero-image">
 
-                @if ($setting && $setting->hero_image)
-                    <img src="{{ Storage::url($setting->hero_image) }}" alt="{{ $setting->website_name }}">
-                @else
-                    <img src="{{ defaultImage('hero') }}" alt="Hero">
-                @endif
+                @php
+                    $heroImage =
+                        $setting && $setting->hero_image && Storage::disk('public')->exists($setting->hero_image)
+                            ? Storage::disk('public')->url($setting->hero_image)
+                            : defaultImage('hero');
+                @endphp
+
+                <img src="{{ $heroImage }}" alt="{{ $setting->website_name ?? 'Rumah Moeda' }}">
 
             </div>
 
@@ -108,11 +111,14 @@
                 <div class="artikel-card">
 
                     <div class="card-img-wrapper">
-                        @if ($article->thumbnail)
-                            <img src="{{ Storage::url($article->thumbnail) }}" alt="{{ $article->title }}">
-                        @else
-                            <img src="{{ defaultImage() }}" alt="Foto Default">
-                        @endif
+                        @php
+                            $thumbnail =
+                                $article->thumbnail && Storage::disk('public')->exists($article->thumbnail)
+                                    ? Storage::disk('public')->url($article->thumbnail)
+                                    : defaultImage();
+                        @endphp
+
+                        <img src="{{ $thumbnail }}" alt="{{ $article->title }}">
                     </div>
 
                     <div class="card-content">
@@ -162,7 +168,6 @@
                 <div class="gallery-video">
 
                     @if ($videos->isNotEmpty())
-
                         @php
                             preg_match(
                                 '/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&\n?#]+)/',
@@ -189,7 +194,6 @@
                         @endif
                     @else
                         <img src="{{ defaultImage('video') }}" alt="Video Default">
-
                     @endif
 
                 </div>
@@ -199,12 +203,18 @@
                 <div class="gallery-photo-grid">
 
                     @if ($photos->isNotEmpty())
-
                         @foreach ($photos as $photo)
-                            <div class="photo-item" data-image="{{ asset('storage/' . $photo->file_path) }}"
-                                onclick="openImage(this)">
+                            @php
+                                $photoPath = $photo->file_path;
+                                $photoImage =
+                                    $photoPath && Storage::disk('public')->exists($photoPath)
+                                        ? Storage::disk('public')->url($photoPath)
+                                        : defaultImage();
+                            @endphp
 
-                                <img src="{{ asset('storage/' . $photo->file_path) }}" alt="Foto Dokumentasi">
+                            <div class="photo-item" data-image="{{ $photoImage }}" onclick="openImage(this)">
+
+                                <img src="{{ $photoImage }}" alt="Foto Dokumentasi">
 
                                 <div class="overlay">
                                     <i class="fa-solid fa-expand"></i>
@@ -214,11 +224,8 @@
                         @endforeach
                     @else
                         <div class="photo-item">
-
                             <img src="{{ defaultImage() }}" alt="Foto Default">
-
                         </div>
-
                     @endif
 
                 </div>
@@ -260,7 +267,10 @@
                     {{-- Loop Pertama --}}
                     @foreach ($partners as $partner)
                         @php
-                            $logo = $partner->logo ? Storage::url($partner->logo) : defaultImage('logo');
+                            $logo =
+                                $partner->logo && Storage::disk('public')->exists($partner->logo)
+                                    ? Storage::disk('public')->url($partner->logo)
+                                    : defaultImage('logo');
                         @endphp
 
                         @if ($partner->website)
@@ -282,7 +292,10 @@
                     {{-- Duplicate supaya animasi tidak putus --}}
                     @foreach ($partners as $partner)
                         @php
-                            $logo = $partner->logo ? Storage::url($partner->logo) : defaultImage('logo');
+                            $logo =
+                                $partner->logo && Storage::disk('public')->exists($partner->logo)
+                                    ? Storage::disk('public')->url($partner->logo)
+                                    : defaultImage('logo');
                         @endphp
 
                         @if ($partner->website)

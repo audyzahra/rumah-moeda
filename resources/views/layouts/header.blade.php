@@ -22,11 +22,14 @@
         {{-- Logo --}}
         <div class="logo-section">
 
-            @if (!empty($setting->website_logo))
-                <img src="{{ Storage::url($setting->website_logo) }}" class="logo-img" alt="{{ $setting->website_name }}">
-            @else
-                <img src="{{ defaultImage('logo') }}" class="logo-img" alt="Logo">
-            @endif
+            @php
+                $logo =
+                    $setting->website_logo && Storage::disk('public')->exists($setting->website_logo)
+                        ? Storage::disk('public')->url($setting->website_logo)
+                        : defaultImage('logo');
+            @endphp
+
+            <img src="{{ $logo }}" class="logo-img" alt="{{ $setting->website_name ?? 'Logo' }}">
 
             <a href="{{ route($homeRoute) }}" class="logo-text">
                 {{ $setting->website_name }}

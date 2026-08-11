@@ -5,7 +5,6 @@
 @endpush
 
 @section('content')
-
     <section class="detail-container">
 
         <a href="{{ route('news.index') }}" class="back-btn">
@@ -46,11 +45,14 @@
 
         <div class="hero-image">
 
-            @if ($news->thumbnail)
-                <img src="{{ Storage::url($news->thumbnail) }}" alt="{{ $news->title }}">
-            @else
-                <img src="{{ asset('assets/no-image.png') }}" alt="No Image">
-            @endif
+            @php
+                $thumbnail =
+                    $news->thumbnail && Storage::disk('public')->exists($news->thumbnail)
+                        ? Storage::disk('public')->url($news->thumbnail)
+                        : defaultImage();
+            @endphp
+
+            <img src="{{ $thumbnail }}" alt="{{ $news->title }}">
 
         </div>
 
@@ -73,11 +75,14 @@
             @foreach ($otherNews as $item)
                 <div class="artikel-card">
 
-                    @if ($item->thumbnail)
-                        <img src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}">
-                    @else
-                        <img src="{{ asset('assets/no-image.png') }}" alt="No Image">
-                    @endif
+                    @php
+                        $thumbnail =
+                            $item->thumbnail && Storage::disk('public')->exists($item->thumbnail)
+                                ? Storage::disk('public')->url($item->thumbnail)
+                                : defaultImage();
+                    @endphp
+
+                    <img src="{{ $thumbnail }}" alt="{{ $item->title }}">
 
                     <h3>
                         {{ Str::limit($item->title, 60) }}
@@ -94,16 +99,15 @@
 
     </section>
 
-<div class="lightbox" id="lightbox">
+    <div class="lightbox" id="lightbox">
 
-    <span class="lightbox-close">&times;</span>
+        <span class="lightbox-close">&times;</span>
 
-    <img id="lightboxImage" src="" alt="Preview">
+        <img id="lightboxImage" src="" alt="Preview">
 
-</div>
-
+    </div>
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/detail-berita.js') }}"></script>
+    <script src="{{ asset('js/detail-berita.js') }}"></script>
 @endpush

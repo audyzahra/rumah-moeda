@@ -16,7 +16,7 @@
 
             <div class="hero-image">
 
-                <img src="{{ $heroImage ? asset('storage/' . $heroImage->file_path) : asset('images/no-image.png') }}"
+                <img src="{{ $heroImage ? Storage::url($heroImage->file_path) : defaultImage('hero') }}"
                     alt="{{ $portfolio->title }}">
 
                 <div class="hero-overlay"></div>
@@ -238,15 +238,14 @@
                         </div>
 
                         @if ($portfolio->media->count())
-
                             <div class="gallery-grid">
 
                                 @foreach ($portfolio->media->sortBy('display_order') as $media)
                                     {{-- FOTO --}}
                                     @if ($media->type === 'image')
-                                        <a href="{{ asset('storage/' . $media->file_path) }}" class="gallery-item">
+                                        <a href="{{ Storage::url($media->file_path) }}" class="gallery-item">
 
-                                            <img src="{{ asset('storage/' . $media->file_path) }}"
+                                            <img src="{{ Storage::url($media->file_path) }}"
                                                 alt="{{ $portfolio->title }}">
 
                                             <div class="gallery-overlay">
@@ -294,7 +293,6 @@
                                 </p>
 
                             </div>
-
                         @endif
 
                     </div>
@@ -321,12 +319,8 @@
 
                         <div class="partner-logo">
 
-                            @if ($portfolio->partner && $portfolio->partner->logo)
-                                <img src="{{ asset('storage/' . $portfolio->partner->logo) }}"
-                                    alt="{{ $portfolio->partner->name }}">
-                            @else
-                                <img src="{{ asset('images/no-image.png') }}" alt="Partner">
-                            @endif
+                            <img src="{{ $portfolio->partner?->logo ? Storage::url($portfolio->partner->logo) : defaultImage('logo') }}"
+                                alt="{{ $portfolio->partner?->name ?? 'Partner' }}">
 
                         </div>
 
@@ -386,12 +380,8 @@
 
                                         <div class="related-image">
 
-                                            @if ($thumbnail)
-                                                <img src="{{ asset('storage/' . $thumbnail->file_path) }}"
-                                                    alt="{{ $item->title }}">
-                                            @else
-                                                <img src="{{ asset('images/no-image.png') }}" alt="No Image">
-                                            @endif
+                                            <img src="{{ $thumbnail ? Storage::url($thumbnail->file_path) : defaultImage('photo') }}"
+                                                alt="{{ $item->title }}" loading="lazy">
 
                                             <span class="related-category">
 

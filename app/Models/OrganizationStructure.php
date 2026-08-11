@@ -4,10 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class OrganizationStructure extends Model
 {
     use HasFactory;
+
+    protected $appends = [
+        'photo_url',
+    ];
 
     protected $table = 'organization_structures';
 
@@ -59,14 +64,16 @@ class OrganizationStructure extends Model
     }
 
     public function descendants()
-{
-    return $this->children()->with('descendants');
-}
+    {
+        return $this->children()->with('descendants');
+    }
 
     public function getPhotoUrlAttribute()
     {
-        return $this->photo
-            ? asset('storage/' . $this->photo)
-            : asset('images/default-user.png');
+        if ($this->photo && Storage::disk('public')->exists($this->photo)) {
+            return Storage::disk('public')->url($this->photo);
+        }
+
+        return defaultImage('default-user');
     }
 }
