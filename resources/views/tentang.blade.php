@@ -9,27 +9,24 @@
 
         {{-- ================= PROFIL ================= --}}
         <section class="profil-pendiri">
-
             <h2>Profil Rumah Moeda</h2>
-
             <div class="pendiri-card">
 
                 @php
                     $logo =
-                        $settings->website_logo && Storage::disk('public')->exists($settings->website_logo)
-                            ? Storage::disk('public')->url($settings->website_logo)
-                            : defaultImage('logo');
+                    $settings?->website_logo && Storage::disk('public')->exists($settings->website_logo)
+                    ? Storage::disk('public')->url($settings->website_logo)
+                    : defaultImage('logo');
                 @endphp
 
-                <img src="{{ $logo }}" alt="{{ $settings->website_name }}">
-                <h3>{{ $settings->website_name }}</h3>
+                <img src="{{ $logo }}" alt="{{ $settings?->website_name ?? 'Rumah Moeda' }}">
+                <h3>{{ $settings?->website_name ?? 'Rumah Moeda' }}</h3>
 
                 <div>
-                    {!! $settings->website_description !!}
+                    {!! $setting?->website_description ?? '' !!}
                 </div>
 
             </div>
-
         </section>
 
 
@@ -43,7 +40,7 @@
                 <h3>Visi</h3>
 
                 <div class="vision-text">
-                    {!! $vision->vision !!}
+                    {!! $vision?->vision ?? '' !!}
                 </div>
 
             </div>
@@ -53,13 +50,9 @@
                 <h3>Misi</h3>
 
                 <ul>
-
-                    @foreach ($vision->missions as $mission)
-                        <li>
-                            {{ $mission->mission }}
-                        </li>
+                    @foreach ($vision?->missions ?? [] as $mission)
+                        <li>{{ $mission->mission }}</li>
                     @endforeach
-
                 </ul>
 
             </div>

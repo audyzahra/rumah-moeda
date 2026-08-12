@@ -244,9 +244,9 @@
                                     {{-- FOTO --}}
                                     @if ($media->type === 'image')
                                         <a href="{{ Storage::url($media->file_path) }}" class="gallery-item">
-
                                             <img src="{{ Storage::url($media->file_path) }}"
                                                 alt="{{ $portfolio->title }}">
+                                        </a>
 
                                             <div class="gallery-overlay">
                                                 <i class="fa-solid fa-magnifying-glass-plus"></i>
@@ -259,28 +259,25 @@
                                         @php
                                             preg_match(
                                                 '/(?:youtu\.be\/|youtube\.com\/watch\?v=|youtube\.com\/embed\/)([^?&]+)/',
-                                                $media->video_url,
-                                                $matches,
+                                                $media->video_url, $matches
                                             );
-
                                             $youtubeId = $matches[1] ?? null;
                                         @endphp
 
                                         @if ($youtubeId)
                                             <div class="gallery-item gallery-video">
-
-                                                <iframe src="https://www.youtube.com/embed/{{ $youtubeId }}"
+                                                <iframe
+                                                    src="https://www.youtube.com/embed/{{ $youtubeId }}"
                                                     title="YouTube video" frameborder="0"
                                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                     allowfullscreen>
                                                 </iframe>
-
                                             </div>
                                         @endif
                                     @endif
                                 @endforeach
-
                             </div>
+
                         @else
                             <div class="gallery-empty">
 
@@ -299,8 +296,8 @@
 
                 </section>
                 {{-- ==========================================
-    TENTANG MITRA
-========================================== --}}
+                    TENTANG MITRA
+                ========================================== --}}
                 <div class="content-card partner-card">
 
                     <div class="section-title">

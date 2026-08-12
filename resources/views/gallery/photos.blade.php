@@ -80,14 +80,12 @@
 
                     {{-- Thumbnail --}}
                     @php
-    $media = $item->media->where('type', 'image')->first();
+                        $media = $item->media->where('type', 'image')->first();
 
-    $image = ($media && $media->file_path && Storage::disk('public')->exists($media->file_path))
-        ? Storage::disk('public')->url($media->file_path)
-        : defaultImage();
-@endphp
-
-                    <img loading="lazy" src="{{ $image }}" alt="{{ $item->title }}">
+                        $image = ($media && $media->file_path && Storage::disk('public')->exists($media->file_path))
+                            ? Storage::disk('public')->url($media->file_path)
+                            : defaultImage();
+                    @endphp
 
                     <div class="galeri-info">
 
