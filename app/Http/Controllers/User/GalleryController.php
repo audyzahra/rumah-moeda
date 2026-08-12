@@ -238,7 +238,7 @@ class GalleryController extends Controller
     /**
      * Update
      */
-    public function update(Request $request, Gallery $gallery)
+    public function update(Request $request, string $id)
     {
         $id = Crypt::decryptString($id);
         $gallery = Gallery::findOrFail($id);
