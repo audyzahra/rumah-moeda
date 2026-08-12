@@ -50,7 +50,6 @@
         @endphp
 
         @if ($hero)
-
             <section class="hero-video">
 
                 <div class="video-detail-container">
@@ -87,7 +86,6 @@
                 </div>
 
             </section>
-
         @endif
 
         {{-- Video lainnya (jika ada) --}}
@@ -101,7 +99,7 @@
                         @foreach ($videos->skip(1) as $media)
                             <div class="video-card">
 
-                                @if ($media->video_url)
+                                @if ($media->video_url && $media->youtube_id)
                                     <iframe src="https://www.youtube.com/embed/{{ $media->youtube_id }}"
                                         title="{{ $gallery->title }}" frameborder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

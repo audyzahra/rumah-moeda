@@ -254,7 +254,7 @@
 
                                         </a>
 
-                                        {{-- VIDEO YOUTUBE --}}
+                                    {{-- VIDEO YOUTUBE --}}
                                     @elseif ($media->type === 'video')
                                         @php
                                             preg_match(
@@ -279,22 +279,17 @@
                             </div>
 
                         @else
-                            <div class="gallery-empty">
+                            {{-- Tidak ada media sama sekali --}}
+                            <div class="gallery-item">
 
-                                <i class="fa-regular fa-image"></i>
-
-                                <p>
-
-                                    Belum ada dokumentasi kegiatan.
-
-                                </p>
+                                <img src="{{ defaultImage() }}" alt="Foto Default">
 
                             </div>
                         @endif
-
                     </div>
 
                 </section>
+
                 {{-- ==========================================
                     TENTANG MITRA
                 ========================================== --}}
