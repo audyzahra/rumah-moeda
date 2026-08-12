@@ -43,6 +43,8 @@
             <div class="form-card">
 
                 <form action="{{ route('admin.gallery.update', Crypt::encryptString($gallery->id)) }}"
+                    method="POST"
+                    enctype="multipart/form-data">
 
                     @csrf
                     @method('PUT')

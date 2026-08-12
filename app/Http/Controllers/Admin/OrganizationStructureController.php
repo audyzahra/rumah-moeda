@@ -197,7 +197,7 @@ class OrganizationStructureController extends Controller
 
         $struktur = OrganizationStructure::findOrFail($id);
 
-        return view('admin.organization-structures.struktur', compact('struktur'));
+        return view('admin.struktur.struktur', compact('struktur'));
     }
 
     public function edit(string $id)

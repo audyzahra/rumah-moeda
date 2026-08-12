@@ -78,6 +78,8 @@ use Illuminate\Support\Facades\Crypt;
                 @endif
 
                 <form action="{{ route('admin.partners.update', Crypt::encryptString($mitra->id)) }}"
+                    method="POST"
+                    enctype="multipart/form-data">
 
                     @csrf
                     @method('PUT')
@@ -195,7 +197,7 @@ use Illuminate\Support\Facades\Crypt;
 
                         </label>
 
-                        <textarea name="description" rows="5" class="form-control">{{ old('description', $mitra->description) }}</textarea>
+                        <textarea name="description" rows="5" class="form-control">{{ old('description', strip_tags($mitra->description)) }}</textarea>
 
                     </div>
 

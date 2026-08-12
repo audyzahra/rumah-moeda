@@ -31,6 +31,8 @@
         </div>
 
         <form action="{{ route('admin.portfolios.update', Crypt::encryptString($portfolio->id)) }}"
+            method="POST"
+            enctype="multipart/form-data">
 
             @csrf
             @method('PUT')
