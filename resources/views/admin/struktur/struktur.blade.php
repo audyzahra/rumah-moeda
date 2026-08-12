@@ -159,11 +159,12 @@
                                             </button>
 
                                             <a href="{{ route('admin.organization-structures.edit', Crypt::encryptString($anggota->id)) }}"
+                                                class="btn-edit">
                                                 <i class="fa-solid fa-pen"></i>
                                             </a>
 
                                            <form action="{{ route('admin.organization-structures.destroy', Crypt::encryptString($anggota->id)) }}"
-
+                                                method="POST">
                                                 @csrf
                                                 @method('DELETE')
 

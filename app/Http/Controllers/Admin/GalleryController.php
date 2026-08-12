@@ -179,7 +179,7 @@ class GalleryController extends Controller
         ));
     }
 
-    public function update(Request $request, Gallery $gallery)
+    public function update(Request $request, string $id)
     {
         $id = Crypt::decryptString($id);
 

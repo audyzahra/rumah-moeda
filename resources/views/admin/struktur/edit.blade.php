@@ -32,7 +32,7 @@
 
                 <span>></span>
 
-                <span>Tambah Berita</span>
+                <span>Edit Anggota</span>
 
             </div>
 
@@ -40,7 +40,11 @@
 
                 <form id="strukturForm"
                     action="{{ route('admin.organization-structures.update', Crypt::encryptString($organization->id)) }}"
-                    @csrf @method('PUT') <div class="row">
+                    method="POST"
+                    enctype="multipart/form-data">
+                    @csrf 
+                    @method('PUT') 
+                    <div class="row">
 
                     <div class="col-md-6 mb-3">
                         <label>Nama Lengkap <span class="required">*</span> </label>
