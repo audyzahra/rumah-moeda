@@ -24,17 +24,13 @@
 
             <div class="hero-text">
                 <div class="hero-content">
-
                     <span class="hero-line"></span>
-
                     <h1>
                         Rumah <span>Moeda</span>
                     </h1>
-
                     <div>
-                        {!! $setting->website_description !!}
+                        {!! $setting?->website_description ?? '' !!}
                     </div>
-
                 </div>
             </div>
         </div>
@@ -48,13 +44,10 @@
         <div class="visi-misi-container">
 
             <div class="visi-box">
-
                 <h3>Visi</h3>
-
                 <div class="vision-text">
-                    {!! $vision->vision !!}
+                    {!! $vision?->vision ?? '' !!}
                 </div>
-
             </div>
 
             <div class="misi-box">
@@ -62,13 +55,9 @@
                 <h3>Misi</h3>
 
                 <ol>
-
-                    @foreach ($vision->missions as $mission)
-                        <li>
-                            {{ $mission->mission }}
-                        </li>
+                    @foreach ($vision?->missions ?? [] as $mission)
+                        <li>{{ $mission->mission }}</li>
                     @endforeach
-
                 </ol>
 
             </div>
