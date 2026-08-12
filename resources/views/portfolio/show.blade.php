@@ -244,47 +244,39 @@
                                     {{-- FOTO --}}
                                     @if ($media->type === 'image')
                                         <a href="{{ Storage::url($media->file_path) }}" class="gallery-item">
-
                                             <img src="{{ Storage::url($media->file_path) }}"
                                                 alt="{{ $portfolio->title }}">
+                                        </a>
 
-                                            </div>
-                                        @endif
-
-
-                                        {{-- VIDEO YOUTUBE --}}
+                                    {{-- VIDEO YOUTUBE --}}
                                     @elseif ($media->type === 'video')
                                         @php
                                             preg_match(
                                                 '/(?:youtu\.be\/|youtube\.com\/watch\?v=|youtube\.com\/embed\/)([^?&]+)/',
-                                                $media->video_url,
-                                                $matches,
+                                                $media->video_url, $matches
                                             );
-
                                             $youtubeId = $matches[1] ?? null;
                                         @endphp
 
                                         @if ($youtubeId)
                                             <div class="gallery-item gallery-video">
-
-                                                <iframe src="https://www.youtube.com/embed/{{ $youtubeId }}"
+                                                <iframe
+                                                    src="https://www.youtube.com/embed/{{ $youtubeId }}"
                                                     title="YouTube video" frameborder="0"
                                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                     allowfullscreen>
                                                 </iframe>
-
                                             </div>
                                         @else
+
                                             <div class="gallery-item">
-
                                                 <img src="{{ defaultImage('video') }}" alt="Video Default">
-
                                             </div>
                                         @endif
                                     @endif
                                 @endforeach
-
                             </div>
+
                         @else
                             {{-- Tidak ada media sama sekali --}}
                             <div class="gallery-item">
@@ -298,8 +290,8 @@
                 </section>
 
                 {{-- ==========================================
-    TENTANG MITRA
-========================================== --}}
+                    TENTANG MITRA
+                ========================================== --}}
                 <div class="content-card partner-card">
 
                     <div class="section-title">

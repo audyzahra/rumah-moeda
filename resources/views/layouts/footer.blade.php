@@ -4,17 +4,17 @@
         <!-- Logo & Deskripsi -->
         <div class="footer-item">
             @php
-                $logo = ($setting->website_logo && Storage::disk('public')->exists($setting->website_logo))
-                    ? Storage::disk('public')->url($setting->website_logo)
-                    : defaultImage('logo');
+    $logo = $setting?->website_logo && Storage::disk('public')->exists($setting->website_logo)
+        ? Storage::disk('public')->url($setting->website_logo)
+        : defaultImage('logo');
             @endphp
 
-            <img src="{{ $logo }}" alt="{{ $setting->website_name }}" class="footer-logo">
+                <img src="{{ $logo }}" alt="{{ $setting?->website_name ?? 'Rumah Moeda' }}" class="footer-logo">
 
-            <h3>{{ $setting->website_name }}</h3>
+                <h3>{{ $setting?->website_name ?? 'Rumah Moeda' }}</h3>
 
             <div class="website-description">
-                {!! $setting->website_description !!}
+                {!! $setting?->website_description ?? '' !!}
             </div>
         </div>
 
@@ -143,9 +143,8 @@
     </div>
     </div>
 
-
     <div class="footer-bottom">
-        © {{ date('Y') }} {{ $setting->website_name }}. All Rights Reserved.
+        © {{ date('Y') }} {{ $setting?->website_name ?? 'Rumah Moeda' }}. All Rights Reserved.
     </div>
 
 </footer>

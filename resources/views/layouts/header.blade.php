@@ -24,15 +24,15 @@
 
             @php
                 $logo =
-                    $setting->website_logo && Storage::disk('public')->exists($setting->website_logo)
+                    $setting?->website_logo && Storage::disk('public')->exists($setting->website_logo)
                         ? Storage::disk('public')->url($setting->website_logo)
                         : defaultImage('logo');
             @endphp
 
-            <img src="{{ $logo }}" class="logo-img" alt="{{ $setting->website_name ?? 'Logo' }}">
+            <img src="{{ $logo }}" class="logo-img" alt="{{ $setting?->website_name ?? 'Rumah Moeda' }}">
 
             <a href="{{ route($homeRoute) }}" class="logo-text">
-                {{ $setting->website_name }}
+                {{ $setting?->website_name ?? 'Rumah Moeda' }}
             </a>
         </div>
 
