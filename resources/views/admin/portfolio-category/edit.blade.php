@@ -42,7 +42,8 @@
         <div class="portfolio-category-table">
 
             <form action="{{ route('admin.portfolio-categories.update', Crypt::encryptString($category->id)) }}"
-
+                method="POST">
+                
                 @csrf
                 @method('PUT')
 
